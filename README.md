@@ -1,2 +1,2 @@
-# PEPC
-[Explainer for the PEPC feature](explainer.md)
+# Page Embedded Permission Control (PEPC)
+[Explainer for PEPC](explainer.md)
