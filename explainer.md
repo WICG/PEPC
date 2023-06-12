@@ -99,7 +99,7 @@ IDL:
 
 A new css selector will be added which applies to PEPC elements and can be used to target css when the user permission is granted:
 
-    :granted
+    :allowed
 
 The PEPC is not allowed to have any child elements or contents.
 
