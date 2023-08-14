@@ -31,7 +31,8 @@ permission request. User agents could make better decisions and provide better
 prompts if they could make well-founded assumptions about the nature of the
 user’s interaction in the content area, and the user's intent.
 
-![](images/image1.png) *Example 1. A notification permission prompt on a news
+![](images/image1.png)
+*Example 1. A notification permission prompt on a news
 site (contents blurred), shown after the user has clicked on the empty area next
 to the article content. The user finds this prompt interruptive as they had no
 interest in subscribing to notifications, and they will likely struggle to
@@ -49,7 +50,8 @@ decisions and provide better prompts if they could make well-founded assumptions
 about the nature of the user’s interaction in the content area, and the user’s
 current area of focus.
 
-![](images/image2.png) *Example 2. An example where the permission prompt is far
+![](images/image2.png)
+*Example 2. An example where the permission prompt is far
 away from the user’s current area of focus. The permission prompt was triggered
 because the user has just clicked on the crosshair icon in the bottom right, but
 the prompt is easy to miss since it’s on the opposite side of the page.*
@@ -65,7 +67,8 @@ agents could make better decisions and provide better re-prompt UI if they could
 make well-founded assumptions about the nature of the user’s interaction in the
 content area, and the user's intent.
 
-![](images/image3.png) *Example 3. An example where the user previously blocked
+![](images/image3.png)
+*Example 3. An example where the user previously blocked
 camera and microphone access, but has now just expressed a strong intention to
 re-enable them by clicking the unmute buttons. Because the user agent has no
 insight into this interaction in the content area, it is compelled to respect
@@ -118,13 +121,16 @@ permission prompts that follow. For these developers, the permission element
 will be a drop-in replacement that is straightforward to adopt. Here are some
 real-life examples:
 
-![](images/image4.png) *Example 4: A video-conferencing site. Clicking on the
+![](images/image4.png)
+*Example 4: A video-conferencing site. Clicking on the
 “Enable camera” button triggers a camera permission request.*
 
-![](images/image5.png) *Example 5: A search site. Clicking on “Use precise
+![](images/image5.png)
+*Example 5: A search site. Clicking on “Use precise
 location” triggers a geolocation permission request.*
 
-![](images/image6.png) *Example 6: A messaging site, clicking on the “Enable
+![](images/image6.png)
+*Example 6: A messaging site, clicking on the “Enable
 Desktop Notifications” button triggers a push notifications permission request.*
 
 We believe that enshrining such a user-initiated approach in standards can
@@ -747,9 +753,11 @@ variety of factors such as previous decision, settings, etc.) and it will
 trigger the permission prompt if it is indeed needed. The permission prompts are
 drawn starting from a fixed point above the web content area.
 
-![](images/image20.png) *Example notification permission prompt on Chrome*
+![](images/image20.png)
+*Example notification permission prompt on Chrome*
 
-![](images/image21.png) *Example location permission prompt on Firefox*
+![](images/image21.png)
+*Example location permission prompt on Firefox*
 
 In order to evaluate the user experience for these prompts **from the
 perspective of the user agent**, there are some questions that can be
