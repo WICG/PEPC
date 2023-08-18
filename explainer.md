@@ -298,32 +298,31 @@ permission status changes that might have resulted from said interactions:
 Example usage:
 
 ```html
-<permission type="geolocation" ondismissed="showLocationWarning()"/>
-  <script>
-    // Called when the PEPC-triggered permission flow has been canceled by the user
-    // without a decision being made.
+<permission type="geolocation" ondismissed="showLocationWarning()" />
+<script>
+  // Called when the PEPC-triggered permission flow has been canceled by the user
+  // without a decision being made.
 
-    function showLocationWarning() {
-      // Here the site could, for example, provide additional context next to the
-      // PEPC such as "feature X will not work without location".
-      …
-    }
+  function showLocationWarning() {
+    // Here the site could, for example, provide additional context next to the
+    // PEPC such as "feature X will not work without location".
+    …
+  }
 
-    // Use the permissions API to check when "feature X" can start being used.
+  // Use the permissions API to check when "feature X" can start being used.
 
-    navigator.permissions.query({name: "geolocation"})
-      .then((permissionStatus) => {
-        permissionStatus.onchange = () => {
-          // Track future status changes that allow the site to start using feature X.
-          if (permissionStatus.state == "granted")
-            startFeatureX();
-        };
-        // The permission status could already be granted so the site can use feature X already.
+  navigator.permissions.query({name: "geolocation"})
+    .then((permissionStatus) => {
+      permissionStatus.onchange = () => {
+        // Track future status changes that allow the site to start using feature X.
         if (permissionStatus.state == "granted")
-            startFeatureX();
-      });
-  </script></permission
->
+          startFeatureX();
+      };
+      // The permission status could already be granted so the site can use feature X already.
+      if (permissionStatus.state == "granted")
+          startFeatureX();
+    });
+</script>
 ```
 
 #### Restrictions
