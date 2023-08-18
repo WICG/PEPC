@@ -810,20 +810,21 @@ This could be an example of how this would look like:
 
 ```html
 <p>
-Button:
-<button permission-type="geolocation"><;/button>
+  Button:
+  <button permission-type="geolocation"></button>
 </p>
 
 <p>
-Input:
-<input type="permission-control" permission-type="geolocation"><;/input>
+  Input:
+  <input type="permission-control" permission-type="geolocation" />
 </p>
 
 <style>
-button[permission-type], input[permission-type] {
+  button[permission-type],
+  input[permission-type] {
     background-color: white;
     color: blue;
-}
+  }
 </style>
 ```
 
