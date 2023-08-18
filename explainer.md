@@ -154,25 +154,21 @@ users and developers alike:
 
 Example usage:
 
-<table>
-  <tr>
-   <td>
-
-<pre><code>
-&ltstyle>
-permission {
+```html
+<style>
+  permission {
     background-color: blue;
     color: white;
     border-radius: 10px;
-}
-&lt/style>
+  }
+</style>
 
-&ltpermission
+<permission
           icon-style="solid"
           ondismissed="showContextInfo()"
           type="microphone">
 
-&ltscript>
+<script>
 function showContextInfo() {
 // Provide some additional information since the     .
 // user has just dismissed the permission prompt     .
@@ -187,11 +183,8 @@ navigator.permissions.query({name: "microphone"})
     if (permissionStatus.state === "granted")
         startUsingMic();
   });
-&lt/script>
-</code></pre>
-
-   </td>
-   <td>
+</script>
+```
 
 <img src="images/image7.png" width="">
 
@@ -199,10 +192,6 @@ A sample user agent implementation given as an example.
 The permission element is a button whose text is controlled by the user agent. It can be styled by the developer to a degree, including limited control over colors and border styling. Clicking the permission element shows a permission prompt (owner by the user agent).
 
 <img src="images/image8.png" width="">
-
-   </td>
-  </tr>
-</table>
 
 ## Goals & non-goals
 
@@ -232,29 +221,18 @@ particular use case.
 The PEPC should be easy to integrate into the site and therefore it should be
 styleable via CSS like any regular button. For example:
 
-<table>
-  <tr>
-   <td>
-
-<pre><code>
-&ltstyle>
+```html
+<style>
 permission {
     background-color: lightgray;
     color: black;
     border-radius: 10px;
 }
-&lt/style>
-&ltpermission type="geolocation">
-</code></pre>
-
-   </td>
-   <td>
+</style>
+<permission type="geolocation">
+```
 
 <img src="images/image9.png">
-
-   </td>
-  </tr>
-</table>
 
 Since the PEPC content is controlled by the user agent, and it should have no
 child elements, the parsing model will not include content or the end tag
@@ -272,12 +250,8 @@ wish to style the PEPC differently in the granted state so a CSS pseudo-class
 
 Example usage:
 
-<table>
-  <tr>
-   <td>
-
-<pre><code>
-&ltstyle>
+```html
+<style>
 permission {
     background-color: lightgray;
     color: black;
@@ -287,21 +261,15 @@ permission:granted {
     background-color: white;
     color: blue;
 }
-&lt/style>
+</style>
 <permission type="geolocation">
-</code></pre>
+```
 
-   </td>
-   <td>
-
-<img src="images/image10.png">
+<img src="images/image10.png"> \
 "not granted" state
-<p>
-<img src="images/image11.png">
+
+<img src="images/image11.png"> \
 "granted" state
-   </td>
-  </tr>
-</table>
 
 It is not particularly useful to distinguish between different types of "not
 granted" states (e.g. a state of `prompt` vs `denied`) as the goal is to provide
@@ -373,67 +341,60 @@ this aspect.
 
 <table>
   <tr>
-   <td>type
-   </td>
-   <td>Used to specify which permission the PEPC applies to. Can also be a space-separate list of permissions if the user agent support grouping these permission together (e.g. microphone and camera permission requests are commonly grouped together)
-   </td>
+    <td>type</td>
+    <td>
+      Used to specify which permission the PEPC applies to. Can also be a
+      space-separate list of permissions if the user agent support grouping
+      these permission together (e.g. microphone and camera permission requests
+      are commonly grouped together)
+    </td>
   </tr>
   <tr>
-   <td>ondismissed
-onresolved
-   </td>
-   <td>Event handlers as discussed above.
-   </td>
+    <td>ondismissed onresolved</td>
+    <td>Event handlers as discussed above.</td>
   </tr>
   <tr>
-   <td>icon-style
-   </td>
-   <td>Used to allow the site to select different icon styles. Supported values:
-
-<table>
-  <tr>
-   <td>solid
-   </td>
-   <td>
-
-<img src="images/image12.png">
-
-   </td>
+    <td>icon-style</td>
+    <td>
+      Used to allow the site to select different icon styles. Supported values:
+      <table>
+        <tr>
+          <td>solid</td>
+          <td>
+            <img src="images/image12.png" />
+          </td>
+        </tr>
+        <tr>
+          <td>outline</td>
+          <td>
+            <img src="images/image13.png" />
+          </td>
+        </tr>
+        <tr>
+          <td>none</td>
+          <td>
+            <img src="images/image14.png" />
+          </td>
+        </tr>
+      </table>
+    </td>
   </tr>
   <tr>
-   <td>outline
-   </td>
-   <td>
-
-<img src="images/image13.png">
-
-   </td>
+    <td>phrasing(?)</td>
+    <td>
+      **Open question**: It could be reasonable to provide sites the ability to
+      pick from one of several predefined phrasings.
+    </td>
   </tr>
   <tr>
-   <td>none
-   </td>
-   <td>
-
-<img src="images/image14.png">
-
-   </td>
-  </tr>
-</table>
-
-</td> </tr> <tr> <td>phrasing(?)
-
-</td> <td>**Open question**: It could be reasonable to provide sites the ability
-to pick from one of several predefined phrasings.
-
-</td> </tr> <tr> <td>lang(?)
-
-</td> <td>**Open question**: Should the site be allowed to pick the language of
-the PEPC? It can not be a fully free choice however as it needs to be a language
-the user understands. The user agent can decide how to
-[fallback](#fallbacks-when-constraints-are-not-met) if the language is not one
-that the user speaks.
-
-   </td>
+    <td>lang(?)</td>
+    <td>
+      **Open question**: Should the site be allowed to pick the language of the
+      PEPC? It can not be a fully free choice however as it needs to be a
+      language the user understands. The user agent can decide how to
+      [fallback](#fallbacks-when-constraints-are-not-met) if the language is not
+      one that the user speaks.
+    </td>
   </tr>
 </table>
 
@@ -611,82 +572,94 @@ attacks that bad actors might use to trick the user into clicking the element.
 
 <table>
   <tr>
-   <td>Property
-   </td>
-   <td>Rule
-   </td>
+    <td>Property</td>
+    <td>Rule</td>
   </tr>
   <tr>
-   <td>color<br>
-background-color
-   </td>
-   <td>Set by default to the user agent's default `button` colors.
-The user agent should consider accessibility guidelines for sufficient contrast, for example the <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">WCAG AA 4.5:1</a> formula to ensure text is legible.
-   </td>
+    <td>
+      color<br />
+      background-color
+    </td>
+    <td>
+      Set by default to the user agent's default `button` colors. The user agent
+      should consider accessibility guidelines for sufficient contrast, for
+      example the
+      <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">WCAG AA 4.5:1</a>
+      formula to ensure text is legible.
+    </td>
   </tr>
   <tr>
-   <td>box-shadow
-   </td>
-   <td>Not allowed if it contains ‘inset' as it can be used to cover the background and therefore affect contrast.
-   </td>
+    <td>box-shadow</td>
+    <td>
+      Not allowed if it contains ‘inset' as it can be used to cover the
+      background and therefore affect contrast.
+    </td>
   </tr>
   <tr>
-   <td>font
-   </td>
-   <td>Care should be taken to ensure the font used is easily legible (e.g. not any <a href="https://en.wikipedia.org/wiki/Dingbat">dingbat font</a>). The user agent should either hard set the font value without allowing override, or should maintain a curated list of allowed fonts.
-   </td>
+    <td>font</td>
+    <td>
+      Care should be taken to ensure the font used is easily legible (e.g. not
+      any <a href="https://en.wikipedia.org/wiki/Dingbat">dingbat font</a>). The
+      user agent should either hard set the font value without allowing
+      override, or should maintain a curated list of allowed fonts.
+    </td>
   </tr>
   <tr>
-   <td>font-size
-   </td>
-   <td>Needs to be large enough to ensure the font is legible.
-   </td>
+    <td>font-size</td>
+    <td>Needs to be large enough to ensure the font is legible.</td>
   </tr>
   <tr>
-   <td>width<br>
-min-width<br>
-max-width
-   </td>
-   <td>The user agent should ensure the PEPC width is sufficient to not let contents overflow. This requires computing the text size (based on font) programmatically and potentially adding the icon width if present.
-   </td>
+    <td>
+      width<br />
+      min-width<br />
+      max-width
+    </td>
+    <td>
+      The user agent should ensure the PEPC width is sufficient to not let
+      contents overflow. This requires computing the text size (based on font)
+      programmatically and potentially adding the icon width if present.
+    </td>
   </tr>
   <tr>
-   <td>height<br>
-min-height<br>
-max-height
-   </td>
-   <td>The user agent should ensure the PEPC height is sufficient to not let contents overflow. Intuitively this means the height should never be allowed to be smaller than 1em.
-   </td>
+    <td>
+      height<br />
+      min-height<br />
+      max-height
+    </td>
+    <td>
+      The user agent should ensure the PEPC height is sufficient to not let
+      contents overflow. Intuitively this means the height should never be
+      allowed to be smaller than 1em.
+    </td>
   </tr>
   <tr>
-   <td>opacity
-   </td>
-   <td>Should never be anything other than 1, for the PEPC and all its ancestors.
-   </td>
+    <td>opacity</td>
+    <td>
+      Should never be anything other than 1, for the PEPC and all its ancestors.
+    </td>
   </tr>
   <tr>
-   <td>line-height
-   </td>
-   <td>Can potentially be used to alter the position of the text in the PEPC. The user agent should consider hard setting this to ‘normal' without allowing sites to override it.
-   </td>
+    <td>line-height</td>
+    <td>
+      Can potentially be used to alter the position of the text in the PEPC. The
+      user agent should consider hard setting this to ‘normal' without allowing
+      sites to override it.
+    </td>
   </tr>
   <tr>
-   <td>cursor
-   </td>
-   <td>Any values other than the predefined cursors won't have effect (no custom cursors).
-   </td>
+    <td>cursor</td>
+    <td>
+      Any values other than the predefined cursors won't have effect (no custom
+      cursors).
+    </td>
   </tr>
   <tr>
-   <td>whitespace
-   </td>
-   <td>User agents should consider hard setting this to ‘nowrap'.
-   </td>
+    <td>whitespace</td>
+    <td>User agents should consider hard setting this to ‘nowrap'.</td>
   </tr>
   <tr>
-   <td>user-select
-   </td>
-   <td>User agents should consider hard setting this to ‘none'.
-   </td>
+    <td>user-select</td>
+    <td>User agents should consider hard setting this to ‘none'.</td>
   </tr>
 </table>
 
@@ -769,18 +742,18 @@ considered:
     no way to tell whether this has any connection to what the user is currently
     doing, which significantly increases the chance that the prompt will simply
     go unnoticed by the user.
-2. Does the user understand what the site feature that triggered this
+1. Does the user understand what the site feature that triggered this
     permission request does? Can they weigh the potential benefit that the
     feature can provide them against the potential downsides? The user might
     understand and be aware of why a site might request their permission to
     access some powerful feature, or they might have no context for this and
     there are no signals to distinguish between these scenarios.
-3. Does the user have any interest in the site feature that requires their
+1. Does the user have any interest in the site feature that requires their
     permission? It could certainly be the case that this prompt is in response
     to the user showing interest in some feature (e.g. by pressing a button that
     says "Use my location" on a food delivery service site), but it could also
     be the case that the user is not interested in the feature at all.
-4. If the user chooses to deny the permission request here, will they know how
+1. If the user chooses to deny the permission request here, will they know how
     to revisit this decision in the future should they change their mind? Many
     user agents implement some form of temporary or permanent deny decision
     policy to prevent sites from spamming permission prompt requests. However
@@ -801,7 +774,7 @@ unwanted permission prompts:
     though it can sometimes lead to user confusion if they wish to change their
     mind later as it requires them to discover the appropriate UI that allows
     them to make the change manually.
-2. Some user agents use heuristics, blocklists or ML-powered algorithms in an
+1. Some user agents use heuristics, blocklists or ML-powered algorithms in an
     effort to shield users from unwanted permission prompts.
 
 Even with these measures in place, most user interactions on permission prompts
@@ -816,9 +789,9 @@ issues. If the user initiates the permission request it ensures that:
 1. The user understands the purpose of the permission, or at least has enough
     **context** to feel comfortable engaging in an activity that uses this
     permission.
-2. The user's current flow or task is related to granting this permission and
+1. The user's current flow or task is related to granting this permission and
     as such it's unlikely that the permission request could be **interruptive**.
-3. The user agent can ensure the subsequent UI is placed near the current
+1. The user agent can ensure the subsequent UI is placed near the current
     **focus** of attention of the user. This is because the user has just
     interacted with some piece of UI to request the permission which means their
     focus is likely in the area. Because of the above, it is unlikely that such
@@ -835,37 +808,26 @@ functionality.
 
 This could be an example of how this would look like:
 
-<table>
-  <tr>
-   <td>
-
-<pre><code>
-&ltp>
+```html
+<p>
 Button:
-&ltbutton permission-type="geolocation">&lt;/button>
-&lt/p>
+<button permission-type="geolocation"><;/button>
+</p>
 
-&ltp>
+<p>
 Input:
-&ltinput type="permission-control" permission-type="geolocation">&lt;/input>
-&lt/p>
+<input type="permission-control" permission-type="geolocation"><;/input>
+</p>
 
-&ltstyle>
+<style>
 button[permission-type], input[permission-type] {
     background-color: white;
     color: blue;
 }
-&lt/style>
-</code></pre>
-
-   </td>
-   <td>
+</style>
+```
 
 <img src="images/image22.png">
-
-   </td>
-  </tr>
-</table>
 
 Disadvantages:
 
@@ -875,16 +837,16 @@ Disadvantages:
         create a `button` element that does not do anything. This is a worse
         experience if not compensated with some other solution (e.g. a
         polyfill).
-    2. Flexibility: this proposal generally imagines the HTML control as a
+    1. Flexibility: this proposal generally imagines the HTML control as a
         button, but future extensions of this element could instead use some
         different type of UI like a checkbox, a link, a radio etc.
-    3. Counter-intuitive: buttons usually have a lot more flexibility than the
+    1. Counter-intuitive: buttons usually have a lot more flexibility than the
         PEPC has (e.g. the button text is set by the author). A site author
         using the PEPC would have to be always aware of the differences between
         the PEPC and a regular button. If the behavior between elements is
         significantly different then it makes sense that they should be distinct
         elements.
-2. `input`
+1. `input`
     1. The `input` [element represents a typed data field, usually with a form
         control to allow the user to edit the
         data](https://html.spec.whatwg.org/multipage/input.html#the-input-element).
@@ -908,7 +870,7 @@ Disadvantages:
 1. There is no signal or guarantee indicating the user's intent. This means
     that the user agent still needs to remain defensive about permission
     requests.
-2. It requires user experience design and consideration from the site's side.
+1. It requires user experience design and consideration from the site's side.
     There are many ways to get this wrong and provide a suboptimal user
     experience. Also, providing a solution with best-practices built in helps
     resource-constrained development teams more.
@@ -933,15 +895,15 @@ Disadvantages:
 
 1. This does not solve the problem of permissions not really being brought into
     focus in the interaction design process.
-2. The possibility of dynamically selecting which element is the PEPC
+1. The possibility of dynamically selecting which element is the PEPC
     complicates the verification and constraints we recommend as part of
     security. It is more robust for the same element to either always be a PEPC
     or not.
-3. Backwards-compatibility and interoperability: developers need to always be
+1. Backwards-compatibility and interoperability: developers need to always be
     careful to manually remove their HTML button that they planned to declare as
     a PECP if the user agent does not implement the PEPC API, otherwise their
     site will simply contain a button that does nothing.
-4. Counter-intuitive: buttons usually have a lot more flexibility than the PEPC
+1. Counter-intuitive: buttons usually have a lot more flexibility than the PEPC
     has (e.g. the button text is set by the author). A site author using the
     PEPC would have to be always aware of the differences between the PEPC and a
     regular button. If the behavior between elements is significantly different
@@ -974,7 +936,7 @@ Disadvantages:
     positioning the prompt. However the user agent will still need to remain
     defensive and make sure the user is protected against permission prompt
     spam.
-2. This opens the permission prompt more to abuse as it allows malicious sites
+1. This opens the permission prompt more to abuse as it allows malicious sites
     to position it without having implemented any of the restriction or security
     mechanisms that a PEPC would have.
 
