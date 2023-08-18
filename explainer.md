@@ -13,7 +13,7 @@ Rapidly, user agents realized that a more opinionated approach was necessary to
 protect users' security, privacy, and attention. A number of preconditions and
 mitigation measures have evolved, ranging from straightforward
 [user activation requirements](https://developer.mozilla.org/en-US/docs/Web/Security/User_activation),
-permanent “block” policies, or
+permanent "block" policies, or
 [complex heuristics](https://blog.google/products/chrome/building-a-more-helpful-browser-with-machine-learning/).
 However these measures have limited effect
 [as indicated by metrics](#user-agent-abuse-mitigations).
@@ -29,7 +29,7 @@ user agents' presentation of the request. However, the user agent has no
 semantic understanding of events taking place in the content area prior to the
 permission request. User agents could make better decisions and provide better
 prompts if they could make well-founded assumptions about the nature of the
-user’s interaction in the content area, and the user's intent.
+user's interaction in the content area, and the user's intent.
 
 ![](images/image1.png) \
 *Example 1. A notification permission prompt on a news
@@ -47,14 +47,14 @@ Even in the best case, this has the unfortunate effect of shifting the point to
 which users need to pay attention from the thing they clicked on to some distant
 part of the user agent's UI (see example 2). User agents could make better
 decisions and provide better prompts if they could make well-founded assumptions
-about the nature of the user’s interaction in the content area, and the user’s
+about the nature of the user's interaction in the content area, and the user's
 current area of focus.
 
 ![](images/image2.png) \
 *Example 2. An example where the permission prompt is far
-away from the user’s current area of focus. The permission prompt was triggered
+away from the user's current area of focus. The permission prompt was triggered
 because the user has just clicked on the crosshair icon in the bottom right, but
-the prompt is easy to miss since it’s on the opposite side of the page.*
+the prompt is easy to miss since it's on the opposite side of the page.*
 
 3) **Regret**: When users decline to provide a capability to a given site, it
 seems quite reasonable for user agents to suppress that site's future requests
@@ -64,7 +64,7 @@ express that new decision to the user agent (see example 3). In these cases, the
 user agent's desire to protect the user backfires, leaving the user confused
 about how to make the site they want to use work the way they want it to.User
 agents could make better decisions and provide better re-prompt UI if they could
-make well-founded assumptions about the nature of the user’s interaction in the
+make well-founded assumptions about the nature of the user's interaction in the
 content area, and the user's intent.
 
 ![](images/image3.png) \
@@ -72,7 +72,7 @@ content area, and the user's intent.
 camera and microphone access, but has now just expressed a strong intention to
 re-enable them by clicking the unmute buttons. Because the user agent has no
 insight into this interaction in the content area, it is compelled to respect
-the user’s previous decision. Especially in a stressful scenario such as an
+the user's previous decision. Especially in a stressful scenario such as an
 important presentation, users will struggle to navigate the settings surfaces to
 change the permission decision.*
 
@@ -80,15 +80,15 @@ Overall, attempts to optimize the trade-off between usability and interruptions
 have hit practical limits because, fundamentally, user agents
 [still lack any understanding of the](#permission-prompts-ux-evaluation)
 semantics of user interactions in the content area (i.e. the web page), and
-consequently lack insight into the user’s present context and task they are
+consequently lack insight into the user's present context and task they are
 trying to accomplish.
 
 To be able to meaningfully improve upon the status quo, user agents need to be
-able to extract more trustworthy signals from the content area about the user’s
+able to extract more trustworthy signals from the content area about the user's
 task and intent, so they can be more opinionated and confident in their
 communication to users regarding capability access. This is especially important
 if user agents want to safely enable users to change their minds without
-abdicating their responsibility for representing users’ earlier permanent block
+abdicating their responsibility for representing users' earlier permanent block
 decisions.
 
 ## Proposal
@@ -98,7 +98,7 @@ used to provide an in-content entry point to permission requests. This HTML
 element will look like a button and be used just like any other HTML element.
 The key difference is that clicking this button will trigger a permission
 request for which the user agent can have good confidence that it was
-user-initiated.* *We propose the name of “Page Embedded Permission Control”
+user-initiated.* *We propose the name of "Page Embedded Permission Control"
 which can be abbreviated as PEPC.*
 
 To extract a strong signal of user intent, we believe that user agents require
@@ -123,15 +123,15 @@ real-life examples:
 
 ![](images/image4.png) \
 *Example 4: A video-conferencing site. Clicking on the
-“Enable camera” button triggers a camera permission request.*
+"Enable camera" button triggers a camera permission request.*
 
 ![](images/image5.png) \
-*Example 5: A search site. Clicking on “Use precise
-location” triggers a geolocation permission request.*
+*Example 5: A search site. Clicking on "Use precise
+location" triggers a geolocation permission request.*
 
 ![](images/image6.png) \
-*Example 6: A messaging site, clicking on the “Enable
-Desktop Notifications” button triggers a push notifications permission request.*
+*Example 6: A messaging site, clicking on the "Enable
+Desktop Notifications" button triggers a push notifications permission request.*
 
 We believe that enshrining such a user-initiated approach in standards can
 contribute to consistently better permission request flows across the web. This
@@ -140,7 +140,7 @@ users and developers alike:
 
 *   It is **non-interruptive**: it is static, small, and contained in the
     content area on the same z-level.
-*   It is **discoverable**: it can be placed by the developer within the user’s
+*   It is **discoverable**: it can be placed by the developer within the user's
     focus of attention; with the locality making it easier to find and more
     convenient to interact with.
 *   It provides more **contextual information**: it has a visual
@@ -148,7 +148,7 @@ users and developers alike:
     think about integrating it into the user journey at UX design time, as
     opposed to being left as an afterthought during implementation, resulting in
     knock-on effects relating to clearer context.
-*   It allows users to **revert** a previous “deny” decision if they have
+*   It allows users to **revert** a previous "deny" decision if they have
     changed their mind and are now interested in the feature that the site
     provides.
 
@@ -161,15 +161,15 @@ Example usage:
 <pre><code>
 &ltstyle>
 permission {
-    background-color: Blue;
-    color: White;
+    background-color: blue;
+    color: white;
     border-radius: 10px;
 }
 &lt/style>
 
 &ltpermission
-          icon-style=”solid”
-          ondismissed=”showContextInfo()”
+          icon-style="solid"
+          ondismissed="showContextInfo()"
           type="microphone">
 
 &ltscript>
@@ -181,10 +181,10 @@ function showContextInfo() {
 navigator.permissions.query({name: "microphone"})
   .then((permissionStatus) => {
     permissionStatus.onchange = () => {
-      if (permissionStatus.state == "granted")
+      if (permissionStatus.state === "granted")
         startUsingMic();
     };
-    if (permissionStatus.state == "granted")
+    if (permissionStatus.state === "granted")
         startUsingMic();
   });
 &lt/script>
@@ -212,7 +212,7 @@ to provide a list of security considerations and design options that user agents
 should consider.
 
 The PEPC should both integrate seamlessly with the site but also not be easily
-abusable by the site. The PEPC should provide a strong signal of the user’s
+abusable by the site. The PEPC should provide a strong signal of the user's
 intent to start using some permission-gated feature and therefore allow user
 agents to make more informed decisions about how to present permission requests
 to the user.
@@ -235,12 +235,12 @@ styleable via CSS like any regular button. For example:
 <table>
   <tr>
    <td>
-   
+
 <pre><code>
 &ltstyle>
 permission {
-    background-color: LightGray;
-    color: Black;
+    background-color: lightgray;
+    color: black;
     border-radius: 10px;
 }
 &lt/style>
@@ -262,13 +262,13 @@ child elements, the parsing model will not include content or the end tag
 [input element](https://html.spec.whatwg.org/multipage/input.html#the-input-element)
 parsing model).
 
-When the relevant permission is granted (either previously if the user agent’s
+When the relevant permission is granted (either previously if the user agent's
 permission model allows for it, or during the current session), the text should
-change to something informational in order to convey this (e.g. “Location
-shared” for a geolocation PEPC). The user agent should also provide a different
+change to something informational in order to convey this (e.g. "Location
+shared" for a geolocation PEPC). The user agent should also provide a different
 type of UI that allows the user to change their decision. Also, a site might
-wish to style the PEPC differently in the granted state so a css selector
-“:granted” will be supported.
+wish to style the PEPC differently in the granted state so a CSS pseudo-class
+":granted" will be supported.
 
 Example usage:
 
@@ -279,13 +279,13 @@ Example usage:
 <pre><code>
 &ltstyle>
 permission {
-    background-color: LightGray;
-    color: Black;
+    background-color: lightgray;
+    color: black;
     border-radius: 10px;
 }
-permission :granted {
-    background-color: White;
-    color: Blue;
+permission:granted {
+    background-color: white;
+    color: blue;
 }
 &lt/style>
 <permission type="geolocation">
@@ -294,20 +294,20 @@ permission :granted {
    </td>
    <td>
 
-<img src="images/image10.png"> 
-“not granted” state
+<img src="images/image10.png">
+"not granted" state
 <p>
 <img src="images/image11.png">
-“granted” state
+"granted" state
    </td>
   </tr>
 </table>
 
-It is not particularly useful to distinguish between different types of “not
-granted” states (e.g. a state of `prompt` vs `denied`) as the goal is to provide
+It is not particularly useful to distinguish between different types of "not
+granted" states (e.g. a state of `prompt` vs `denied`) as the goal is to provide
 the user with a way forward to grant the required permission to the site,
 regardless of what permission state they currently find themselves in. Therefore
-only a `:granted` selector is proposed.
+only a `:granted` CSS pseudo-class is proposed.
 
 The PEPC should be used in parallel with the Permissions API which already
 provides the necessary support to allow a site to respond to permission status
@@ -315,7 +315,7 @@ changes. This is the encouraged pattern because it ensures that the site will
 also respond to permission status changes that are not caused by direct
 interaction with the PEPC (for example, user agents generally allow users to
 control permissions on various UI surfaces that are entirely separate from the
-site’s rendering area). Therefore the events provided on the PEPC will be
+site's rendering area). Therefore the events provided on the PEPC will be
 strictly about what type of interaction the user has had with the permission
 flow that was triggered by PEPC and will not include information about
 permission status changes that might have resulted from said interactions:
@@ -327,7 +327,7 @@ permission status changes that might have resulted from said interactions:
 
 Example usage:
 
-```
+```html
 <permission type="geolocation" ondismissed="showLocationWarning()">
 
 <script>
@@ -360,7 +360,7 @@ navigator.permissions.query({name: "geolocation"})
 #### Restrictions
 
 It is crucial that the site is not able to easily abuse the PEPC to trigger a
-permission prompt without the user’s express intent, because the user agent
+permission prompt without the user's express intent, because the user agent
 should be able to have reasonable confidence that the user intended to trigger a
 permission flow.
 
@@ -459,7 +459,7 @@ considerations that should be taken into account:
 
 #### Standard UI
 
-Since the user agent has the strong signal of the user’s intent and current
+Since the user agent has the strong signal of the user's intent and current
 focus, it can use this to improve the general UX without risking interrupting
 the user.
 
@@ -482,7 +482,7 @@ Key points to consider:
 *   The confirmation UI should have an obvious way for the user to change their
     mind
 
-#### UI when the user can’t change the permission
+#### UI when the user can't change the permission
 
 There are many user agents that offer mechanisms for permission granting that
 involve some sort of administrator or management system, which the user can not
@@ -531,19 +531,19 @@ An example of how this could look:
 ### Threat model
 
 The security of the proposal hinges on there being a permission prompt that is
-used to confirm the user’s decision to grant the permission.
+used to confirm the user's decision to grant the permission.
 
 The goal of user agents should be to ensure that the PEPC is not trivial to
 abuse. Therefore the user agent should consider the following potentially
 malicious tactics and mitigate them:
 
-*   The site could trick the user by choosing some misleading text (e.g. “Click
-    here to proceed”). Therefore the text on the PEPC should not be able to be
+*   The site could trick the user by choosing some misleading text (e.g. "Click
+    here to proceed"). Therefore the text on the PEPC should not be able to be
     set by the site, instead the user agent should make sure to set it to
-    something comprehensive (e.g. “Share location” for a geolocation PEPC). \
+    something comprehensive (e.g. "Share location" for a geolocation PEPC). \
     **Open question: **should there be a mechanism that allows the site to pick
-    one of several flavors of text (example: “Share location” vs “Use location”
-    vs “Use precise location”)?
+    one of several flavors of text (example: "Share location" vs "Use location"
+    vs "Use precise location")?
 *   The style of the PEPC can be set to obscure the purpose (e.g. setting the
     same text color and button color would make the text unreadable). Therefore
     the style should be verified, validated and overridden by the user agent as
@@ -551,7 +551,7 @@ malicious tactics and mitigate them:
     [Locking the PEPC style](#locking-the-pepc-style) section
 *   The PEPC might be partially covered (to hide the text) with another HTML
     element. Therefore the user agent should verify that the PEPC has been
-    visible already for some short time (e.g. 500ms or so) before it’s clicked.
+    visible already for some short time (e.g. 500ms or so) before it's clicked.
     User agents that implement the
     [IntersectionObserverV2](https://github.com/w3c/IntersectionObserver/blob/v2/explainer.md)
     API can make use of it internally.
@@ -620,14 +620,14 @@ attacks that bad actors might use to trick the user into clicking the element.
    <td>color<br>
 background-color
    </td>
-   <td>Set by default to the user agent’s default `button` colors.
+   <td>Set by default to the user agent's default `button` colors.
 The user agent should consider accessibility guidelines for sufficient contrast, for example the <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">WCAG AA 4.5:1</a> formula to ensure text is legible.
    </td>
   </tr>
   <tr>
    <td>box-shadow
    </td>
-   <td>Not allowed if it contains ‘inset’ as it can be used to cover the background and therefore affect contrast.
+   <td>Not allowed if it contains ‘inset' as it can be used to cover the background and therefore affect contrast.
    </td>
   </tr>
   <tr>
@@ -667,25 +667,25 @@ max-height
   <tr>
    <td>line-height
    </td>
-   <td>Can potentially be used to alter the position of the text in the PEPC. The user agent should consider hard setting this to ‘normal’ without allowing sites to override it.
+   <td>Can potentially be used to alter the position of the text in the PEPC. The user agent should consider hard setting this to ‘normal' without allowing sites to override it.
    </td>
   </tr>
   <tr>
    <td>cursor
    </td>
-   <td>Any values other than the predefined cursors won’t have effect (no custom cursors).
+   <td>Any values other than the predefined cursors won't have effect (no custom cursors).
    </td>
   </tr>
   <tr>
    <td>whitespace
    </td>
-   <td>User agents should consider hard setting this to ‘nowrap’.
+   <td>User agents should consider hard setting this to ‘nowrap'.
    </td>
   </tr>
   <tr>
    <td>user-select
    </td>
-   <td>User agents should consider hard setting this to ‘none’.
+   <td>User agents should consider hard setting this to ‘none'.
    </td>
   </tr>
 </table>
@@ -738,8 +738,8 @@ information should not be.
 *Example:* Many user agents provide a way for an admin to manage certain
 permissions on behalf of the user. In such cases the user agent might decide to
 have the PEPC text reflect this state, perhaps by setting the PEPC text to
-“Admin blocked”. This would however provide information to the site that they
-would otherwise not be privy to, namely that the user’s settings are partially
+"Admin blocked". This would however provide information to the site that they
+would otherwise not be privy to, namely that the user's settings are partially
 controlled by an administrator.
 
 ## Status quo elaboration
@@ -765,7 +765,7 @@ considered:
 
 1.  Does the user notice this prompt or is their attention engaged elsewhere? \
     The prompt was triggered by the site using a JavaScript API at some point
-    that might seem entirely arbitrary (from the user’s perspective). There is
+    that might seem entirely arbitrary (from the user's perspective). There is
     no way to tell whether this has any connection to what the user is currently
     doing, which significantly increases the chance that the prompt will simply
     go unnoticed by the user.
@@ -778,7 +778,7 @@ considered:
 3.  Does the user have any interest in the site feature that requires their
     permission? It could certainly be the case that this prompt is in response
     to the user showing interest in some feature (e.g. by pressing a button that
-    says “Use my location” on a food delivery service site), but it could also
+    says "Use my location" on a food delivery service site), but it could also
     be the case that the user is not interested in the feature at all.
 4.  If the user chooses to deny the permission request here, will they know how
     to revisit this decision in the future should they change their mind? Many
@@ -793,7 +793,7 @@ The shortcomings of the current status quo of permission prompts practically has
 the side-effect that user agents need to be quite defensive to shield users from
 unwanted permission prompts:
 
-1.  Many user agents implement a “permanent deny” policy, and other user agents
+1.  Many user agents implement a "permanent deny" policy, and other user agents
     offer it as an option in the permission prompt. This means that a site will
     not be able to ask for permission again after the user has blocked it.
     Sometimes this is for some fixed (or increasing) duration, not strictly
@@ -816,8 +816,8 @@ issues. If the user initiates the permission request it ensures that:
 1.  The user understands the purpose of the permission, or at least has enough
     **context** to feel comfortable engaging in an activity that uses this
     permission.
-2.  The user’s current flow or task is related to granting this permission and
-    as such it’s unlikely that the permission request could be **interruptive**.
+2.  The user's current flow or task is related to granting this permission and
+    as such it's unlikely that the permission request could be **interruptive**.
 3.  The user agent can ensure the subsequent UI is placed near the current
     **focus** of attention of the user. This is because the user has just
     interacted with some piece of UI to request the permission which means their
@@ -852,8 +852,8 @@ Input:
 
 &ltstyle>
 button[permission-type], input[permission-type] {
-    background-color: White;
-    color: Blue;
+    background-color: white;
+    color: blue;
 }
 &lt/style>
 </code></pre>
@@ -905,10 +905,10 @@ this pattern via articles, communications etc.
 
 Disadvantages:
 
-1.  There is no signal or guarantee indicating the user’s intent. This means
+1.  There is no signal or guarantee indicating the user's intent. This means
     that the user agent still needs to remain defensive about permission
     requests.
-2.  It requires user experience design and consideration from the site’s side.
+2.  It requires user experience design and consideration from the site's side.
     There are many ways to get this wrong and provide a suboptimal user
     experience. Also, providing a solution with best-practices built in helps
     resource-constrained development teams more.
@@ -969,7 +969,7 @@ navigator.permissions.request(
 
 Disadvantages:
 
-1.  There is no signal of the user’s intent and therefore user agents can not
+1.  There is no signal of the user's intent and therefore user agents can not
     make any of the improvements listed in the sections above, except for
     positioning the prompt. However the user agent will still need to remain
     defensive and make sure the user is protected against permission prompt
@@ -986,11 +986,10 @@ Some user agents support installable web apps with additional user features such
 as Run on OS Login. In the future PEPC could be used to allow sites to embed App
 settings relevant to installed web app behavior.
 
-### Not “just” a button
+### Not "just" a button
 
 This current proposal assumes an HTML element similar to a button. In the
 future, user agents might also provide the PEPC in the form of a link, a
 checkbox or some new bespoke UI, based on in particular which permission is
 being requested. There is a lot of flexibility in designing future versions that
 better fit more niche types of permissions.
-
