@@ -31,3 +31,9 @@ navigator.permissions.query({name: "camera"})
         startUsingCamera(); // <= your implementation here
   });
 ```
+
+## Providing feedback
+If you're a dev and you have feedback for improvements on the ergonomics or shape of the API, please feel free raise an issue against this repository.
+
+If you have found an implementation bug in one specific browser, you can report it by raising an issue against that specific browser tracking system:
+* Chrome/Chromium - https://bugs.chromium.org/ (please use the component `UI>Browser>Permissions`
