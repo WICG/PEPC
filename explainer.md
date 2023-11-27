@@ -163,8 +163,8 @@ Example usage:
 </style>
 
 <permission
-  icon-style="solid"
-  ondismissed="showContextInfo()"
+  iconstyle="solid"
+  ondismiss="showContextInfo()"
   type="microphone"
 />
 
@@ -285,20 +285,30 @@ changes. This is the encouraged pattern because it ensures that the site will
 also respond to permission status changes that are not caused by direct
 interaction with the PEPC (for example, user agents generally allow users to
 control permissions on various UI surfaces that are entirely separate from the
-site's rendering area). Therefore the events provided on the PEPC will be
-strictly about what type of interaction the user has had with the permission
-flow that was triggered by PEPC and will not include information about
-permission status changes that might have resulted from said interactions:
+site's rendering area). Therefore events specific to the PEPC will only deal
+with the user's actions on the Permission UI, and specifically with the user
+closing it either by dismissing it or by taking some other action on it that 
+causes it to close (e.g. they accept it). This allows sites to respond to this
+event by providing more context to potentially help the user make a decision.
+These two events will be added to
+[GlobalEventHandlers](https://html.spec.whatwg.org/#globaleventhandlers) and can
+only target `permission` HTML elements. They do not bubble and are not
+cancelable.
 
-- `ondismissed` - raised when the permission UI triggered by the PEPC has been
-  dismissed by the user without a decision.
-- `onresolved` - raised when the permission UI triggered by the PEPC has been
-  resolved and the permission status has changed because of it.
+- `ondismiss` - raised when the permission UI triggered by the PEPC has
+  been dismissed by the user (for example via clicking the 'x' button or
+  clicking outside the prompt)
+- `onresolve` - raised when the permission UI triggered by the PEPC has
+  been resolved by the user taking some action on the prompt itself. Note that
+  this does not necessarily mean the permission state has changed, the user
+  might have taken an action that maintains the status quo (such as an action
+  that continues allowing a permission on a
+  [previously granted](#ui-when-the-permission-is-already-granted) type of UI).
 
 Example usage:
 
 ```html
-<permission type="geolocation" ondismissed="showLocationWarning()" />
+<permission type="geolocation" ondismiss="showLocationWarning()" />
 <script>
   // Called when the PEPC-triggered permission flow has been canceled by the user
   // without a decision being made.
@@ -350,11 +360,11 @@ this aspect.
     </td>
   </tr>
   <tr>
-    <td>ondismissed onresolved</td>
+    <td>ondismiss onresolve</td>
     <td>Event handlers as discussed above.</td>
   </tr>
   <tr>
-    <td>icon-style</td>
+    <td>iconstyle</td>
     <td>
       Used to allow the site to select different icon styles. Supported values:
       <table>
@@ -503,8 +513,7 @@ malicious tactics and mitigate them:
   by the site, instead the user agent should make sure to set it to something
   comprehensive (e.g. "Share location" for a geolocation PEPC). \
    **Open question:**should there be a mechanism that allows the site to pick
-  one of several flavors of text (example: "Share location" vs "Use location" vs
-  "Use precise location")?
+  one of several flavors of text (example: "Share location" vs "Use location")?
 - The style of the PEPC can be set to obscure the purpose (e.g. setting the same
   text color and button color would make the text unreadable). Therefore the
   style should be verified, validated and overridden by the user agent as
@@ -883,7 +892,7 @@ page.
 <script>
   pepc_params = {};
   pepc_params['type'] = 'geolocation';
-  pepc_params['icon-style'] = 'solid';
+  pepc_params['iconstyle'] = 'solid';
   navigator.permissions.registerPEPC(
     document.getElementById('pepc'),
     pepc_params,
@@ -938,6 +947,33 @@ Disadvantages:
 1. This opens the permission prompt more to abuse as it allows malicious sites
    to position it without having implemented any of the restriction or security
    mechanisms that a PEPC would have.
+
+### Allowing recovery via the regular permission flow
+
+The regular permission flow that is currently implemented, could be used to
+allow users to recover from situations where the permission is blocked. However
+this needs to be balanced with protecting users from spam from bad actors on the
+web. There are some potential approaches to consider:
+
+1. Some reputation-based mechanism that allows certain origins to recover from
+   a blocked permission state. This raises difficult ethical and technical
+   questions depending on which entity decides the how origin reputation is
+   calculated, and how a fair algorithm could be designed.
+   The ethical risk is that limiting access to powerful APIs based on origin
+   reputation is a dangerous feature that can potentially allow bad actors to
+   attempt to game the reputation algorithm (in their favor, or for a
+   competitor in their disfavor), and even the user agent itself could use this
+   algorithm to unfairly favor certain proprietary origins.
+   The technical difficulty consists of designing an algorithm that is fair
+   and precise. It needs to have a precision comparable to the precision of the
+   `<permission>` element signal of user intent.
+1. A heuristic could be used to allow recovering from a blocked permissions
+   state based on various aspects of the user interaction on the site, previous
+   user action history, time since permission has been blocked, etc. However it
+   is very unlikely that the precision of such a heuristic would get even close
+   to the direct signal raised by the user's interaction with the `<permission>`
+   element. The usefulness of an unpredictable heuristic that "sometimes" allows
+   recovery makes for a bad developer and user experience.
 
 ## Extending the PEPC in the future
 
