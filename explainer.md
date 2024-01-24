@@ -20,7 +20,7 @@ However these measures have limited effect
 
 There are four main challenges with the status quo:
 
-1.  **Insufficiency of existing mitigations** The present day permissions spam
+1.  **Insufficiency of existing mitigations**: The present day permissions spam
     and abuse mitigation approach has an architectural upper bound on user
     protection because the model relies on the website to choose when to trigger
     the permission request prompt rather than capturing a reliable signal of
