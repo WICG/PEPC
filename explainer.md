@@ -24,9 +24,10 @@ There are four main challenges with the status quo:
     and abuse mitigation approach has an architectural upper bound on user
     protection because the model relies on the website to choose when to trigger
     the permission request prompt rather than capturing a reliable signal of
-    user intent. Requiring a user gesture for the Permission API (or similar)
+    user intent. Requiring a user gesture to [request permission to use a powerful feature](https://www.w3.org/TR/permissions/#dfn-request-permission-to-use) (or similar)
     does not solve this problem as there are many ways of tricking a user into
-    providing such a gesture.
+    providing a so called "[activation triggering input event](https://html.spec.whatwg.org/#activation-triggering-input-event)" 
+    (i.e., a user gesture, such as clicking the mouse or pressing a key) .
 
 1.  **Context**: Ideally, a site's developer will request access as part of a
     contextual flow that helps users understand what's being asked for and why,
