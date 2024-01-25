@@ -38,7 +38,10 @@ There are four main challenges with the status quo:
     understanding of events taking place in the content area prior to the
     permission request. User agents could make better decisions and provide
     better prompts if they could make well-founded assumptions about the nature
-    of the user's interaction in the content area, and the user's intent.
+    of the user's interaction in the content area, and the user's intent. At
+    the moment user agents are limited to trying to make use of potentially
+    ambigous signals such as the time elapsed between page load and the
+    permission request.
 
     ![](images/image1.png) \
     *Example 1. A notification permission prompt on a news site (contents
@@ -178,7 +181,7 @@ Example usage:
 
 <permission
   iconstyle="solid"
-  ondismiss="showContextInfo()"
+  onpromptdismiss="showContextInfo()"
   type="microphone"
 />
 
@@ -309,21 +312,21 @@ These two events will be added to
 only target `permission` HTML elements. They do not bubble and are not
 cancelable.
 
--   `ondismiss` - raised when the permission UI triggered by the PEPC has been
-    dismissed by the user (for example via clicking the 'x' button or clicking
-    outside the prompt)
--   `onresolve` - raised when the permission UI triggered by the PEPC has been
-    resolved by the user taking some action on the prompt itself. Note that this
-    does not necessarily mean the permission state has changed, the user might
-    have taken an action that maintains the status quo (such as an action that
-    continues allowing a permission on a
+-   `onpromptdismiss` - raised when the permission UI triggered by the PEPC has
+    been dismissed by the user (for example via clicking the 'x' button or
+    clicking outside the prompt).
+-   `onpromptaction` - raised when the permission UI triggered by the PEPC has
+    been resolved by the user taking some action on the prompt itself. Note that
+    this does not necessarily mean the permission state has changed, the user
+    might have taken an action that maintains the status quo (such as an action
+    that continues allowing a permission on a
     [previously granted](#ui-when-the-permission-is-already-granted) type of
     UI).
 
 Example usage:
 
 ```html
-<permission type="geolocation" ondismiss="showLocationWarning()" />
+<permission type="geolocation" onpromptdismiss="showLocationWarning()" />
 <script>
   // Called when the PEPC-triggered permission flow has been canceled by the user
   // without a decision being made.
@@ -375,7 +378,7 @@ this aspect.
     </td>
   </tr>
   <tr>
-    <td>ondismiss onresolve</td>
+    <td>onpromptdismiss onpromptaction</td>
     <td>Event handlers as discussed above.</td>
   </tr>
   <tr>
