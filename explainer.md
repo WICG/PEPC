@@ -405,20 +405,18 @@ this aspect.
     </td>
   </tr>
   <tr>
-    <td>phrasing(?)</td>
+    <td>lang</td>
     <td>
-      **Open question**: It could be reasonable to provide sites the ability to
-      pick from one of several predefined phrasings.
-    </td>
-  </tr>
-  <tr>
-    <td>lang(?)</td>
-    <td>
-      **Open question**: Should the site be allowed to pick the language of the
-      PEPC? It can not be a fully free choice however as it needs to be a
-      language the user understands. The user agent can decide how to
-      [fallback](#fallbacks-when-constraints-are-not-met) if the language is not
-      one that the user speaks.
+      The global 
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#attr-lang">lang</a>
+      attribute has further purpose on the `permission` HTML element. Since the
+      contents of the PEPC is set by the user agent, this attribute will indicate
+      what language the text should be in. The user agent will attempt to provide
+      the text in that language if possible.<br/><br/>
+      Note: This will only be used to determine the language of the HTML element,
+      not of the permission confirmation UI itself. The permission UI should use
+      the same language that the rest of the user agent uses on similar security
+      surfaces.
     </td>
   </tr>
 </table>
