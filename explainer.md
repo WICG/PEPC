@@ -323,12 +323,12 @@ cancelable.
     UI).
 -   `onvalidationstatuschange` - raised when the PEPC switches from being
     "valid" to "invalid". The PEPC is considered "valid" when the user agent
-    trusts the integrity of the signal if the user were to click to click on it,
-    and "invalid" otherwise. There are many reasons for which an element can
-    become "invalid" as detailed in the [Security](#security) section, but to
-    enumerate a few: element style is invalid, element is covered, element has
-    recently moved, element has changed size, element is not fully visible in
-    the viewport, etc. A new `Event` subclass will be added,
+    trusts the integrity of the signal if the user were to click on it, and
+    "invalid" otherwise. There are many reasons for which an element can become
+    "invalid" as detailed in the [Security](#security) section, but to enumerate
+    a few: element style is invalid, element is covered, element has recently
+    moved, element has changed size, element is not fully visible in the
+    viewport, etc. A new `Event` subclass will be added,
     `ValidationStatusChangeEvent`, which contains two extra fields:
     - `boolean isValid` - indicates whether the status has transitioned to
       "valid" or not.
