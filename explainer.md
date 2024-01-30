@@ -330,11 +330,10 @@ cancelable.
     moved, element has changed size, element is not fully visible in the
     viewport, etc. The following two attributes are added to the `permission`
     object which are related to the validation status:
-    - `boolean isValid` - indicates whether the status has transitioned to
+    - `boolean is-valid` - indicates whether the status has transitioned to
       "valid" or not.
-    - `Reason? reason` - where `Reason` is an enum indicating the reason why
-      the status is "invalid" (and not set at all if the status is "valid"),
-      and can be one of the following values:
+    - `string reason` - indicating the reason why the status is "invalid" (or ""
+      if it's valid), and can be one of the following values:
       ["style"](#locking-the-pepc-style),
       ["type_count"](#one-pepc-per-permission-type-per-page),
       ["illegal_subframe"](#conditions-for-usage-in-subframes),
@@ -423,7 +422,7 @@ this aspect.
     <td>Event handlers as discussed above.</td>
   </tr>
   <tr>
-    <td>isValid reason</td>
+    <td>is-valid reason</td>
     <td>As discussed above.</td>
   </tr>
   <tr>
