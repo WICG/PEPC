@@ -328,8 +328,8 @@ cancelable.
     "invalid" as detailed in the [Security](#security) section, but to enumerate
     a few: element style is invalid, element is covered, element has recently
     moved, element has changed size, element is not fully visible in the
-    viewport, etc. A new `Event` subclass will be added,
-    `ValidationStatusChangeEvent`, which contains two extra fields:
+    viewport, etc. The following two attributes are added to the `permission`
+    object which are related to the validation status:
     - `boolean isValid` - indicates whether the status has transitioned to
       "valid" or not.
     - `Reason? reason` - where `Reason` is an enum indicating the reason why
@@ -421,6 +421,10 @@ this aspect.
   <tr>
     <td>onpromptdismiss onpromptaction onvalidationstatuschange</td>
     <td>Event handlers as discussed above.</td>
+  </tr>
+  <tr>
+    <td>isValid reason</td>
+    <td>As discussed above.</td>
   </tr>
   <tr>
     <td>lang</td>
