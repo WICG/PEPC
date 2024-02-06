@@ -180,7 +180,6 @@ Example usage:
 </style>
 
 <permission
-  iconstyle="solid"
   onpromptdismiss="showContextInfo()"
   type="microphone"
 />
@@ -322,6 +321,25 @@ cancelable.
     that continues allowing a permission on a
     [previously granted](#ui-when-the-permission-is-already-granted) type of
     UI).
+-   `onvalidationstatuschange` - raised when the PEPC switches from being
+    "valid" to "invalid". The PEPC is considered "valid" when the user agent
+    trusts the integrity of the signal if the user were to click on it, and
+    "invalid" otherwise. There are many reasons for which an element can become
+    "invalid" as detailed in the [Security](#security) section, but to enumerate
+    a few: element style is invalid, element is covered, element has recently
+    moved, element has changed size, element is not fully visible in the
+    viewport, etc. The following two attributes are added to the `permission`
+    object which are related to the validation status:
+    - `boolean is-valid` - indicates whether the status has transitioned to
+      "valid" or not.
+    - `string reason` - indicating the reason why the status is "invalid" (or ""
+      if it's valid), and can be one of the following values:
+      ["style"](#locking-the-pepc-style),
+      ["type_count"](#one-pepc-per-permission-type-per-page),
+      ["illegal_subframe"](#conditions-for-usage-in-subframes),
+      ["covered"](#threat-model),
+      ["recently_moved"](#threat-model),
+      ["recently_created"](#threat-model).
 
 Example usage:
 
@@ -378,34 +396,34 @@ this aspect.
     </td>
   </tr>
   <tr>
-    <td>onpromptdismiss onpromptaction</td>
+    <td>type-ext</td>
+    <td>
+      Allows specifying additional parameters for certain permission types, in
+      the form of space-separate key: value pairs.
+      The supported key/values are:
+      <ul>
+        <li><code>sysex: true/false</code> (for the 
+         <a href="https://webaudio.github.io/web-midi-api/#permissions-integration">
+        midi</a> permission type)
+        </li>
+        <li><code>precise:true/false</code> (for the 
+        <a href="https://www.w3.org/TR/geolocation/#position_options_interface">
+        geolocation</a> permission type)
+        </li>
+        <li><code>panTiltZoom:true/false</code> (for the 
+        <a href="https://github.com/w3c/mediacapture-image/blob/main/ptz-explainer.md#control-camera-pantilt">
+        camera</a> permission type)
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>onpromptdismiss onpromptaction onvalidationstatuschange</td>
     <td>Event handlers as discussed above.</td>
   </tr>
   <tr>
-    <td>iconstyle</td>
-    <td>
-      Used to allow the site to select different icon styles. Supported values:
-      <table>
-        <tr>
-          <td>solid</td>
-          <td>
-            <img src="images/image12.png" />
-          </td>
-        </tr>
-        <tr>
-          <td>outline</td>
-          <td>
-            <img src="images/image13.png" />
-          </td>
-        </tr>
-        <tr>
-          <td>none</td>
-          <td>
-            <img src="images/image14.png" />
-          </td>
-        </tr>
-      </table>
-    </td>
+    <td>is-valid reason</td>
+    <td>As discussed above.</td>
   </tr>
   <tr>
     <td>lang</td>
@@ -423,11 +441,6 @@ this aspect.
     </td>
   </tr>
 </table>
-
-Notes: there is prior art in this domain the iOS LocationButton which allows for
-configuring the icon style out of more options, and hiding the text as well as
-the icon. For interoperability considerations, the options here are more
-limited.
 
 ### Permission UI
 
@@ -527,10 +540,7 @@ malicious tactics and mitigate them:
 -   The site could trick the user by choosing some misleading text (e.g. "Click
     here to proceed"). Therefore the text on the PEPC should not be able to be
     set by the site, instead the user agent should make sure to set it to
-    something comprehensive (e.g. "Share location" for a geolocation PEPC). \
-    **Open question:**should there be a mechanism that allows the site to pick
-    one of several flavors of text (example: "Share location" vs "Use
-    location")?
+    something comprehensive (e.g. "Share location" for a geolocation PEPC).
 -   The style of the PEPC can be set to obscure the purpose (e.g. setting the
     same text color and button color would make the text unreadable). Therefore
     the style should be verified, validated and overridden by the user agent as
@@ -575,19 +585,6 @@ click is not assured:
     check or mitigation will self-correct itself (e.g. if the PEPC has moved
     recently there will be a short cooldown before the PEPC integrity is
     restored).
--   The PEPC could be corrected by the user agent itself in order to preserve
-    its integrity. For example, if the style specified by the site sets the PEPC
-    font to be too small to read, this can be corrected by the user agent by
-    forcing a minimum font size on the PEPC. This should be considered primarily
-    in the case of CSS, which the user agent can override as it sees fit. **Open
-    question:** should there be a way for sites to specify whether they want to
-    allow the user agent to override the style? Some site authors might be
-    happier triggering the legacy prompt request flow, rather than have the PEPC
-    style be changed whereas others might prioritize the benefits of a PEPC
-    permission flow over making sure the style is exactly as desired. User
-    agents need to weigh in the additional flexibility afforded to site authors
-    against the potential user confusion of seeing the PEPC permission prompt vs
-    the regular permission prompt.
 
 ### Locking the PEPC style
 
@@ -913,7 +910,6 @@ page.
 <script>
   pepc_params = {};
   pepc_params['type'] = 'geolocation';
-  pepc_params['iconstyle'] = 'solid';
   navigator.permissions.registerPEPC(
     document.getElementById('pepc'),
     pepc_params,
