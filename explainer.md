@@ -1,5 +1,48 @@
 # Page Embedded Permission Control (PEPC)
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Introduction](#introduction)
+- [Proposal](#proposal)
+- [Goals & non-goals](#goals--non-goals)
+- [Design considerations](#design-considerations)
+  - [HTML element](#html-element)
+    - [Usage](#usage)
+    - [Restrictions](#restrictions)
+    - [PEPC attributes](#pepc-attributes)
+  - [Permission UI](#permission-ui)
+    - [Standard UI](#standard-ui)
+    - [UI when the user can't change the permission](#ui-when-the-user-cant-change-the-permission)
+    - [UI when there is a mechanism that would block the request](#ui-when-there-is-a-mechanism-that-would-block-the-request)
+    - [UI when the permission is already granted](#ui-when-the-permission-is-already-granted)
+- [Security](#security)
+  - [Threat model](#threat-model)
+  - [Fallbacks when constraints are not met](#fallbacks-when-constraints-are-not-met)
+  - [Locking the PEPC style](#locking-the-pepc-style)
+  - [One PEPC per permission type per page](#one-pepc-per-permission-type-per-page)
+  - [Conditions for usage in subframes](#conditions-for-usage-in-subframes)
+  - [Custom cursors](#custom-cursors)
+  - [Synthetic click events](#synthetic-click-events)
+- [Privacy](#privacy)
+  - [Exposing user information bits](#exposing-user-information-bits)
+- [Status quo elaboration](#status-quo-elaboration)
+  - [Permission prompts UX evaluation](#permission-prompts-ux-evaluation)
+  - [User Agent abuse mitigations](#user-agent-abuse-mitigations)
+- [Alternatives considered](#alternatives-considered)
+  - [Extending an existing element](#extending-an-existing-element)
+  - [No platform changes](#no-platform-changes)
+  - [Providing a registration JS API](#providing-a-registration-js-api)
+  - [Extending the Permissions API to provide an anchor point](#extending-the-permissions-api-to-provide-an-anchor-point)
+  - [Allowing recovery via the regular permission flow](#allowing-recovery-via-the-regular-permission-flow)
+  - [Implementing an origin based permission allow list registry](#implementing-an-origin-based-permission-allow-list-registry)
+- [Extending the PEPC in the future](#extending-the-pepc-in-the-future)
+  - [PEPC for additional user agent settings](#pepc-for-additional-user-agent-settings)
+  - [Not "just" a button](#not-just-a-button)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Introduction
 
 When making decisions about whether or not to expose particularly powerful
@@ -26,7 +69,7 @@ There are four main challenges with the status quo:
     the permission request prompt rather than capturing a reliable signal of
     user intent. Requiring a user gesture to [request permission to use a powerful feature](https://www.w3.org/TR/permissions/#dfn-request-permission-to-use) (or similar)
     does not solve this problem as there are many ways of tricking a user into
-    providing a so called "[activation triggering input event](https://html.spec.whatwg.org/#activation-triggering-input-event)" 
+    providing a so called "[activation triggering input event](https://html.spec.whatwg.org/#activation-triggering-input-event)"
     (i.e., a user gesture, such as clicking the mouse or pressing a key) .
 
 1.  **Context**: Ideally, a site's developer will request access as part of a
@@ -402,15 +445,15 @@ this aspect.
       the form of space-separate key: value pairs.
       The supported key/values are:
       <ul>
-        <li><code>sysex: true/false</code> (for the 
+        <li><code>sysex: true/false</code> (for the
          <a href="https://webaudio.github.io/web-midi-api/#permissions-integration">
         midi</a> permission type)
         </li>
-        <li><code>precise:true/false</code> (for the 
+        <li><code>precise:true/false</code> (for the
         <a href="https://www.w3.org/TR/geolocation/#position_options_interface">
         geolocation</a> permission type)
         </li>
-        <li><code>panTiltZoom:true/false</code> (for the 
+        <li><code>panTiltZoom:true/false</code> (for the
         <a href="https://github.com/w3c/mediacapture-image/blob/main/ptz-explainer.md#control-camera-pantilt">
         camera</a> permission type)
         </li>
@@ -428,7 +471,7 @@ this aspect.
   <tr>
     <td>lang</td>
     <td>
-      The global 
+      The global
       <a href="https://html.spec.whatwg.org/multipage/dom.html#attr-lang">lang</a>
       attribute has further purpose on the `permission` HTML element. Since the
       contents of the PEPC is set by the user agent, this attribute will indicate
