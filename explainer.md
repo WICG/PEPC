@@ -18,15 +18,17 @@ permanent "block" policies, or
 However these measures have limited effect
 [as indicated by metrics](#user-agent-abuse-mitigations).
 
-There are four main challenges with the status quo:
+Challenges with the status quo include:
 
 1.  **Insufficiency of existing mitigations**: The present day permissions spam
     and abuse mitigation approach has an architectural upper bound on user
     protection because the model relies on the website to choose when to trigger
     the permission request prompt rather than capturing a reliable signal of
-    user intent. Requiring a user gesture to [request permission to use a powerful feature](https://www.w3.org/TR/permissions/#dfn-request-permission-to-use) (or similar)
-    does not solve this problem as there are many ways of tricking a user into
-    providing a so called "[activation triggering input event](https://html.spec.whatwg.org/#activation-triggering-input-event)" 
+    user intent. Requiring a user gesture to
+    [request permission to use a powerful feature](https://www.w3.org/TR/permissions/#dfn-request-permission-to-use)
+    (or similar) does not solve this problem as there are many ways of tricking
+    a user into providing a so called
+    "[activation triggering input event](https://html.spec.whatwg.org/#activation-triggering-input-event)"
     (i.e., a user gesture, such as clicking the mouse or pressing a key) .
 
 1.  **Context**: Ideally, a site's developer will request access as part of a
@@ -38,10 +40,10 @@ There are four main challenges with the status quo:
     understanding of events taking place in the content area prior to the
     permission request. User agents could make better decisions and provide
     better prompts if they could make well-founded assumptions about the nature
-    of the user's interaction in the content area, and the user's intent. At
-    the moment user agents are limited to trying to make use of potentially
-    ambigous signals such as the time elapsed between page load and the
-    permission request.
+    of the user's interaction in the content area, and the user's intent. At the
+    moment user agents are limited to trying to make use of potentially ambigous
+    signals such as the time elapsed between page load and the permission
+    request.
 
     ![](images/image1.png) \
     *Example 1. A notification permission prompt on a news site (contents
@@ -90,6 +92,24 @@ There are four main challenges with the status quo:
     respect the user's previous decision. Especially in a stressful scenario
     such as an important presentation, users will struggle to navigate the
     settings surfaces to change the permission decision.*
+
+1.  **Accessibility**: Permission UI for a capability is triggered through the
+    direct use of the capability. Typically JavaScript invokes permission UI,
+    presenting an issue for both screen readers and magnification users.
+
+    Script attached to an existing DOM element is not interpreted by the screen
+    reader. If the DOM element was not accessibility tested and does not provide
+    sufficient explanation to its function, there is no way for a screen reader
+    user to know that the purpose of that element is to initiate access to a
+    capability.
+
+    Magnification users also struggle with the status quo. A page cannot detect
+    if a user is using OS level magnification tools (WAI for privacy reasons). A
+    user in a magnified state can easily miss the permission prompt if it falls
+    outside of their magnified viewport, and pages cannot assist these users.
+    With PEPC, the scrim and a contextually localized prompt greatly increase
+    the chance that the magnification user will observe the permission request
+    after interacting with the element.
 
 Optimizing the trade-off between usability and interruptions hit practical
 limits because, fundamentally, user agents
@@ -167,6 +187,11 @@ users and developers alike:
 -   It allows users to **revert** a previous "deny" decision if they have
     changed their mind and are now interested in the feature that the site
     provides.
+-   It is more **accessible**. The PEPC can have standard, localized, screen
+    reader announcements that make the purpose of the element comprehensible and
+    consistent across websites. The scrim and a contextually localized prompt
+    greatly increase the chance that a magnification user will observe the
+    permission request after interacting with the element.
 
 Example usage:
 
@@ -293,7 +318,13 @@ It is not particularly useful to distinguish between different types of "not
 granted" states (e.g. a state of `prompt` vs `denied`) as the goal is to provide
 the user with a way forward to grant the required permission to the site,
 regardless of what permission state they currently find themselves in. Therefore
-only a `:granted` CSS pseudo-class is proposed.
+only a `:granted` CSS pseudo-class is proposed. 
+
+Sites may wish to modify the appearance (or hide) the PEPC when it fails
+validation. Therefore a `:invalid` CSS pseudo-class is also proposed. The
+invalid pseudo-class is applied when the element's validation status changes
+because of 'style' 'type_count' or 'illegal_subframe' reasons. The style should
+not be set when the element is not valid for transient reasons.
 
 The PEPC should be used in parallel with the Permissions API which already
 provides the necessary support to allow a site to respond to permission status
