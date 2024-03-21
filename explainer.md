@@ -308,8 +308,8 @@ causes it to close (e.g. they accept it). This allows sites to respond to this
 event by providing more context to potentially help the user make a decision.
 These two events will be added to
 [GlobalEventHandlers](https://html.spec.whatwg.org/#globaleventhandlers) and can
-only target `permission` HTML elements. They do not bubble and are not
-cancelable.
+only target `permission` HTML elements. They bubble and are cancelable (better
+ergonomics for developers to make use of them).
 
 -   `onpromptdismiss` - raised when the permission UI triggered by the PEPC has
     been dismissed by the user (for example via clicking the 'x' button or
