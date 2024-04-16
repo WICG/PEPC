@@ -706,11 +706,11 @@ enforced:
 -   Permission Policy should be first checked to ensure that the permission is
     allowed in the subframe.
 -   To prevent clickjacking attacks where a malicious site embeds a legitimate
-    site that uses a PEPC, the frame-ancestors CSP directive must be explicitly
-    declared if a document using PEPC is embedded cross-origin (to the top level
-    frame). This shifts both the burden and the risk to the sites using PEPC
-    which actually wants to be embeddable while ensuring that developers who
-    take no action will remain secure by default.
+    site that uses a PEPC, the `frame-ancestors` CSP directive must be
+    explicitly declared if a document using PEPC is embedded cross-origin (to
+    the top level frame). This shifts both the burden and the risk to the sites
+    using PEPC which actually wants to be embeddable while ensuring that
+    developers who take no action will remain secure by default.
 
 ### Custom cursors
 
