@@ -708,9 +708,10 @@ enforced:
 -   To prevent clickjacking attacks where a malicious site embeds a legitimate
     site that uses a PEPC, the `frame-ancestors` CSP directive must be
     explicitly declared if a document using PEPC is embedded cross-origin (to
-    the top level frame). This shifts both the burden and the risk to the sites
-    using PEPC which actually wants to be embeddable while ensuring that
-    developers who take no action will remain secure by default.
+    the top level frame). This ensures that permissions cannot be obtained by a
+    bad actor via a cross-origin embedded site, as the embedded site needs to
+    explicitly opt in. The developers who use PEPC without taking any further
+    action will be safe by default.
 
 ### Custom cursors
 
