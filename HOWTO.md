@@ -23,11 +23,11 @@ navigator.permissions.query({name: "camera"})
   .then((permissionStatus) => {
     permissionStatus.onchange = () => {
       // Track future status changes that allow the site to start using camera.
-      if (permissionStatus.state == "granted")
+      if (permissionStatus.state === "granted")
         startUsingCamera(); // <= your implementation here
     };
     // The permission status could already be granted so the site can use camera already.
-    if (permissionStatus.state == "granted")
+    if (permissionStatus.state === "granted")
         startUsingCamera(); // <= your implementation here
   });
 ```
