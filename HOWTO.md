@@ -10,7 +10,7 @@ You can visit https://permission.site/pepc for a quick example and test.
 
 To add the PEPC element to your page simply include it as you would any other HTML element. It does not have an end tag or contents.
 
-```
+```HTML
 <permission type="camera microphone" ondismiss="promptDismiss()" onresolve="promptResolve()">
 ```
 
@@ -18,7 +18,7 @@ Current supported `type` attribute values (on Chrome) are: `"camera"`, `"microph
 
 In order to make use of the permission you can use the permissions API to listen to permission status changes. This has the advantage that you will catch all permission status changes.
 
-```
+```JS
 navigator.permissions.query({name: "camera"})
   .then((permissionStatus) => {
     permissionStatus.onchange = () => {
