@@ -5,7 +5,9 @@
 We propose a <permission> HTML element with styling constraints that ensures a
 very high level of confidence concerning *user intent* to make a permission
 decision. We believe this solves user problems related to accessibility,
-context, permission state reconsideration, and more.
+context, permission state reconsideration, and more. To validate the feasibility
+and effectiveness of this feature, we need to gather data from prototypes and
+real-world implementations.
 
 The permission element is designed to be [accessible](#accessibility) and more
 secure than the current permission flows. Full page modal confirmation UI
@@ -1139,7 +1141,7 @@ Specifically:
 1.  Context. While sites may do a good job with providing context to the user
     about why a permission journey is happening, PEPC can ensure the context is
     present with consistent button UI and labels, and strong signal of user
-    intent.
+    intent. We can validate this with prototypes and real world evaluations. 
 1.  Reconsideration. Sometimes users change their mind in a permission decision.
     Making it too easy for users to change past decisions allows spammy or
     abusive websites the ability to repeatedly prompt users who block a
