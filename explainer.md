@@ -297,8 +297,10 @@ Example usage:
     .query({ name: 'microphone' })
     .then((permissionStatus) => {
       permissionStatus.onchange = () => {
+        // Run the check when the status changes.
         if (permissionStatus.state === 'granted') startUsingMic();
       };
+      // Run the initial check.
       if (permissionStatus.state === 'granted') startUsingMic();
     });
 </script>
@@ -494,11 +496,11 @@ Example usage:
     .then((permissionStatus) => {
       permissionStatus.onchange = () => {
         // Track future status changes that allow the site to start using feature X.
-        if (permissionStatus.state == "granted")
+        if (permissionStatus.state === "granted")
           startFeatureX();
       };
       // The permission status could already be granted so the site can use feature X already.
-      if (permissionStatus.state == "granted")
+      if (permissionStatus.state === "granted")
           startFeatureX();
     });
 </script>
