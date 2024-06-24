@@ -61,7 +61,7 @@ experience for users and developers.
 - [Alternatives considered](#alternatives-considered)
    * [No platform changes](#no-platform-changes)
    * [Improve existing usage triggered permission request journey](#improve-existing-usage-triggered-permission-request-journey)
-   * [Separate this into two proposals, (1) improved user intent signal and (2) modal permission prompts](#separate-this-into-two-proposals-1-improved-user-intent-signal-and-2-modal-permission-prompts)
+   * [Separate this into two proposals, (1) improved user intent signal and (2) permission prompt improvements](#separate-this-into-two-proposals-1-improved-user-intent-signal-and-2-permission-prompt-improvements)
    * [Extending an existing element](#extending-an-existing-element)
    * [Providing a registration JS API](#providing-a-registration-js-api)
    * [Extending the Permissions API to provide an anchor point](#extending-the-permissions-api-to-provide-an-anchor-point)
@@ -1100,16 +1100,19 @@ Specifically:
     developers, often results in stale directions, and users seldom succeed at
     these journeys even when the directions are up-to-date and clear.
 
-<!-- TOC --><a name="separate-this-into-two-proposals-1-improved-user-intent-signal-and-2-modal-permission-prompts"></a>
-### Separate this into two proposals, (1) improved user intent signal and (2) modal permission prompts
+<!-- TOC --><a name="separate-this-into-two-proposals-1-improved-user-intent-signal-and-2-permission-prompt-improvements"></a>
+### Separate this into two proposals, (1) improved user intent signal and (2) permission prompt improvements
 
-We believe these aspects of the proposal offer the most user utility when
-bundled. If we only improve the user intent signal with a permission element, we
-fail to solve for change blindness and accessibility problems for magnification
-users. If we only introduce modal permission prompts without improving our
-confidence in user intent and context we increase the level of interruption and
-disruption in user journeys with blocking modals about which the user may have
-little or no context for decision making.
+There are various permission prompt improvement suggestions as part of this
+proposal. The proposal could be trimmed down, by splitting the permission
+prompt improvements into some separate document.
+
+However these suggestions are necessary in order to reason about the usefulness
+of the proposal, and the issues it can help address. While this proposal
+makes no prescriptions when it comes to the actual permission model or
+permission flow, the mocks and examples provided help visualize and explain
+the types of changes user agents can make, and therefore they are necessary
+to help evaluate the benefits of the proposal.
 
 <!-- TOC --><a name="extending-an-existing-element"></a>
 ### Extending an existing element
