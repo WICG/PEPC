@@ -12,4 +12,5 @@ jobs:
       - uses: w3c/spec-prod@v2
         with:
           SOURCE: permission-element.bs
+          TOOLCHAIN: bikeshed
           GH_PAGES_BRANCH: gh-pages
