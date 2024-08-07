@@ -1,0 +1,6 @@
+rule bikeshed
+  command = bikeshed --print=plain -f spec $in
+  description = bikeshed $in
+
+build permission-element.html: bikeshed permission-element.bs
+default permission-element.html

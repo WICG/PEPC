@@ -1,0 +1,25 @@
+<pre class="metadata">
+Title: The HTML &lt;permission&gt; Element
+Status: CG-DRAFT
+Group: WICG
+URL: https://wicg.github.io/PEPC/permission-element.html
+Repository: WICG/PEPC
+Shortname: pepc
+Level: 0
+Boilerplate: omit conformance
+Markup Shorthands: markdown on
+Editor: Daniel Vogelheim, Google LLC, vogelheim@google.com, https://www.google.com/
+Editor: Andy Paicu, Google LLC
+Abstract: A `<permission>` HTML element to request browser permissions in-page.
+
+  Suitable styling and UI constraints on this new element ensure that the user
+  understands what a click on it means, and thus gives the browser a high level
+  of confidence of user intent to make a permission decision.
+  The `<permission>` element aims to be more accessible and more secure than
+  the current permission flows.
+</pre>
+
+# Introduction # {#intro}
+# Framework # {#framwork}
+# Algorithms # {#algorithms}
+# Security & Privacy Considerations # {#secpriv}
