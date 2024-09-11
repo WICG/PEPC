@@ -430,6 +430,8 @@ validation. Therefore a `:invalid` CSS pseudo-class is also proposed. The
 invalid pseudo-class is applied when the element's validation status changes
 because of 'style' 'type_count' or 'illegal_subframe' reasons. The style should
 not be set when the element is not valid for transient reasons.
+NOTE: this section is no longer correct. Update when the design of CSS
+pseudo-classes is complete.
 
 The PEPC should be used in parallel with the Permissions API which already
 provides the necessary support to allow a site to respond to permission status
@@ -470,11 +472,14 @@ cancelable.
         "valid" or not.
     -   `string reason` - indicating the reason why the status is "invalid" (or
         "" if it's valid), and can be one of the following values:
-        ["style"](#locking-the-pepc-style),
-        ["type_count"](#one-pepc-per-permission-type-per-page),
+        ["recently_attached"](#annoyance),
+        ["type_invalid"](#pepc-attributes),
         ["illegal_subframe"](#conditions-for-usage-in-subframes),
-        ["covered"](#threat-model), ["recently_moved"](#threat-model),
-        ["recently_created"](#threat-model).
+        ["unsuccessful_registration"](#one-pepc-per-permission-type-per-page),
+        ["intersection_changed"](#annoyance),
+        ["intersection_out_of_viewport_or_clipped"](#annoyance),
+        ["intersection_occluded_or_distorted"](#annoyance),
+        ["style_invalid"](#locking-the-pepc-style).
 
 Example usage:
 
