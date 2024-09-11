@@ -109,6 +109,9 @@ The {{HTMLPermissionElement/invalidReason}} attribute is an
 [=enumerated attribute=] that reflects the internal state of the permission
 element. It's value set are {{PermissionElementBlockerReason}}
 
+The global <a attribute spec=html>lang</a> attribute is observed by the
+<[permission]> element to select localized text.
+
 The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on <{permission}> elements [=event handler IDL attributes=]:
 
 <pre class=simpledef>
@@ -147,6 +150,14 @@ The <{permission}> element has the following internal slots:
     list &laquo;[]&raquo; is the state in which no permission applies, and which
     will no longer allow modification. Note that the
     {{HTMLPermissionElement/type}} property reflects this internal state.
+
+## <{permission}> element-related state maintained by the [=document=] ## {#permission-element-per-document-state}
+
+The [=document=] gains the following internal slot:
+
+* The <dfn attribute for="HTMLDocument">\[[PermissionElementTypeMap]]</dfn> is
+    an [=ordered set=] of [=powerful features=]. It is initialized with the
+    empty list, &laquo;[]&raquo;.
 
 ## <{permission}> element interesting behaviours ## {#permission-element-very-interesting}
 
@@ -222,21 +233,21 @@ enum PermissionElementBlockerReason {
 
 The permission element keeps track of "blockers", reasons why the element (currently) cannot be activated. These blockers come with three lifetimes: Permanent, temporary, and expiring.
 
-: Permanent blocker
+: <dfn>Permanent blocker</dfn>
 :: Once an element has a permanent blocker, it will be disabled permanently.
     There are used for issues that the website owner is expected to fix.
     An example is a <{permission}> element inside a <{fencedframe}>.
-: Temporary blocker
+: <dfn>Temporary blocker</dfn>
 :: This is a blocker that will only be valid until the blocking condition no
     no longer occurs. An example is a <{permission}> element that is not
     currently in view.
-: Expiring blocker
+: <dfn>Expiring blocker</dfn>
 :: This is a blocker that is only valid for a fixed period of time. This is
     used to block abuse scenarios like "click jacking". An example is
     a <{permission}> element that has recently been moved.
 :: ISSUE: Can we simplify this? There's currently no "expring" blocker in the
     table.
-: Temporary expiring blocker
+: <dfn>Temporary expiring blocker</dfn>
 :: This is a temporary blocker, that will still be valid for a fixed period of
     time once the blocking condition no longer occurs. In other words, this is
     a temporary blocker which turns into an expiring blocker when the blocking
@@ -252,46 +263,45 @@ The permission element keeps track of "blockers", reasons why the element (curre
 <th>Order hint
 </thead>
 <tbody>
-<tr><th>type_invalid
-<td>permanent
+<tr><th>{{PermissionElementBlockerReason/type_invalid}}
+<td>[=permanent blocker|permanent=]
 <td>When an unsupported {{HTMLPermissionElement/type|permission type}} has been
     set.
 <td>1
-<tr><th>illegal_subframe
-<td>permanent
-<td>When the <a element>permission</a> element is used inside a
-    <a element>fencedframe</a>.
+<tr><th>{{PermissionElementBlockerReason/illegal_subframe}}
+<td>[=permanent blocker|permanent=]
+<td>When the <{permission}> element is used inside a <{fencedframe}>.
 <td>2
-<tr><th>unsuccesful_registration
-<td>permanent
-<td>
+<tr><th>{{PermissionElementBlockerReason/unsuccesful_registration}}
+<td>[=permanent blocker|permanent=]
+<td>When another <{permission}> element for the same [=powerful feature=] has
+    been inserted into the same document.
 <td>3
-<tr><th>recently_attached
-<td>expiring
-<td>When the <a element>permission</a> element has just been attached to the
+<tr><th>{{PermissionElementBlockerReason/recently_attached}}
+<td>[=expiring blocker|expiring=]
+<td>When the <{permission}> element has just been attached to the
   DOM.
 <td>4
-<tr><th>intersection_visible
-<td>temporary expiring
-<td>When the <a element>permission</a> element is not visible.
+<tr><th>{{PermissionElementBlockerReason/intersection_visible}}
+<td>[=temporary expiring blocker|temporary expiring=]
+<td>When the <{permission}> element is not visible.
 <td>5
-<tr><th>intersection_changed
-<td>temporary expiring
-<td>When the visible portion of the <a element>permission</a> element has been
+<tr><th>{{PermissionElementBlockerReason/intersection_changed}}
+<td>[=temporary expiring blocker|temporary expiring=]
+<td>When the visible portion of the <{permission}> element has been
     changed.
 <td>6
-<tr><th>intersection_out_of_viewport_or_clipped
-<td>temporary expiring
-<td>When the <a element>permission</a> element is not or not fully in the
-    [=viewport=].
+<tr><th>{{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}
+<td>[=temporary expiring blocker|temporary expiring=]
+<td>When the <{permission}> element is not or not fully in the [=viewport=].
 <td>7
-<tr><th>intersection_occluded_or_distorted
-<td>temporary expiring
-<td>When the <a element>permission</a> element is fully in the [=viewport=],
+<tr><th>{{PermissionElementBlockerReason/intersection_occluded_or_distorted}}
+<td>[=temporary expiring blocker|temporary expiring=]
+<td>When the <{permission}> element is fully in the [=viewport=],
     but still not fully visible (e.g. because it's partly behind other content).
 <td>8
-<tr><th>style_invalid
-<td>temporary expiring
+<tr><th>{{PermissionElementBlockerReason/style_invalid}}
+<td>[=temporary expiring blocker|temporary expiring=]
 <td>
 <td>9
 </tbody>
@@ -434,8 +444,22 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
 1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
     with reason {{PermissionElementBlockerReason/type_invalid}}.
+1. If the [=set/intersection=] of {{[[Types]]}} and [=document=]'s
+    {{[[PermissionElementTypeMap]]}} is not [=list/is empty|empty=], then
+    [=add a permanent blocker=] with reason
+    {{PermissionElementBlockerReason/unsuccesful_registration}}.
+1. [=list/Extend=] [=document=]'s {{[[PermissionElementTypeMap]]}} with
+    {{[[Types]]}}.
 1. [=Add an expiring blocker=] with reason
     {{PermissionElementBlockerReason/recently_attached}}.
+
+</div>
+
+<div algorithm="HTMLPermissionElement/removing steps">
+The {{HTMLPermissionElement}} [=removing steps=] are:
+
+1. [=list/For each=] |type| in {{[[Types]]}}:
+    1. [=list/Remove=] |type| from [=document=]'s {{[[PermissionElementTypeMap]]}}
 
 </div>
 
