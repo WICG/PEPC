@@ -17,6 +17,9 @@ Abstract: A `<permission>` HTML element to request browser permissions in-page.
   The `<permission>` element aims to be more accessible and more secure than
   the current permission flows.
 </pre>
+<pre class=link-defaults>
+spec:css2; type:dfn; text:viewport
+</pre>
 
 <style>
 /* Imitate some styles that W3C specs use:*/
@@ -251,11 +254,13 @@ The permission element keeps track of "blockers", reasons why the element (curre
 <tbody>
 <tr><th>type_invalid
 <td>permanent
-<td>When an unsupported permission type has been set.
+<td>When an unsupported {{HTMLPermissionElement/type|permission type}} has been
+    set.
 <td>1
 <tr><th>illegal_subframe
 <td>permanent
-<td>When the <[permission]> element is used inside a <[fencedframe]>.
+<td>When the <a element>permission</a> element is used inside a
+    <a element>fencedframe</a>.
 <td>2
 <tr><th>unsuccesful_registration
 <td>permanent
@@ -263,23 +268,27 @@ The permission element keeps track of "blockers", reasons why the element (curre
 <td>3
 <tr><th>recently_attached
 <td>expiring
-<td>When the <[permission]> element has just been attached to the DOM.
+<td>When the <a element>permission</a> element has just been attached to the
+  DOM.
 <td>4
 <tr><th>intersection_visible
 <td>temporary expiring
-<td>When the <[permission]> element is not visible.
+<td>When the <a element>permission</a> element is not visible.
 <td>5
 <tr><th>intersection_changed
 <td>temporary expiring
-<td>When the visible portion of the <[permission]> element has been changed.
+<td>When the visible portion of the <a element>permission</a> element has been
+    changed.
 <td>6
 <tr><th>intersection_out_of_viewport_or_clipped
 <td>temporary expiring
-<td>
+<td>When the <a element>permission</a> element is not or not fully in the
+    [=viewport=].
 <td>7
 <tr><th>intersection_occluded_or_distorted
 <td>temporary expiring
-<td>
+<td>When the <a element>permission</a> element is fully in the [=viewport=],
+    but still not fully visible (e.g. because it's partly behind other content).
 <td>8
 <tr><th>style_invalid
 <td>temporary expiring
@@ -327,7 +336,7 @@ To <dfn for="HTMLPermissionElement">add a temporary blocker</dfn> with a
 </div>
 
 <div algorithm>
-To <dfn for="HTMLPermissionElement">add a permament blocker</dfn> with a
+To <dfn for="HTMLPermissionElement">add a permanent blocker</dfn> with a
 {{PermissionElementBlockerReason}} |reason|:
 
 1. [=Assert=]: |reason| is listed as "permanent" in the [=blocker reason table=].
@@ -397,7 +406,7 @@ An {{HTMLPermissionElement}}'s [=blocker=] list's |entry| is
 </div>
 
 NOTE: The spec maintains blockers as a list {{[[BlockerList]]}}, which may
-    potentnially grow indefinitely (since some blocker types simply expire,
+    potentially grow indefinitely (since some blocker types simply expire,
     but are not removed).
     This structure is chosen for the simplicity of explanation, rather than for
     efficiency. The details of this blocker structure are not observable except
@@ -423,18 +432,21 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
     constructing a new {{IntersectionObserver}}, with
     [=HTMLPermissionElement/IntersectionObserver callback=].
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
-1. [=Add an expiring blocker=] with reason `"recently_attached"`.
+1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
+    with reason {{PermissionElementBlockerReason/type_invalid}}.
+1. [=Add an expiring blocker=] with reason
+    {{PermissionElementBlockerReason/recently_attached}}.
 
 </div>
 
-<div>
+<div algorithm>
 HTMLPermissionElement |element|'s <dfn attribute for="HTMLPermissionElement">isValid</dfn> getter steps are:
 
 1. Return whether |element|'s [=HTMLPermissionElement/blocker=] is Nothing.
 
 </div>
 
-<div>
+<div algorithm>
 HTMLPermissionElement |element|'s <dfn attribute for="HTMLPermissionElement">invalidReason</dfn> getter steps are:
 
 1. If |element|'s [=HTMLPermissionElement/blocker=] is Nothing, return `""`.
@@ -446,10 +458,9 @@ HTMLPermissionElement |element|'s <dfn attribute for="HTMLPermissionElement">inv
 A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| is:
 
 1. [=Assert=]: |element|'s {{[[Types]]}} is not null.
-1. If |element|'s {{[[Types]]}} is [=list/empty=], then return.
-1. If |event|'s {{Event/isTrusted}} attribute is not true, then return.
-1. If |element|'s {{HTMLPermissionElement/isValid}} attribute is false,
-    then return.
+1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
+1. If |event|.{{Event/isTrusted}} is false, then return.
+1. If |element|.{{HTMLPermissionElement/isValid}} is false, then return.
 1. [=Request permission to use=] the powerful features named in |element|'s
     {{[[Types]]}}.
 
@@ -459,20 +470,21 @@ Issue: What about event handlers?
 <div algorithm="HTMLPermissionElement/IntersectionObserver callback">
 The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserver callback</dfn> implements {{IntersectionObserverCallback}} and runs the following steps:
 
-1. [=Assert=]: The {{IntersectionObserver}}'s {{IntersectionObserver/root}} is the [=Document=]
-1. Let |entries| be the value of the first callback parameter,
-    the [=/list=] of {{IntersectionObserverEntry|intersection observer entries}}.
-1. Initialize |covered| with false.
-1. Initialize |visible| with true.
-1. [=list/iterate|For any=] |item| in |entries|:
-    1. If |item|[{{IntersectionObserverEntry/isVisible}}] is false: Set |covered| to true.
-    1. If |item|[{{IntersectionObserverEntry/isIntersecting}}] is false: Set |visible| to false.
- 1. If |covered|:
-    1. Then: [=Add a temporary blocker=] with {{PermissionElementBlockerReason}} "covered".
-    1. Otherwise: [=Remove blockers=] with {{PermissionElementBlockerReason}} "covered".
- 1. If |visible|:
-    1. Then: [=Add a temporary blocker=] with {{PermissionElementBlockerReason}} "visible".
-    1. Otherwise: [=Remove blockers=] with {{PermissionElementBlockerReason}} "visible".
+1. [=Assert=]: The {{IntersectionObserver}}'s {{IntersectionObserver/root}}
+    is the [=Document=]
+1. Let |entries| be the value of the first callback parameter, the
+    [=/list=] of {{IntersectionObserverEntry|intersection observer entries}}.
+1. [=Assert=]: |entries| is not [=list/is empty|empty=].
+1. Let |entry| be |entries|'s last [=list/item=].
+1. If |entry|.{{IntersectionObserverEntry/isVisible}}, then:
+    1. [=Remove blockers=] with {{PermissionElementBlockerReason/intersection_occluded_or_distorted}}.
+    1. [=Remove blockers=] with {{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}.
+1. Otherwise:
+    1. If |entry|.{{IntersectionObserverEntry/intersectionRatio}} >= 1, then:
+        1. Let |reason| be {{PermissionElementBlockerReason/intersection_occluded_or_distorted}}.
+    1. Otherwise:
+        1. Let |reason| be {{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}.
+    1. [=Add a temporary expiring blocker=] with |reason|.
 
 </div>
 
