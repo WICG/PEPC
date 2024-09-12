@@ -18,8 +18,23 @@ Abstract: A `<permission>` HTML element to request browser permissions in-page.
   the current permission flows.
 </pre>
 <pre class=link-defaults>
+# Disambiguation between multiple definitions with the same text:
 spec:css2; type:dfn; text:viewport
+
+# Non-exported definitions, which we should be free to use when -- some day --
+# this is integrated into the HTML spec.
 spec:fenced-frame; type:dfn; text:fenced navigable
+spec:html; type:dfn; text:missing value default
+spec:html; type:dfn; text:invalid value default
+spec:html; type:dfn; text:represent
+# The big element box:
+spec:html; type:dfn; text:contexts in which this element can be used
+spec:html; type:dfn; text:content model
+spec:html; type:dfn; text:nothing
+spec:html; type:dfn; text:content attributes
+spec:html; type:dfn; text:global attributes
+spec:html; type:dfn; text:accessibility considerations
+spec:html; type:dfn; text:dom interface
 </pre>
 
 <style>
@@ -126,7 +141,7 @@ ISSUE: onvalidationstatuschange is probably not a simple Event.
 
 ## <{permission}> element internal state ## {#permission-element-internal-state}
 
-The <{permission}> element [=DOM/represents=] a user-requestable [=permission=],
+The <{permission}> element [=represents=] a user-requestable [=permission=],
 which the user can activate to enable (or disable) a particular permission or
 set of permissions. It is core to the <{permission}> element that these
 requests are triggered by the user, and not by the page's script. To enforce
@@ -245,18 +260,14 @@ The permission element keeps track of "blockers", reasons why the element (curre
 : <dfn>Temporary blocker</dfn>
 :: This is a blocker that will only be valid until the blocking condition no
     no longer occurs. An example is a <{permission}> element that is not
-    currently in view.
+    currently in view. All [=temporary blockers=] turn into
+    [=expiring blockers=] once the condition no longer applies.
 : <dfn>Expiring blocker</dfn>
 :: This is a blocker that is only valid for a fixed period of time. This is
     used to block abuse scenarios like "click jacking". An example is
     a <{permission}> element that has recently been moved.
 :: ISSUE: Can we simplify this? There's currently no "expring" blocker in the
     table.
-: <dfn>Temporary expiring blocker</dfn>
-:: This is a temporary blocker, that will still be valid for a fixed period of
-    time once the blocking condition no longer occurs. In other words, this is
-    a temporary blocker which turns into an expiring blocker when the blocking
-    condition is resolved. An example is a style-based blocker.
 
 <div>
 <dfn dfn lt="blocker reason table"></dfn>
@@ -292,16 +303,16 @@ The permission element keeps track of "blockers", reasons why the element (curre
 <td>When the <{permission}> element is being moved.
 <td>6
 <tr><th>{{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}
-<td>[=temporary expiring blocker|temporary expiring=]
+<td>[=temporary blocker|temporary=]
 <td>When the <{permission}> element is not or not fully in the [=viewport=].
 <td>7
 <tr><th>{{PermissionElementBlockerReason/intersection_occluded_or_distorted}}
-<td>[=temporary expiring blocker|temporary expiring=]
+<td>[=temporary blocker|temporary=]
 <td>When the <{permission}> element is fully in the [=viewport=],
     but still not fully visible (e.g. because it's partly behind other content).
 <td>8
 <tr><th>{{PermissionElementBlockerReason/style_invalid}}
-<td>[=temporary expiring blocker|temporary expiring=]
+<td>[=temporary blocker|temporary=]
 <td>
 <td>9
 </tbody>
@@ -355,25 +366,15 @@ To <dfn for="HTMLPermissionElement">add a permanent blocker</dfn> with a
 </div>
 
 <div algorithm>
-To <dfn for="HTMLPermissionElement">add a temporary expiring blocker</dfn>
-with a {{PermissionElementBlockerReason}} |reason|:
-
-1. [=Assert=]: |reason| is listed as "temporary expiring" in the [=blocker reason table=].
-1. [=Add a blocker=] with |reason| and false.
-
-</div>
-
-<div algorithm>
 To <dfn for="HTMLPermissionElement">remove blockers</dfn> with
 {{PermissionElementBlockerReason}} |reason| from an |element|:
 
-1. [=Assert=]: |reason| is listed as "temporary" or "temporary expiring" in
-    the [=blocker reason table=].
+1. [=Assert=]: |reason| is listed as "temporary" in the
+    [=blocker reason table=].
 1. [=list/iterate|For each=] |entry| in |element|'s {{[[BlockerList]]}}:
     1. If |entry|'s reason [=string/is|equals=] |reason|, then [=list/remove=]
         |entry| from |element|'s {{[[BlockerList]]}}.
-1. If |reason| is listed as "temporary expiring" in the
-    [=blocker reason table=], then [=add a blocker=] with |reason| and true.
+1. [=Add a blocker=] with |reason| and true.
 
 </div>
 
@@ -453,7 +454,8 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
     {{[[Types]]}}.
 1. [=Add an expiring blocker=] with reason
     {{PermissionElementBlockerReason/recently_attached}}.
-1. If the [=navigable/traversable navigable=] of the [=node navigable=] of |this|
+1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
+    [=this=]
     is a [=fenced navigable=], then [=add a permanent blocker=]
     with {{PermissionElementBlockerReason/illegal_subframe}}.
 
@@ -512,7 +514,7 @@ The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserve
         1. Let |reason| be {{PermissionElementBlockerReason/intersection_occluded_or_distorted}}.
     1. Otherwise:
         1. Let |reason| be {{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}.
-    1. [=Add a temporary expiring blocker=] with |reason|.
+    1. [=Add a temporary blocker=] with |reason|.
 1. If {{[[IntersectionRect]]}} does not equal
     |entry|.{{IntersectionObserverEntry/intersectionRect}} then
     [=add an expiring blocker=] with
