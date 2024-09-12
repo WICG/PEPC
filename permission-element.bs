@@ -19,6 +19,7 @@ Abstract: A `<permission>` HTML element to request browser permissions in-page.
 </pre>
 <pre class=link-defaults>
 spec:css2; type:dfn; text:viewport
+spec:fenced-frame; type:dfn; text:fenced navigable
 </pre>
 
 <style>
@@ -110,7 +111,7 @@ The {{HTMLPermissionElement/invalidReason}} attribute is an
 element. It's value set are {{PermissionElementBlockerReason}}
 
 The global <a attribute spec=html>lang</a> attribute is observed by the
-<[permission]> element to select localized text.
+<{permission}> element to select localized text.
 
 The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on <{permission}> elements [=event handler IDL attributes=]:
 
@@ -150,6 +151,10 @@ The <{permission}> element has the following internal slots:
     list &laquo;[]&raquo; is the state in which no permission applies, and which
     will no longer allow modification. Note that the
     {{HTMLPermissionElement/type}} property reflects this internal state.
+
+* <dfn attribute for="HTMLPermissionElement">\[[IntersectionRect]]</dfn> is a
+    {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
+    the position of the <{permission}> relative to the [=viewport=].
 
 ## <{permission}> element-related state maintained by the [=document=] ## {#permission-element-per-document-state}
 
@@ -215,9 +220,9 @@ The HTMLPermissionElement's {{HTMLPermissionElement/type}} setter steps are:
 
 ### Activation blockers ### {#permission-element-activation-blockers}
 
-The key goal of the <[permission]> element is to reflect a user's conscious
+The key goal of the <{permission}> element is to reflect a user's conscious
 choice, and we need to make sure the user cannot easily be tricked into
-activating it. To do so, the <[permission]> maintains a list of blocker reasons,
+activating it. To do so, the <{permission}> maintains a list of blocker reasons,
 which may - permanently or temporarily - prevent the element from being
 activated.
 
@@ -225,7 +230,7 @@ activated.
 enum PermissionElementBlockerReason {
   "",  // No blocker reason.
   "type_invalid", "illegal_subframe", "unsuccesful_registration",
-  "recently_attached", "intersection_visible", "intersection_changed",
+  "recently_attached", "intersection_changed",
   "intersection_out_of_viewport_or_clipped",
   "intersection_occluded_or_distorted", "style_invalid"
 };
@@ -282,14 +287,9 @@ The permission element keeps track of "blockers", reasons why the element (curre
 <td>When the <{permission}> element has just been attached to the
   DOM.
 <td>4
-<tr><th>{{PermissionElementBlockerReason/intersection_visible}}
-<td>[=temporary expiring blocker|temporary expiring=]
-<td>When the <{permission}> element is not visible.
-<td>5
 <tr><th>{{PermissionElementBlockerReason/intersection_changed}}
-<td>[=temporary expiring blocker|temporary expiring=]
-<td>When the visible portion of the <{permission}> element has been
-    changed.
+<td>[=expiring blocker|expiring=]
+<td>When the <{permission}> element is being moved.
 <td>6
 <tr><th>{{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}
 <td>[=temporary expiring blocker|temporary expiring=]
@@ -437,7 +437,8 @@ The {{HTMLPermissionElement}} constructor steps are:
 The {{HTMLPermissionElement}} [=insertion steps=] are:
 
 1. If {{[[Types]]}} is null, set {{[[Types]]}} to &laquo;[]&raquo;.
-1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
+1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
 1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
     constructing a new {{IntersectionObserver}}, with
     [=HTMLPermissionElement/IntersectionObserver callback=].
@@ -452,6 +453,9 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
     {{[[Types]]}}.
 1. [=Add an expiring blocker=] with reason
     {{PermissionElementBlockerReason/recently_attached}}.
+1. If the [=navigable/traversable navigable=] of the [=node navigable=] of |this|
+    is a [=fenced navigable=], then [=add a permanent blocker=]
+    with {{PermissionElementBlockerReason/illegal_subframe}}.
 
 </div>
 
@@ -509,7 +513,14 @@ The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserve
     1. Otherwise:
         1. Let |reason| be {{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}.
     1. [=Add a temporary expiring blocker=] with |reason|.
+1. If {{[[IntersectionRect]]}} does not equal
+    |entry|.{{IntersectionObserverEntry/intersectionRect}} then
+    [=add an expiring blocker=] with
+    {{PermissionElementBlockerReason/intersection_changed}}.
+1. Set {{[[IntersectionRect]]}} to
+    |entry|.{{IntersectionObserverEntry/intersectionRect}}
 
+ISSUE: Do I need to define dictionary equality?
 </div>
 
 # CSS Integration # {#algorithms}
