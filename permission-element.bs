@@ -189,14 +189,6 @@ The <{permission}> element has the following internal slots:
     {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
     the position of the <{permission}> relative to the [=viewport=].
 
-## <{permission}> element-related state maintained by the [=document=] ## {#permission-element-per-document-state}
-
-The [=document=] gains the following internal slot:
-
-* The <dfn attribute for="HTMLDocument">\[[PermissionElementTypeMap]]</dfn> is
-    an [=ordered set=] of [=powerful features=]. It is initialized with the
-    empty list, &laquo;[]&raquo;.
-
 ## <{permission}> element interesting behaviours ## {#permission-element-very-interesting}
 
 The <{permission}> element has a few surprising behaviours, to support its
@@ -463,12 +455,8 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
 1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
     with reason {{PermissionElementBlockerReason/type_invalid}}.
-1. If the [=set/intersection=] of {{[[Types]]}} and [=document=]'s
-    {{[[PermissionElementTypeMap]]}} is not [=list/is empty|empty=], then
-    [=add a permanent blocker=] with reason
-    {{PermissionElementBlockerReason/unsuccesful_registration}}.
-1. [=list/Extend=] [=document=]'s {{[[PermissionElementTypeMap]]}} with
-    {{[[Types]]}}.
+1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
+    with {{PermissionElementBlockerReason/unsuccesful_registration}}.
 1. [=Add an expiring blocker=] with reason
     {{PermissionElementBlockerReason/recently_attached}}.
 1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
@@ -481,8 +469,7 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
 <div algorithm="HTMLPermissionElement/removing steps">
 The {{HTMLPermissionElement}} [=removing steps=] are:
 
-1. [=list/For each=] |type| in {{[[Types]]}}:
-    1. [=list/Remove=] |type| from [=document=]'s {{[[PermissionElementTypeMap]]}}
+1. [=Recheck type permissibility=] for [=this=]'s [=node document=].
 
 </div>
 
@@ -540,6 +527,38 @@ The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserve
     |entry|.{{IntersectionObserverEntry/intersectionRect}}
 
 ISSUE: Do I need to define dictionary equality?
+</div>
+
+<div algorithm>
+To determine whether an |element| is <dfn for="HTMLPermissionElement">type permissible</dfn>:
+
+1. Let |allthepepcies| be &laquo;[ ]&raquo;
+1. [=list/iterate|For each=] |navigable| in
+    [=inclusive descendant navigables=] of |element|'s [=node document=]:
+    1. Let |doc| be |navigable|'s [=container document=]
+    1. [=list/Extend=] |allthepepcies| with
+        |doc|.{{Document/getElementsByTagName()|getElementsByTagName}}("permission").
+1. [=list/iterate|For each=] |pepc| of |allthepepcies|:
+    1. If the [=set/intersection=] of |element|.{{[[Types]]}} with
+        |pepc|.{{[[Types]]}} is not empty, then return false.
+1. Return true.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
+|document|:
+
+1. Let |allthepepcies| be &laquo;[ ]&raquo;
+1. [=list/iterate|For each=] |navigable| in
+    [=inclusive descendant navigables=] of |document|:
+    1. Let |doc| be |navigable|'s [=container document=]
+    1. [=list/Extend=] |allthepepcies| with
+        |doc|.{{Document/getElementsByTagName()|getElementsByTagName}}("permission").
+1. [=list/iterate|For each=] |pepc| of |allthepepcies|:
+    1. If |pepc| is [=type permissible=], then [=remove blockers=] with
+        {{PermissionElementBlockerReason/unsuccesful_registration}} from |pepc|.
+
 </div>
 
 # CSS Integration # {#algorithms}
