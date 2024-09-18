@@ -466,20 +466,29 @@ cancelable.
     "invalid" as detailed in the [Security](#security) section, but to enumerate
     a few: element style is invalid, element is covered, element has recently
     moved, element has changed size, element is not fully visible in the
-    viewport, etc. The following two attributes are added to the `permission`
+    viewport, etc.
+-   The following two attributes are added to the `permission`
     object which are related to the validation status:
-    -   `boolean is-valid` - indicates whether the status has transitioned to
+    -   `boolean isValid` - indicates whether the status has transitioned to
         "valid" or not.
-    -   `string reason` - indicating the reason why the status is "invalid" (or
+    -   `string invalidReason` - indicating the reason why the status is "invalid" (or
         "" if it's valid), and can be one of the following values:
-        ["recently_attached"](#annoyance),
-        ["type_invalid"](#pepc-attributes),
-        ["illegal_subframe"](#conditions-for-usage-in-subframes),
-        ["unsuccessful_registration"](#one-pepc-per-permission-type-per-page),
-        ["intersection_changed"](#annoyance),
-        ["intersection_out_of_viewport_or_clipped"](#annoyance),
-        ["intersection_occluded_or_distorted"](#annoyance),
-        ["style_invalid"](#locking-the-pepc-style).
+        1. ["recently_attached"](#annoyance): the element has just been attached
+        to the DOM,
+        1. ["type_invalid"](#pepc-attributes): the `type` attribute does not
+        have a supported value,
+        1. ["illegal_subframe"](#conditions-for-usage-in-subframes): conditions
+        for usage in a subframe are not met,
+        1. ["unsuccessful_registration"](#one-pepc-per-permission-type-per-page):
+        the allowed limit of permission elements is exceeded,
+        1. ["intersection_changed"](#annoyance): the element has recently moved
+        (either by layout changes or scrolling),
+        1. ["intersection_out_of_viewport_or_clipped"](#annoyance): the element
+        is not currently fully in the viewport of its frame,
+        1. ["intersection_occluded_or_distorted"](#annoyance): the element is
+        currently covered by some other element,
+        1. ["style_invalid"](#locking-the-pepc-style): the element's style does
+        not pass validation.
 
 Example usage:
 
