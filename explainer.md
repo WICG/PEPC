@@ -547,7 +547,7 @@ this aspect.
     </td>
   </tr>
   <tr>
-    <td>type-ext</td>
+    <td>typeext</td>
     <td>
       Allows specifying additional parameters for certain permission types, in
       the form of space-separate key: value pairs.
