@@ -547,25 +547,27 @@ this aspect.
     </td>
   </tr>
   <tr>
-    <td>typeext</td>
+    <td>precise</td>
     <td>
-      Allows specifying additional parameters for certain permission types, in
-      the form of space-separate key: value pairs.
-      The supported key/values are:
-      <ul>
-        <li><code>sysex: true/false</code> (for the
+      Values: <code>true/false</code> (for the
+        <a href="https://www.w3.org/TR/geolocation/#position_options_interface">
+        geolocation</a> permission type) 
+    </td>
+  </tr>
+  <tr>
+    <td>sysex</td>
+    <td>
+      Values: <code>true/false</code>  (for the
          <a href="https://webaudio.github.io/web-midi-api/#permissions-integration">
         midi</a> permission type)
-        </li>
-        <li><code>precise:true/false</code> (for the
-        <a href="https://www.w3.org/TR/geolocation/#position_options_interface">
-        geolocation</a> permission type)
-        </li>
-        <li><code>panTiltZoom:true/false</code> (for the
+    </td>
+  </tr>
+  <tr>
+    <td>panTiltZoom</td>
+    <td>
+      Values: <code>true/false</code> (for the
         <a href="https://github.com/w3c/mediacapture-image/blob/main/ptz-explainer.md#control-camera-pantilt">
         camera</a> permission type)
-        </li>
-      </ul>
     </td>
   </tr>
   <tr>
