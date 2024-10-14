@@ -9,7 +9,6 @@ Level: 0
 Boilerplate: omit conformance
 Markup Shorthands: markdown on
 Editor: Daniel Vogelheim, Google LLC, vogelheim@google.com, https://www.google.com/
-Editor: Andy Paicu, Google LLC
 Abstract: A `<permission>` HTML element to request browser permissions in-page.
 
   Suitable styling and UI constraints on this new element ensure that the user
@@ -18,8 +17,552 @@ Abstract: A `<permission>` HTML element to request browser permissions in-page.
   The `<permission>` element aims to be more accessible and more secure than
   the current permission flows.
 </pre>
+<pre class=link-defaults>
+# Disambiguation between multiple definitions with the same text:
+spec:css2; type:dfn; text:viewport
+spec:infra; type:dfn; text:user agent
+
+# Non-exported definitions, which we should be free to use when -- some day --
+# this is integrated into the HTML spec.
+spec:html; type:dfn; text:missing value default
+spec:html; type:dfn; text:invalid value default
+spec:html; type:dfn; text:represent
+# The big element box:
+spec:html; type:dfn; text:contexts in which this element can be used
+spec:html; type:dfn; text:content model
+spec:html; type:dfn; text:nothing
+spec:html; type:dfn; text:content attributes
+spec:html; type:dfn; text:global attributes
+spec:html; type:dfn; text:accessibility considerations
+spec:html; type:dfn; text:dom interface
+</pre>
+
+<style>
+/* Imitate some styles that W3C specs use:*/
+
+/* WHATWG-style element definition class */
+.element { background: #EEFFEE; }
+dt { margin-top: 12px; color: black; }
+dl, dd { padding-left: .5em; }
+
+/* Boxes around algorithms. */
+[data-algorithm]:not(.heading) {
+  padding: .5em;
+  border: thin solid #ddd; border-radius: .5em;
+  margin: .5em calc(-0.5em - 1px);
+}
+[data-algorithm]:not(.heading) > :first-child { margin-top: 0; }
+[data-algorithm]:not(.heading) > :last-child { margin-bottom: 0; }
+[data-algorithm] [data-algorithm] { margin: 1em 0; }
+
+/* vars in italics */
+dfn var { font-style: italic; }
+</style>
 
 # Introduction # {#intro}
-# Framework # {#framwork}
-# Algorithms # {#algorithms}
+
+[=User agents=] expose [=powerful features=] to web sites, which are features
+that are important to some use cases, but can be easily abused. The arguably
+canonical example of such a powerful feature is camera access, which is
+essential to many use cases like online meetups, but unsolicited camera
+activation would be a major privacy issue. To handle this, user
+agents use [=permissions=] to ask the user whether they wish for a particular
+access to be allowed or not.
+
+These permission requests began as a fairly direct passthrough: A site would
+ask for some capability and the user agent immediately prompts the user to make
+a decision for the request. Meanwhile, spam and abuse have forced user agents
+to take a more opinionated approach to protect users' security, privacy, and
+attention. The status quo is that users get a multitude of permission requests,
+where it's oftentimes unclear to users what the consequences of these requests
+might be.
+
+This spec introduces a new mechanism that requests access to
+[=powerful features=] through an in-page element, with built-in protections
+against abuse. This wants to tie permission requests to the actual context
+in which they will be used, thus reducing "permission spam" and at the same
+time providing implementations with a better signal of user intent.
+
+
+# The <dfn element export>permission</dfn> element. # {#the-permission-element}
+
+<dl class="element">
+ <dt>[=Categories=]:</dt>
+  <dd>[=Flow content=].</dd>
+  <dd>[=Phrasing content=].</dd>
+  <dd>[=Interactive content=].</dd>
+  <dd>[=Palpable content=].</dd>
+ <dt>[=Contexts in which this element can be used=]:</dt>
+  <dd>Where [=phrasing content=] is expected.</dd>
+ <dt>[=Content model=]:</dt>
+  <dd>[=Nothing=].</dd>
+ <dt>[=Content attributes=]:</dt>
+  <dd>[=Global attributes=]</dd>
+  <dd>{{HTMLPermissionElement/type}} — Type of permission this element applies to.</dd>
+  <dd>{{HTMLPermissionElement/isValid}} — query whether the element can currently be activated.</dd>
+  <dd>{{HTMLPermissionElement/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
+  <dd>{{HTMLPermissionElement/ondismiss}} — notifies when the user has dismissed the permission prompt.</dd>
+  <dd>{{HTMLPermissionElement/onresolve}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
+  <dd>{{HTMLPermissionElement/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd></dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    [Exposed=Window]
+    interface HTMLPermissionElement : HTMLElement {
+      [HTMLConstructor] constructor();
+      [CEReactions, Reflect] attribute DOMString type;
+
+      readonly attribute boolean isValid;
+      readonly attribute PermissionElementBlockerReason invalidReason;
+
+      attribute EventHandler onresolve;
+      attribute EventHandler ondismiss;
+      attribute EventHandler onvalidationstatuschange;
+    };
+   </pre>
+  </dd>
+</dl>
+
+ISSUE: Add accessibility considerations.
+
+ISSUE: Check attribute & event handler & invalid reason names against
+    current proposal(s).
+
+The {{HTMLPermissionElement/type}} attribute controls the behavior of the
+permission element when it is activated. Is is an [=enumerated attribute=],
+whose values are the [=powerful feature/names=] of [=powerful features=]. It
+has neither a
+[=missing value default=] state nor a [=invalid value default=] state.
+
+The {{HTMLPermissionElement/isValid}} attribute reflects whether a the
+permission element is not currently blocked.
+
+The {{HTMLPermissionElement/invalidReason}} attribute is an
+[=enumerated attribute=] that reflects the internal state of the permission
+element. It's value set are {{PermissionElementBlockerReason}}
+
+The global <a attribute spec=html>lang</a> attribute is observed by the
+<{permission}> element to select localized text.
+
+The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on <{permission}> elements [=event handler IDL attributes=]:
+
+<pre class=simpledef>
+onresolve: Event
+ondismiss: Event
+onvalidationstatuschange: Event
+</pre>
+
+ISSUE: onvalidationstatuschange is probably not a simple Event.
+
+
+## <{permission}> element internal state ## {#permission-element-internal-state}
+
+The <{permission}> element [=represents=] a user-requestable [=permission=],
+which the user can activate to enable (or disable) a particular permission or
+set of permissions. It is core to the <{permission}> element that these
+requests are triggered by the user, and not by the page's script. To enforce
+this, the element checks whether the activation event is {{Event/isTrusted|trusted}}. Additionally it watches a number of conditions, like whether the element is
+(partially) occluded, or if it has recently been moved. The element maintains
+an internal {{[[BlockerList]]}} to keep track of this.
+
+The <{permission}> element has the following internal slots:
+
+* The <dfn attribute for="HTMLPermissionElement">\[[BlockerList]]</dfn> is a
+    list of records, containing a
+    <dfn for="HTMLPermissionElement">blocker timestamp</dfn> and a
+    <dfn for="HTMLPermissionElement">blocker reason</dfn>. The [=blocker
+    reason=] is a {{PermissionElementBlockerReason}}, but not the empty string.
+
+* <dfn attribute for="HTMLPermissionElement">\[[IntersectionObserver]]</dfn>
+    is a reference to an {{IntersectionObserver}}.
+
+* <dfn attribute for="HTMLPermissionElement">\[[Types]]</dfn> is null
+    or an [=ordered set=] of [=powerful features=]. Null represents the
+    uninitialized state, which allows the value to be modified. The empty
+    list &laquo;[]&raquo; is the state in which no permission applies, and which
+    will no longer allow modification. Note that the
+    {{HTMLPermissionElement/type}} property reflects this internal state.
+
+* <dfn attribute for="HTMLPermissionElement">\[[IntersectionRect]]</dfn> is a
+    {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
+    the position of the <{permission}> relative to the [=viewport=].
+
+## <{permission}>-supporting state at the [=/navigable=] ## {#permission-element-external-state}
+
+In order to support the <{permission}> element, the [=/navigable=] maintains
+an [=ordered set=] of <{permission}> elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{PermissionElementBlockerReason/unsuccesful_registration}}.
+
+## <{permission}> element interesting behaviours ## {#permission-element-very-interesting}
+
+The <{permission}> element has a few surprising behaviours, to support its
+security properties:
+
+### The {{HTMLPermissionElement/type}} property ### {#permission-element-type-property}
+
+The permission type cannot be modified. Modifying the permission type at will
+may lead to user confusion, and hence we'd like to prevent it. Since, however,
+a page may create a <{permission}> element dynamically we still need to offer
+an API to modify it. To do do, we distinguish between a freshly initialized and
+an empty or invalid (no permission) state, where the former allows setting the
+type and the latter does not.
+
+Example:
+```js
+// Changing a valid type:
+var pepc = document.createElement("permission");
+pepc.type = "camera";  // Okay.
+pepc.type;  // "camera".
+pepc.type = "geolocation";  // Not okay. Would have been okay as initial assignment.
+pepc.type;  // "camera". Reflects the internal state, which has not changed.
+
+// Setting an invalid type:
+pepc = document.createElement("permission");
+pepc.type = "icecream";  // Ice cream is not a powerful browser feature. Not okay.
+pepc.type;  // "". Reflects the internal state.
+pepc.type = "camera";  // Still Not okay, because type as already been set.
+                       // Would have been okay as initial assignment.
+pepc.type;  // "". Reflects the internal state, which has not changed.
+
+```
+
+<div algorithm="HTMLPermissionElement/types getter">
+The HTMLPermissionElement's {{HTMLPermissionElement/type}} getter steps are:
+
+1. If {{[[Types]]}} is null: Return `""`.
+1. Return a string, containing the concatenation of all [=powerful feature=]
+    names in {{[[Types]]}}, seperated by " ".
+
+</div>
+
+<div algorithm="HTMLPermissionElement/types setter">
+The HTMLPermissionElement's {{HTMLPermissionElement/type}} setter steps are:
+
+1. If {{[[Types]]}} is not null: Return.
+1. Set {{[[Types]]}} to &laquo;[]&raquo;.
+1. Parse the input as a string of [=powerful feature=] names, seperated by whitespace.
+1. If any errors occured, return.
+1. Check if the set of [=powerful features=] is supported for the {{HTMLPermissionElement}} by the [=user agent=]. If not, return.
+1. [=list/Append=] each [=powerful feature=] name to the {{[[Types]]}} [=ordered set=].
+
+Note: The supported sets of [=powerful features=] is [=implementation-defined=].
+</div>
+
+### Activation blockers ### {#permission-element-activation-blockers}
+
+The key goal of the <{permission}> element is to reflect a user's conscious
+choice, and we need to make sure the user cannot easily be tricked into
+activating it. To do so, the <{permission}> maintains a list of blocker reasons,
+which may - permanently or temporarily - prevent the element from being
+activated.
+
+<pre class=idl>
+enum PermissionElementBlockerReason {
+  "",  // No blocker reason.
+  "type_invalid", "illegal_subframe", "unsuccesful_registration",
+  "recently_attached", "intersection_changed",
+  "intersection_out_of_viewport_or_clipped",
+  "intersection_occluded_or_distorted", "style_invalid"
+};
+</pre>
+
+The permission element keeps track of "blockers", reasons why the element (currently) cannot be activated. These blockers come with three lifetimes: Permanent, temporary, and expiring.
+
+: <dfn>Permanent blocker</dfn>
+:: Once an element has a permanent blocker, it will be disabled permanently.
+    There are used for issues that the website owner is expected to fix.
+    An example is a <{permission}> element inside a <{fencedframe}>.
+: <dfn>Temporary blocker</dfn>
+:: This is a blocker that will only be valid until the blocking condition no
+    no longer occurs. An example is a <{permission}> element that is not
+    currently in view. All [=temporary blockers=] turn into
+    [=expiring blockers=] once the condition no longer applies.
+: <dfn>Expiring blocker</dfn>
+:: This is a blocker that is only valid for a fixed period of time. This is
+    used to block abuse scenarios like "click jacking". An example is
+    a <{permission}> element that has recently been moved.
+
+<div>
+<dfn dfn lt="blocker reason table"></dfn>
+<table class="def">
+<thead>
+<tr><th>Blocker name
+<th>Blocker type
+<th>Example condition
+<th>Order hint
+</thead>
+<tbody>
+<tr><th>{{PermissionElementBlockerReason/type_invalid}}
+<td>[=permanent blocker|permanent=]
+<td>When an unsupported {{HTMLPermissionElement/type|permission type}} has been
+    set.
+<td>1
+<tr><th>{{PermissionElementBlockerReason/illegal_subframe}}
+<td>[=permanent blocker|permanent=]
+<td>When the <{permission}> element is used inside a <{fencedframe}>.
+<td>2
+<tr><th>{{PermissionElementBlockerReason/unsuccesful_registration}}
+<td>[=temporary blocker|temporary=]
+<td>When too many other <{permission}> elements for the same
+    [=powerful feature=] have been inserted into the same document.
+<td>3
+<tr><th>{{PermissionElementBlockerReason/recently_attached}}
+<td>[=expiring blocker|expiring=]
+<td>When the <{permission}> element has just been attached to the
+  DOM.
+<td>4
+<tr><th>{{PermissionElementBlockerReason/intersection_changed}}
+<td>[=expiring blocker|expiring=]
+<td>When the <{permission}> element is being moved.
+<td>6
+<tr><th>{{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}
+<td>[=temporary blocker|temporary=]
+<td>When the <{permission}> element is not or not fully in the [=viewport=].
+<td>7
+<tr><th>{{PermissionElementBlockerReason/intersection_occluded_or_distorted}}
+<td>[=temporary blocker|temporary=]
+<td>When the <{permission}> element is fully in the [=viewport=],
+    but still not fully visible (e.g. because it's partly behind other content).
+<td>8
+<tr><th>{{PermissionElementBlockerReason/style_invalid}}
+<td>[=temporary blocker|temporary=]
+<td>
+<td>9
+</tbody>
+</table>
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">add a blocker</dfn> with a
+{{PermissionElementBlockerReason}} |reason| and an optional flag |expires|:
+
+1. [=Assert=]: |reason| is not `""`.
+    (The empty string in {{PermissionElementBlockerReason}} signals no blocker
+    is present. Why would you add a non-blocking blockern empty string?)
+1. Let |timestamp| be None.
+1. If |expires|, then let |timestamp| be [=current high resolution time=]
+    plus the [=blocker delay=].
+1. [=list/Append=] an entry to the internal {{[[BlockerList]]}} with |reason|
+    and |timestamp|.
+
+</div>
+
+<div>
+The <dfn for="HTMLPermissionElement">blocker delay</dfn> is 500ms.
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">add an expiring blocker</dfn> with a
+{{PermissionElementBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "expiring" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and true.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">add a temporary blocker</dfn> with a
+{{PermissionElementBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "temporary" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and false.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">add a permanent blocker</dfn> with a
+{{PermissionElementBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "permanent" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and false.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">remove blockers</dfn> with
+{{PermissionElementBlockerReason}} |reason| from an |element|:
+
+1. [=Assert=]: |reason| is listed as "temporary" in the
+    [=blocker reason table=].
+1. [=list/iterate|For each=] |entry| in |element|'s {{[[BlockerList]]}}:
+    1. If |entry|'s reason [=string/is|equals=] |reason|, then [=list/remove=]
+        |entry| from |element|'s {{[[BlockerList]]}}.
+1. [=Add a blocker=] with |reason| and true.
+
+</div>
+
+<div algorithm>
+To determine a {{HTMLPermissionElement}} |element|'s
+<dfn for="HTMLPermissionElement">blocker</dfn>:
+
+1. Let |blockers| be the result of [=list/sorting=] |element|'s {{[[BlockerList]]}}
+    with the [=blocker ordering=] algorithm.
+1. If |blockers| is not [=list/empty=] and |blockers|[0] is [=HTMLPermissionElement/blocking=], then return |blockers|[0].
+1. Return nothing.
+
+</div>
+
+<div algorithm>
+To determine <dfn for="HTMLPermissionElement">blocker ordering</dfn> for
+two blockers |a| and |b|:
+
+1. Let |really large number| be 99.
+1. [=Assert=]: No order hint in the [=blocker reason table=] is equal to or
+    greater than |really large number|.
+1. If |a| is [=HTMLPermissionElement/blocking=], then let |a hint| be the
+    order hint of |a|'s [=blocker reason|reason=] in the
+    [=blocker reason table=], otherwise let |a hint| be |really large number|.
+1. If |b| is [=HTMLPermissionElement/blocking=], then let |b hint| be the
+    order hint of |b|'s [=blocker reason|reason=] in the
+    [=blocker reason table=], otherwise let |b hint| be |really large number|.
+1. Return whether |a hint| is less than or equal to |b hint|.
+
+</div>
+
+<div algorithm>
+An {{HTMLPermissionElement}}'s [=blocker=] list's |entry| is
+<dfn for="HTMLPermissionElement">blocking</dfn> if:
+
+1. |entry| has no [=blocker timestamp=],
+1. or |entry| has a [=blocker timestamp=], and the [=blocker timestamp=] is
+    greater or equal to the [=current high resolution time=].
+
+</div>
+
+NOTE: The spec maintains blockers as a list {{[[BlockerList]]}}, which may
+    potentially grow indefinitely (since some blocker types simply expire,
+    but are not removed).
+    This structure is chosen for the simplicity of explanation, rather than for
+    efficiency. The details of this blocker structure are not observable except
+    for a handful of algorithms defined here, which should open plenty of
+    opportunities for implementations to handle this more efficiently.
+
+## <{permission}> element algorithms ## {#permission-element-algorithms}
+
+<div algorithm="HTMLPermissionElement/constructor">
+The {{HTMLPermissionElement}} constructor steps are:
+
+1. Initialize the internal {{[[Types]]}} slot to null.
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
+
+</div>
+
+<div algorithm="HTMLPermissionElement/insertion steps">
+The {{HTMLPermissionElement}} [=insertion steps=] are:
+
+1. If {{[[Types]]}} is null, set {{[[Types]]}} to &laquo;[]&raquo;.
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
+1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[PermissionElements]]}}.
+1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
+1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
+    constructing a new {{IntersectionObserver}}, with
+    [=HTMLPermissionElement/IntersectionObserver callback=].
+1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
+1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
+    with reason {{PermissionElementBlockerReason/type_invalid}}.
+1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
+    with {{PermissionElementBlockerReason/unsuccesful_registration}}.
+1. [=Add an expiring blocker=] with reason
+    {{PermissionElementBlockerReason/recently_attached}}.
+1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
+    [=this=]
+    is a [=fenced navigable=], then [=add a permanent blocker=]
+    with {{PermissionElementBlockerReason/illegal_subframe}}.
+
+</div>
+
+<div algorithm="HTMLPermissionElement/removing steps">
+The {{HTMLPermissionElement}} [=removing steps=] are:
+
+1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[PermissionElements]]}}.
+1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
+
+</div>
+
+<div algorithm>
+HTMLPermissionElement |element|'s <dfn attribute for="HTMLPermissionElement">isValid</dfn> getter steps are:
+
+1. Return whether |element|'s [=HTMLPermissionElement/blocker=] is Nothing.
+
+</div>
+
+<div algorithm>
+HTMLPermissionElement |element|'s <dfn attribute for="HTMLPermissionElement">invalidReason</dfn> getter steps are:
+
+1. If |element|'s [=HTMLPermissionElement/blocker=] is Nothing, return `""`.
+1. Otherwise, |element|'s [=HTMLPermissionElement/blocker=]'s reason string.
+
+</div>
+
+<div algorithm=activation>
+A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| is:
+
+1. [=Assert=]: |element|'s {{[[Types]]}} is not null.
+1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
+1. If |event|.{{Event/isTrusted}} is false, then return.
+1. If |element|.{{HTMLPermissionElement/isValid}} is false, then return.
+1. [=Request permission to use=] the [=powerful features=] named in |element|'s
+    {{[[Types]]}}.
+
+Issue: What about event handlers?
+</div>
+
+<div algorithm="HTMLPermissionElement/IntersectionObserver callback">
+The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserver callback</dfn> implements {{IntersectionObserverCallback}} and runs the following steps:
+
+1. [=Assert=]: The {{IntersectionObserver}}'s {{IntersectionObserver/root}}
+    is the [=Document=]
+1. Let |entries| be the value of the first callback parameter, the
+    [=/list=] of {{IntersectionObserverEntry|intersection observer entries}}.
+1. [=Assert=]: |entries| is not [=list/is empty|empty=].
+1. Let |entry| be |entries|'s last [=list/item=].
+1. If |entry|.{{IntersectionObserverEntry/isVisible}}, then:
+    1. [=Remove blockers=] with {{PermissionElementBlockerReason/intersection_occluded_or_distorted}}.
+    1. [=Remove blockers=] with {{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}.
+1. Otherwise:
+    1. If |entry|.{{IntersectionObserverEntry/intersectionRatio}} >= 1, then:
+        1. Let |reason| be {{PermissionElementBlockerReason/intersection_occluded_or_distorted}}.
+    1. Otherwise:
+        1. Let |reason| be {{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}.
+    1. [=Add a temporary blocker=] with |reason|.
+1. If {{[[IntersectionRect]]}} does not equal
+    |entry|.{{IntersectionObserverEntry/intersectionRect}} then
+    [=add an expiring blocker=] with
+    {{PermissionElementBlockerReason/intersection_changed}}.
+1. Set {{[[IntersectionRect]]}} to
+    |entry|.{{IntersectionObserverEntry/intersectionRect}}
+
+ISSUE: Do I need to define dictionary equality?
+</div>
+
+<div algorithm>
+To determine whether an |element| is <dfn for="HTMLPermissionElement">type permissible</dfn>:
+
+1. [=Assert=]: |element|'s [=node navigable=]'s {{[[PermissionElements]]}}
+    [=set/contains=] |element|.
+1. Let |count| be 0.
+1. [=list/iterate|For each=] |current| in
+    |element|'s [=node navigable=]'s {{[[PermissionElements]]}}:
+    1. If |current| is |element|, then [=iteration/break=].
+    1. If the [=set/intersection=] of |element|.{{[[Types]]}} with
+        |current|.{{[[Types]]}} is not [=list/is empty|empty=],
+        then increment |count| by 1.
+1. Return whether |count| is less than 2.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
+|document|:
+
+1. [=list/iterate|For each=] |current| in |document|'s
+    {{[[PermissionElements]]}}:
+    1. If |current| is [=type permissible=], then [=remove blockers=] with
+        {{PermissionElementBlockerReason/unsuccesful_registration}} from
+        |current|.
+
+</div>
+
+# CSS Integration # {#algorithms}
 # Security & Privacy Considerations # {#secpriv}
