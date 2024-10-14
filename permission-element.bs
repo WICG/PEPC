@@ -189,6 +189,11 @@ The <{permission}> element has the following internal slots:
     {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
     the position of the <{permission}> relative to the [=viewport=].
 
+## <{permission}>-supporting state at the [=/navigable=] ## {#permission-element-external-state}
+
+In order to support the <{permission}> element, the [=/navigable=] maintains
+an [=ordered set=] of <{permission}> elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{PermissionElementBlockerReason/unsuccesful_registration}}.
+
 ## <{permission}> element interesting behaviours ## {#permission-element-very-interesting}
 
 The <{permission}> element has a few surprising behaviours, to support its
@@ -298,9 +303,9 @@ The permission element keeps track of "blockers", reasons why the element (curre
 <td>When the <{permission}> element is used inside a <{fencedframe}>.
 <td>2
 <tr><th>{{PermissionElementBlockerReason/unsuccesful_registration}}
-<td>[=permanent blocker|permanent=]
-<td>When another <{permission}> element for the same [=powerful feature=] has
-    been inserted into the same document.
+<td>[=temporary blocker|temporary=]
+<td>When too many other <{permission}> elements for the same
+    [=powerful feature=] have been inserted into the same document.
 <td>3
 <tr><th>{{PermissionElementBlockerReason/recently_attached}}
 <td>[=expiring blocker|expiring=]
@@ -448,6 +453,7 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
 
 1. If {{[[Types]]}} is null, set {{[[Types]]}} to &laquo;[]&raquo;.
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
+1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[PermissionElements]]}}.
 1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
 1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
     constructing a new {{IntersectionObserver}}, with
@@ -469,7 +475,8 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
 <div algorithm="HTMLPermissionElement/removing steps">
 The {{HTMLPermissionElement}} [=removing steps=] are:
 
-1. [=Recheck type permissibility=] for [=this=]'s [=node document=].
+1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[PermissionElements]]}}.
+1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
 
 </div>
 
@@ -532,16 +539,16 @@ ISSUE: Do I need to define dictionary equality?
 <div algorithm>
 To determine whether an |element| is <dfn for="HTMLPermissionElement">type permissible</dfn>:
 
-1. Let |allthepepcies| be &laquo;[ ]&raquo;
-1. [=list/iterate|For each=] |navigable| in
-    [=inclusive descendant navigables=] of |element|'s [=node document=]:
-    1. Let |doc| be |navigable|'s [=container document=]
-    1. [=list/Extend=] |allthepepcies| with
-        |doc|.{{Document/getElementsByTagName()|getElementsByTagName}}("permission").
-1. [=list/iterate|For each=] |pepc| of |allthepepcies|:
+1. [=Assert=]: |element|'s [=node navigable=]'s {{[[PermissionElements]]}}
+    [=set/contains=] |element|.
+1. Let |count| be 0.
+1. [=list/iterate|For each=] |current| in
+    |element|'s [=node navigable=]'s {{[[PermissionElements]]}}:
+    1. If |current| is |element|, then [=iteration/break=].
     1. If the [=set/intersection=] of |element|.{{[[Types]]}} with
-        |pepc|.{{[[Types]]}} is not empty, then return false.
-1. Return true.
+        |current|.{{[[Types]]}} is not [=list/is empty|empty=],
+        then increment |count| by 1.
+1. Return whether |count| is less than 2.
 
 </div>
 
@@ -549,15 +556,11 @@ To determine whether an |element| is <dfn for="HTMLPermissionElement">type permi
 To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
 |document|:
 
-1. Let |allthepepcies| be &laquo;[ ]&raquo;
-1. [=list/iterate|For each=] |navigable| in
-    [=inclusive descendant navigables=] of |document|:
-    1. Let |doc| be |navigable|'s [=container document=]
-    1. [=list/Extend=] |allthepepcies| with
-        |doc|.{{Document/getElementsByTagName()|getElementsByTagName}}("permission").
-1. [=list/iterate|For each=] |pepc| of |allthepepcies|:
-    1. If |pepc| is [=type permissible=], then [=remove blockers=] with
-        {{PermissionElementBlockerReason/unsuccesful_registration}} from |pepc|.
+1. [=list/iterate|For each=] |current| in |document|'s
+    {{[[PermissionElements]]}}:
+    1. If |current| is [=type permissible=], then [=remove blockers=] with
+        {{PermissionElementBlockerReason/unsuccesful_registration}} from
+        |current|.
 
 </div>
 
