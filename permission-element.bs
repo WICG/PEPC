@@ -564,5 +564,35 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
 
 </div>
 
-# CSS Integration # {#algorithms}
+# Rendering the <{permission}> Element # {#rendering}
+
+The <{permission}> element requires care when being rendered, like other
+elements' rendering properties in [[HTML#widgets]]. The <{permission}> element
+is a [=devolvable widget=] and is chiefly rendered like a <{button}>.
+
+An <{permission}> element is expected to render with the following styles:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  opacity: 1.0;
+  line-height: "normal";
+  whitespace: "nowrap";
+  user-select: none;
+  /* ??? appearance: auto; */
+}
+</pre>
+
+Additionally, a <{permission}> element puts contraints on a number of additional styles:
+
+<pre class="simpledef">
+color, background-color: Set by default to the user agent's default `button` colors. The user agent should consider accessibility guidelines for sufficient contrast, for example the WCAG AA 4.5:1 formula to ensure text is legible.
+box-shadow: Not allowed if it contains ‘inset' as it can be used to cover the background and therefore affect contrast.
+font: Care should be taken to ensure the font used is easily legible (e.g. not any dingbat font). The user agent should either hard set the font value without allowing override, or should maintain a curated list of allowed fonts.
+font-size: Needs to be large enough to ensure the font is legible.
+width, min-width, max-width: The user agent should ensure the PEPC width is sufficient to not let contents overflow. This requires computing the text size (based on font) programmatically and potentially adding the icon width if present.
+height, min-height, max-height: The user agent should ensure the PEPC height is sufficient to not let contents overflow. Intuitively this means the height should never be allowed to be smaller than 1em.
+cursor: Only keyword values are allowed. That is, only predefined cursors and no custom cursors are allowed. Other values have no effect.
+</pre>
+
 # Security & Privacy Considerations # {#secpriv}
