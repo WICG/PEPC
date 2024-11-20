@@ -815,112 +815,36 @@ size, border, rounding, contents, icon, etc. of the PEPC, as outlined below.
 This provides protection against some of the clickjacking and social engineering
 attacks that bad actors might use to trick the user into clicking the element.
 
-We are working with developers to ensure the correct tradeoff between sufficient
-developer control over the look-and-feel of the PEPC, while ensuring that the
-browser has captured user intent. The proposal in this explainer intentionally
-errs on the side of being cautiously over-restrictive, as this will minimize the
-threat surface area and acts as a forcing function for developer feedback on
-proposed styling restrictions during trials.
+The following table details the list of CSS properties which should have special rules applied to them:
 
-<table>
-  <tr>
-    <td>Property</td>
-    <td>Rule</td>
-  </tr>
-  <tr>
-    <td>
-      color<br />
-      background-color
-    </td>
-    <td>
-      Set by default to the user agent's default `button` colors. The user agent
-      should consider accessibility guidelines for sufficient contrast, for
-      example the
-      <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">WCAG AA 4.5:1</a>
-      formula to ensure text is legible.
-    </td>
-  </tr>
-  <tr>
-    <td>box-shadow</td>
-    <td>
-      Not allowed if it contains ‘inset' as it can be used to cover the
-      background and therefore affect contrast.
-    </td>
-  </tr>
-  <tr>
-    <td>font</td>
-    <td>
-      Care should be taken to ensure the font used is easily legible (e.g. not
-      any <a href="https://en.wikipedia.org/wiki/Dingbat">dingbat font</a>). The
-      user agent should either hard set the font value without allowing
-      override, or should maintain a curated list of allowed fonts.
-    </td>
-  </tr>
-  <tr>
-    <td>font-size</td>
-    <td>Needs to be large enough to ensure the font is legible.</td>
-  </tr>
-  <tr>
-    <td>
-      width<br />
-      min-width<br />
-      max-width
-    </td>
-    <td>
-      The user agent should ensure the PEPC width is sufficient to not let
-      contents overflow. This requires computing the text size (based on font)
-      programmatically and potentially adding the icon width if present.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      height<br />
-      min-height<br />
-      max-height
-    </td>
-    <td>
-      The user agent should ensure the PEPC height is sufficient to not let
-      contents overflow. Intuitively this means the height should never be
-      allowed to be smaller than 1em.
-    </td>
-  </tr>
-  <tr>
-    <td>opacity</td>
-    <td>
-      Should never be anything other than 1, for the PEPC and all its ancestors.
-    </td>
-  </tr>
-  <tr>
-    <td>line-height</td>
-    <td>
-      Can potentially be used to alter the position of the text in the PEPC. The
-      user agent should consider hard setting this to ‘normal' without allowing
-      sites to override it.
-    </td>
-  </tr>
-  <tr>
-    <td>cursor</td>
-    <td>
-      Any values other than the predefined cursors won't have effect (no custom
-      cursors).
-    </td>
-  </tr>
-  <tr>
-    <td>whitespace</td>
-    <td>User agents should consider hard setting this to ‘nowrap'.</td>
-  </tr>
-  <tr>
-    <td>user-select</td>
-    <td>User agents should consider hard setting this to ‘none'.</td>
-  </tr>
-</table>
+| Property                   | Rules                                                                                                                                                                                                                                                                                                                                      |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `color` `background-color` | Can be used to set the text and background color, respectively. The contrast between the 2 colors needs to be  sufficient for clearly legible text (contrast ratio of at least 3). Alpha has to be 1. Element will be disabled otherwise.                                                                                                  |
+| `font-size` `zoom`         | Must be set within the equivalent of 'small' and 'xxxlarge'. Element will be disabled otherwise. Zoom will be taken into account when computing font-size.                                                                                                                                                                                 |
+| `outline-offset`           | Negative values will be corrected to 0.                                                                                                                                                                                                                                                                                                    |
+| `margin` (all)             | Values under 4px will be corrected to 4px. This is done to help prevent false positives for the logic that detects the element being covered by something else.                                                                                                                                                                            |
+| `font-weight`              | Values under 200 will be corrected to 200.                                                                                                                                                                                                                                                                                                 |
+| `font-style`               | Values other than 'normal' and 'italic' will be corrected to 'normal'.                                                                                                                                                                                                                                                                     |
+| `word-spacing`             | Values over 0.5em will be corrected to 0.5em. Values under 0 will be corrected to 0                                                                                                                                                                                                                                                        |
+| `display`                  | Values other than 'inline-block' and 'none' will be corrected to 'inline-block'.                                                                                                                                                                                                                                                           |
+| `letter-spacing`           | Values over 0.2em will be corrected to 0.2em. Values under -0.05em will be corrected to -0.05em.                                                                                                                                                                                                                                           |
+| `min-height`               | Will have a default value of 1em. If provided, the maximum computed value between the default and the provided values will be considered.                                                                                                                                                                                                  |
+| `max-height`               | Will have a default value of 3em. If provided, the minimum computed value between the default and the provided values will be considered.                                                                                                                                                                                                  |
+| `min-width`                | Will have a default value of 'fit-content'. If provided, the maximum computed value between the default and the provided values will be considered.                                                                                                                                                                                        |
+| `max-width`                | Will have a default value of 3 * 'fit-content'. If provided, the minimum computed value between the default and the provided values will be considered. However this does not apply if the element has a border with a width of at least 1px and a color that has a contrast ratio with the background-color of at least 3 and alpha of 1. |
+| `padding-top`              | Will only take effect if 'height' is set to 'auto'. In this case values over 1em will be corrected to 1em and `padding-bottom` will be set to the value of `padding-top`.                                                                                                                                                                  |
+| `padding-left`             | Will only take effect if 'width' is set to 'auto'. In this case values over 5em will be corrected to 5em and `padding-right` will be set to the value of `padding-left.`. This does not apply under the same border conditions as 'max-width', except 'padding-right' with still be set to the value of 'padding-left'.                 |
 
-In these cases the user agent should either override the style to maintain the
-PEPC integrity or allow the style, but trigger the legacy prompt flow instead.
+The following CSS properties are usable as normal: `font-kerning`, `font-optical-sizing`, `font-stretch`, `font-synthesis-weight`, 
+`font-synthesis-style`, `font-synthesis-small-caps`, `font-feature-settings`, `forced-color-adjust`, `text-rendering`, `align-self`, `anchor-name`
+`aspect-ratio`, `border` (and all `border-*` properties), `clear`, `color-scheme`, `contain`, `contain-intrinsic-width`, `contain-intrinsic-height`,
+`container-name`, `container-type`, `counter-*`, `flex-*`, `float`, `height`, `isolation`, `justify-self`, `left`, `order`, `orphans`, `outline-*`
+(with the exception noted above for `outline-offset`), `overflow-anchor`, `overscroll-behavior-*`, `page`, `position`, `position-anchor`,
+`content-visibility`, `right`, `scroll-margin-*`, `scroll-padding-*`, `text-spacing-trim`, `top`, `visibility`, `x`, `y`, `ruby-position`, `user-select`,
+`width`, `will-change`, `z-index`.
 
-For practical purposes it is recommended that user agents keep a curated list of
-style properties which are allowed, and any other style property is discarded by
-default.
+Additionally all logically equivalent properties to the ones above can be used (e.g. `inline-size` is equivalent to `width`) following the same
+rules as their equivalent.
 
 <!-- TOC --><a name="one-pepc-per-permission-type-per-page"></a>
 ### One PEPC per permission type per page
