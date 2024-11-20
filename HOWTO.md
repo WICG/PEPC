@@ -19,6 +19,16 @@ if (el instanceof HTMLUnknownElement) {
 }
 ```
 
+Alternatively if you want a more lightweight version and don't need to create an element you can use:
+
+```JS
+if (typeof HTMLPermissionElement === 'function') {
+  // PEPC supported
+} else {
+  // PEPC not supported
+}
+```
+
 More advanced feature detection (such as per-type) is not currently supported.
 
 ## Using PEPC
