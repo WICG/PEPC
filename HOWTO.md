@@ -5,6 +5,22 @@ Use a version of Chrome that is version 121.0.6136 or higher. This might mean yo
 
 To enable the PEPC feature you need to start Chrome with the command line flag: `--enable-features=PermissionElement`. You need to make sure the Chrome app is fully closed; simply starting a new instance while one is already open will not work on certain Operating Systems. You can verify the flag is active by visiting `chrome://version`.
 
+## Feature Detection
+You can use code such as the following example to determine if PEPC is supported:
+
+```JS
+let el = document.createElement("permission");
+if (el instanceof HTMLUnknownElement) {
+  // PEPC not supported
+  ...
+} else {
+  // PEPC supported
+  ...
+}
+```
+
+More advanced feature detection (such as per-type) is not currently supported.
+
 ## Using PEPC
 You can visit https://permission.site/pepc for a quick example and test.
 
