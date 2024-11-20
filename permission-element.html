@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 742f3d674, updated Mon Nov 4 14:56:54 2024 -0800" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-element.html" rel="canonical">
-  <meta content="c591ffbf749f3e509e97d713fb65c4561bfb23c8" name="revision">
+  <meta content="1172f382bef77a94c4986c3b4e471d9c501f8804" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -813,7 +813,12 @@ the current permission flows.</p>
        </ol>
       <li><a href="#permission-element-algorithms"><span class="secno">2.4</span> <span class="content"><code><span>permission</span></code> element algorithms</span></a>
      </ol>
-    <li><a href="#algorithms"><span class="secno">3</span> <span class="content">CSS Integration</span></a>
+    <li>
+     <a href="#rendering"><span class="secno">3</span> <span class="content">Rendering the <code><span>permission</span></code> Element</span></a>
+     <ol class="toc">
+      <li><a href="#presentation"><span class="secno">3.1</span> <span class="content">Presentation</span></a>
+      <li><a href="#style"><span class="secno">3.2</span> <span class="content">Styling</span></a>
+     </ol>
     <li><a href="#secpriv"><span class="secno">4</span> <span class="content">Security &amp; Privacy Considerations</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -937,7 +942,7 @@ list «[]» is the state in which no permission applies, and which
 will no longer allow modification. Note that the <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type②">type</a></code> property reflects this internal state.</p>
     <li data-md>
      <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-intersectionrect-slot"><code>[[IntersectionRect]]</code></dfn> is a <code class="idl"><a data-link-type="idl" href="https://drafts.fxtf.org/geometry-1/#domrectreadonly" id="ref-for-domrectreadonly">DOMRectReadOnly</a></code> that stores the most recently seen intersection, i.e.
-the position of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission⑥">permission</a></code> relative to the <a data-link-type="dfn">viewport</a>.</p>
+the position of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission⑥">permission</a></code> relative to the <a data-link-type="dfn" href="https://www.w3.org/TR/CSS21/visuren.html#x1" id="ref-for-x1">viewport</a>.</p>
    </ul>
    <h3 class="heading settled" data-level="2.2" id="permission-element-external-state"><span class="secno">2.2. </span><span class="content"><code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission⑦">permission</a></code>-supporting state at the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable">navigable</a></span><a class="self-link" href="#permission-element-external-state"></a></h3>
    <p>In order to support the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission⑧">permission</a></code> element, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable①">navigable</a> maintains
@@ -1068,12 +1073,12 @@ a <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-el
       <tr>
        <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped" id="ref-for-dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped">intersection_out_of_viewport_or_clipped</a></code> 
        <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker②">temporary</a> 
-       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②②">permission</a></code> element is not or not fully in the <a data-link-type="dfn">viewport</a>. 
+       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②②">permission</a></code> element is not or not fully in the <a data-link-type="dfn" href="https://www.w3.org/TR/CSS21/visuren.html#x1" id="ref-for-x1①">viewport</a>. 
        <td>7 
       <tr>
        <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_occluded_or_distorted" id="ref-for-dom-permissionelementblockerreason-intersection_occluded_or_distorted">intersection_occluded_or_distorted</a></code> 
        <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker③">temporary</a> 
-       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②③">permission</a></code> element is fully in the <a data-link-type="dfn">viewport</a>,
+       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②③">permission</a></code> element is fully in the <a data-link-type="dfn" href="https://www.w3.org/TR/CSS21/visuren.html#x1" id="ref-for-x1②">viewport</a>,
     but still not fully visible (e.g. because it’s partly behind other content). 
        <td>8 
       <tr>
@@ -1340,7 +1345,90 @@ then increment <var>count</var> by 1.</p>
       </ol>
     </ol>
    </div>
-   <h2 class="heading settled" data-level="3" id="algorithms"><span class="secno">3. </span><span class="content">CSS Integration</span><a class="self-link" href="#algorithms"></a></h2>
+   <h2 class="heading settled" data-level="3" id="rendering"><span class="secno">3. </span><span class="content">Rendering the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑥">permission</a></code> Element</span><a class="self-link" href="#rendering"></a></h2>
+   <h3 class="heading settled" data-level="3.1" id="presentation"><span class="secno">3.1. </span><span class="content">Presentation</span><a class="self-link" href="#presentation"></a></h3>
+   <p>The <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑦">permission</a></code> element is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-ui-4/#devolvable" id="ref-for-devolvable">devolvable widget</a> and is chiefly rendered
+like a <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element" id="ref-for-the-button-element">button</a></code>. The button label is largely expected to be determined by
+the browser, rather than the page, and reflects the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①①">powerful features</a> listed in <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①④">[[Types]]</a></code>, expressed as text and icons.</p>
+   <p>The page can influence the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑧">permission</a></code> element’s styling, but with
+constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
+the label itself). The page can also select a locale for the text via the <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/dom.html#attr-lang" id="ref-for-attr-lang">lang</a></code> attribute.</p>
+   <h3 class="heading settled" data-level="3.2" id="style"><span class="secno">3.2. </span><span class="content">Styling</span><a class="self-link" href="#style"></a></h3>
+   <p>A <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑨">permission</a></code> element is expected to render with the following styles:</p>
+<pre class="highlight lang-css"><c- n>@namespace</c-> <c- s>"http://www.w3.org/1999/xhtml"</c-><c- p>;</c->
+permission <c- p>{</c->
+  <c- k>opacity</c-><c- p>:</c-> <c- m>1.0</c-><c- p>;</c->
+  <c- k>line-height</c-><c- p>:</c-> normal<c- p>;</c->
+  <c- k>whitespace</c-><c- p>:</c-> nowrap<c- p>;</c->
+  <c- k>user-select</c-><c- p>:</c-> none<c- p>;</c->
+  <c- k>appearance</c-><c- p>:</c-> auto<c- p>;</c->
+
+  <c- k>outline-offset</c-><c- p>:</c-> <c- nf>clamp</c-><c- p>(</c-><c- m>0</c-><c- p>,</c-> inherit<c- p>,</c-> none<c- p>);</c-> <c- c>/* No negative outline-offsets. */</c->
+  font-weight: <c- nf>clamp</c-><c- p>(</c-><c- m>200</c-><c- p>,</c-> inherit<c- p>,</c-> none<c- p>);</c->  <c- c>/* No font-weights below 200. */</c->
+  word-spacing: <c- nf>clamp</c-><c- p>(</c-><c- m>0</c-><c- p>,</c-> inerhit<c- p>,</c-> <c- m>0.5</c-><c- k>em</c-><c- p>);</c->  <c- c>/* Word-spacing between 0..0.5em */</c->
+  letter-spacing: <c- nf>clamp</c-><c- p>(</c-><c- m>-0.05</c-><c- k>em</c-><c- p>,</c-> inherit<c- p>,</c-> <c- m>0.2</c-><c- k>em</c-><c- p>);</c->  <c- c>/* Letter spacing between -0.05..0.2em */</c->
+
+  <c- c>/*</c->
+<c- c>   * Below, we assume that, if no value is specified, this will clamp to the</c->
+<c- c>   * minimum value, thus effectively providing a default, too.</c->
+<c- c>   */</c->
+  min-height: <c- nf>clamp</c-><c- p>(</c-><c- m>1</c-><c- k>em</c-><c- p>,</c-> inherit<c- p>,</c-> none<c- p>);</c->
+  <c- k>max-height</c-><c- p>:</c-> <c- nf>clamp</c-><c- p>(</c->none<c- p>,</c-> inherit<c- p>,</c-> <c- m>3</c-><c- k>em</c-><c- p>);</c->
+<c- p>}</c->
+</pre>
+   <p>Additionally, a <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⓪">permission</a></code> element puts contraints on a number of
+additional styles. If one of these conditions is not met, then a <a data-link-type="dfn" href="#htmlpermissionelement-add-a-temporary-blocker" id="ref-for-htmlpermissionelement-add-a-temporary-blocker②">temporary blocker is added</a> with type <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-style_invalid" id="ref-for-dom-permissionelementblockerreason-style_invalid①">style_invalid</a></code>.</p>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/colors.html#propdef-color" id="ref-for-propdef-color">color</a>, <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/colors.html#propdef-background-color" id="ref-for-propdef-background-color">background-color</a>
+      <td> Set by default to the user agent’s default <code>button</code> colors.
+The <a data-link-type="dfn" href="https://drafts.csswg.org/mediaqueries-5/#contrast-ratio" id="ref-for-contrast-ratio">contrast ratio</a> between the 2 colors needs to be at least 3.
+Alpha has to be 1. 
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/fonts.html#propdef-font-size" id="ref-for-propdef-font-size">font-size</a>
+      <td> Must be set larger or equal than <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-small" id="ref-for-valdef-font-size-small">small</a> and less than or equal
+to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-xx-large" id="ref-for-valdef-font-size-xx-large">xx-large</a>.
+   </table>
+   <p class="issue" id="issue-fe830fdd"><a class="self-link" href="#issue-fe830fdd"></a> font-size: Explainer says, "Zoom will be taken into account when computing font-size." I have no idea what that means with absolute font sizes.</p>
+   <p>The following conditions on the style are resolved by modifying the style:</p>
+   <table class="def">
+    <tbody>
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-margin" id="ref-for-propdef-margin">margin</a>, and any margin-* properties
+      <td> Values under <code>4px</code> will be corrected to <code>4px</code>.
+This is done to help prevent false positives for the logic that detects the
+element being covered by something else. 
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/fonts.html#propdef-font-style" id="ref-for-propdef-font-style">font-style</a>
+      <td> Defaults to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-4/#valdef-font-style-normal" id="ref-for-valdef-font-style-normal">normal</a>. If values other than <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-4/#valdef-font-style-normal" id="ref-for-valdef-font-style-normal①">normal</a> or <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-fonts-4/#valdef-font-style-italic" id="ref-for-valdef-font-style-italic">italic</a> are specified,
+the default will be used instead. 
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/visuren.html#propdef-display" id="ref-for-propdef-display">display</a>
+      <td> Defaults to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-display-4/#valdef-display-inline-block" id="ref-for-valdef-display-inline-block">inline-block</a>. If values other than <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-display-4/#valdef-display-inline-block" id="ref-for-valdef-display-inline-block①">inline-block</a> or <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-display-4/#valdef-display-none" id="ref-for-valdef-display-none">none</a> are specified, the default will
+be used again. 
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/visudet.html#propdef-min-width" id="ref-for-propdef-min-width">min-width</a>
+      <td> Defaults to <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-sizing-4/#valdef-width-fit-content" id="ref-for-valdef-width-fit-content">fit-content</a>. If a value exists, the <a class="production css" data-link-type="function" href="https://drafts.csswg.org/css-values-4/#funcdef-max" id="ref-for-funcdef-max">&lt;max()></a> of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-sizing-4/#valdef-width-fit-content" id="ref-for-valdef-width-fit-content①">fit-content</a> and the computed value is used. 
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/visudet.html#propdef-max-width" id="ref-for-propdef-max-width">max-width</a>
+      <td> Defaults to 3 * <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css-sizing-4/#valdef-width-fit-content" id="ref-for-valdef-width-fit-content②">fit-content</a>.
+If a value exists, <a class="production css" data-link-type="function" href="https://drafts.csswg.org/css-values-4/#funcdef-min" id="ref-for-funcdef-min">&lt;min()></a> between the default and the inherited value
+will be used. However this does not apply if the element has a border with
+a width of at least 1px and a color that has a contrast ratio with the
+background-color of at least 3 and alpha of 1. 
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-top" id="ref-for-propdef-padding-top">padding-top</a>
+      <td> If <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> is <code>auto</code>, use <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-top" id="ref-for-propdef-padding-top①">padding-top</a>: clamp(1em, inherit, none); <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-bottom" id="ref-for-propdef-padding-bottom">padding-bottom</a>: calc(padding-top);
+Otherwise, ignore. 
+     <tr>
+      <th><a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-left" id="ref-for-propdef-padding-left">padding-left</a>
+      <td> If <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a> is <code>auto</code>, use <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-left" id="ref-for-propdef-padding-left①">padding-left</a>: clamp(none, inherit, 5em); <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-right" id="ref-for-propdef-padding-right">padding-right</a>: calc(padding-left);
+Otherwise, ... 
+   </table>
+   <p class="issue" id="issue-13c3e9eb"><a class="self-link" href="#issue-13c3e9eb"></a> Why the complicated <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/visudet.html#propdef-max-width" id="ref-for-propdef-max-width①">max-width</a> rule?</p>
+   <p class="issue" id="issue-a7344ad5"><a class="self-link" href="#issue-a7344ad5"></a> <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-left" id="ref-for-propdef-padding-left②">padding-left</a> description said: <i>"Otherwise, This does not apply
+under the same border conditions as <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/visudet.html#propdef-max-width" id="ref-for-propdef-max-width②">max-width</a>, except <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-right" id="ref-for-propdef-padding-right①">padding-right</a> with still be set to the value of <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-left" id="ref-for-propdef-padding-left③">padding-left</a>."</i> I can’t parse that.</p>
    <h2 class="heading settled" data-level="4" id="secpriv"><span class="secno">4. </span><span class="content">Security &amp; Privacy Considerations</span><a class="self-link" href="#secpriv"></a></h2>
   </main>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
@@ -1394,6 +1482,63 @@ then increment <var>count</var> by 1.</p>
   <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
+    <a data-link-type="biblio">[CSS-DISPLAY-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="e33664cd">inline-block</span>
+     <li><span class="dfn-paneled" id="55e8f5de">none</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-FONTS-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="05353767">italic</span>
+     <li><span class="dfn-paneled" id="110c741a">normal</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-SIZING-3]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="68019d7a">height</span>
+     <li><span class="dfn-paneled" id="88643fe0">width</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-SIZING-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="799c2725">fit-content</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-UI-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="dc810a12">devolvable widget</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS-VALUES-4]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="cc9fcb94">max()</span>
+     <li><span class="dfn-paneled" id="b85b86c5">min()</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS21]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="67fd880f">background-color</span>
+     <li><span class="dfn-paneled" id="7581c40e">color</span>
+     <li><span class="dfn-paneled" id="ef9e6926">display</span>
+     <li><span class="dfn-paneled" id="4b35980d">font-size</span>
+     <li><span class="dfn-paneled" id="deef66f3">font-style</span>
+     <li><span class="dfn-paneled" id="5515c98f">margin</span>
+     <li><span class="dfn-paneled" id="a7502998">max-width</span>
+     <li><span class="dfn-paneled" id="e5185638">min-width</span>
+     <li><span class="dfn-paneled" id="a7f12bc0">padding-bottom</span>
+     <li><span class="dfn-paneled" id="056211a6">padding-left</span>
+     <li><span class="dfn-paneled" id="b3668a44">padding-right</span>
+     <li><span class="dfn-paneled" id="7a7972c2">padding-top</span>
+     <li><span class="dfn-paneled" id="aa17b477">viewport</span>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[CSS22]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="4ad610fb">small</span>
+     <li><span class="dfn-paneled" id="36f058ec">xx-large</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="bec14ad5">activation behavior</span>
@@ -1426,6 +1571,7 @@ then increment <var>count</var> by 1.</p>
      <li><span class="dfn-paneled" id="973aaf8e">HTMLConstructor</span>
      <li><span class="dfn-paneled" id="b08d0bb2">HTMLElement</span>
      <li><span class="dfn-paneled" id="5fd912e7">accessibility considerations</span>
+     <li><span class="dfn-paneled" id="bfff6250">button</span>
      <li><span class="dfn-paneled" id="68675e70">content attributes</span>
      <li><span class="dfn-paneled" id="88766833">content model</span>
      <li><span class="dfn-paneled" id="3c915747">contexts in which this element can be used</span>
@@ -1438,7 +1584,8 @@ then increment <var>count</var> by 1.</p>
      <li><span class="dfn-paneled" id="8fc74046">global attributes</span>
      <li><span class="dfn-paneled" id="bd7d36d0">interactive content</span>
      <li><span class="dfn-paneled" id="bb919e84">invalid value default</span>
-     <li><span class="dfn-paneled" id="9da19fa0">lang</span>
+     <li><span class="dfn-paneled" id="9da19fa0">lang <small>(for HTMLElement)</small></span>
+     <li><span class="dfn-paneled" id="e30e7b38">lang <small>(for html-global)</small></span>
      <li><span class="dfn-paneled" id="eeea093f">missing value default</span>
      <li><span class="dfn-paneled" id="9c19b7fc">navigable</span>
      <li><span class="dfn-paneled" id="13dd6cae">node navigable</span>
@@ -1486,6 +1633,11 @@ then increment <var>count</var> by 1.</p>
      <li><span class="dfn-paneled" id="ada784a3">categories</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[MEDIAQUERIES-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="4c646d7b">contrast ratio</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[PERMISSIONS]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="e740d7e5">name</span>
@@ -1505,6 +1657,22 @@ then increment <var>count</var> by 1.</p>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
+   <dt id="biblio-css-display-4">[CSS-DISPLAY-4]
+   <dd><a href="https://drafts.csswg.org/css-display-4/"><cite>CSS Display Module Level 4</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/css-display-4/">https://drafts.csswg.org/css-display-4/</a>
+   <dt id="biblio-css-fonts-4">[CSS-FONTS-4]
+   <dd>Chris Lilley. <a href="https://drafts.csswg.org/css-fonts-4/"><cite>CSS Fonts Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-fonts-4/">https://drafts.csswg.org/css-fonts-4/</a>
+   <dt id="biblio-css-sizing-3">[CSS-SIZING-3]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-sizing-3/"><cite>CSS Box Sizing Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-sizing-3/">https://drafts.csswg.org/css-sizing-3/</a>
+   <dt id="biblio-css-sizing-4">[CSS-SIZING-4]
+   <dd>Tab Atkins Jr.; Elika Etemad; Jen Simmons. <a href="https://drafts.csswg.org/css-sizing-4/"><cite>CSS Box Sizing Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-sizing-4/">https://drafts.csswg.org/css-sizing-4/</a>
+   <dt id="biblio-css-ui-4">[CSS-UI-4]
+   <dd>Florian Rivoal. <a href="https://drafts.csswg.org/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-ui-4/">https://drafts.csswg.org/css-ui-4/</a>
+   <dt id="biblio-css-values-4">[CSS-VALUES-4]
+   <dd>Tab Atkins Jr.; Elika Etemad. <a href="https://drafts.csswg.org/css-values-4/"><cite>CSS Values and Units Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-values-4/">https://drafts.csswg.org/css-values-4/</a>
+   <dt id="biblio-css21">[CSS21]
+   <dd>Bert Bos; et al. <a href="https://drafts.csswg.org/css2/"><cite>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</cite></a>. URL: <a href="https://drafts.csswg.org/css2/">https://drafts.csswg.org/css2/</a>
+   <dt id="biblio-css22">[CSS22]
+   <dd>Bert Bos. <a href="https://drafts.csswg.org/css2/"><cite>Cascading Style Sheets Level 2 Revision 2 (CSS 2.2) Specification</cite></a>. URL: <a href="https://drafts.csswg.org/css2/">https://drafts.csswg.org/css2/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-fenced-frame">[FENCED-FRAME]
@@ -1521,6 +1689,8 @@ then increment <var>count</var> by 1.</p>
    <dd>Stefan Zager; Emilio Cobos Álvarez; Traian Captan. <a href="https://w3c.github.io/IntersectionObserver/"><cite>Intersection Observer</cite></a>. URL: <a href="https://w3c.github.io/IntersectionObserver/">https://w3c.github.io/IntersectionObserver/</a>
    <dt id="biblio-manifest-app-info">[MANIFEST-APP-INFO]
    <dd>Aaron Gustafson. <a href="https://w3c.github.io/manifest-app-info/"><cite>Web App Manifest - Application Information</cite></a>. URL: <a href="https://w3c.github.io/manifest-app-info/">https://w3c.github.io/manifest-app-info/</a>
+   <dt id="biblio-mediaqueries-5">[MEDIAQUERIES-5]
+   <dd>Dean Jackson; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
    <dd>Marcos Caceres; Mike Taylor. <a href="https://w3c.github.io/permissions/"><cite>Permissions</cite></a>. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
    <dt id="biblio-webidl">[WEBIDL]
@@ -1557,6 +1727,10 @@ then increment <var>count</var> by 1.</p>
    <div class="issue"> onvalidationstatuschange is probably not a simple Event. <a class="issue-return" href="#issue-f7a720ba" title="Jump to section">↵</a></div>
    <div class="issue"> What about event handlers? <a class="issue-return" href="#issue-07d70e0e" title="Jump to section">↵</a></div>
    <div class="issue"> Do I need to define dictionary equality? <a class="issue-return" href="#issue-9a5604dc" title="Jump to section">↵</a></div>
+   <div class="issue"> font-size: Explainer says, "Zoom will be taken into account when computing font-size." I have no idea what that means with absolute font sizes. <a class="issue-return" href="#issue-fe830fdd" title="Jump to section">↵</a></div>
+   <div class="issue"> Why the complicated <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/visudet.html#propdef-max-width">max-width</a> rule? <a class="issue-return" href="#issue-13c3e9eb" title="Jump to section">↵</a></div>
+   <div class="issue"> <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-left">padding-left</a> description said: <i>"Otherwise, This does not apply
+under the same border conditions as <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/visudet.html#propdef-max-width">max-width</a>, except <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-right">padding-right</a> with still be set to the value of <a class="property css" data-link-type="property" href="https://www.w3.org/TR/CSS21/box.html#propdef-padding-left">padding-left</a>."</i> I can’t parse that. <a class="issue-return" href="#issue-a7344ad5" title="Jump to section">↵</a></div>
   </div>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
@@ -1760,32 +1934,46 @@ function parseHTML(markup) {
 let dfnPanelData = {
 "03675365": {"dfnID":"03675365","dfnText":"event handler IDL attribute","external":true,"refSections":[{"refs":[{"id":"ref-for-event-handler-idl-attributes"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes"},
 "03afaf9c": {"dfnID":"03afaf9c","dfnText":"empty","external":true,"refSections":[{"refs":[{"id":"ref-for-list-empty"}],"title":"2.3.2. Activation blockers"}],"url":"https://infra.spec.whatwg.org/#list-empty"},
+"05353767": {"dfnID":"05353767","dfnText":"italic","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-font-style-italic"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-fonts-4/#valdef-font-style-italic"},
+"056211a6": {"dfnID":"056211a6","dfnText":"padding-left","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-padding-left"},{"id":"ref-for-propdef-padding-left\u2460"},{"id":"ref-for-propdef-padding-left\u2461"},{"id":"ref-for-propdef-padding-left\u2462"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/box.html#propdef-padding-left"},
 "073cf09c": {"dfnID":"073cf09c","dfnText":"represent","external":true,"refSections":[{"refs":[{"id":"ref-for-represents"}],"title":"2.1. permission element internal state"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#represents"},
+"110c741a": {"dfnID":"110c741a","dfnText":"normal","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-font-style-normal"},{"id":"ref-for-valdef-font-style-normal\u2460"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-fonts-4/#valdef-font-style-normal"},
 "1236ac1a": {"dfnID":"1236ac1a","dfnText":"flow content","external":true,"refSections":[{"refs":[{"id":"ref-for-flow-content-2"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#flow-content-2"},
 "13dd6cae": {"dfnID":"13dd6cae","dfnText":"node navigable","external":true,"refSections":[{"refs":[{"id":"ref-for-node-navigable"},{"id":"ref-for-node-navigable\u2460"},{"id":"ref-for-node-navigable\u2461"},{"id":"ref-for-node-navigable\u2462"},{"id":"ref-for-node-navigable\u2463"},{"id":"ref-for-node-navigable\u2464"}],"title":"2.4. permission element algorithms"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable"},
 "17582406": {"dfnID":"17582406","dfnText":"traversable navigable","external":true,"refSections":[{"refs":[{"id":"ref-for-nav-traversable"}],"title":"2.4. permission element algorithms"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-traversable"},
 "317acf49": {"dfnID":"317acf49","dfnText":"DOM interface","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-dom"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom"},
+"36f058ec": {"dfnID":"36f058ec","dfnText":"xx-large","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-font-size-xx-large"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css2/#valdef-font-size-xx-large"},
 "3c915747": {"dfnID":"3c915747","dfnText":"contexts in which this element can be used","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-contexts"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-contexts"},
 "3f5a365a": {"dfnID":"3f5a365a","dfnText":"permission","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-permission"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-dfn-permission\u2460"}],"title":"2.1. permission element internal state"}],"url":"https://w3c.github.io/permissions/#dfn-permission"},
 "4013a022": {"dfnID":"4013a022","dfnText":"this","external":true,"refSections":[{"refs":[{"id":"ref-for-this"},{"id":"ref-for-this\u2460"},{"id":"ref-for-this\u2461"},{"id":"ref-for-this\u2462"},{"id":"ref-for-this\u2463"},{"id":"ref-for-this\u2464"}],"title":"2.4. permission element algorithms"}],"url":"https://webidl.spec.whatwg.org/#this"},
 "402ed79d": {"dfnID":"402ed79d","dfnText":"CEReactions","external":true,"refSections":[{"refs":[{"id":"ref-for-cereactions"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions"},
 "420a43d6": {"dfnID":"420a43d6","dfnText":"intersectionRatio","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserverentry-intersectionratio"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionratio"},
 "45cd855a": {"dfnID":"45cd855a","dfnText":"root","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserver-root"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserver-root"},
+"4ad610fb": {"dfnID":"4ad610fb","dfnText":"small","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-font-size-small"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css2/#valdef-font-size-small"},
+"4b35980d": {"dfnID":"4b35980d","dfnText":"font-size","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-size"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/fonts.html#propdef-font-size"},
+"4c646d7b": {"dfnID":"4c646d7b","dfnText":"contrast ratio","external":true,"refSections":[{"refs":[{"id":"ref-for-contrast-ratio"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio"},
 "53275e46": {"dfnID":"53275e46","dfnText":"append (for list)","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-list-append\u2460"}],"title":"2.3.2. Activation blockers"}],"url":"https://infra.spec.whatwg.org/#list-append"},
 "5372cca8": {"dfnID":"5372cca8","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-boolean"}],"title":"2. The permission element."}],"url":"https://webidl.spec.whatwg.org/#idl-boolean"},
+"5515c98f": {"dfnID":"5515c98f","dfnText":"margin","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-margin"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/box.html#propdef-margin"},
+"55e8f5de": {"dfnID":"55e8f5de","dfnText":"none","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-none"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-none"},
 "5a37bda5": {"dfnID":"5a37bda5","dfnText":"IntersectionObserverCallback","external":true,"refSections":[{"refs":[{"id":"ref-for-callbackdef-intersectionobservercallback"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#callbackdef-intersectionobservercallback"},
 "5afbefcd": {"dfnID":"5afbefcd","dfnText":"item","external":true,"refSections":[{"refs":[{"id":"ref-for-list-item"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list-item"},
 "5efd52e0": {"dfnID":"5efd52e0","dfnText":"intersectionRect","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserverentry-intersectionrect"},{"id":"ref-for-dom-intersectionobserverentry-intersectionrect\u2460"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionrect"},
 "5fd912e7": {"dfnID":"5fd912e7","dfnText":"accessibility considerations","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-accessibility-considerations"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations"},
 "62e9a98d": {"dfnID":"62e9a98d","dfnText":"removing steps","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-node-remove-ext"}],"title":"2.4. permission element algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-node-remove-ext"},
 "649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list"},
+"67fd880f": {"dfnID":"67fd880f","dfnText":"background-color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-background-color"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/colors.html#propdef-background-color"},
+"68019d7a": {"dfnID":"68019d7a","dfnText":"height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-height"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-height"},
 "68675e70": {"dfnID":"68675e70","dfnText":"content attributes","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-attributes"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes"},
 "692595fe": {"dfnID":"692595fe","dfnText":"ordered set","external":true,"refSections":[{"refs":[{"id":"ref-for-ordered-set"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-ordered-set\u2460"},{"id":"ref-for-ordered-set\u2461"}],"title":"2.2. permission-supporting state at the navigable"},{"refs":[{"id":"ref-for-ordered-set\u2462"}],"title":"2.3.1. The type property"}],"url":"https://infra.spec.whatwg.org/#ordered-set"},
 "6a5a59a0": {"dfnID":"6a5a59a0","dfnText":"event handler","external":true,"refSections":[{"refs":[{"id":"ref-for-event-handlers"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers"},
 "6b815fdd": {"dfnID":"6b815fdd","dfnText":"is empty","external":true,"refSections":[{"refs":[{"id":"ref-for-list-is-empty"},{"id":"ref-for-list-is-empty\u2460"},{"id":"ref-for-list-is-empty\u2461"},{"id":"ref-for-list-is-empty\u2462"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list-is-empty"},
-"6c2d7879": {"dfnID":"6c2d7879","dfnText":"powerful feature","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-powerful-feature"},{"id":"ref-for-dfn-powerful-feature\u2460"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2461"}],"title":"2. The permission element."},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2462"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2463"},{"id":"ref-for-dfn-powerful-feature\u2464"},{"id":"ref-for-dfn-powerful-feature\u2465"},{"id":"ref-for-dfn-powerful-feature\u2466"},{"id":"ref-for-dfn-powerful-feature\u2467"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2468"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2460\u24ea"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/permissions/#dfn-powerful-feature"},
+"6c2d7879": {"dfnID":"6c2d7879","dfnText":"powerful feature","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-powerful-feature"},{"id":"ref-for-dfn-powerful-feature\u2460"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2461"}],"title":"2. The permission element."},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2462"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2463"},{"id":"ref-for-dfn-powerful-feature\u2464"},{"id":"ref-for-dfn-powerful-feature\u2465"},{"id":"ref-for-dfn-powerful-feature\u2466"},{"id":"ref-for-dfn-powerful-feature\u2467"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2468"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2460\u24ea"}],"title":"2.4. permission element algorithms"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2460\u2460"}],"title":"3.1. Presentation"}],"url":"https://w3c.github.io/permissions/#dfn-powerful-feature"},
 "6d19ac93": {"dfnID":"6d19ac93","dfnText":"user agent","external":true,"refSections":[{"refs":[{"id":"ref-for-user-agent"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-user-agent\u2460"}],"title":"2.3.1. The type property"}],"url":"https://infra.spec.whatwg.org/#user-agent"},
+"7581c40e": {"dfnID":"7581c40e","dfnText":"color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-color"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/colors.html#propdef-color"},
 "77b4c09a": {"dfnID":"77b4c09a","dfnText":"assert","external":true,"refSections":[{"refs":[{"id":"ref-for-assert"},{"id":"ref-for-assert\u2460"},{"id":"ref-for-assert\u2461"},{"id":"ref-for-assert\u2462"},{"id":"ref-for-assert\u2463"},{"id":"ref-for-assert\u2464"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-assert\u2465"},{"id":"ref-for-assert\u2466"},{"id":"ref-for-assert\u2467"},{"id":"ref-for-assert\u2468"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#assert"},
+"799c2725": {"dfnID":"799c2725","dfnText":"fit-content","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-width-fit-content"},{"id":"ref-for-valdef-width-fit-content\u2460"},{"id":"ref-for-valdef-width-fit-content\u2461"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-sizing-4/#valdef-width-fit-content"},
+"7a7972c2": {"dfnID":"7a7972c2","dfnText":"padding-top","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-padding-top"},{"id":"ref-for-propdef-padding-top\u2460"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/box.html#propdef-padding-top"},
 "7a87d819": {"dfnID":"7a87d819","dfnText":"is","external":true,"refSections":[{"refs":[{"id":"ref-for-string-is"}],"title":"2.3.2. Activation blockers"}],"url":"https://infra.spec.whatwg.org/#string-is"},
 "7b0d918d": {"dfnID":"7b0d918d","dfnText":"break","external":true,"refSections":[{"refs":[{"id":"ref-for-iteration-break"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#iteration-break"},
 "7e7cc1d8": {"dfnID":"7e7cc1d8","dfnText":"current high resolution time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-current-high-resolution-time"},{"id":"ref-for-dfn-current-high-resolution-time\u2460"}],"title":"2.3.2. Activation blockers"}],"url":"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time"},
@@ -1793,6 +1981,7 @@ let dfnPanelData = {
 "860300d4": {"dfnID":"860300d4","dfnText":"implementation-defined","external":true,"refSections":[{"refs":[{"id":"ref-for-implementation-defined"}],"title":"2.3.1. The type property"}],"url":"https://infra.spec.whatwg.org/#implementation-defined"},
 "86804dc9": {"dfnID":"86804dc9","dfnText":"fenced navigable","external":true,"refSections":[{"refs":[{"id":"ref-for-fenced-navigable-container-fenced-navigable"}],"title":"2.4. permission element algorithms"}],"url":"https://wicg.github.io/fenced-frame/#fenced-navigable-container-fenced-navigable"},
 "8855a9aa": {"dfnID":"8855a9aa","dfnText":"DOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMString"}],"title":"2. The permission element."}],"url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
+"88643fe0": {"dfnID":"88643fe0","dfnText":"width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-width"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-width"},
 "88766833": {"dfnID":"88766833","dfnText":"content model","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-content-model"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-content-model"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"2. The permission element."}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
 "8fc74046": {"dfnID":"8fc74046","dfnText":"global attributes","external":true,"refSections":[{"refs":[{"id":"ref-for-global-attributes"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#global-attributes"},
@@ -1803,20 +1992,29 @@ let dfnPanelData = {
 "9be179f5": {"dfnID":"9be179f5","dfnText":"IntersectionObserver","external":true,"refSections":[{"refs":[{"id":"ref-for-intersectionobserver"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-intersectionobserver\u2460"},{"id":"ref-for-intersectionobserver\u2461"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#intersectionobserver"},
 "9c19b7fc": {"dfnID":"9c19b7fc","dfnText":"navigable","external":true,"refSections":[{"refs":[{"id":"ref-for-navigable"},{"id":"ref-for-navigable\u2460"}],"title":"2.2. permission-supporting state at the navigable"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#navigable"},
 "9d386f55": {"dfnID":"9d386f55","dfnText":"event handler event type","external":true,"refSections":[{"refs":[{"id":"ref-for-event-handler-event-type"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type"},
-"9da19fa0": {"dfnID":"9da19fa0","dfnText":"lang","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-lang"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#dom-lang"},
+"9da19fa0": {"dfnID":"9da19fa0","dfnText":"lang (for HTMLElement)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-lang"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#dom-lang"},
 "a3b18719": {"dfnID":"a3b18719","dfnText":"append (for set)","external":true,"refSections":[{"refs":[{"id":"ref-for-set-append"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#set-append"},
 "a505250c": {"dfnID":"a505250c","dfnText":"insertion steps","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-node-insert-ext"}],"title":"2.4. permission element algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-node-insert-ext"},
+"a7502998": {"dfnID":"a7502998","dfnText":"max-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-max-width"},{"id":"ref-for-propdef-max-width\u2460"},{"id":"ref-for-propdef-max-width\u2461"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/visudet.html#propdef-max-width"},
+"a7f12bc0": {"dfnID":"a7f12bc0","dfnText":"padding-bottom","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-padding-bottom"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/box.html#propdef-padding-bottom"},
 "a973e0fe": {"dfnID":"a973e0fe","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document"}],"title":"2.4. permission element algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-document"},
+"aa17b477": {"dfnID":"aa17b477","dfnText":"viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-x1"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-x1\u2460"},{"id":"ref-for-x1\u2461"}],"title":"2.3.2. Activation blockers"}],"url":"https://www.w3.org/TR/CSS21/visuren.html#x1"},
 "ada784a3": {"dfnID":"ada784a3","dfnText":"categories","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-categories"}],"title":"2. The permission element."}],"url":"https://w3c.github.io/manifest-app-info/#dfn-categories"},
 "ae8def21": {"dfnID":"ae8def21","dfnText":"contain","external":true,"refSections":[{"refs":[{"id":"ref-for-list-contain"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list-contain"},
 "b08d0bb2": {"dfnID":"b08d0bb2","dfnText":"HTMLElement","external":true,"refSections":[{"refs":[{"id":"ref-for-htmlelement"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#htmlelement"},
+"b3668a44": {"dfnID":"b3668a44","dfnText":"padding-right","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-padding-right"},{"id":"ref-for-propdef-padding-right\u2460"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/box.html#propdef-padding-right"},
+"b85b86c5": {"dfnID":"b85b86c5","dfnText":"min()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-min"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-values-4/#funcdef-min"},
 "bb919e84": {"dfnID":"bb919e84","dfnText":"invalid value default","external":true,"refSections":[{"refs":[{"id":"ref-for-invalid-value-default"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#invalid-value-default"},
 "bcc085e3": {"dfnID":"bcc085e3","dfnText":"request permission to use","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-request-permission-to-use"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/permissions/#dfn-request-permission-to-use"},
 "bd7d36d0": {"dfnID":"bd7d36d0","dfnText":"interactive content","external":true,"refSections":[{"refs":[{"id":"ref-for-interactive-content-2"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#interactive-content-2"},
 "bec14ad5": {"dfnID":"bec14ad5","dfnText":"activation behavior","external":true,"refSections":[{"refs":[{"id":"ref-for-eventtarget-activation-behavior"}],"title":"2.4. permission element algorithms"}],"url":"https://dom.spec.whatwg.org/#eventtarget-activation-behavior"},
+"bfff6250": {"dfnID":"bfff6250","dfnText":"button","external":true,"refSections":[{"refs":[{"id":"ref-for-the-button-element"}],"title":"3.1. Presentation"}],"url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element"},
 "blocker-reason-table": {"dfnID":"blocker-reason-table","dfnText":"","external":false,"refSections":[{"refs":[{"id":"ref-for-blocker-reason-table"},{"id":"ref-for-blocker-reason-table\u2460"},{"id":"ref-for-blocker-reason-table\u2461"},{"id":"ref-for-blocker-reason-table\u2462"},{"id":"ref-for-blocker-reason-table\u2463"},{"id":"ref-for-blocker-reason-table\u2464"},{"id":"ref-for-blocker-reason-table\u2465"}],"title":"2.3.2. Activation blockers"}],"url":"#blocker-reason-table"},
 "c914c650": {"dfnID":"c914c650","dfnText":"fencedframe","external":true,"refSections":[{"refs":[{"id":"ref-for-elementdef-fencedframe"},{"id":"ref-for-elementdef-fencedframe\u2460"}],"title":"2.3.2. Activation blockers"}],"url":"https://wicg.github.io/fenced-frame/#elementdef-fencedframe"},
+"cc9fcb94": {"dfnID":"cc9fcb94","dfnText":"max()","external":true,"refSections":[{"refs":[{"id":"ref-for-funcdef-max"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-values-4/#funcdef-max"},
 "d54eeea2": {"dfnID":"d54eeea2","dfnText":"palpable content","external":true,"refSections":[{"refs":[{"id":"ref-for-palpable-content-2"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#palpable-content-2"},
+"dc810a12": {"dfnID":"dc810a12","dfnText":"devolvable widget","external":true,"refSections":[{"refs":[{"id":"ref-for-devolvable"}],"title":"3.1. Presentation"}],"url":"https://drafts.csswg.org/css-ui-4/#devolvable"},
+"deef66f3": {"dfnID":"deef66f3","dfnText":"font-style","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-style"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/fonts.html#propdef-font-style"},
 "dom-htmlpermissionelement-blockerlist-slot": {"dfnID":"dom-htmlpermissionelement-blockerlist-slot","dfnText":"[[BlockerList]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlpermissionelement-blockerlist-slot"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-dom-htmlpermissionelement-blockerlist-slot\u2460"},{"id":"ref-for-dom-htmlpermissionelement-blockerlist-slot\u2461"},{"id":"ref-for-dom-htmlpermissionelement-blockerlist-slot\u2462"},{"id":"ref-for-dom-htmlpermissionelement-blockerlist-slot\u2463"},{"id":"ref-for-dom-htmlpermissionelement-blockerlist-slot\u2464"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dom-htmlpermissionelement-blockerlist-slot\u2465"},{"id":"ref-for-dom-htmlpermissionelement-blockerlist-slot\u2466"}],"title":"2.4. permission element algorithms"}],"url":"#dom-htmlpermissionelement-blockerlist-slot"},
 "dom-htmlpermissionelement-htmlpermissionelement": {"dfnID":"dom-htmlpermissionelement-htmlpermissionelement","dfnText":"constructor","external":false,"refSections":[],"url":"#dom-htmlpermissionelement-htmlpermissionelement"},
 "dom-htmlpermissionelement-intersectionobserver-slot": {"dfnID":"dom-htmlpermissionelement-intersectionobserver-slot","dfnText":"[[IntersectionObserver]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlpermissionelement-intersectionobserver-slot"},{"id":"ref-for-dom-htmlpermissionelement-intersectionobserver-slot\u2460"}],"title":"2.4. permission element algorithms"}],"url":"#dom-htmlpermissionelement-intersectionobserver-slot"},
@@ -1827,7 +2025,7 @@ let dfnPanelData = {
 "dom-htmlpermissionelement-onresolve": {"dfnID":"dom-htmlpermissionelement-onresolve","dfnText":"onresolve","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlpermissionelement-onresolve"}],"title":"2. The permission element."}],"url":"#dom-htmlpermissionelement-onresolve"},
 "dom-htmlpermissionelement-onvalidationstatuschange": {"dfnID":"dom-htmlpermissionelement-onvalidationstatuschange","dfnText":"onvalidationstatuschange","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlpermissionelement-onvalidationstatuschange"}],"title":"2. The permission element."}],"url":"#dom-htmlpermissionelement-onvalidationstatuschange"},
 "dom-htmlpermissionelement-type": {"dfnID":"dom-htmlpermissionelement-type","dfnText":"type","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlpermissionelement-type"},{"id":"ref-for-dom-htmlpermissionelement-type\u2460"}],"title":"2. The permission element."},{"refs":[{"id":"ref-for-dom-htmlpermissionelement-type\u2461"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-dom-htmlpermissionelement-type\u2462"},{"id":"ref-for-dom-htmlpermissionelement-type\u2463"},{"id":"ref-for-dom-htmlpermissionelement-type\u2464"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-dom-htmlpermissionelement-type\u2465"}],"title":"2.3.2. Activation blockers"}],"url":"#dom-htmlpermissionelement-type"},
-"dom-htmlpermissionelement-types-slot": {"dfnID":"dom-htmlpermissionelement-types-slot","dfnText":"[[Types]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlpermissionelement-types-slot"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2461"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2462"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2463"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2464"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2465"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2466"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2467"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2468"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u24ea"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u2460"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u2461"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u2462"}],"title":"2.4. permission element algorithms"}],"url":"#dom-htmlpermissionelement-types-slot"},
+"dom-htmlpermissionelement-types-slot": {"dfnID":"dom-htmlpermissionelement-types-slot","dfnText":"[[Types]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlpermissionelement-types-slot"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2461"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2462"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2463"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2464"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2465"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2466"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2467"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2468"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u24ea"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u2460"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u2461"},{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u2462"}],"title":"2.4. permission element algorithms"},{"refs":[{"id":"ref-for-dom-htmlpermissionelement-types-slot\u2460\u2463"}],"title":"3.1. Presentation"}],"url":"#dom-htmlpermissionelement-types-slot"},
 "dom-navigable-permissionelements-slot": {"dfnID":"dom-navigable-permissionelements-slot","dfnText":"[[PermissionElements]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-navigable-permissionelements-slot"},{"id":"ref-for-dom-navigable-permissionelements-slot\u2460"},{"id":"ref-for-dom-navigable-permissionelements-slot\u2461"},{"id":"ref-for-dom-navigable-permissionelements-slot\u2462"},{"id":"ref-for-dom-navigable-permissionelements-slot\u2463"}],"title":"2.4. permission element algorithms"}],"url":"#dom-navigable-permissionelements-slot"},
 "dom-permissionelementblockerreason": {"dfnID":"dom-permissionelementblockerreason","dfnText":"\"\"","external":false,"refSections":[],"url":"#dom-permissionelementblockerreason"},
 "dom-permissionelementblockerreason-illegal_subframe": {"dfnID":"dom-permissionelementblockerreason-illegal_subframe","dfnText":"\"illegal_subframe\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-illegal_subframe"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-illegal_subframe\u2460"}],"title":"2.4. permission element algorithms"}],"url":"#dom-permissionelementblockerreason-illegal_subframe"},
@@ -1835,16 +2033,20 @@ let dfnPanelData = {
 "dom-permissionelementblockerreason-intersection_occluded_or_distorted": {"dfnID":"dom-permissionelementblockerreason-intersection_occluded_or_distorted","dfnText":"\"intersection_occluded_or_distorted\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-intersection_occluded_or_distorted"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-intersection_occluded_or_distorted\u2460"},{"id":"ref-for-dom-permissionelementblockerreason-intersection_occluded_or_distorted\u2461"}],"title":"2.4. permission element algorithms"}],"url":"#dom-permissionelementblockerreason-intersection_occluded_or_distorted"},
 "dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped": {"dfnID":"dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped","dfnText":"\"intersection_out_of_viewport_or_clipped\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped\u2460"},{"id":"ref-for-dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped\u2461"}],"title":"2.4. permission element algorithms"}],"url":"#dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped"},
 "dom-permissionelementblockerreason-recently_attached": {"dfnID":"dom-permissionelementblockerreason-recently_attached","dfnText":"\"recently_attached\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-recently_attached"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-recently_attached\u2460"}],"title":"2.4. permission element algorithms"}],"url":"#dom-permissionelementblockerreason-recently_attached"},
-"dom-permissionelementblockerreason-style_invalid": {"dfnID":"dom-permissionelementblockerreason-style_invalid","dfnText":"\"style_invalid\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-style_invalid"}],"title":"2.3.2. Activation blockers"}],"url":"#dom-permissionelementblockerreason-style_invalid"},
+"dom-permissionelementblockerreason-style_invalid": {"dfnID":"dom-permissionelementblockerreason-style_invalid","dfnText":"\"style_invalid\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-style_invalid"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-style_invalid\u2460"}],"title":"3.2. Styling"}],"url":"#dom-permissionelementblockerreason-style_invalid"},
 "dom-permissionelementblockerreason-type_invalid": {"dfnID":"dom-permissionelementblockerreason-type_invalid","dfnText":"\"type_invalid\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-type_invalid"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-type_invalid\u2460"}],"title":"2.4. permission element algorithms"}],"url":"#dom-permissionelementblockerreason-type_invalid"},
 "dom-permissionelementblockerreason-unsuccesful_registration": {"dfnID":"dom-permissionelementblockerreason-unsuccesful_registration","dfnText":"\"unsuccesful_registration\"","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-unsuccesful_registration"}],"title":"2.2. permission-supporting state at the navigable"},{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-unsuccesful_registration\u2460"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dom-permissionelementblockerreason-unsuccesful_registration\u2461"},{"id":"ref-for-dom-permissionelementblockerreason-unsuccesful_registration\u2462"}],"title":"2.4. permission element algorithms"}],"url":"#dom-permissionelementblockerreason-unsuccesful_registration"},
 "e22643f2": {"dfnID":"e22643f2","dfnText":"isVisible","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserverentry-isvisible"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-isvisible"},
+"e30e7b38": {"dfnID":"e30e7b38","dfnText":"lang (for html-global)","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-lang"}],"title":"3.1. Presentation"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#attr-lang"},
+"e33664cd": {"dfnID":"e33664cd","dfnText":"inline-block","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-display-inline-block"},{"id":"ref-for-valdef-display-inline-block\u2460"}],"title":"3.2. Styling"}],"url":"https://drafts.csswg.org/css-display-4/#valdef-display-inline-block"},
+"e5185638": {"dfnID":"e5185638","dfnText":"min-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-min-width"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/visudet.html#propdef-min-width"},
 "e5a7e26c": {"dfnID":"e5a7e26c","dfnText":"phrasing content","external":true,"refSections":[{"refs":[{"id":"ref-for-phrasing-content-2"},{"id":"ref-for-phrasing-content-2\u2460"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2"},
 "e5ea84f2": {"dfnID":"e5ea84f2","dfnText":"intersection","external":true,"refSections":[{"refs":[{"id":"ref-for-set-intersection"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#set-intersection"},
 "e740d7e5": {"dfnID":"e740d7e5","dfnText":"name","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-name"}],"title":"2. The permission element."}],"url":"https://w3c.github.io/permissions/#dfn-name"},
 "ec650328": {"dfnID":"ec650328","dfnText":"IntersectionObserverEntry","external":true,"refSections":[{"refs":[{"id":"ref-for-intersectionobserverentry"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#intersectionobserverentry"},
 "eeea093f": {"dfnID":"eeea093f","dfnText":"missing value default","external":true,"refSections":[{"refs":[{"id":"ref-for-missing-value-default"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#missing-value-default"},
-"elementdef-permission": {"dfnID":"elementdef-permission","dfnText":"permission","external":false,"refSections":[{"refs":[{"id":"ref-for-elementdef-permission"},{"id":"ref-for-elementdef-permission\u2460"}],"title":"2. The permission element."},{"refs":[{"id":"ref-for-elementdef-permission\u2461"},{"id":"ref-for-elementdef-permission\u2462"},{"id":"ref-for-elementdef-permission\u2463"},{"id":"ref-for-elementdef-permission\u2464"},{"id":"ref-for-elementdef-permission\u2465"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-elementdef-permission\u2466"},{"id":"ref-for-elementdef-permission\u2467"},{"id":"ref-for-elementdef-permission\u2468"}],"title":"2.2. permission-supporting state at the navigable"},{"refs":[{"id":"ref-for-elementdef-permission\u2460\u24ea"},{"id":"ref-for-elementdef-permission\u2460\u2460"}],"title":"2.3. permission element interesting behaviours"},{"refs":[{"id":"ref-for-elementdef-permission\u2460\u2461"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-elementdef-permission\u2460\u2462"},{"id":"ref-for-elementdef-permission\u2460\u2463"},{"id":"ref-for-elementdef-permission\u2460\u2464"},{"id":"ref-for-elementdef-permission\u2460\u2465"},{"id":"ref-for-elementdef-permission\u2460\u2466"},{"id":"ref-for-elementdef-permission\u2460\u2467"},{"id":"ref-for-elementdef-permission\u2460\u2468"},{"id":"ref-for-elementdef-permission\u2461\u24ea"},{"id":"ref-for-elementdef-permission\u2461\u2460"},{"id":"ref-for-elementdef-permission\u2461\u2461"},{"id":"ref-for-elementdef-permission\u2461\u2462"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-elementdef-permission\u2461\u2463"},{"id":"ref-for-elementdef-permission\u2461\u2464"}],"title":"2.4. permission element algorithms"}],"url":"#elementdef-permission"},
+"ef9e6926": {"dfnID":"ef9e6926","dfnText":"display","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-display"}],"title":"3.2. Styling"}],"url":"https://www.w3.org/TR/CSS21/visuren.html#propdef-display"},
+"elementdef-permission": {"dfnID":"elementdef-permission","dfnText":"permission","external":false,"refSections":[{"refs":[{"id":"ref-for-elementdef-permission"},{"id":"ref-for-elementdef-permission\u2460"}],"title":"2. The permission element."},{"refs":[{"id":"ref-for-elementdef-permission\u2461"},{"id":"ref-for-elementdef-permission\u2462"},{"id":"ref-for-elementdef-permission\u2463"},{"id":"ref-for-elementdef-permission\u2464"},{"id":"ref-for-elementdef-permission\u2465"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-elementdef-permission\u2466"},{"id":"ref-for-elementdef-permission\u2467"},{"id":"ref-for-elementdef-permission\u2468"}],"title":"2.2. permission-supporting state at the navigable"},{"refs":[{"id":"ref-for-elementdef-permission\u2460\u24ea"},{"id":"ref-for-elementdef-permission\u2460\u2460"}],"title":"2.3. permission element interesting behaviours"},{"refs":[{"id":"ref-for-elementdef-permission\u2460\u2461"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-elementdef-permission\u2460\u2462"},{"id":"ref-for-elementdef-permission\u2460\u2463"},{"id":"ref-for-elementdef-permission\u2460\u2464"},{"id":"ref-for-elementdef-permission\u2460\u2465"},{"id":"ref-for-elementdef-permission\u2460\u2466"},{"id":"ref-for-elementdef-permission\u2460\u2467"},{"id":"ref-for-elementdef-permission\u2460\u2468"},{"id":"ref-for-elementdef-permission\u2461\u24ea"},{"id":"ref-for-elementdef-permission\u2461\u2460"},{"id":"ref-for-elementdef-permission\u2461\u2461"},{"id":"ref-for-elementdef-permission\u2461\u2462"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-elementdef-permission\u2461\u2463"},{"id":"ref-for-elementdef-permission\u2461\u2464"}],"title":"2.4. permission element algorithms"},{"refs":[{"id":"ref-for-elementdef-permission\u2461\u2465"}],"title":"3. Rendering the permission Element"},{"refs":[{"id":"ref-for-elementdef-permission\u2461\u2466"},{"id":"ref-for-elementdef-permission\u2461\u2467"}],"title":"3.1. Presentation"},{"refs":[{"id":"ref-for-elementdef-permission\u2461\u2468"},{"id":"ref-for-elementdef-permission\u2462\u24ea"}],"title":"3.2. Styling"}],"url":"#elementdef-permission"},
 "enumdef-permissionelementblockerreason": {"dfnID":"enumdef-permissionelementblockerreason","dfnText":"PermissionElementBlockerReason","external":false,"refSections":[{"refs":[{"id":"ref-for-enumdef-permissionelementblockerreason"},{"id":"ref-for-enumdef-permissionelementblockerreason\u2460"}],"title":"2. The permission element."},{"refs":[{"id":"ref-for-enumdef-permissionelementblockerreason\u2461"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-enumdef-permissionelementblockerreason\u2462"},{"id":"ref-for-enumdef-permissionelementblockerreason\u2463"},{"id":"ref-for-enumdef-permissionelementblockerreason\u2464"},{"id":"ref-for-enumdef-permissionelementblockerreason\u2465"},{"id":"ref-for-enumdef-permissionelementblockerreason\u2466"},{"id":"ref-for-enumdef-permissionelementblockerreason\u2467"}],"title":"2.3.2. Activation blockers"}],"url":"#enumdef-permissionelementblockerreason"},
 "expiring-blocker": {"dfnID":"expiring-blocker","dfnText":"Expiring blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-expiring-blocker"},{"id":"ref-for-expiring-blocker\u2460"},{"id":"ref-for-expiring-blocker\u2461"}],"title":"2.3.2. Activation blockers"}],"url":"#expiring-blocker"},
 "f02cd417": {"dfnID":"f02cd417","dfnText":"iterate","external":true,"refSections":[{"refs":[{"id":"ref-for-list-iterate"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-list-iterate\u2460"},{"id":"ref-for-list-iterate\u2461"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list-iterate"},
@@ -1854,7 +2056,7 @@ let dfnPanelData = {
 "htmlpermissionelement": {"dfnID":"htmlpermissionelement","dfnText":"HTMLPermissionElement","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-htmlpermissionelement\u2460"},{"id":"ref-for-htmlpermissionelement\u2461"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-htmlpermissionelement\u2462"},{"id":"ref-for-htmlpermissionelement\u2463"},{"id":"ref-for-htmlpermissionelement\u2464"}],"title":"2.4. permission element algorithms"}],"url":"#htmlpermissionelement"},
 "htmlpermissionelement-add-a-blocker": {"dfnID":"htmlpermissionelement-add-a-blocker","dfnText":"add a blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-add-a-blocker"},{"id":"ref-for-htmlpermissionelement-add-a-blocker\u2460"},{"id":"ref-for-htmlpermissionelement-add-a-blocker\u2461"},{"id":"ref-for-htmlpermissionelement-add-a-blocker\u2462"}],"title":"2.3.2. Activation blockers"}],"url":"#htmlpermissionelement-add-a-blocker"},
 "htmlpermissionelement-add-a-permanent-blocker": {"dfnID":"htmlpermissionelement-add-a-permanent-blocker","dfnText":"add a permanent blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-add-a-permanent-blocker"},{"id":"ref-for-htmlpermissionelement-add-a-permanent-blocker\u2460"}],"title":"2.4. permission element algorithms"}],"url":"#htmlpermissionelement-add-a-permanent-blocker"},
-"htmlpermissionelement-add-a-temporary-blocker": {"dfnID":"htmlpermissionelement-add-a-temporary-blocker","dfnText":"add a temporary blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-add-a-temporary-blocker"},{"id":"ref-for-htmlpermissionelement-add-a-temporary-blocker\u2460"}],"title":"2.4. permission element algorithms"}],"url":"#htmlpermissionelement-add-a-temporary-blocker"},
+"htmlpermissionelement-add-a-temporary-blocker": {"dfnID":"htmlpermissionelement-add-a-temporary-blocker","dfnText":"add a temporary blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-add-a-temporary-blocker"},{"id":"ref-for-htmlpermissionelement-add-a-temporary-blocker\u2460"}],"title":"2.4. permission element algorithms"},{"refs":[{"id":"ref-for-htmlpermissionelement-add-a-temporary-blocker\u2461"}],"title":"3.2. Styling"}],"url":"#htmlpermissionelement-add-a-temporary-blocker"},
 "htmlpermissionelement-add-an-expiring-blocker": {"dfnID":"htmlpermissionelement-add-an-expiring-blocker","dfnText":"add an expiring blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-add-an-expiring-blocker"},{"id":"ref-for-htmlpermissionelement-add-an-expiring-blocker\u2460"}],"title":"2.4. permission element algorithms"}],"url":"#htmlpermissionelement-add-an-expiring-blocker"},
 "htmlpermissionelement-blocker": {"dfnID":"htmlpermissionelement-blocker","dfnText":"blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-blocker"}],"title":"2.2. permission-supporting state at the navigable"},{"refs":[{"id":"ref-for-htmlpermissionelement-blocker\u2460"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-htmlpermissionelement-blocker\u2461"},{"id":"ref-for-htmlpermissionelement-blocker\u2462"},{"id":"ref-for-htmlpermissionelement-blocker\u2463"}],"title":"2.4. permission element algorithms"}],"url":"#htmlpermissionelement-blocker"},
 "htmlpermissionelement-blocker-delay": {"dfnID":"htmlpermissionelement-blocker-delay","dfnText":"blocker delay","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-blocker-delay"}],"title":"2.3.2. Activation blockers"}],"url":"#htmlpermissionelement-blocker-delay"},
@@ -2301,6 +2503,19 @@ let refsData = {
 "https://dom.spec.whatwg.org/#concept-node-remove-ext": {"displayText":"removing steps","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"removing steps","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-node-remove-ext"},
 "https://dom.spec.whatwg.org/#dom-event-istrusted": {"displayText":"isTrusted","export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"isTrusted","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-istrusted"},
 "https://dom.spec.whatwg.org/#eventtarget-activation-behavior": {"displayText":"activation behavior","export":true,"for_":["EventTarget"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"activation behavior","type":"dfn","url":"https://dom.spec.whatwg.org/#eventtarget-activation-behavior"},
+"https://drafts.csswg.org/css-display-4/#valdef-display-inline-block": {"displayText":"inline-block","export":true,"for_":["display","<display-legacy>"],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"inline-block","type":"value","url":"https://drafts.csswg.org/css-display-4/#valdef-display-inline-block"},
+"https://drafts.csswg.org/css-display-4/#valdef-display-none": {"displayText":"none","export":true,"for_":["display","<display-box>"],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"none","type":"value","url":"https://drafts.csswg.org/css-display-4/#valdef-display-none"},
+"https://drafts.csswg.org/css-fonts-4/#valdef-font-style-italic": {"displayText":"italic","export":true,"for_":["font-style"],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"italic","type":"value","url":"https://drafts.csswg.org/css-fonts-4/#valdef-font-style-italic"},
+"https://drafts.csswg.org/css-fonts-4/#valdef-font-style-normal": {"displayText":"normal","export":true,"for_":["font-style"],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"normal","type":"value","url":"https://drafts.csswg.org/css-fonts-4/#valdef-font-style-normal"},
+"https://drafts.csswg.org/css-sizing-3/#propdef-height": {"displayText":"height","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"height","type":"property","url":"https://drafts.csswg.org/css-sizing-3/#propdef-height"},
+"https://drafts.csswg.org/css-sizing-3/#propdef-width": {"displayText":"width","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-sizing","spec":"css-sizing-3","status":"current","text":"width","type":"property","url":"https://drafts.csswg.org/css-sizing-3/#propdef-width"},
+"https://drafts.csswg.org/css-sizing-4/#valdef-width-fit-content": {"displayText":"fit-content","export":true,"for_":["width","height","inline-size","block-size","min-width","min-height","min-inline-size","min-block-size","max-width","max-height","max-inline-size","max-block-size"],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"current","text":"fit-content","type":"value","url":"https://drafts.csswg.org/css-sizing-4/#valdef-width-fit-content"},
+"https://drafts.csswg.org/css-ui-4/#devolvable": {"displayText":"devolvable widget","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"current","text":"devolvable widget","type":"dfn","url":"https://drafts.csswg.org/css-ui-4/#devolvable"},
+"https://drafts.csswg.org/css-values-4/#funcdef-max": {"displayText":"max()","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"max()","type":"function","url":"https://drafts.csswg.org/css-values-4/#funcdef-max"},
+"https://drafts.csswg.org/css-values-4/#funcdef-min": {"displayText":"min()","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-values","spec":"css-values-4","status":"current","text":"min()","type":"function","url":"https://drafts.csswg.org/css-values-4/#funcdef-min"},
+"https://drafts.csswg.org/css2/#valdef-font-size-small": {"displayText":"small","export":true,"for_":["font-size"],"level":"1","normative":true,"shortname":"css","spec":"css22","status":"current","text":"small","type":"value","url":"https://drafts.csswg.org/css2/#valdef-font-size-small"},
+"https://drafts.csswg.org/css2/#valdef-font-size-xx-large": {"displayText":"xx-large","export":true,"for_":["font-size"],"level":"1","normative":true,"shortname":"css","spec":"css22","status":"current","text":"xx-large","type":"value","url":"https://drafts.csswg.org/css2/#valdef-font-size-xx-large"},
+"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio": {"displayText":"contrast ratio","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"current","text":"contrast ratio","type":"dfn","url":"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio"},
 "https://drafts.fxtf.org/geometry-1/#domrectreadonly": {"displayText":"DOMRectReadOnly","export":true,"for_":[],"level":"1","normative":true,"shortname":"geometry","spec":"geometry-1","status":"current","text":"DOMRectReadOnly","type":"interface","url":"https://drafts.fxtf.org/geometry-1/#domrectreadonly"},
 "https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute": {"displayText":"enumerated attribute","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"enumerated attribute","type":"dfn","url":"https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute"},
 "https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#invalid-value-default": {"displayText":"invalid value default","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"invalid value default","type":"dfn","url":"https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#invalid-value-default"},
@@ -2309,6 +2524,7 @@ let refsData = {
 "https://html.spec.whatwg.org/multipage/document-sequences.html#nav-traversable": {"displayText":"traversable navigable","export":true,"for_":["navigable"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"traversable navigable","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#nav-traversable"},
 "https://html.spec.whatwg.org/multipage/document-sequences.html#navigable": {"displayText":"navigable","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"navigable","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#navigable"},
 "https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable": {"displayText":"node navigable","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"node navigable","type":"dfn","url":"https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable"},
+"https://html.spec.whatwg.org/multipage/dom.html#attr-lang": {"displayText":"lang","export":true,"for_":["html-global"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"lang","type":"element-attr","url":"https://html.spec.whatwg.org/multipage/dom.html#attr-lang"},
 "https://html.spec.whatwg.org/multipage/dom.html#concept-content-nothing": {"displayText":"nothing","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"nothing","type":"dfn","url":"https://html.spec.whatwg.org/multipage/dom.html#concept-content-nothing"},
 "https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations": {"displayText":"accessibility considerations","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"accessibility considerations","type":"dfn","url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations"},
 "https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes": {"displayText":"content attributes","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"content attributes","type":"dfn","url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes"},
@@ -2324,6 +2540,7 @@ let refsData = {
 "https://html.spec.whatwg.org/multipage/dom.html#palpable-content-2": {"displayText":"palpable content","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"palpable content","type":"dfn","url":"https://html.spec.whatwg.org/multipage/dom.html#palpable-content-2"},
 "https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2": {"displayText":"phrasing content","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"phrasing content","type":"dfn","url":"https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2"},
 "https://html.spec.whatwg.org/multipage/dom.html#represents": {"displayText":"represent","export":false,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"represent","type":"dfn","url":"https://html.spec.whatwg.org/multipage/dom.html#represents"},
+"https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element": {"displayText":"button","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"button","type":"element","url":"https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type": {"displayText":"event handler event type","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"event handler event type","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes": {"displayText":"event handler IDL attribute","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"event handler idl attribute","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers": {"displayText":"event handler","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"event handler","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers"},
@@ -2364,6 +2581,19 @@ let refsData = {
 "https://webidl.spec.whatwg.org/#this": {"displayText":"this","export":true,"for_":[],"level":"1","normative":true,"shortname":"webidl","spec":"webidl","status":"current","text":"this","type":"dfn","url":"https://webidl.spec.whatwg.org/#this"},
 "https://wicg.github.io/fenced-frame/#elementdef-fencedframe": {"displayText":"fencedframe","export":true,"for_":[],"level":"1","normative":true,"shortname":"fenced-frame","spec":"fenced-frame","status":"current","text":"fencedframe","type":"element","url":"https://wicg.github.io/fenced-frame/#elementdef-fencedframe"},
 "https://wicg.github.io/fenced-frame/#fenced-navigable-container-fenced-navigable": {"displayText":"fenced navigable","export":true,"for_":["fenced navigable container"],"level":"1","normative":true,"shortname":"fenced-frame","spec":"fenced-frame","status":"current","text":"fenced navigable","type":"dfn","url":"https://wicg.github.io/fenced-frame/#fenced-navigable-container-fenced-navigable"},
+"https://www.w3.org/TR/CSS21/box.html#propdef-margin": {"displayText":"margin","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"margin","type":"property","url":"https://www.w3.org/TR/CSS21/box.html#propdef-margin"},
+"https://www.w3.org/TR/CSS21/box.html#propdef-padding-bottom": {"displayText":"padding-bottom","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"padding-bottom","type":"property","url":"https://www.w3.org/TR/CSS21/box.html#propdef-padding-bottom"},
+"https://www.w3.org/TR/CSS21/box.html#propdef-padding-left": {"displayText":"padding-left","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"padding-left","type":"property","url":"https://www.w3.org/TR/CSS21/box.html#propdef-padding-left"},
+"https://www.w3.org/TR/CSS21/box.html#propdef-padding-right": {"displayText":"padding-right","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"padding-right","type":"property","url":"https://www.w3.org/TR/CSS21/box.html#propdef-padding-right"},
+"https://www.w3.org/TR/CSS21/box.html#propdef-padding-top": {"displayText":"padding-top","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"padding-top","type":"property","url":"https://www.w3.org/TR/CSS21/box.html#propdef-padding-top"},
+"https://www.w3.org/TR/CSS21/colors.html#propdef-background-color": {"displayText":"background-color","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"background-color","type":"property","url":"https://www.w3.org/TR/CSS21/colors.html#propdef-background-color"},
+"https://www.w3.org/TR/CSS21/colors.html#propdef-color": {"displayText":"color","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"color","type":"property","url":"https://www.w3.org/TR/CSS21/colors.html#propdef-color"},
+"https://www.w3.org/TR/CSS21/fonts.html#propdef-font-size": {"displayText":"font-size","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"font-size","type":"property","url":"https://www.w3.org/TR/CSS21/fonts.html#propdef-font-size"},
+"https://www.w3.org/TR/CSS21/fonts.html#propdef-font-style": {"displayText":"font-style","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"font-style","type":"property","url":"https://www.w3.org/TR/CSS21/fonts.html#propdef-font-style"},
+"https://www.w3.org/TR/CSS21/visudet.html#propdef-max-width": {"displayText":"max-width","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"max-width","type":"property","url":"https://www.w3.org/TR/CSS21/visudet.html#propdef-max-width"},
+"https://www.w3.org/TR/CSS21/visudet.html#propdef-min-width": {"displayText":"min-width","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"min-width","type":"property","url":"https://www.w3.org/TR/CSS21/visudet.html#propdef-min-width"},
+"https://www.w3.org/TR/CSS21/visuren.html#propdef-display": {"displayText":"display","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"display","type":"property","url":"https://www.w3.org/TR/CSS21/visuren.html#propdef-display"},
+"https://www.w3.org/TR/CSS21/visuren.html#x1": {"displayText":"viewport","export":true,"for_":[],"level":"1","normative":true,"shortname":"css","spec":"css21","status":"current","text":"viewport","type":"dfn","url":"https://www.w3.org/TR/CSS21/visuren.html#x1"},
 };
 
 function mkRefHint(link, ref) {
