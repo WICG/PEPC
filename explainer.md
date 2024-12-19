@@ -51,7 +51,6 @@ experience for users and developers.
    * [Locking the PEPC style](#locking-the-pepc-style)
    * [One PEPC per permission type per page](#one-pepc-per-permission-type-per-page)
    * [Conditions for usage in subframes](#conditions-for-usage-in-subframes)
-   * [Custom cursors](#custom-cursors)
    * [Synthetic click events](#synthetic-click-events)
 - [Privacy](#privacy)
    * [Exposing user information bits](#exposing-user-information-bits)
@@ -850,7 +849,9 @@ rules as their equivalent.
 ### One PEPC per permission type per page
 
 To prevent sites from tile-covering their site with PEPCs, there should be a
-limit of at most one PEPC per permission type, per page.
+limit of at most 2 PEPC per permission type, per page. The reason the limit is
+2 is to support some legitimate use cases where multiple PEPC might be needed
+on the same page.
 
 <!-- TOC --><a name="conditions-for-usage-in-subframes"></a>
 ### Conditions for usage in subframes
@@ -867,12 +868,6 @@ enforced:
     bad actor via a cross-origin embedded site, as the embedded site needs to
     explicitly opt in. The developers who use PEPC without taking any further
     action will be safe by default.
-
-<!-- TOC --><a name="custom-cursors"></a>
-### Custom cursors
-
-Custom cursors should be disabled when the cursor is hovering over the PEPC
-because they can have a potentially misleading hitpoint.
 
 <!-- TOC --><a name="synthetic-click-events"></a>
 ### Synthetic click events
