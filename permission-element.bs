@@ -21,6 +21,10 @@ Abstract: A `<permission>` HTML element to request browser permissions in-page.
 # Disambiguation between multiple definitions with the same text:
 spec:infra; type:dfn; text:user agent
 spec:css21; type:dfn; text:viewport
+spec:css21; type:dfn; text:specified value
+spec:css21; type:dfn; text:computed value
+spec:css21; type:dfn; text:inherited value
+spec:css21; type:dfn; text:inherit
 spec:css21; type:property; text:color
 spec:css21; type:property; text:background-color
 spec:css21; type:property; text:font-size
@@ -525,7 +529,7 @@ Issue: What about event handlers?
 The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserver callback</dfn> implements {{IntersectionObserverCallback}} and runs the following steps:
 
 1. [=Assert=]: The {{IntersectionObserver}}'s {{IntersectionObserver/root}}
-    is the [=Document=]
+    is the [=/document=]
 1. Let |entries| be the value of the first callback parameter, the
     [=/list=] of {{IntersectionObserverEntry|intersection observer entries}}.
 1. [=Assert=]: |entries| is not [=list/is empty|empty=].
@@ -581,10 +585,10 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
 
 ## Presentation ## {#presentation}
 
-The <{permission}> element is a [=devolvable widget=] and is chiefly rendered
-like a <{button}>. The button label is largely expected to be determined by
-the browser, rather than the page, and reflects the [=powerful features=]
-listed in {{[[Types]]}}, expressed as text and icons.
+The <{permission}> element is a [=non-devolvable widget=] and is chiefly
+rendered like a <{button}>. The button label is largely expected to be
+determined by the browser, rather than the page, and reflects the
+[=powerful features=] listed in {{[[Types]]}}, expressed as text and icons.
 
 The page can influence the <{permission}> element's styling, but with
 constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
@@ -592,6 +596,43 @@ the label itself). The page can also select a locale for the text via the
 <{html-global/lang}> attribute.
 
 ## Styling ## {#style}
+
+A <{permission}> element constrains the styling that can be applied to it.
+These constraints come in three flavours:
+
+1. If the condition isn't met, the <{permission}> element in deactivated.
+1. A user-agent defined stylesheet enforces certain styling.
+1. The user-agent enforces bounds on additional styles, where the bounds
+    cannot be easily expressed in CSS. For example, if the style bounds are
+    expressed relative to the computed style of the element.
+
+### Conditions that Deactivate the Element ### {#style-blockers}
+
+If one of these conditions is not met, then a
+[=add a temporary blocker|temporary blocker is added=] with type
+{{PermissionElementBlockerReason/style_invalid}}.
+
+<pre class="simpledef">
+'color', 'background-color':
+  Set by default to the user agent's default `button` colors.
+  The [=contrast ratio=] between the 2 colors needs to be at least 3.
+  Alpha has to be 1.
+
+'font-size':
+  If [=specified value=] is expressed as <a>&lt;relative-size&gt;</a>&#x3a;
+  <ul>
+  <li>Then ''font-size'' must be between ''font-size/small'' and
+  ''font-size/xx-large''.
+  <li>Otherwise, the [=computed value=] must be larger than or equal to the
+  [=computed value=] for ''font-size/small'' and less than or equal to the
+  [=computed value=] of ''font-size/xx-large''.
+  </ul>
+
+</pre>
+
+ISSUE: Define "alpha".
+
+### User-Agent Defined Stylesheet ### {#style-stylesheet}
 
 A <{permission}> element is expected to render with the following styles:
 
@@ -603,82 +644,71 @@ permission {
   whitespace: nowrap;
   user-select: none;
   appearance: auto;
-
-  outline-offset: clamp(0, inherit, none); /* No negative outline-offsets. */
-  font-weight: clamp(200, inherit, none);  /* No font-weights below 200. */
-  word-spacing: clamp(0, inerhit, 0.5em);  /* Word-spacing between 0..0.5em */
-  letter-spacing: clamp(-0.05em, inherit, 0.2em);  /* Letter spacing between -0.05..0.2em */
-
-  /*
-   * Below, we assume that, if no value is specified, this will clamp to the
-   * minimum value, thus effectively providing a default, too.
-   */
-  min-height: clamp(1em, inherit, none);
-  max-height: clamp(none, inherit, 3em);
 }
 </pre>
 
-Additionally, a <{permission}> element puts contraints on a number of
-additional styles. If one of these conditions is not met, then a
-[=add a temporary blocker|temporary blocker is added=] with type
-{{PermissionElementBlockerReason/style_invalid}}.
+### Additional User-Agent Defined Style Bounds ### {#style-style-bounds}
 
-<pre class="simpledef">
-'color', 'background-color':
-  Set by default to the user agent's default `button` colors.
-  The [=contrast ratio=] between the 2 colors needs to be at least 3.
-  Alpha has to be 1.
+A <{permission}> element defines several bounds on styles. For example, we want
+the font size are constraints on the  The style bounds are explained below.
 
-'font-size':
-  Must be set larger or equal than ''font-size/small'' and less than or equal
-  to ''font-size/xx-large''.
+For notational convenience, we imagine that the [=computed value=] of an element
+could be accessed in CSS rules with <code>computed</code>, just like the
+inherited value of an element can via the <code>[=inherit=]</code> keyword.
+Then the following sheet expresses the style bounds:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  outline-offset: clamp(0, computed, none); /* No negative outline-offsets. */
+  font-weight: clamp(200, computed, none);  /* No font-weights below 200. */
+  word-spacing: clamp(0, computed, 0.5em);  /* Word-spacing between 0..0.5em */
+  letter-spacing: clamp(-0.05em, commputed, 0.2em);  /* Letter spacing between -0.05..0.2em */
+
+  min-height: clamp(1em, computed, none);
+  max-height: clamp(none, computed, 3em);
+  min-width: clamp(none, computed, calc(fit-content));
+
+  margin: clamp(4px, computed, none);
+  font-style: if(computed = "normal" or computed = "italic", computed, "normal");
+  display: if (computed = "inline-block" or computed = "none", computed, "inline-block");
+}
 </pre>
 
-ISSUE: font-size: Explainer says, "Zoom will be taken into account when computing font-size." I have no idea what that means with absolute font sizes.
+Additionally, some rules apply based on conditions not easily expressible as
+CSS.
 
-The following conditions on the style are resolved by modifying the style:
+If 'height' is `auto`, then apply:
 
-<pre class="simpledef">
-'margin', and any margin-* properties:
-  Values under `4px` will be corrected to `4px`.
-  This is done to help prevent false positives for the logic that detects the
-  element being covered by something else.
-
-'font-style':
-  Defaults to ''font-style/normal''. If values other than
-  ''font-style/normal'' or ''font-style/italic'' are specified,
-  the default will be used instead.
-
-'display':
-  Defaults to ''display/inline-block''. If values other than
-  ''display/inline-block'' or ''display/none'' are specified, the default will
-  be used again.
-
-'min-width':
-  Defaults to ''width/fit-content''. If a value exists, the <<max()>> of
-  ''width/fit-content'' and the computed value is used.
-
-'max-width':
-  Defaults to 3 * ''width/fit-content''.
-  If a value exists, <<min()>> between the default and the inherited value
-  will be used. However this does not apply if the element has a border with
-  a width of at least 1px and a color that has a contrast ratio with the
-  background-color of at least 3 and alpha of 1.
-
-'padding-top':
-  If 'height' is `auto`, use 'padding-top'&#x3a; clamp(1em, inherit, none); 'padding-bottom'&#x3a; calc(padding-top);
-  Otherwise, ignore.
-
-'padding-left':
-  If 'width' is `auto`, use 'padding-left'&#x3a; clamp(none, inherit, 5em); 'padding-right'&#x3a; calc(padding-left);
-  Otherwise, ...
-
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  padding-top: clamp(1em, computed, none);
+  padding-bottom: calc(padding-top);
+}
 </pre>
 
-ISSUE: Why the complicated 'max-width' rule?
+If 'width' is `auto`, then apply:
 
-ISSUE: 'padding-left' description said: <i>"Otherwise, This does not apply
-under the same border conditions as 'max-width', except 'padding-right'
-with still be set to the value of 'padding-left'."</i> I can't parse that.
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  padding-left: clamp(none, computed, 5em);
+  padding-right: calc(padding-left);
+}
+</pre>
+
+Apply the followinf sheet, if the element does not have all of the following:
+
+- A border width of at least `1px`,
+- a color to background-color contrast ratio of at least 3,
+- and alpha of 1.
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  max-width: clamp(none, computed, calc(3 * fit-content));
+}
+</pre>
 
 # Security & Privacy Considerations # {#secpriv}
