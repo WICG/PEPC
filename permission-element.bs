@@ -583,8 +583,6 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
 
 # Rendering the <{permission}> Element # {#rendering}
 
-## Presentation ## {#presentation}
-
 The <{permission}> element is a [=non-devolvable widget=] and is chiefly
 rendered like a <{button}>. The button label is largely expected to be
 determined by the browser, rather than the page, and reflects the
@@ -594,6 +592,31 @@ The page can influence the <{permission}> element's styling, but with
 constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
 the label itself). The page can also select a locale for the text via the
 <{html-global/lang}> attribute.
+
+## Presentation ## {#presentation}
+
+The [=user agent=] is largely free to render the <{permission}> element
+in a way it thinks best conveys the element's intent. Expectations for
+the <{permission}> element's presentation include:
+
+* Name the [=powerful features=] listed in {{[[Types]]}}, in the language
+    indicated by the [=language=] of the element. Note that this would
+    always be the language indicated by the <{html-global/lang}> attribute,
+    if present.
+* An icon indicating the [=powerful feature=] type.
+* The current [=permission state=] of the [=powerful feature=] in questions.
+    For example, if {{[[Types]]}} is `"camera"` then an indication of whether
+    camera access is currently {{PermissionState/granted}} or
+    {{PermissionState/denied}} might improve user experience.
+
+[=User agents=] are encouraged to name or describe the [=powerful features=]
+in a way that's consistent with similar usage in program or the platform it
+is running on.
+
+Very non-normative examples might be:
+
+* `<permission lang="de" types="geolocation">`: "Standort verwenden".
+* `<permission types="microphone">` (in an English language page): "Use microphone. &#x1f3a4;".
 
 ## Styling ## {#style}
 
