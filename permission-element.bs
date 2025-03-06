@@ -38,12 +38,12 @@ spec:css2; type:property; text:padding-top
 spec:css2; type:property; text:padding-left
 spec:css2; type:property; text:padding-right
 
-
 # Non-exported definitions, which we should be free to use when -- some day --
 # this is integrated into the HTML spec.
 spec:html; type:dfn; text:missing value default
 spec:html; type:dfn; text:invalid value default
 spec:html; type:dfn; text:represent
+spec:html; type:dfn; text:fallback content
 # The big element box:
 spec:html; type:dfn; text:contexts in which this element can be used
 spec:html; type:dfn; text:content model
@@ -112,7 +112,7 @@ time providing implementations with a better signal of user intent.
  <dt>[=Contexts in which this element can be used=]:</dt>
   <dd>Where [=phrasing content=] is expected.</dd>
  <dt>[=Content model=]:</dt>
-  <dd>[=Nothing=].</dd>
+  <dd>[=flow content=].</dd>
  <dt>[=Content attributes=]:</dt>
   <dd>[=Global attributes=]</dd>
   <dd>{{HTMLPermissionElement/type}} — Type of permission this element applies to.</dd>
@@ -130,6 +130,7 @@ time providing implementations with a better signal of user intent.
     interface HTMLPermissionElement : HTMLElement {
       [HTMLConstructor] constructor();
       [CEReactions, Reflect] attribute DOMString type;
+      attribute boolean fallback;
 
       readonly attribute boolean isValid;
       readonly attribute PermissionElementBlockerReason invalidReason;
@@ -147,11 +148,16 @@ ISSUE: Add accessibility considerations.
 ISSUE: Check attribute & event handler & invalid reason names against
     current proposal(s).
 
+The <{permission}> element's content, if any, are its [=fallback content=].
+
 The {{HTMLPermissionElement/type}} attribute controls the behavior of the
 permission element when it is activated. Is is an [=enumerated attribute=],
 whose values are the [=powerful feature/names=] of [=powerful features=]. It
 has neither a
 [=missing value default=] state nor a [=invalid value default=] state.
+
+The {{HTMLPermissionElement/fallback}} attribute reflects whether the
+[=fallback content=] is to be used for certain types of errors.
 
 The {{HTMLPermissionElement/isValid}} attribute reflects whether a the
 permission element is not currently blocked.
@@ -593,6 +599,11 @@ constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
 the label itself). The page can also select a locale for the text via the
 <{html-global/lang}> attribute.
 
+The <{permission}> element supports [=fallback content=], which will be
+displayed by any browser not yet supporting <{permission}>. Note that there are
+also conditions under which a browser that supports <{permission}> falls back to
+its [=fallback content=].
+
 ## Presentation ## {#presentation}
 
 ISSUE: There isn't much precedence for describing the user agent UI in detail.
@@ -749,5 +760,19 @@ permission {
   max-width: clamp(none, computed, calc(3 * fit-content));
 }
 </pre>
+
+## Falling Back ## {#fallback}
+
+A [=user agent=] that does not support <{permission}> element would recognize
+it as a {{HTMLUnknownElement}} and render its children as regular HTML.
+[=User agents=] that support <{permission}> elements should usually
+render the element as described in [[#rendering]], but are still required to
+render the [=fallback content=] under some conditions:
+
+If {{HTMLPermissionElement/fallback}} is true, and if the internal
+{{[[BlockerList]]}} [=list/contains=] a record whose [=blocker reason=] is
+{{PermissionElementBlockerReason/type_invalid}}, then the
+<{permission}> element should render the [=fallback content=] instead of the
+<{permission}>'s usual rendering.
 
 # Security & Privacy Considerations # {#secpriv}
