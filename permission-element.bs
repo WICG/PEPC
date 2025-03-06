@@ -764,7 +764,7 @@ permission {
 ## Falling Back ## {#fallback}
 
 A [=user agent=] that does not support <{permission}> element would recognize
-it as a {{HTMLUnknownElement}} and render its children as regular HTML.
+it as an {{HTMLUnknownElement}} and render its children as regular HTML.
 [=User agents=] that support <{permission}> elements should usually
 render the element as described in [[#rendering]], but are still required to
 render the [=fallback content=] under some conditions:
