@@ -208,6 +208,12 @@ The <{permission}> element has the following internal slots:
     {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
     the position of the <{permission}> relative to the [=viewport=].
 
+* <dfn attribute for="HTMLPermissionElement">\[[LastNotifiedValidState]]</dfn>
+    is a [=boolean=] that stores the most recently notified state of
+    {{HTMLPermissionElement/isValid}}. This is used to determine whether
+    an {{HTMLPermissionElement/onvalidationstatuschange}} event needs to
+    be thrown.
+
 ## <{permission}>-supporting state at the [=/navigable=] ## {#permission-element-external-state}
 
 In order to support the <{permission}> element, the [=/navigable=] maintains
@@ -464,6 +470,7 @@ The {{HTMLPermissionElement}} constructor steps are:
 
 1. Initialize the internal {{[[Types]]}} slot to null.
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
+1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
 
 </div>
 
@@ -488,6 +495,7 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
     [=this=]
     is a [=fenced navigable=], then [=add a permanent blocker=]
     with {{PermissionElementBlockerReason/illegal_subframe}}.
+1. [=Maybe trigger an onvalidstatechange event=] on [=this=].
 
 </div>
 
@@ -496,6 +504,7 @@ The {{HTMLPermissionElement}} [=removing steps=] are:
 
 1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[PermissionElements]]}}.
 1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
+1. [=Maybe trigger an onvalidstatechange event=] on [=this=].
 
 </div>
 
@@ -521,10 +530,14 @@ A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| i
 1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
 1. If |event|.{{Event/isTrusted}} is false, then return.
 1. If |element|.{{HTMLPermissionElement/isValid}} is false, then return.
-1. [=Request permission to use=] the [=powerful features=] named in |element|'s
-    {{[[Types]]}}.
+1. [=Request permission to use=] the [=powerful features=] named in
+    |element|'s {{[[Types]]}}.
+1. [=Dispatch onresolve=] on [=this=].
 
 Issue: What about event handlers?
+
+Issue: What about dismissal? The Permission spec doesn't seem to know about
+dismissals.
 </div>
 
 <div algorithm="HTMLPermissionElement/IntersectionObserver callback">
@@ -551,6 +564,7 @@ The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserve
     {{PermissionElementBlockerReason/intersection_changed}}.
 1. Set {{[[IntersectionRect]]}} to
     |entry|.{{IntersectionObserverEntry/intersectionRect}}
+1. [=Maybe trigger an onvalidstatechange event=] on [=this=].
 
 ISSUE: Do I need to define dictionary equality?
 </div>
@@ -580,6 +594,35 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
     1. If |current| is [=type permissible=], then [=remove blockers=] with
         {{PermissionElementBlockerReason/unsuccesful_registration}} from
         |current|.
+
+</div>
+
+## <{permission}> element event algorithms ## {#events}
+
+<div algorithm>
+To <dfn for=HTMLPermissionElement>maybe trigger an onvalidstatechange
+event</dfn> for |element|:
+
+1. Let |old| be {{[[LastNotifiedValidState]]}}.
+1. Let |new| be whether |element|’s [=blocker=] is Nothing.
+1. Set {{[[LastNotifiedValidState]]}} to |new|.
+1. If |old| != |new|, then:
+    1. Let |event| be a new {{Event}}.
+    1. [=Event/Initialize=] |event| with
+        type "{{HTMLPermissionElement/onvalidationstatuschange}}",
+        bubbles as true, and
+        canceable as true.
+    1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+<div algorithm>
+To <dfn for=HTMLPermisssionElement>dispatch onresolve</dfn> for |element|:
+
+1. Let |event| be a new {{Event}}.
+1. [=Event/Initialize=] |event| with type "{{HTMLPermissionElement/onresolve}}",
+    bubbles as true, and canceable as true.
+1. [=/Dispatch=] |event| to |element|.
 
 </div>
 
