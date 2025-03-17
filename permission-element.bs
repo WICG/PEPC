@@ -20,23 +20,23 @@ Abstract: A `<permission>` HTML element to request browser permissions in-page.
 <pre class=link-defaults>
 # Disambiguation between multiple definitions with the same text:
 spec:infra; type:dfn; text:user agent
-spec:css21; type:dfn; text:viewport
-spec:css21; type:dfn; text:specified value
-spec:css21; type:dfn; text:computed value
-spec:css21; type:dfn; text:inherited value
-spec:css21; type:dfn; text:inherit
-spec:css21; type:property; text:color
-spec:css21; type:property; text:background-color
-spec:css21; type:property; text:font-size
-spec:css21; type:property; text:font-style
-spec:css21; type:property; text:display
-spec:css21; type:property; text:margin
-spec:css21; type:property; text:min-width
-spec:css21; type:property; text:max-width
-spec:css21; type:property; text:padding-bottom
-spec:css21; type:property; text:padding-top
-spec:css21; type:property; text:padding-left
-spec:css21; type:property; text:padding-right
+spec:css2; type:dfn; text:viewport
+spec:css2; type:dfn; text:specified value
+spec:css2; type:dfn; text:computed value
+spec:css2; type:dfn; text:inherited value
+spec:css2; type:dfn; text:inherit
+spec:css2; type:property; text:color
+spec:css2; type:property; text:background-color
+spec:css2; type:property; text:font-size
+spec:css2; type:property; text:font-style
+spec:css2; type:property; text:display
+spec:css2; type:property; text:margin
+spec:css2; type:property; text:min-width
+spec:css2; type:property; text:max-width
+spec:css2; type:property; text:padding-bottom
+spec:css2; type:property; text:padding-top
+spec:css2; type:property; text:padding-left
+spec:css2; type:property; text:padding-right
 
 
 # Non-exported definitions, which we should be free to use when -- some day --
@@ -160,8 +160,8 @@ The {{HTMLPermissionElement/invalidReason}} attribute is an
 [=enumerated attribute=] that reflects the internal state of the permission
 element. It's value set are {{PermissionElementBlockerReason}}
 
-The global <a attribute spec=html>lang</a> attribute is observed by the
-<{permission}> element to select localized text.
+The global <a attribute spec=html for=HTMLElement>lang</a> attribute is
+observed by the <{permission}> element to select localized text.
 
 The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on <{permission}> elements [=event handler IDL attributes=]:
 
@@ -737,7 +737,7 @@ permission {
 }
 </pre>
 
-Apply the followinf sheet, if the element does not have all of the following:
+Apply the following sheet, if the element does not have all of the following:
 
 - A border width of at least `1px`,
 - a color to background-color contrast ratio of at least 3,
