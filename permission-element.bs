@@ -495,7 +495,7 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
     [=this=]
     is a [=fenced navigable=], then [=add a permanent blocker=]
     with {{PermissionElementBlockerReason/illegal_subframe}}.
-1. [=Maybe trigger an onvalidstatechange event=] on [=this=].
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
 
 </div>
 
@@ -504,7 +504,7 @@ The {{HTMLPermissionElement}} [=removing steps=] are:
 
 1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[PermissionElements]]}}.
 1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
-1. [=Maybe trigger an onvalidstatechange event=] on [=this=].
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
 
 </div>
 
@@ -530,14 +530,21 @@ A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| i
 1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
 1. If |event|.{{Event/isTrusted}} is false, then return.
 1. If |element|.{{HTMLPermissionElement/isValid}} is false, then return.
-1. [=Request permission to use=] the [=powerful features=] named in
-    |element|'s {{[[Types]]}}.
+1. Let |result| be the result of [=request permission to use=] the
+    [=powerful features=] named in |element|'s {{[[Types]]}}.
+1. If |result| is `cancel`, [=dispatch ondismiss=] on [=this=] and return.
+
+    Issue: The [[PERMISSIONS]] spec assumes that [=request permission to use=]
+    will always succeed. That is, it assumed that the user will always make a
+    choice and that the algorithm will always deliver a `grant`/`deny`
+    answer corresponding to that choice. But you can't force a user to do that.
+    Some (or all?) [=user agents=] will allow a user to just close the dialog
+    box without making a choice.
+    Here, we will pretend this non-choice result is represented by the result
+    `cancel`.
+
 1. [=Dispatch onresolve=] on [=this=].
 
-Issue: What about event handlers?
-
-Issue: What about dismissal? The Permission spec doesn't seem to know about
-dismissals.
 </div>
 
 <div algorithm="HTMLPermissionElement/IntersectionObserver callback">
@@ -564,7 +571,7 @@ The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserve
     {{PermissionElementBlockerReason/intersection_changed}}.
 1. Set {{[[IntersectionRect]]}} to
     |entry|.{{IntersectionObserverEntry/intersectionRect}}
-1. [=Maybe trigger an onvalidstatechange event=] on [=this=].
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
 
 ISSUE: Do I need to define dictionary equality?
 </div>
@@ -600,8 +607,7 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
 ## <{permission}> element event algorithms ## {#events}
 
 <div algorithm>
-To <dfn for=HTMLPermissionElement>maybe trigger an onvalidstatechange
-event</dfn> for |element|:
+To <dfn for=HTMLPermissionElement>maybe dispatch onvalidstatechange</dfn> for |element|:
 
 1. Let |old| be {{[[LastNotifiedValidState]]}}.
 1. Let |new| be whether |element|’s [=blocker=] is Nothing.
@@ -609,9 +615,12 @@ event</dfn> for |element|:
 1. If |old| != |new|, then:
     1. Let |event| be a new {{Event}}.
     1. [=Event/Initialize=] |event| with
-        type "{{HTMLPermissionElement/onvalidationstatuschange}}",
-        bubbles as true, and
-        canceable as true.
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+        "{{HTMLPermissionElement/onvalidationstatuschange}}",
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+        true, and
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+        true.
     1. [=/Dispatch=] |event| to |element|.
 
 </div>
@@ -620,8 +629,28 @@ event</dfn> for |element|:
 To <dfn for=HTMLPermisssionElement>dispatch onresolve</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
-1. [=Event/Initialize=] |event| with type "{{HTMLPermissionElement/onresolve}}",
-    bubbles as true, and canceable as true.
+1. [=Event/Initialize=] |event| with
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+    "{{HTMLPermissionElement/onresolve}}",
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+    true, and
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+    true.
+1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+<div algorithm>
+To <dfn for=HTMLPermisssionElement>dispatch ondismiss</dfn> for |element|:
+
+1. Let |event| be a new {{Event}}.
+1. [=Event/Initialize=] |event| with
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+    "{{HTMLPermissionElement/ondismiss}}",
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+    true, and
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+    true.
 1. [=/Dispatch=] |event| to |element|.
 
 </div>
