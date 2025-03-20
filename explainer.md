@@ -2,25 +2,17 @@
 
 ## tl;dr
 
-We propose a semantic permission element with styling constraints that ensures a
-very high level of confidence concerning *user intent* to make a permission
-decision. We believe this solves user problems related to accessibility,
-context, regret, and more.
+We propose a semantic permission element with browser-controlled content and styling constraints that ensures a very high level of confidence concerning user intent to make a permission decision on site or OS level. PEPC unifies permission control by providing a clear, consistent, in-page point of access to manage permissions in both the browser & the OS.
+We believe this solves user problems related to accessibility, context, regret, and more.
+By combining a semantic HTML permission element (Image A) with a full-page modal confirmation UI (Image B, C) that applies a scrim to obscure underlying site content during the critical decision moment (making manipulation and change blindness more difficult), and by ensuring that browsers control the content in front of the user (Image A), PEPC enhances user intent capture, offering improved accessibility, security, and user-friendliness for both users and developers. Styling constraints are necessary to protect the browser-controlled content from being altered or removed by the site, ensuring that the content presented to users aligns with the browser's understanding of their intent. This offers a significantly better user experience than current permission flows through enhanced accessibility, security, and user-friendliness for both users and developers.
 
-The permission element is designed to be more [accessible](#accessibility) and
-more secure than the current permission flows. Full page modal confirmation UI
-reduces the risk of change blindness and makes it more difficult for sites to
-manipulate the user's decision making by obscuring site content during the
-critical decision moment of the journey.
-
-A semantic element and modal UI are connected in the same proposal as accurately
-capturing user intent is essential to reducing the modal's potential for user
-annoyance.
-
-While we believe improvements to existing capability based permission flows can
-and should be explored, we believe there to be limited headroom for
-optimization, and that this proposal offers a significantly better user
-experience for users and developers.
+ <div style="display: flex;">
+  <img src="images/New_HTML_permission_element.png" style="height: 250px; margin-right: 15px; object-fit: contain;">
+  <img src="images/Browser_permission_prompt.png" style="height: 250px; margin-right: 15px; object-fit: contain;">
+  <img src="images/pepc_secondaryUI_animated.gif" style="height: 250px; object-fit: contain;">
+  <p style="margin-top: 5px;">A. New HTML Permission Element B. Browser permission prompt C. Combined</p>
+</div>
+ 
 
 ## Table of Contents
 <!-- TOC start -->
