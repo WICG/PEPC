@@ -130,7 +130,6 @@ time providing implementations with a better signal of user intent.
     interface HTMLPermissionElement : HTMLElement {
       [HTMLConstructor] constructor();
       [CEReactions, Reflect] attribute DOMString type;
-      attribute boolean fallback;
 
       readonly attribute boolean isValid;
       readonly attribute PermissionElementBlockerReason invalidReason;
@@ -155,9 +154,6 @@ permission element when it is activated. Is is an [=enumerated attribute=],
 whose values are the [=powerful feature/names=] of [=powerful features=]. It
 has neither a
 [=missing value default=] state nor a [=invalid value default=] state.
-
-The {{HTMLPermissionElement/fallback}} attribute reflects whether the
-[=fallback content=] is to be used for certain types of errors.
 
 The {{HTMLPermissionElement/isValid}} attribute reflects whether a the
 permission element is not currently blocked.
@@ -600,9 +596,9 @@ the label itself). The page can also select a locale for the text via the
 <{html-global/lang}> attribute.
 
 The <{permission}> element supports [=fallback content=], which will be
-displayed by any browser not yet supporting <{permission}>. Note that there are
-also conditions under which a browser that supports <{permission}> falls back to
-its [=fallback content=].
+displayed by any browser not yet supporting <{permission}>. Note that
+there are also conditions under which a browser that supports
+<{permission}> falls back to its [=fallback content=].
 
 ## Presentation ## {#presentation}
 
@@ -763,16 +759,16 @@ permission {
 
 ## Falling Back ## {#fallback}
 
-A [=user agent=] that does not support <{permission}> elements would recognize
-them as {{HTMLUnknownElement}} and render their children as regular HTML.
+A [=user agent=] that does not support <{permission}> elements would
+recognize them as {{HTMLUnknownElement}} and render their children as
+regular HTML.
 [=User agents=] that support <{permission}> elements should usually
-render the element as described in [[#rendering]], but are still required to
-render the [=fallback content=] under some conditions:
+render the element as described in [[#rendering]], but are still
+required to render the [=fallback content=] under one condition:
 
-If {{HTMLPermissionElement/fallback}} is true, and if the internal
-{{[[BlockerList]]}} [=list/contains=] a record whose [=blocker reason=] is
-{{PermissionElementBlockerReason/type_invalid}}, then the
-<{permission}> element should render the [=fallback content=] instead of the
-<{permission}>'s usual rendering.
+If the internal {{[[BlockerList]]}} [=list/contains=] a record whose
+[=blocker reason=] is {{PermissionElementBlockerReason/type_invalid}},
+then the <{permission}> element should render the [=fallback content=]
+instead of the <{permission}>'s usual rendering.
 
 # Security & Privacy Considerations # {#secpriv}
