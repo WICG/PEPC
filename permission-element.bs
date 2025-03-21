@@ -37,8 +37,12 @@ spec:css2; type:property; text:padding-bottom
 spec:css2; type:property; text:padding-top
 spec:css2; type:property; text:padding-left
 spec:css2; type:property; text:padding-right
+spec:css-borders-4; type:property; text:border-right
+spec:css-borders-4; type:property; text:border-left
+spec:css-borders-4; type:property; text:border-top
+spec:css-borders-4; type:property; text:border-bottom
 
-# Non-exported definitions, which we should be free to use when -- some day --
+# Non-exported definitions, which we should be free to use when -- some day -- this is integrated into HTML.
 # this is integrated into the HTML spec.
 spec:html; type:dfn; text:missing value default
 spec:html; type:dfn; text:invalid value default
@@ -776,6 +780,7 @@ permission {
   whitespace: nowrap;
   user-select: none;
   appearance: auto;
+  box-sizing: content-box !important;
 }
 </pre>
 
@@ -800,6 +805,8 @@ permission {
   min-height: clamp(1em, computed, none);
   max-height: clamp(none, computed, 3em);
   min-width: clamp(none, computed, calc(fit-content));
+
+  border-width: clamp(none, computed, 1em);
 
   margin: clamp(4px, computed, none);
   font-style: if(computed = "normal" or computed = "italic", computed, "normal");
@@ -842,6 +849,75 @@ permission {
   max-width: clamp(none, computed, calc(3 * fit-content));
 }
 </pre>
+
+The following CSS properties can be used normally:
+
+* 'font-kerning'
+* 'font-optical-sizing'
+* 'font-stretch'
+* 'font-synthesis-weight'
+* 'font-synthesis-style'
+* 'font-synthesis-small-caps'
+* 'font-feature-settings'
+* 'forced-color-adjust'
+* 'text-rendering'
+* 'align-self'
+* 'anchor-name'
+* 'aspect-ratio'
+* 'border' and all
+    [[css-backgrounds-3#border-shorthands|border shorthand properties]],
+    'border-top', 'border-right', 'border-bottom', 'border-left'
+* 'clear'
+* 'color-scheme'
+* 'contain'
+* 'contain-intrinsic-width'
+* 'contain-intrinsic-height'
+* 'container-name'
+* 'container-type'
+* 'counter-reset', 'counter-increment', 'counter-set'
+* 'flex' and its longhands, 'flex-grow', 'flex-shrink', 'flex-basis'
+* 'float'
+* 'height'
+* 'isolation'
+* 'justify-self'
+* 'left'
+* 'order'
+* 'orphans'
+* 'outline' and mostly its [[css-ui-4#outline|longhands]],
+    'outline-color' and 'outline-style'.
+    <br>Note that 'outline-offset' is clamped by the rules above.
+* 'overflow-anchor'
+* 'overscroll-behavior' and its
+    [[css-overscroll-1#overscroll-behavior-longhands-physical|longhands]],
+    'overscroll-behavior-inline', 'overscroll-behavior-block',
+    'overscroll-behavior-x', 'overscroll-behavior-y'
+* 'page'
+* 'position'
+* 'position-anchor'
+* 'content-visibility'
+* 'right'
+* 'scroll-margin' and its [[css-scroll-snap-1#longhands|longhands]],
+    'scroll-margin-top', 'scroll-margin-right', 'scroll-margin'bottom',
+    'scroll-margin-left'
+* 'scroll-padding' and its [[css-scroll-snap-1#longhands|longhands]],
+    'scroll-padding-top', 'scroll-padding-right', 'scroll-padding-bottom',
+    'scroll-padding-left', 'scroll-padding-inline-start',
+    'scroll-padding-block-start', 'scroll-padding-block-start',
+    'scroll-padding-inline-end', 'scroll-padding-block-end'
+* 'text-spacing-trim'
+* 'top'
+* 'visibility'
+* 'x'
+* 'y'
+* 'ruby-position'
+* 'user-select'
+* 'width'
+* 'will-change'
+* 'z-index'
+
+Properties that are not listed above, or in the rules in this section,
+and aren't logically equivalent to one of the properties mentioned here,
+will be ignored.
 
 ## Falling Back ## {#fallback}
 
