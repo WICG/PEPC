@@ -38,12 +38,12 @@ spec:css2; type:property; text:padding-top
 spec:css2; type:property; text:padding-left
 spec:css2; type:property; text:padding-right
 
-
 # Non-exported definitions, which we should be free to use when -- some day --
 # this is integrated into the HTML spec.
 spec:html; type:dfn; text:missing value default
 spec:html; type:dfn; text:invalid value default
 spec:html; type:dfn; text:represent
+spec:html; type:dfn; text:fallback content
 # The big element box:
 spec:html; type:dfn; text:contexts in which this element can be used
 spec:html; type:dfn; text:content model
@@ -112,7 +112,7 @@ time providing implementations with a better signal of user intent.
  <dt>[=Contexts in which this element can be used=]:</dt>
   <dd>Where [=phrasing content=] is expected.</dd>
  <dt>[=Content model=]:</dt>
-  <dd>[=Nothing=].</dd>
+  <dd>[=flow content=].</dd>
  <dt>[=Content attributes=]:</dt>
   <dd>[=Global attributes=]</dd>
   <dd>{{HTMLPermissionElement/type}} — Type of permission this element applies to.</dd>
@@ -146,6 +146,8 @@ ISSUE: Add accessibility considerations.
 
 ISSUE: Check attribute & event handler & invalid reason names against
     current proposal(s).
+
+The <{permission}> element's content, if any, are its [=fallback content=].
 
 The {{HTMLPermissionElement/type}} attribute controls the behavior of the
 permission element when it is activated. Is is an [=enumerated attribute=],
@@ -593,6 +595,11 @@ constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
 the label itself). The page can also select a locale for the text via the
 <{html-global/lang}> attribute.
 
+The <{permission}> element supports [=fallback content=], which will be
+displayed by any browser not yet supporting <{permission}>. Note that
+there are also conditions under which a browser that supports
+<{permission}> falls back to its [=fallback content=].
+
 ## Presentation ## {#presentation}
 
 ISSUE: There isn't much precedence for describing the user agent UI in detail.
@@ -749,5 +756,19 @@ permission {
   max-width: clamp(none, computed, calc(3 * fit-content));
 }
 </pre>
+
+## Falling Back ## {#fallback}
+
+A [=user agent=] that does not support <{permission}> elements would
+recognize them as {{HTMLUnknownElement}} and render their children as
+regular HTML.
+[=User agents=] that support <{permission}> elements should usually
+render the element as described in [[#rendering]], but are still
+required to render the [=fallback content=] under one condition:
+
+If the internal {{[[BlockerList]]}} [=list/contains=] a record whose
+[=blocker reason=] is {{PermissionElementBlockerReason/type_invalid}},
+then the <{permission}> element should render the [=fallback content=]
+instead of the <{permission}>'s usual rendering.
 
 # Security & Privacy Considerations # {#secpriv}
