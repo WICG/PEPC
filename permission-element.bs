@@ -118,8 +118,8 @@ time providing implementations with a better signal of user intent.
   <dd>{{HTMLPermissionElement/type}} — Type of permission this element applies to.</dd>
   <dd>{{HTMLPermissionElement/isValid}} — query whether the element can currently be activated.</dd>
   <dd>{{HTMLPermissionElement/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
-  <dd>{{HTMLPermissionElement/ondismiss}} — notifies when the user has dismissed the permission prompt.</dd>
-  <dd>{{HTMLPermissionElement/onresolve}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
+  <dd>{{HTMLPermissionElement/onpromptdismiss}} — notifies when the user has dismissed the permission prompt.</dd>
+  <dd>{{HTMLPermissionElement/onpromptaction}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
   <dd>{{HTMLPermissionElement/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
  <dt>[=Accessibility considerations=]:</dt>
   <dd></dd>
@@ -134,8 +134,8 @@ time providing implementations with a better signal of user intent.
       readonly attribute boolean isValid;
       readonly attribute PermissionElementBlockerReason invalidReason;
 
-      attribute EventHandler onresolve;
-      attribute EventHandler ondismiss;
+      attribute EventHandler onpromptaction;
+      attribute EventHandler onpromptdismiss;
       attribute EventHandler onvalidationstatuschange;
     };
    </pre>
@@ -168,8 +168,8 @@ observed by the <{permission}> element to select localized text.
 The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on <{permission}> elements [=event handler IDL attributes=]:
 
 <pre class=simpledef>
-onresolve: Event
-ondismiss: Event
+onpromptaction: Event
+onpromptdismiss: Event
 onvalidationstatuschange: Event
 </pre>
 
@@ -210,9 +210,15 @@ The <{permission}> element has the following internal slots:
 
 * <dfn attribute for="HTMLPermissionElement">\[[LastNotifiedValidState]]</dfn>
     is a [=boolean=] that stores the most recently notified state of
-    {{HTMLPermissionElement/isValid}}. This is used to determine whether
-    an {{HTMLPermissionElement/onvalidationstatuschange}} event needs to
-    be thrown.
+    {{HTMLPermissionElement/isValid}}.
+
+* <dfn attribute for="HTMLPermissionElement">\[[LastNotifiedInvalidReason]]</dfn>
+    is a [=string=] that stores the most recently notified state of
+    {{HTMLPermissionElement/invalidReason}}.
+    {{[[LastNotifiedValidState]]}} and {{[[LastNotifiedInvalidReason]]}} are
+    used to determine whether an
+    {{HTMLPermissionElement/onvalidationstatuschange}} event needs to be
+    dispatches.
 
 ## <{permission}>-supporting state at the [=/navigable=] ## {#permission-element-external-state}
 
@@ -471,6 +477,8 @@ The {{HTMLPermissionElement}} constructor steps are:
 1. Initialize the internal {{[[Types]]}} slot to null.
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
 1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
+1. Initialize the internal {{[[LastNotifiedInvalidReason]]}} with the empty
+    string.
 
 </div>
 
@@ -530,20 +538,22 @@ A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| i
 1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
 1. If |event|.{{Event/isTrusted}} is false, then return.
 1. If |element|.{{HTMLPermissionElement/isValid}} is false, then return.
-1. Let |result| be the result of [=request permission to use=] the
-    [=powerful features=] named in |element|'s {{[[Types]]}}.
-1. If |result| is `cancel`, [=dispatch ondismiss=] on [=this=] and return.
+1. [=Request permission to use=] the [=powerful features=] named in
+    |element|'s {{[[Types]]}}.
+1. If the previous step was cancelled or dismissed by the user, then
+    [=dispatch onpromptdismiss=] on [=this=] and return.
 
     Issue: The [[PERMISSIONS]] spec assumes that [=request permission to use=]
-    will always succeed. That is, it assumed that the user will always make a
+    will always succeed. That is, it assumes that the user will always make a
     choice and that the algorithm will always deliver a `grant`/`deny`
     answer corresponding to that choice. But you can't force a user to do that.
-    Some (or all?) [=user agents=] will allow a user to just close the dialog
-    box without making a choice.
-    Here, we will pretend this non-choice result is represented by the result
-    `cancel`.
+    Some [=user agents=] may have different UI affordances for an explicit
+    denial (e.g. a "deny" button) on one hand, and cancelling or dismissing the
+    request dialog (e.g. an "X" button in the top right corner). Here, we
+    distinguish between these two actions, despite no clear hook for this
+    in the underlying specification.
 
-1. [=Dispatch onresolve=] on [=this=].
+1. [=Dispatch onpromptaction=] on [=this=].
 
 </div>
 
@@ -609,10 +619,14 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
 <div algorithm>
 To <dfn for=HTMLPermissionElement>maybe dispatch onvalidstatechange</dfn> for |element|:
 
-1. Let |old| be {{[[LastNotifiedValidState]]}}.
-1. Let |new| be whether |element|’s [=blocker=] is Nothing.
-1. Set {{[[LastNotifiedValidState]]}} to |new|.
-1. If |old| != |new|, then:
+1. Let |oldState| be {{[[LastNotifiedValidState]]}}.
+1. Let |newState| be whether |element|’s [=blocker=] is Nothing.
+1. Set {{[[LastNotifiedValidState]]}} to |newState|.
+1. Let |oldReason| be {{[[LastNotifiedInvalidReason]]}}.
+1. Let |newReason| be whether |element|’s
+    {{HTMLPermissionElement/invalidReason}}.
+1. Set {{[[LastNotifiedInvalidReason]]}} to |newReason|.
+1. If |oldState| != |newState| or |oldReason| != |newReason|, then:
     1. Let |event| be a new {{Event}}.
     1. [=Event/Initialize=] |event| with
         <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
@@ -626,12 +640,12 @@ To <dfn for=HTMLPermissionElement>maybe dispatch onvalidstatechange</dfn> for |e
 </div>
 
 <div algorithm>
-To <dfn for=HTMLPermisssionElement>dispatch onresolve</dfn> for |element|:
+To <dfn for=HTMLPermisssionElement>dispatch onpromptaction</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
 1. [=Event/Initialize=] |event| with
     <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{HTMLPermissionElement/onresolve}}",
+    "{{HTMLPermissionElement/onpromptaction}}",
     <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
     true, and
     <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
@@ -641,12 +655,12 @@ To <dfn for=HTMLPermisssionElement>dispatch onresolve</dfn> for |element|:
 </div>
 
 <div algorithm>
-To <dfn for=HTMLPermisssionElement>dispatch ondismiss</dfn> for |element|:
+To <dfn for=HTMLPermisssionElement>dispatch onpromptdismiss</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
 1. [=Event/Initialize=] |event| with
     <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{HTMLPermissionElement/ondismiss}}",
+    "{{HTMLPermissionElement/onpromptdismiss}}",
     <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
     true, and
     <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
