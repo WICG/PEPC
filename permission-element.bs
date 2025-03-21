@@ -885,7 +885,7 @@ The following CSS properties can be used normally:
 * 'orphans'
 * 'outline' and mostly its [[css-ui-4#outline|longhands]],
     'outline-color' and 'outline-style'.
-    Note that 'outline-offset' is clamped by the rules above.
+    <br>Note that 'outline-offset' is clamped by the rules above.
 * 'overflow-anchor'
 * 'overscroll-behavior' and its
     [[css-overscroll-1#overscroll-behavior-longhands-physical|longhands]],
