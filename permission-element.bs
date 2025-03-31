@@ -599,10 +599,9 @@ To determine whether an |element| is <dfn for="HTMLPermissionElement">type permi
 1. [=list/iterate|For each=] |current| in
     |element|'s [=node navigable=]'s {{[[PermissionElements]]}}:
     1. If |current| is |element|, then [=iteration/break=].
-    1. If the [=set/intersection=] of |element|.{{[[Types]]}} with
-        |current|.{{[[Types]]}} is not [=list/is empty|empty=],
+    1. If |element|.{{[[Types]]}} [=set/equals=] |current|.{{[[Types]]}}
         then increment |count| by 1.
-1. Return whether |count| is less than 2.
+1. Return whether |count| is less than 3.
 
 </div>
 
