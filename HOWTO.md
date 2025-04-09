@@ -3,7 +3,9 @@
 ### Chrome
 Use a version of Chrome that is version 121.0.6136 or higher. This might mean you need to download a [canary](https://www.google.com/chrome/canary/), [dev](https://www.google.com/chrome/dev/) or [beta](https://www.google.com/chrome/beta/) version of Chrome. You can check your current browser version by visiting `chrome://version`.
 
-To enable the PEPC feature you need to start Chrome with the command line flag: `--enable-features=PermissionElement`. You need to make sure the Chrome app is fully closed; simply starting a new instance while one is already open will not work on certain Operating Systems. You can verify the flag is active by visiting `chrome://version`.
+To enable the PEPC feature you need to start Chrome with the command line flag: `--enable-blink-features=PermissionElement`. You need to make sure the Chrome app is fully closed; simply starting a new instance while one is already open will not work on certain Operating Systems. You can verify the flag is active by visiting `chrome://version`.
+
+You can alternatively visit `chrome://flags` and look for `Page embedded permission control (permission element)`.
 
 ## Feature Detection
 You can use code such as the following example to determine if PEPC is supported:
@@ -29,18 +31,31 @@ if (typeof HTMLPermissionElement === 'function') {
 }
 ```
 
-More advanced feature detection (such as per-type) is not currently supported.
+More advanced feature detection (such as per-type) is supported from M137:
+
+```JS
+if (typeof HTMLPermissionElement != 'undefined' &&
+    typeof HTMLPermissionElement.isTypeSupported == 'function" &&
+    HTMLPermissionElement.isTypeSupported("geolocation")) {
+  // supported
+} else {
+  // not supported
+}
+```
 
 ## Using PEPC
 You can visit https://permission.site/pepc for a quick example and test.
 
-To add the PEPC element to your page simply include it as you would any other HTML element. It does not have an end tag or contents.
+To add the PEPC element to your page simply include it as you would any other HTML element. It's child nodes will not render, and you can use them as fallback content in case the permission element is not supported in the current browser.
 
 ```HTML
 <permission type="camera microphone" ondismiss="promptDismiss()" onresolve="promptResolve()">
+  <!-- your own button to be shown if the permission element is not supported -->
+  <button id="fallback-button">Use camera and microphone</button>
+</permission>
 ```
 
-Current supported `type` attribute values (on Chrome) are: `"camera"`, `"microphone"` or both together `"camera microphone"`.
+Current supported `type` attribute values (on Chrome) are: `"camera"`, `"microphone"` or both together `"camera microphone"`, and `"geolocation"`.
 
 In order to make use of the permission you can use the permissions API to listen to permission status changes. This has the advantage that you will catch all permission status changes.
 
@@ -57,6 +72,21 @@ navigator.permissions.query({name: "camera"})
         startUsingCamera(); // <= your implementation here
   });
 ```
+
+You can also use the permission element's specific events to listen to user interactions with the permission prompt, there are 2 events: `onpromptaction` and `onpromptdismiss` (in Chrome, implemented from M135).
+```HTML
+<permission id="pepc" type="geolocation"></permission>
+<script>
+  const pepc = document.getElementById('pepc');
+
+  pepc.addEventListener('onpromptaction', (event) => {
+    if (pepc.permissionStatus === 'granted') {
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    }
+  });
+</script>
+```
+
 ## Applying style to the PEPC
 
 The PEPC style is heavily restricted and controlled. The following table details some properties that have restrictions or special rules applied to them:
@@ -91,6 +121,8 @@ The following CSS properties can be used as normal: `font-kerning`, `font-optica
 
 Additionally all logically equivalent properties to the ones above can be used (e.g. `inline-size` is equivalent to `width`) following the same
 rules as their equivalent.
+
+You can use the `:granted` CSS pseudo-class to target permission elements for which the permission is already granted in order to use a different style for them.
 
 ## Providing feedback
 If you're a dev and you have feedback for improvements on the ergonomics or shape of the API, please feel free raise an issue against this repository.
