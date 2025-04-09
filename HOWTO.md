@@ -31,7 +31,7 @@ if (typeof HTMLPermissionElement === 'function') {
 }
 ```
 
-More advanced feature detection (such as per-type) is supported from M137:
+More advanced feature detection (such as per-type) is supported (in Chrome, this is from M137):
 
 ```JS
 if (typeof HTMLPermissionElement != 'undefined' &&
@@ -73,7 +73,7 @@ navigator.permissions.query({name: "camera"})
   });
 ```
 
-You can also use the permission element's specific events to listen to user interactions with the permission prompt, there are 2 events: `onpromptaction` and `onpromptdismiss` (in Chrome, implemented from M135).
+You can also use the permission element's specific events to listen to user interactions with the permission prompt, there are 2 events: `onpromptaction` and `onpromptdismiss` (in Chrome, this is implemented from M135).
 ```HTML
 <permission id="pepc" type="geolocation"></permission>
 <script>
