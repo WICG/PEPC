@@ -46,7 +46,7 @@ if (typeof HTMLPermissionElement != 'undefined' &&
 ## Using PEPC
 You can visit https://permission.site/pepc for a quick example and test.
 
-To add the PEPC element to your page simply include it as you would any other HTML element. It's child nodes will not render, and you can use them as fallback content in case the permission element is not supported in the current browser.
+To add the PEPC element to your page simply include it as you would any other HTML element. Its child nodes will not render, and you can use them as fallback content in case the permission element is not supported in the current browser.
 
 ```HTML
 <permission type="camera microphone" ondismiss="promptDismiss()" onresolve="promptResolve()">
