@@ -51,7 +51,7 @@ To add the PEPC element to your page simply include it as you would any other HT
 ```HTML
 <permission type="camera microphone" ondismiss="promptDismiss()" onresolve="promptResolve()">
   <!-- your own button to be shown if the permission element is not supported -->
-  <button id="fallback-button">Use camera and microphone</button>
+  <button id="fallback-button" onclick="StartFallbackFlow()">Use camera and microphone</button>
 </permission>
 ```
 
