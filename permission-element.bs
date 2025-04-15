@@ -804,7 +804,7 @@ permission {
 
   min-height: clamp(1em, computed, none);
   max-height: clamp(none, computed, 3em);
-  min-width: clamp(none, computed, calc(fit-content));
+  min-width: clamp(none, computed, calc-size(fit-content, size));
 
   border-width: clamp(none, computed, 1em);
 
@@ -846,7 +846,7 @@ Apply the following sheet, if the element does not have all of the following:
 <pre class="highlight lang-css">
 @namespace "http://www.w3.org/1999/xhtml";
 permission {
-  max-width: clamp(none, computed, calc(3 * fit-content));
+  max-width: clamp(none, computed, calc-size(fit-content, 3 * size));
 }
 </pre>
 
