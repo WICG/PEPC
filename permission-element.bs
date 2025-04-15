@@ -754,13 +754,14 @@ If one of these conditions is not met, then a
   Alpha has to be 1.
 
 'font-size':
-  If [=specified value=] is expressed as <a>&lt;relative-size&gt;</a>&#x3a;
+  The 'font-size' is limited as follows&#x3a;
   <ul>
-  <li>Then ''font-size'' must be between ''font-size/small'' and
-  ''font-size/xx-large''.
-  <li>Otherwise, the [=computed value=] must be larger than or equal to the
-  [=computed value=] for ''font-size/small'' and less than or equal to the
-  [=computed value=] of ''font-size/xx-large''.
+  <li> Let |min1| be the [=initial value=] of ''font-size/small''.
+  <li> Let |min2| be the [=computed value=] of ''font-size/small''.
+  <li> Let |max1| be the [=initial value=] of ''font-size/xx-large''.
+  <li> Let |max2| be the [=computed value=] of ''font-size/xx-large''.
+  <li> ''font-size'' is clamped between min(|min1|,|min2|)
+      and max(|max1|, |max2|)).
   </ul>
 
 </pre>
