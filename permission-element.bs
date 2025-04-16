@@ -37,6 +37,7 @@ spec:css2; type:property; text:padding-bottom
 spec:css2; type:property; text:padding-top
 spec:css2; type:property; text:padding-left
 spec:css2; type:property; text:padding-right
+spec:css-borders-4; type:property; text:border-color
 spec:css-borders-4; type:property; text:border-right
 spec:css-borders-4; type:property; text:border-left
 spec:css-borders-4; type:property; text:border-top
@@ -817,31 +818,24 @@ permission {
 Additionally, some rules apply based on conditions not easily expressible as
 CSS.
 
-If 'height' is `auto`, then apply:
+The limits on 'width' and 'padding-left' take multiple conditions into account.
+We distinguish between whether the element has an "obvious" border, and will
+place additional restrictions on it if not. The border is considered "obvious"
+if:
 
-<pre class="highlight lang-css">
-@namespace "http://www.w3.org/1999/xhtml";
-permission {
-  padding-top: clamp(1em, computed, none);
-  padding-bottom: calc(padding-top);
-}
-</pre>
+* 'border-bottom', 'border-top', 'border-left', and 'border-right' are all
+    at least 1px,
+* 'border-color' is opaque,
+* the contrast ratio of 'border-color' and the element's 'color' is at least 3.
 
-If 'width' is `auto`, then apply:
-
-<pre class="highlight lang-css">
-@namespace "http://www.w3.org/1999/xhtml";
-permission {
-  padding-left: clamp(none, computed, 5em);
-  padding-right: calc(padding-left);
-}
-</pre>
-
-Apply the following sheet, if the element does not have all of the following:
-
-- A border width of at least `1px`,
-- a color to background-color contrast ratio of at least 3,
-- and alpha of 1.
+* If the border is "obvious" and 'width' is [=auto=],
+  * then do nothing.
+* If the border is "obvious" and 'width' is not 'width/auto',
+  * then set 'padding-left' to `0`.
+* If the border is not "obvious" and 'width' is [=auto=],
+  * then set 'padding-left' to `clam(none, computed, 5em)`.
+* If the border is no "obvious" and 'width' is not [=auto=],
+  * then set 'padding-left' to `0`.
 
 <pre class="highlight lang-css">
 @namespace "http://www.w3.org/1999/xhtml";
