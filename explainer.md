@@ -538,7 +538,7 @@ this aspect.
     </td>
   </tr>
   <tr>
-    <td>precise</td>
+    <td>preciselocation</td>
     <td>
       Values: <code>true/false</code> (for the
         <a href="https://www.w3.org/TR/geolocation/#position_options_interface">
