@@ -115,8 +115,8 @@ The following CSS properties can be used as normal: `font-kerning`, `font-optica
 `aspect-ratio`, `border` (and all `border-*` properties), `clear`, `color-scheme`, `contain`, `contain-intrinsic-width`, `contain-intrinsic-height`,
 `container-name`, `container-type`, `counter-*`, `flex-*`, `float`, `height`, `isolation`, `justify-self`, `left`, `order`, `orphans`, `outline-*`
 (with the exception noted above for `outline-offset`), `overflow-anchor`, `overscroll-behavior-*`, `page`, `position`, `position-anchor`,
-`content-visibility`, `right`, `scroll-margin-*`, `scroll-padding-*`, `text-spacing-trim`, `top`, `visibility`, `x`, `y`, `ruby-position`, `user-select`,
-`width`, `will-change`, `z-index`.
+`content-visibility`, `right`, `scroll-margin-*`, `scroll-padding-*`, `text-transform`, `text-spacing-trim`, `top`, `visibility`, `x`, `y`,
+`ruby-position`, `user-select`, `width`, `will-change`, `z-index`.
 
 Additionally all logically equivalent properties to the ones above can be used (e.g. `inline-size` is equivalent to `width`) following the same
 rules as their equivalent.
