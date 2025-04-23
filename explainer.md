@@ -276,7 +276,7 @@ Example usage:
 <permission
   onpromptdismiss="showContextInfo()"
   type="microphone"
-/>
+></permission>
 
 <script>
   function showContextInfo() {
@@ -368,7 +368,7 @@ styleable via CSS like any regular button. For example:
     border-radius: 10px;
   }
 </style>
-<permission type="geolocation" />
+<permission type="geolocation"></permission>
 ```
 
 <img src="images/image9.png">
@@ -401,7 +401,7 @@ Example usage:
     color: blue;
   }
 </style>
-<permission type="geolocation" />
+<permission type="geolocation"></permission>
 ```
 
 <img src="images/image10.png"> \
@@ -484,7 +484,7 @@ cancelable.
 Example usage:
 
 ```html
-<permission type="geolocation" onpromptdismiss="showLocationWarning()" />
+<permission type="geolocation" onpromptdismiss="showLocationWarning()"></permission>
 <script>
   // Called when the PEPC-triggered permission flow has been canceled by the user
   // without a decision being made.
