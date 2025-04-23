@@ -109,13 +109,14 @@ The PEPC style is heavily restricted and controlled. The following table details
 | `max-width`                | Will have a default value of 3 * 'fit-content'. If provided, the minimum computed value between the default and the provided values will be considered. However this does not apply if the element has a border with a width of at least 1px and a color that has a contrast ratio with the background-color of at least 3 and alpha of 1. |
 | `padding-top`              | Will only take effect if 'height' is set to 'auto'. In this case values over 1em will be corrected to 1em and `padding-bottom` will be set to the value of `padding-top`. |
 | `padding-left`             | Will only take effect if 'width' is set to 'auto'. In this case values over 5em will be corrected to 5em and `padding-right` will be set to the value of `padding-left.`. This does not apply under the same border conditions as 'max-width', except 'padding-right' with still be set to the value of 'padding-left'. |
+| `cursor`                   | Will have a default value of 'pointer' but 'not-allowed' is also a valid value. Any other value (including custom images) is corrected to 'pointer'. |
 
 The following CSS properties can be used as normal: `font-kerning`, `font-optical-sizing`, `font-stretch`, `font-synthesis-weight`, 
 `font-synthesis-style`, `font-synthesis-small-caps`, `font-feature-settings`, `forced-color-adjust`, `text-rendering`, `align-self`, `anchor-name`
 `aspect-ratio`, `border` (and all `border-*` properties), `clear`, `color-scheme`, `contain`, `contain-intrinsic-width`, `contain-intrinsic-height`,
 `container-name`, `container-type`, `counter-*`, `flex-*`, `float`, `height`, `isolation`, `justify-self`, `left`, `order`, `orphans`, `outline-*`
 (with the exception noted above for `outline-offset`), `overflow-anchor`, `overscroll-behavior-*`, `page`, `position`, `position-anchor`,
-`content-visibility`, `right`, `scroll-margin-*`, `scroll-padding-*`, `text-transform`, `text-spacing-trim`, `top`, `visibility`, `x`, `y`,
+`content-visibility`, `right`, `scroll-margin-*`, `scroll-padding-*`, `text-spacing-trim`, `text-transform`, `top`, `visibility`, `x`, `y`,
 `ruby-position`, `user-select`, `width`, `will-change`, `z-index`.
 
 Additionally all logically equivalent properties to the ones above can be used (e.g. `inline-size` is equivalent to `width`) following the same
