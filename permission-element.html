@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-element.html" rel="canonical">
-  <meta content="35ac8afd34562dafdb7ffae3b32e193d30b2c99e" name="revision">
+  <meta content="559cc4d8d72aa82497c6f4e8b65f77c96d8a0949" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -757,7 +757,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
  <body class="h-entry">
   <div class="head">
    <h1 class="p-name no-ref" id="title">The HTML &lt;permission> Element</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-05-05">5 May 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-05-08">8 May 2025</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1362,11 +1362,10 @@ in the underlying specification.</p>
        <li data-md>
         <p>If <var>current</var> is <var>element</var>, then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-break" id="ref-for-iteration-break">break</a>.</p>
        <li data-md>
-        <p>If the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-intersection" id="ref-for-set-intersection">intersection</a> of <var>element</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①②">[[Types]]</a></code> with <var>current</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①③">[[Types]]</a></code> is not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-is-empty" id="ref-for-list-is-empty③">empty</a>,
-then increment <var>count</var> by 1.</p>
+        <p>If <var>element</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①②">[[Types]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-equal" id="ref-for-set-equal">equals</a> <var>current</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①③">[[Types]]</a></code> then increment <var>count</var> by 1.</p>
       </ol>
      <li data-md>
-      <p>Return whether <var>count</var> is less than 2.</p>
+      <p>Return whether <var>count</var> is less than 3.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="recheck type permissibility" data-algorithm-for="HTMLPermissionElement">
@@ -1691,6 +1690,10 @@ required to render the <a data-link-type="dfn" href="https://html.spec.whatwg.or
    <p>If the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot⑧">[[BlockerList]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain①">contains</a> a record whose <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason③">blocker reason</a> is <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid②">type_invalid</a></code>,
 then the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④④">permission</a></code> element should render the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content④">fallback content</a> instead of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑤">permission</a></code>’s usual rendering.</p>
    <h2 class="heading settled" data-level="4" id="secpriv"><span class="secno">4. </span><span class="content">Security &amp; Privacy Considerations</span><a class="self-link" href="#secpriv"></a></h2>
+   <p class="note" role="note"><span class="marker">Note:</span> Security &amp; Privacy Considerations can be found <a href="https://github.com/WICG/PEPC/blob/main/explainer.md#security">here</a> &amp; <a href="https://github.com/WICG/PEPC/blob/main/explainer.md#privacy">there</a>,
+in the <a href="https://github.com/WICG/PEPC/blob/main/explainer.md">Explainer</a>.
+This section will eventually contain a specification-worthy transcription
+of those Explainer sections.</p>
   </main>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
@@ -2003,8 +2006,8 @@ then the <code><a data-link-type="element" href="#elementdef-permission" id="ref
      <li><span class="dfn-paneled" id="7b0d918d">break</span>
      <li><span class="dfn-paneled" id="ae8def21">contain</span>
      <li><span class="dfn-paneled" id="03afaf9c">empty</span>
+     <li><span class="dfn-paneled" id="9e466493">equal</span>
      <li><span class="dfn-paneled" id="860300d4">implementation-defined</span>
-     <li><span class="dfn-paneled" id="e5ea84f2">intersection</span>
      <li><span class="dfn-paneled" id="7a87d819">is</span>
      <li><span class="dfn-paneled" id="6b815fdd">is empty</span>
      <li><span class="dfn-paneled" id="5afbefcd">item</span>
@@ -2449,7 +2452,7 @@ let dfnPanelData = {
 "68675e70": {"dfnID":"68675e70","dfnText":"content attributes","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-attributes"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes"},
 "692595fe": {"dfnID":"692595fe","dfnText":"ordered set","external":true,"refSections":[{"refs":[{"id":"ref-for-ordered-set"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-ordered-set\u2460"},{"id":"ref-for-ordered-set\u2461"}],"title":"2.2. permission-supporting state at the navigable"},{"refs":[{"id":"ref-for-ordered-set\u2462"}],"title":"2.3.1. The type property"}],"url":"https://infra.spec.whatwg.org/#ordered-set"},
 "6a5a59a0": {"dfnID":"6a5a59a0","dfnText":"event handler","external":true,"refSections":[{"refs":[{"id":"ref-for-event-handlers"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers"},
-"6b815fdd": {"dfnID":"6b815fdd","dfnText":"is empty","external":true,"refSections":[{"refs":[{"id":"ref-for-list-is-empty"},{"id":"ref-for-list-is-empty\u2460"},{"id":"ref-for-list-is-empty\u2461"},{"id":"ref-for-list-is-empty\u2462"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list-is-empty"},
+"6b815fdd": {"dfnID":"6b815fdd","dfnText":"is empty","external":true,"refSections":[{"refs":[{"id":"ref-for-list-is-empty"},{"id":"ref-for-list-is-empty\u2460"},{"id":"ref-for-list-is-empty\u2461"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list-is-empty"},
 "6c2d7879": {"dfnID":"6c2d7879","dfnText":"powerful feature","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-powerful-feature"},{"id":"ref-for-dfn-powerful-feature\u2460"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2461"}],"title":"2. The permission element."},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2462"}],"title":"2.1. permission element internal state"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2463"},{"id":"ref-for-dfn-powerful-feature\u2464"},{"id":"ref-for-dfn-powerful-feature\u2465"},{"id":"ref-for-dfn-powerful-feature\u2466"},{"id":"ref-for-dfn-powerful-feature\u2467"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2468"}],"title":"2.3.2. Activation blockers"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2460\u24ea"}],"title":"2.4. permission element algorithms"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2460\u2460"}],"title":"3. Rendering the permission Element"},{"refs":[{"id":"ref-for-dfn-powerful-feature\u2460\u2461"},{"id":"ref-for-dfn-powerful-feature\u2460\u2462"},{"id":"ref-for-dfn-powerful-feature\u2460\u2463"},{"id":"ref-for-dfn-powerful-feature\u2460\u2464"},{"id":"ref-for-dfn-powerful-feature\u2460\u2465"}],"title":"3.1. Presentation"}],"url":"https://w3c.github.io/permissions/#dfn-powerful-feature"},
 "6d19ac93": {"dfnID":"6d19ac93","dfnText":"user agent","external":true,"refSections":[{"refs":[{"id":"ref-for-user-agent"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-user-agent\u2460"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-user-agent\u2461"}],"title":"2.4. permission element algorithms"},{"refs":[{"id":"ref-for-user-agent\u2462"},{"id":"ref-for-user-agent\u2463"}],"title":"3.1. Presentation"},{"refs":[{"id":"ref-for-user-agent\u2464"},{"id":"ref-for-user-agent\u2465"}],"title":"3.3. Falling Back"}],"url":"https://infra.spec.whatwg.org/#user-agent"},
 "6daf8b2a": {"dfnID":"6daf8b2a","dfnText":"border-left","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-left"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-borders-4/#propdef-border-left"},
@@ -2489,6 +2492,7 @@ let dfnPanelData = {
 "9d386f55": {"dfnID":"9d386f55","dfnText":"event handler event type","external":true,"refSections":[{"refs":[{"id":"ref-for-event-handler-event-type"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type"},
 "9d6acddc": {"dfnID":"9d6acddc","dfnText":"container-name","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-container-name"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-conditional-5/#propdef-container-name"},
 "9da19fa0": {"dfnID":"9da19fa0","dfnText":"lang (for HTMLElement)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-lang"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#dom-lang"},
+"9e466493": {"dfnID":"9e466493","dfnText":"equal","external":true,"refSections":[{"refs":[{"id":"ref-for-set-equal"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#set-equal"},
 "a09017ef": {"dfnID":"a09017ef","dfnText":"bubbles","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles"},{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles\u2460"},{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles\u2461"}],"title":"2.5. permission element event algorithms"}],"url":"https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles"},
 "a0be88cd": {"dfnID":"a0be88cd","dfnText":"HTMLUnknownElement","external":true,"refSections":[{"refs":[{"id":"ref-for-htmlunknownelement"}],"title":"3.3. Falling Back"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#htmlunknownelement"},
 "a3b18719": {"dfnID":"a3b18719","dfnText":"append (for set)","external":true,"refSections":[{"refs":[{"id":"ref-for-set-append"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#set-append"},
@@ -2560,7 +2564,6 @@ let dfnPanelData = {
 "e30e7b38": {"dfnID":"e30e7b38","dfnText":"lang (for html-global)","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-lang"}],"title":"3. Rendering the permission Element"},{"refs":[{"id":"ref-for-attr-lang\u2460"}],"title":"3.1. Presentation"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#attr-lang"},
 "e58fed16": {"dfnID":"e58fed16","dfnText":"text-spacing-trim","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-text-spacing-trim"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim"},
 "e5a7e26c": {"dfnID":"e5a7e26c","dfnText":"phrasing content","external":true,"refSections":[{"refs":[{"id":"ref-for-phrasing-content-2"},{"id":"ref-for-phrasing-content-2\u2460"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2"},
-"e5ea84f2": {"dfnID":"e5ea84f2","dfnText":"intersection","external":true,"refSections":[{"refs":[{"id":"ref-for-set-intersection"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#set-intersection"},
 "e697420b": {"dfnID":"e697420b","dfnText":"border-bottom","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-bottom"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-borders-4/#propdef-border-bottom"},
 "e740d7e5": {"dfnID":"e740d7e5","dfnText":"name","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-name"}],"title":"2. The permission element."}],"url":"https://w3c.github.io/permissions/#dfn-name"},
 "e7cd6f5a": {"dfnID":"e7cd6f5a","dfnText":"font-stretch","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-stretch"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-stretch"},
@@ -3169,7 +3172,7 @@ let refsData = {
 "https://infra.spec.whatwg.org/#list-sort-in-ascending-order": {"displayText":"sorting","export":true,"for_":["list","stack","queue","set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"sorting","type":"dfn","url":"https://infra.spec.whatwg.org/#list-sort-in-ascending-order"},
 "https://infra.spec.whatwg.org/#ordered-set": {"displayText":"ordered set","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"ordered set","type":"dfn","url":"https://infra.spec.whatwg.org/#ordered-set"},
 "https://infra.spec.whatwg.org/#set-append": {"displayText":"append","export":true,"for_":["set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"append","type":"dfn","url":"https://infra.spec.whatwg.org/#set-append"},
-"https://infra.spec.whatwg.org/#set-intersection": {"displayText":"intersection","export":true,"for_":["set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"intersection","type":"dfn","url":"https://infra.spec.whatwg.org/#set-intersection"},
+"https://infra.spec.whatwg.org/#set-equal": {"displayText":"equal","export":true,"for_":["set"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"equal","type":"dfn","url":"https://infra.spec.whatwg.org/#set-equal"},
 "https://infra.spec.whatwg.org/#string": {"displayText":"string","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"string","type":"dfn","url":"https://infra.spec.whatwg.org/#string"},
 "https://infra.spec.whatwg.org/#string-is": {"displayText":"is","export":true,"for_":["string"],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"is","type":"dfn","url":"https://infra.spec.whatwg.org/#string-is"},
 "https://infra.spec.whatwg.org/#user-agent": {"displayText":"user agent","export":true,"for_":[],"level":"1","normative":true,"shortname":"infra","spec":"infra","status":"current","text":"user agent","type":"dfn","url":"https://infra.spec.whatwg.org/#user-agent"},
