@@ -42,8 +42,8 @@ spec:css-borders-4; type:property; text:border-left
 spec:css-borders-4; type:property; text:border-top
 spec:css-borders-4; type:property; text:border-bottom
 
-# Non-exported definitions, which we should be free to use when -- some day -- this is integrated into HTML.
-# this is integrated into the HTML spec.
+# Non-exported definitions, which we should be free to use when -- some day --
+# this will be integrated into the HTML spec.
 spec:html; type:dfn; text:missing value default
 spec:html; type:dfn; text:invalid value default
 spec:html; type:dfn; text:represent
