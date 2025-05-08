@@ -1,5 +1,5 @@
 rule bikeshed
-  command = pipx run bikeshed --print=plain -f spec $in
+  command = bikeshed --print=plain -f spec $in
   description = bikeshed $in
 
 build permission-element.html: bikeshed permission-element.bs
