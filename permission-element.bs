@@ -933,3 +933,10 @@ then the <{permission}> element should render the [=fallback content=]
 instead of the <{permission}>'s usual rendering.
 
 # Security & Privacy Considerations # {#secpriv}
+
+Note: Security & Privacy Considerations can be found
+[here](https://github.com/WICG/PEPC/blob/main/explainer.md#security) &
+[there](https://github.com/WICG/PEPC/blob/main/explainer.md#privacy),
+in the [Explainer](https://github.com/WICG/PEPC/blob/main/explainer.md).
+This section will eventually contain a specification-worthy transcription
+of those Explainer sections.
