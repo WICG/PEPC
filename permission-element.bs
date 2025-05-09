@@ -137,6 +137,8 @@ time providing implementations with a better signal of user intent.
 
       readonly attribute boolean isValid;
       readonly attribute PermissionElementBlockerReason invalidReason;
+      readonly attribute PermissionState initialPermissionStatus;
+      readonly attribute PermissionState permissionStatus;
 
       static boolean isTypeSupported(DOMString type);
 
@@ -235,6 +237,10 @@ The <{permission}> element has the following internal slots:
     {{HTMLPermissionElement/onvalidationstatuschange}} event needs to be
     dispatches.
 
+* <dfn attribute for="HTMLPermissionElement">\[[InitialPermissionStatus]]</dfn>
+    is a {{PermissionState}} that stores the initial {{PermissionState}} for
+    {{[[Types]]}}.
+
 ## <{permission}>-supporting state at the [=/navigable=] ## {#permission-element-external-state}
 
 In order to support the <{permission}> element, the [=/navigable=] maintains
@@ -291,6 +297,8 @@ The HTMLPermissionElement's {{HTMLPermissionElement/type}} setter steps are:
     input string.
 1. If |features| is None, return.
 1. [=list/Append=] each [=powerful feature=] name to the {{[[Types]]}} [=ordered set=].
+1. Set {{[[InitialPermissionStatus]]}} to the result of
+    [=HTMLPermissionElement/get the current permission state=].
 
 Note: The supported sets of [=powerful features=] is [=implementation-defined=].
 </div>
@@ -517,6 +525,8 @@ The {{HTMLPermissionElement}} constructor steps are:
 1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
 1. Initialize the internal {{[[LastNotifiedInvalidReason]]}} with the empty
     string.
+1. Initialize the internal {{[[InitialPermissionStatus]]}} to
+    the result of [=HTMLPermissionElement/get the current permission state=].
 
 </div>
 
@@ -566,6 +576,25 @@ HTMLPermissionElement |element|'s <dfn attribute for="HTMLPermissionElement">inv
 
 1. If |element|'s [=HTMLPermissionElement/blocker=] is Nothing, return `""`.
 1. Otherwise, |element|'s [=HTMLPermissionElement/blocker=]'s reason string.
+
+</div>
+
+<div algorithm>
+HTMLPermissionElement |element|'s
+<dfn attribute for="HTMLPermissionElement">initialPermissionStatus</dfn>
+getter steps are:
+
+1. Return |element|'s internal {{[[InitialPermissionStatus]]}}.
+
+</div>
+
+<div algorithm>
+HTMLPermissionElement |element|'s
+<dfn attribute for="HTMLPermissionElement">permissionStatus</dfn>
+getter steps are:
+
+1. Return [=HTMLPermissionElement/get the current permission state=] for
+    |element|.
 
 </div>
 
@@ -648,6 +677,30 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
     1. If |current| is [=type permissible=], then [=remove blockers=] with
         {{PermissionElementBlockerReason/unsuccesful_registration}} from
         |current|.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">get the current permission state</dfn> for
+an {{HTMLPermissionElement}} |element|:
+
+1. Let |types| be |element|'s internal {{[[Types]]}}.
+1. If |types| is null or |types| is [=list/empty=],
+    return {{PermissionState/prompt}}.
+1. Let |current| be {{PermissionState/granted}}.
+1. [=list/iterate|For each=] |type| of |types|:
+    1. Let |state| be the result of [=/get the current permission state=] for
+        |type|.
+    1. Let |current| be the smaller of |current| and |state|, assuming the
+        following ordering:
+        {{PermissionState/granted}} >
+        {{PermissionState/prompt}} >
+        {{PermissionState/denied}}.
+1. Return |current|.
+
+ISSUE: It's not clear what the PermissionState for 'no valid permission type'
+    should be. Here I pick "prompt" based on Chrome's implementation; but that
+    choice is arbitrary.
 
 </div>
 
