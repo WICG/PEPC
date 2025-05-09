@@ -1022,6 +1022,8 @@ If the internal {{[[BlockerList]]}} [=list/contains=] a record whose
 then the <{permission}> element should render the [=fallback content=]
 instead of the <{permission}>'s usual rendering.
 
+ISSUE: Add example(s) here.
+
 # Security & Privacy Considerations # {#secpriv}
 
 Note: Security & Privacy Considerations can be found
