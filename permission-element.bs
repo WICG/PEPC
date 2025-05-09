@@ -178,9 +178,12 @@ It predicts whether creating a <{permission}> element and assigning the given
 an element blocked by a {{PermissionElementBlockerReason/type_invalid}}
 [=permanent blocker=].
 
-
 The global <a attribute spec=html for=HTMLElement>lang</a> attribute is
 observed by the <{permission}> element to select localized text.
+
+The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
+for the global <{htmlsvg-global/tabindex}> content attribute on the
+<{permission}> element is 0.
 
 The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on <{permission}> elements [=event handler IDL attributes=]:
 
