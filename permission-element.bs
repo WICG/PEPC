@@ -991,6 +991,7 @@ The following CSS properties can be used normally:
     'scroll-padding-block-start', 'scroll-padding-block-start',
     'scroll-padding-inline-end', 'scroll-padding-block-end'
 * 'text-spacing-trim'
+* 'text-transform'
 * 'top'
 * 'visibility'
 * 'x'
