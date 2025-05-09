@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-element.html" rel="canonical">
-  <meta content="8d71dff769bdcd5269de03f541e243e8ec94fe0a" name="revision">
+  <meta content="f7ded7d680495224e729be3fef6697f54d395fe9" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -1625,6 +1625,7 @@ permission <c- p>{</c->
   <c- k>margin</c-><c- p>:</c-> <c- nf>clamp</c-><c- p>(</c-><c- m>4</c-><c- k>px</c-><c- p>,</c-> computed<c- p>,</c-> none<c- p>);</c->
   <c- k>font-style</c-><c- p>:</c-> <c- nf>if</c-><c- p>(</c->computed = <c- s>"normal"</c-> or computed = <c- s>"italic"</c-><c- p>,</c-> computed<c- p>,</c-> <c- s>"normal"</c-><c- p>);</c->
   <c- k>display</c-><c- p>:</c-> if <c- p>(</c->computed = <c- s>"inline-block"</c-> or computed = <c- s>"none"</c-><c- p>,</c-> computed<c- p>,</c-> <c- s>"inline-block"</c-><c- p>);</c->
+  <c- k>cursor</c-><c- p>:</c-> if <c- p>(</c->computed = <c- s>"pointer"</c-> or computed = <c- s>"not-allowed"</c-><c- p>,</c-> computed<c- p>,</c-> <c- s>"pointer"</c-><c- p>)</c->
 <c- p>}</c->
 </pre>
    <p>Additionally, some rules apply based on conditions not easily expressible as
@@ -1740,6 +1741,8 @@ permission <c- p>{</c->
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim" id="ref-for-propdef-text-spacing-trim">text-spacing-trim</a></p>
     <li data-md>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-transform" id="ref-for-propdef-text-transform">text-transform</a></p>
+    <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-top" id="ref-for-propdef-top">top</a></p>
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-visibility" id="ref-for-propdef-visibility">visibility</a></p>
@@ -1769,6 +1772,7 @@ render the element as described in <a href="#rendering">§ 3 Rendering the per
 required to render the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content③">fallback content</a> under one condition:</p>
    <p>If the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot⑧">[[BlockerList]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain①">contains</a> a record whose <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason③">blocker reason</a> is <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid③">type_invalid</a></code>,
 then the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑥">permission</a></code> element should render the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content④">fallback content</a> instead of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑦">permission</a></code>’s usual rendering.</p>
+   <p class="issue" id="issue-9bf11023"><a class="self-link" href="#issue-9bf11023"></a> Add example(s) here.</p>
    <h2 class="heading settled" data-level="4" id="secpriv"><span class="secno">4. </span><span class="content">Security &amp; Privacy Considerations</span><a class="self-link" href="#secpriv"></a></h2>
    <p class="note" role="note"><span class="marker">Note:</span> Security &amp; Privacy Considerations can be found <a href="https://github.com/WICG/PEPC/blob/main/explainer.md#security">here</a> &amp; <a href="https://github.com/WICG/PEPC/blob/main/explainer.md#privacy">there</a>,
 in the <a href="https://github.com/WICG/PEPC/blob/main/explainer.md">Explainer</a>.
@@ -1987,6 +1991,7 @@ of those Explainer sections.</p>
     <a data-link-type="biblio">[CSS-TEXT-4]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="e58fed16">text-spacing-trim</span>
+     <li><span class="dfn-paneled" id="cbc54f93">text-transform</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-UI-4]</a> defines the following terms:
@@ -2284,6 +2289,7 @@ in the underlying specification. <a class="issue-return" href="#issue-017890a3" 
    <div class="issue"> There isn’t much precedence for describing the user agent UI in detail.
     It may be better to leave more freedom to user agents. <a class="issue-return" href="#issue-59f2ad87" title="Jump to section">↵</a></div>
    <div class="issue"> Define "alpha". <a class="issue-return" href="#issue-76cb758c" title="Jump to section">↵</a></div>
+   <div class="issue"> Add example(s) here. <a class="issue-return" href="#issue-9bf11023" title="Jump to section">↵</a></div>
   </div>
 <script>/* Boilerplate: script-dom-helper */
 "use strict";
@@ -2628,6 +2634,7 @@ let dfnPanelData = {
 "c7740004": {"dfnID":"c7740004","dfnText":"fallback content","external":true,"refSections":[{"refs":[{"id":"ref-for-fallback-content"}],"title":"2. The permission element."},{"refs":[{"id":"ref-for-fallback-content\u2460"},{"id":"ref-for-fallback-content\u2461"}],"title":"3. Rendering the permission Element"},{"refs":[{"id":"ref-for-fallback-content\u2462"},{"id":"ref-for-fallback-content\u2463"}],"title":"3.3. Falling Back"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#fallback-content"},
 "c82d6e13": {"dfnID":"c82d6e13","dfnText":"z-index","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-z-index"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css2/#propdef-z-index"},
 "c914c650": {"dfnID":"c914c650","dfnText":"fencedframe","external":true,"refSections":[{"refs":[{"id":"ref-for-elementdef-fencedframe"},{"id":"ref-for-elementdef-fencedframe\u2460"}],"title":"2.3.2. Activation blockers"}],"url":"https://wicg.github.io/fenced-frame/#elementdef-fencedframe"},
+"cbc54f93": {"dfnID":"cbc54f93","dfnText":"text-transform","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-text-transform"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-text-4/#propdef-text-transform"},
 "d124397f": {"dfnID":"d124397f","dfnText":"permission state","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-permission-state"},{"id":"ref-for-dfn-permission-state\u2460"}],"title":"3.1. Presentation"}],"url":"https://w3c.github.io/permissions/#dfn-permission-state"},
 "d4dbbbf0": {"dfnID":"d4dbbbf0","dfnText":"language","external":true,"refSections":[{"refs":[{"id":"ref-for-language"}],"title":"3.1. Presentation"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#language"},
 "d54eeea2": {"dfnID":"d54eeea2","dfnText":"palpable content","external":true,"refSections":[{"refs":[{"id":"ref-for-palpable-content-2"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#palpable-content-2"},
@@ -3226,6 +3233,7 @@ let refsData = {
 "https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-height": {"displayText":"contain-intrinsic-height","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"current","text":"contain-intrinsic-height","type":"property","url":"https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-height"},
 "https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-width": {"displayText":"contain-intrinsic-width","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-sizing","spec":"css-sizing-4","status":"current","text":"contain-intrinsic-width","type":"property","url":"https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-width"},
 "https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim": {"displayText":"text-spacing-trim","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text","spec":"css-text-4","status":"current","text":"text-spacing-trim","type":"property","url":"https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim"},
+"https://drafts.csswg.org/css-text-4/#propdef-text-transform": {"displayText":"text-transform","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-text","spec":"css-text-4","status":"current","text":"text-transform","type":"property","url":"https://drafts.csswg.org/css-text-4/#propdef-text-transform"},
 "https://drafts.csswg.org/css-ui-4/#non-devolvable": {"displayText":"non-devolvable widget","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"current","text":"non-devolvable widget","type":"dfn","url":"https://drafts.csswg.org/css-ui-4/#non-devolvable"},
 "https://drafts.csswg.org/css-ui-4/#propdef-outline": {"displayText":"outline","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"current","text":"outline","type":"property","url":"https://drafts.csswg.org/css-ui-4/#propdef-outline"},
 "https://drafts.csswg.org/css-ui-4/#propdef-outline-color": {"displayText":"outline-color","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-ui","spec":"css-ui-4","status":"current","text":"outline-color","type":"property","url":"https://drafts.csswg.org/css-ui-4/#propdef-outline-color"},
