@@ -904,9 +904,10 @@ drawn starting from a fixed point above the web content area.
 
 
 <div style="display: flex;">
-  <img src="images/image20.png" style="height: 180px; margin-right: 15px; object-fit: contain;">
-  <img src="images/image21.png" style="height: 180px; margin-right: 15px; object-fit: contain;">
-  <p style="margin-top: 5px;">Example notification permission prompt on Chrome (left) and on Firefox (right)</p>
+  <img src="images/image20.png" style="height: 170px; margin-right: 15px; object-fit: contain;">
+  <img src="images/image21.png" style="height: 170px; margin-right: 15px; object-fit: contain;">
+   <img src="images/permissionprompt_safari.png" style="height: 170px; margin-right: 15px; object-fit: contain;">
+  <p style="margin-top: 5px;">Example notification permission prompt on Chrome (left), on Firefox (middle) and on Safari (right)</p>
 </div>
 
 
