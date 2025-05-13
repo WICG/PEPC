@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-element.html" rel="canonical">
-  <meta content="f7ded7d680495224e729be3fef6697f54d395fe9" name="revision">
+  <meta content="40623f724f18c2ac14dbcfc46f62fe02923acb87" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -757,7 +757,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
  <body class="h-entry">
   <div class="head">
    <h1 class="p-name no-ref" id="title">The HTML &lt;permission> Element</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-05-09">9 May 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-05-13">13 May 2025</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2128,6 +2128,11 @@ of those Explainer sections.</p>
      <li><span class="dfn-paneled" id="ada784a3">categories</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[MEDIAQUERIES-5]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="4c646d7b">contrast ratio</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[PERMISSIONS]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="6c3bee60">PermissionState</span>
@@ -2148,11 +2153,6 @@ of those Explainer sections.</p>
      <li><span class="dfn-paneled" id="bb72d539">text-rendering</span>
      <li><span class="dfn-paneled" id="801118f1">x</span>
      <li><span class="dfn-paneled" id="9987a023">y</span>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[WEB-PREFERENCES-API]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="4c646d7b">contrast ratio</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
@@ -2233,12 +2233,12 @@ of those Explainer sections.</p>
    <dd>Stefan Zager; Emilio Cobos Álvarez; Traian Captan. <a href="https://w3c.github.io/IntersectionObserver/"><cite>Intersection Observer</cite></a>. URL: <a href="https://w3c.github.io/IntersectionObserver/">https://w3c.github.io/IntersectionObserver/</a>
    <dt id="biblio-manifest-app-info">[MANIFEST-APP-INFO]
    <dd>Aaron Gustafson. <a href="https://w3c.github.io/manifest-app-info/"><cite>Web App Manifest - Application Information</cite></a>. URL: <a href="https://w3c.github.io/manifest-app-info/">https://w3c.github.io/manifest-app-info/</a>
+   <dt id="biblio-mediaqueries-5">[MEDIAQUERIES-5]
+   <dd>Dean Jackson; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
    <dt id="biblio-permissions">[PERMISSIONS]
    <dd>Marcos Caceres; Mike Taylor. <a href="https://w3c.github.io/permissions/"><cite>Permissions</cite></a>. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
    <dt id="biblio-svg2">[SVG2]
    <dd>Amelia Bellamy-Royds; et al. <a href="https://svgwg.org/svg2-draft/"><cite>Scalable Vector Graphics (SVG) 2</cite></a>. URL: <a href="https://svgwg.org/svg2-draft/">https://svgwg.org/svg2-draft/</a>
-   <dt id="biblio-web-preferences-api">[WEB-PREFERENCES-API]
-   <dd><a href="https://wicg.github.io/web-preferences-api/"><cite>Web Preferences API</cite></a>. Unofficial Proposal Draft. URL: <a href="https://wicg.github.io/web-preferences-api/">https://wicg.github.io/web-preferences-api/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -3248,7 +3248,7 @@ let refsData = {
 "https://drafts.csswg.org/css2/#valdef-font-size-xx-large": {"displayText":"xx-large","export":true,"for_":["font-size"],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"xx-large","type":"value","url":"https://drafts.csswg.org/css2/#valdef-font-size-xx-large"},
 "https://drafts.csswg.org/css2/#value-def-relative-size": {"displayText":"<relative-size>","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"<relative-size>","type":"type","url":"https://drafts.csswg.org/css2/#value-def-relative-size"},
 "https://drafts.csswg.org/css2/#viewport%E2%91%A0": {"displayText":"viewport","export":false,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"viewport","type":"dfn","url":"https://drafts.csswg.org/css2/#viewport%E2%91%A0"},
-"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio": {"displayText":"contrast ratio","export":true,"for_":[],"level":"1","normative":true,"shortname":"web-preferences-api","spec":"web-preferences-api","status":"current","text":"contrast ratio","type":"dfn","url":"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio"},
+"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio": {"displayText":"contrast ratio","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"current","text":"contrast ratio","type":"dfn","url":"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio"},
 "https://drafts.fxtf.org/compositing-2/#propdef-isolation": {"displayText":"isolation","export":true,"for_":[],"level":"2","normative":true,"shortname":"compositing","spec":"compositing-2","status":"current","text":"isolation","type":"property","url":"https://drafts.fxtf.org/compositing-2/#propdef-isolation"},
 "https://drafts.fxtf.org/geometry-1/#domrectreadonly": {"displayText":"DOMRectReadOnly","export":true,"for_":[],"level":"1","normative":true,"shortname":"geometry","spec":"geometry-1","status":"current","text":"DOMRectReadOnly","type":"interface","url":"https://drafts.fxtf.org/geometry-1/#domrectreadonly"},
 "https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute": {"displayText":"enumerated attribute","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"enumerated attribute","type":"dfn","url":"https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute"},
