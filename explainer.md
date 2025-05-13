@@ -149,14 +149,14 @@ Challenges with the status quo include:
     well-founded assumptions about the nature of the user's intent and
     interaction with web content.
 
-    ![](images/image3.png) \
-    *Example 3. An example where the user previously blocked camera and
-    microphone access, but has now just expressed a strong intention to
-    re-enable them by clicking the unmute buttons. Because the user agent has no
-    insight into this interaction in the content area, it is compelled to
-    respect the user's previous decision. Especially in a stressful scenario
-    such as an important presentation, users will struggle to navigate the
-    settings surfaces to change the permission decision.*
+
+<div style="display: flex;">
+  <img src="images/image3.png" style="height: 350px; margin-right: 400px; object-fit: contain;">
+  <img src="images/permission_os_blocked.png" style="height: 350px; margin-right: 0px; object-fit: contain;">
+</div>
+    *Example 3. An example where the user previously blocked camera & microphone (left) or location (right) aaccess, but has now just expressed a strong intention to re-enable them by clicking the unmute (left) or "use my current location" buttons. Because the user agent has no
+    insight into this interaction in the content area, it is compelled to respect the user's previous decision. Especially in a stressful scenario
+    such as an important presentation or finding the closest store, users will struggle to navigate the settings surfaces to change the permission decision (left).*
 
 1.  <a name="accessibility"></a>**Accessibility**: Permission UI for a
     capability is triggered through the direct use of the capability. Typically
