@@ -902,11 +902,13 @@ variety of factors such as previous decision, settings, etc.) and it will
 trigger the permission prompt if it is indeed needed. The permission prompts are
 drawn starting from a fixed point above the web content area.
 
-![](images/image20.png) \
-*Example notification permission prompt on Chrome*
 
-![](images/image21.png) \
-*Example location permission prompt on Firefox*
+<div style="display: flex;">
+  <img src="images/image20.png" style="height: 180px; margin-right: 15px; object-fit: contain;">
+  <img src="images/image21.png" style="height: 180px; margin-right: 15px; object-fit: contain;">
+  <p style="margin-top: 5px;">Example notification permission prompt on Chrome (left) and on Firefox (right)</p>
+</div>
+
 
 In order to evaluate the user experience for these prompts **from the
 perspective of the user agent**, there are some questions that can be
