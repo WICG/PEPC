@@ -120,6 +120,9 @@ time providing implementations with a better signal of user intent.
  <dt>[=Content attributes=]:</dt>
   <dd>[=Global attributes=]</dd>
   <dd>{{HTMLPermissionElement/type}} — Type of permission this element applies to.</dd>
+  <dd>{{HTMLPermissionElement/preciseLocation}} — Whether access to the
+  [[Geolocation|"geolocation"]] [=powerful feature=] is requested with
+  {{PositionOptions/enableHighAccuracy}}.
   <dd>{{HTMLPermissionElement/isValid}} — query whether the element can currently be activated.</dd>
   <dd>{{HTMLPermissionElement/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
   <dd>{{HTMLPermissionElement/onpromptdismiss}} — notifies when the user has dismissed the permission prompt.</dd>
@@ -134,6 +137,7 @@ time providing implementations with a better signal of user intent.
     interface HTMLPermissionElement : HTMLElement {
       [HTMLConstructor] constructor();
       [CEReactions, Reflect] attribute DOMString type;
+      [CEReactions, Reflect] attribute boolean preciseLocation;
 
       readonly attribute boolean isValid;
       readonly attribute PermissionElementBlockerReason invalidReason;
@@ -162,6 +166,10 @@ permission element when it is activated. Is is an [=enumerated attribute=],
 whose values are the [=powerful feature/names=] of [=powerful features=]. It
 has neither a
 [=missing value default=] state nor a [=invalid value default=] state.
+
+The {{HTMLPermissionElement/preciseLocation}} attribute reflects whether
+the `"geolocation"` [=powerful feature|permission=] is meant for
+location requests with {{PositionOptions/enableHighAccuracy}}.
 
 The {{HTMLPermissionElement/isValid}} attribute reflects whether a the
 permission element is not currently blocked.
@@ -608,8 +616,10 @@ A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| i
 1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
 1. If |event|.{{Event/isTrusted}} is false, then return.
 1. If |element|.{{HTMLPermissionElement/isValid}} is false, then return.
-1. [=Request permission to use=] the [=powerful features=] named in
-    |element|'s {{[[Types]]}}.
+1. Let |descriptor| be the result of [=build a permission descriptor=] for
+    |element|.
+1. [=Request permission to use=] the [=powerful features=] described by
+    |descriptor|.
 1. If the previous step was cancelled or dismissed by the user, then
     [=dispatch onpromptdismiss=] on [=this=] and return.
 
@@ -624,6 +634,28 @@ A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| i
     in the underlying specification.
 
 1. [=Dispatch onpromptaction=] on [=this=].
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">build a permission descriptor</dfn> for an
+{{HTMLPermissionElement}} |element|:
+
+ISSUE: The [[Permissions]] specification assumes a descriptor describes a
+single permission without parameters (like an equivalent of
+{{PositionOptions/enableHighAccuracy}}). Here, we assume a permissions model
+that is more expressive. This needs to be resolved -- likely upstream,
+in [[Permissions]], plus adaptions here.
+
+1. Let |result| be a new {{PermissionDescriptor}}.
+1. Fill in |result|:
+    * Include the [=powerful feature=] names contained in
+        |element|'s {{[[Types]]}}.
+    * If |element|'s {{[[Types]]}} [=list/contains=] `"geolocation"` and
+        {{HTMLPermissionElement/preciseLocation}} is true, then |result| applies
+        to position requests with {{PositionOptions/enableHighAccuracy}} set
+        to true.
+1. Return |result|.
 
 </div>
 
