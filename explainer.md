@@ -553,7 +553,7 @@ this aspect.
     </td>
   </tr>
   <tr>
-    <td>panTiltZoom</td>
+    <td>pantiltzoom</td>
     <td>
       Values: <code>true/false</code> (for the
         <a href="https://github.com/w3c/mediacapture-image/blob/main/ptz-explainer.md#control-camera-pantilt">
