@@ -1,65 +1,36 @@
-# Page Embedded Permission Control (< permission > element)
+# The < permission > element - Seamless user control of powerful capabilities
+
 
 ## tl;dr
-We propose a semantic permission element with browser-controlled content and styling constraints that ensures a very high level of confidence concerning user intent to make a permission decision on site or OS level. The < permission > element unifies permission control by providing a clear, consistent, in-page point of access to manage permissions in both the browser & the OS.
-We believe this solves user problems related to accessibility, context, regret, and more.
-By combining a semantic HTML permission element (Image A) with a full-page modal confirmation UI (Image B, C) that applies a scrim to obscure underlying site content during the critical decision moment (making manipulation and change blindness more difficult), and by ensuring that browsers control the content in front of the user (Image A), the < permission > element enhances user intent capture, offering improved accessibility, security, and user-friendliness for both users and developers. Styling constraints are necessary to protect the browser-controlled content from being altered or removed by the site, ensuring that the content presented to users aligns with the browser's understanding of their intent. This offers a significantly better user experience than current permission flows through enhanced accessibility, security, and user-friendliness for both users and developers.
+The proposed **`<permission>` element** introduces a clear and consistent entry point for users' control over an origin's access to powerful features [1](https://w3c.github.io/permissions/#dfn-powerful-feature). Users' interaction with this element carries a **high degree of intent**, as the user agent controls the element's content and constrains its presentation to promote legibility and comprehension. The intentional nature of this interaction and developers' ability to place it in context gives user agents flexibility to make better decisions about any subsequent browser UI, ultimately reducing frustration for web developers and users alike by making unintentional grants or denials less likely. 
+
 
  <div style="display: flex;">
   <img src="images/New_HTML_permission_element.png" style="height: 250px; margin-right: 15px; object-fit: contain;">
   <img src="images/Browser_permission_prompt.png" style="height: 250px; margin-right: 15px; object-fit: contain;">
   <img src="images/pepc_secondaryUI_animated.gif" style="height: 250px; object-fit: contain;">
-  <p style="margin-top: 5px;">A. New HTML Permission Element B. Browser permission prompt C. Combined</p>
+  <p style="margin-top: 5px;">The < permission > element introduces a browser-controlled HTML element (with content and styling constraints) (left) that users click with clear intent to trigger such prompts (middle, right). </p>
 </div>
  
 
 ## Table of Contents
 <!-- TOC start -->
 
-- [Introduction](#introduction)
-- [Proposal](#proposal)
-- [Goals & non-goals](#goals-non-goals)
-- [Adoption ](#adoption)
-- [Developer trials](#developer-trials)
-- [Design considerations](#design-considerations)
-   * [HTML element](#html-element)
-      + [Usage](#usage)
-      + [Restrictions](#restrictions)
-      + [the < permission > element attributes](#pepc-attributes)
-   * [Permission UI](#permission-ui)
-      + [Standard UI](#standard-ui)
-      + [UI when the user can't change the permission](#ui-when-the-user-cant-change-the-permission)
-      + [UI when there is a mechanism that would block the request](#ui-when-there-is-a-mechanism-that-would-block-the-request)
-      + [UI when the permission is already granted](#ui-when-the-permission-is-already-granted)
-   * [Complexity ](#complexity)
-   * [Implementor portability, internationalization & upkeep](#implementor-portability-internationalization-upkeep)
-   * [Fallback solutions](#fallback-solutions)
-- [Security](#security)
-   * [Threat model](#threat-model)
-      + [Safety](#safety)
-      + [Annoyance](#annoyance)
-   * [Fallbacks when constraints are not met](#fallbacks-when-constraints-are-not-met)
-   * [Locking the < permission > element style](#locking-the-pepc-style)
-   * [One the < permission > element per permission type per page](#one-pepc-per-permission-type-per-page)
-   * [Conditions for usage in subframes](#conditions-for-usage-in-subframes)
-   * [Synthetic click events](#synthetic-click-events)
+- [Introduction & The Core Problem](#introduction)
+- [Solution: The `<permission>` element](#solution)
+- [Goals of The `<permission>` element](#goals-non-goals)
+- [Understanding the `<permission>` element](#understanding)
+- [Technical Specifications](#tech-specs)
+- [Designing the Permission UI](#design)
+- [Security and Abuse Mitigation](#security-abuse)
+   * [Safety Measures](#safety)
+   * [Annoyance Mitigation](#annoyance)
+- [Developer Integration and Best Practices](#best-practice) 
+- [Priming & Pre-Prompts](#priming)
+- [User vs. Website Benefits}(#benefits)
 - [Privacy](#privacy)
-   * [Exposing user information bits](#exposing-user-information-bits)
-- [Status quo elaboration](#status-quo-elaboration)
-   * [Permission prompts UX evaluation](#permission-prompts-ux-evaluation)
-   * [User Agent abuse mitigations](#user-agent-abuse-mitigations)
-- [Alternatives considered](#alternatives-considered)
-   * [No platform changes](#no-platform-changes)
-   * [Improve existing usage triggered permission request journey](#improve-existing-usage-triggered-permission-request-journey)
-   * [Separate this into two proposals, (1) improved user intent signal and (2) permission prompt improvements](#separate-this-into-two-proposals-1-improved-user-intent-signal-and-2-permission-prompt-improvements)
-   * [Extending an existing element](#extending-an-existing-element)
-   * [Providing a registration JS API](#providing-a-registration-js-api)
-   * [Extending the Permissions API to provide an anchor point](#extending-the-permissions-api-to-provide-an-anchor-point)
-   * [Allowing recovery via the regular permission flow](#allowing-recovery-via-the-regular-permission-flow)
-   * [Implementing an origin based permission allow list registry](#implementing-an-origin-based-permission-allow-list-registry)
-- [Extending the < permission > element in the future](#extending-the-pepc-in-the-future)
-   * [The < permission > element for additional user agent settings](#pepc-for-additional-user-agent-settings)
-   * [Not "just" a button](#not-just-a-button)
+- Appendix: FAQ Section (#faq)
+
 
 <!-- TOC end -->
 
