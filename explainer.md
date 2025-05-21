@@ -282,14 +282,35 @@ The `<permission>` element is designed to degrade gracefully and provide a fallb
  - **Implementor Portability, Internationalization & Upkeep:** Ensuring the `<permission>` element remains effective across various languages, cultures, and browser versions presents ongoing challenges related to internationalization, maintenance, and portability. While continuous updates and maintenance will be required, potentially leading to usability issues if sites cannot account for future browser changes, the `<permission>` element leverages existing browser capabilities. Browsers already manage internationalization and cultural differences for their existing prompts. Most browsers already have user-recognizable iconography for common permissions such as Camera/Microphone or Location and the `<permission>` element can share strings used in the existing permission journey. The proposal does not prescribe any particular prompt UI or exact text, allowing browsers to optimize their native display for specific platforms and user expectations. The element's robust validation system and events (like onvalidationstatuschange) are designed to provide developers with the necessary signals to adapt and future-proof their websites.
 
 <!-- TOC --><a name="priming"></a>
-## priming & Pre-Prompts
+## Priming & Pre-Prompts
 The `<permission>` element fundamentally shifts control to the user, as websites cannot proactively request permissions via the `<permission>` element; only the user can initiate the permission flow. The element's button strings, such as "use <capability>" rather than "allow <capability>," implicitly signal an immediate action, inherently discouraging sites from asking significantly in advance of actual use.
 
 **For Well-Behaved Sites:**
 - **Ask Ahead of Usage:** For some real-time capabilities, such as camera or microphone access in video conferencing, users often prefer to handle permissions setup proactively to avoid interruptions shortly before or during a call. Developers displaying pre-prompts for these capabilities are often responding to the nature of the real-time interaction itself. For example, multiple conferencing sites already had pre-prompts related to mic/camera permissions before implementing the `<permission>` element during the origin trial. The `<permission>` element does not prevent or eliminate existing pre-prompts, as they serve to build context for the users’ benefit.
 
-place holder for images
+<table style="width: 100%; border: none;">
+  <tr style="border: none;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet in firefox.png" style="height: 350px; object-fit: contain;">
+    </td>
+   <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td style="width: 40%; text-align: center; border: none;"> <img src="" style="height: 350px; object-fit: contain;">
+    </td>
+  </tr>
+</table>
+<p> <em>Image 4: Priming example of meet.com in Firefox (left) and Zoom.com in Chrome (right) without the `<permission>` element. </em> </p>
 
+
+<table style="width: 100%; border: none;">
+  <tr style="border: none;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet in firefox.png" style="height: 350px; object-fit: contain;">
+    </td>
+   <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td style="width: 40%; text-align: center; border: none;"> <img src="" style="height: 350px; object-fit: contain;">
+    </td>
+  </tr>
+</table>
+<p> <em>Image 5: Priming example of zoom.com  with the `<permission>` element (left) and meet.com with the confirmation UI after clicking the `<permission>` element in Chrome (right). </em> </p>
+ 
 - **Ask at Time of Usage:** In contrast, for capabilities like geolocation, the expected user experience is typically "user-pull". Sites commonly employ in-page buttons such as "locate me" or integrate a location chooser, which users interact with to explicitly trigger a request. The `<permission>` element enshrines these existing UX patterns, allowing the permission to be requested when the user explicitly indicates intent, rather than being shown as an unsolicited pre-prompt.
 
 place holder for images
