@@ -302,10 +302,10 @@ The `<permission>` element fundamentally shifts control to the user, as websites
 
 <table style="width: 100%; border: none;">
   <tr style="border: none;">
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet chrome permission element.png" style="height: 350px; object-fit: contain;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/zoom chrome permission element.png" style="height: 300px; object-fit: contain;">
     </td>
    <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/zoom chrome permission element.png" style="height: 350px; object-fit: contain;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet chrome permission element.png" style="height: 300px; object-fit: contain;">
     </td>
   </tr>
 </table>
@@ -313,7 +313,16 @@ The `<permission>` element fundamentally shifts control to the user, as websites
  
 - **Ask at Time of Usage:** In contrast, for capabilities like geolocation, the expected user experience is typically "user-pull". Sites commonly employ in-page buttons such as "locate me" or integrate a location chooser, which users interact with to explicitly trigger a request. The `<permission>` element enshrines these existing UX patterns, allowing the permission to be requested when the user explicitly indicates intent, rather than being shown as an unsolicited pre-prompt.
 
-place holder for images
+<table style="width: 100%; border: none;">
+  <tr style="border: none;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/zoom chrome permission element.png" style="height: 300px; object-fit: contain;">
+    </td>
+   <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet chrome permission element.png" style="height: 300px; object-fit: contain;">
+    </td>
+  </tr>
+</table>
+<p> <em>Image 5:  In-page button to use location in target.com (left) and ups.com (right) which can be replaced by a < permission > element button. </em> </p>
 
 - **Context Building & Reducing Existing Prompts:** Preparing users for permission requests is not inherently detrimental; providing contextual information is encouraged, and the `<permission>` element facilitates a standardized approach. Peer-reviewed research ([1](https://dl.acm.org/doi/10.1145/3706598.3713547),[2](https://dl.acm.org/doi/fullHtml/10.1145/3613904.3642252#sec-29))  highlights that providing sufficient context and enabling users to perceive a personal benefit is strongly associated with granting permissions. This underscores that well-timed and contextualized requests are central to successful capability use. Similarly, sites leveraging helpful pre-prompting patterns are more likely to have higher grant rates.
   
