@@ -207,3 +207,76 @@ Mitigating annoyance by ensuring user intent is more complex than ensuring safet
 If the integrity of the `<permission>` element click is not assured (e.g., due to styling issues, occlusion, or recent movement), user agents have several approaches to consider:
 - **Trigger Legacy Flow**: The click could trigger the equivalent JavaScript API's legacy permission flow (as if it was triggered by the equivalent JS API). This is suitable for non-self-correcting issues like styling problems or occlusion.
 - **Do Nothing**: The click could simply do nothing. This is appropriate if the failing check will self-correct (e.g., after a short cooldown if the element has recently moved).
+
+## Developer Integration and Best Practices
+The `<permission>` element is designed to integrate smoothly with existing web platform APIs and developer workflows.
+- **Responding to Permission Status Changes:** Developers should use the Permissions API in parallel with the `<permission>` element. This ensures the site responds to all permission status changes, including those not directly caused by interaction with the `<permission>` element (for example, user agents generally allow users to control permissions on various UI surfaces that are entirely separate from the site's rendering area).
+- **Event Handlers:** Specific event handlers are available on the `<permission>` element:
+  - `onpromptdismiss`: Fired when the permission UI triggered by the `<permission>` element has been dismissed by the user (for example via clicking the 'x' button or clicking outside the prompt). Sites can use this to provide additional context to potentially help the user make a decision.
+  - `onpromptaction`: Fired when the permission UI triggered by the `<permission>` element has been resolved by the user taking some action on the prompt itself. Note that this does not necessarily mean the permission state has changed; the user might have taken an action that maintains the status quo.
+  - `onvalidationstatuschange`: Fired when the `<permission>` element switches from being "valid" to "invalid". The element is considered "valid" when the user agent trusts the integrity of the signal if the user were to click on it, and "invalid" otherwise.
+   - The `isValid` boolean attribute indicates whether the status has transitioned to "valid" or not.
+   - The `invalidReason` string attribute provides the reason why the status is "invalid" (or "" if it's valid), and can be one of the following values:
+     - "recently_attached": the element has just been attached to the DOM.
+     - "type_invalid": the type attribute does not have a supported value.
+     - "illegal_subframe": conditions for usage in a subframe are not met.
+     - "unsuccessful_registration": the allowed limit of permission elements is exceeded.
+     - "intersection_changed": the element has recently moved (either by layout changes or scrolling).
+     - "intersection_out_of_viewport_or_clipped": the element is not currently fully in the viewport of its frame.
+     - "intersection_occluded_or_distorted": the element is currently covered by some other element.
+     - "style_invalid": the element's style does not pass validation. Developers should handle this event to future-proof their websites against unexpected changes in browser validation criteria.
+    
+ Example usage:
+
+```html
+<style>
+  permission {
+    background-color: blue;
+    color: white;
+    border-radius: 10px;
+  }
+</style>
+
+<permission
+  onpromptdismiss="showContextInfo()"
+  type="microphone"
+></permission>
+
+<script>
+  function showContextInfo() {
+    // Provide some additional information since the     .
+    // user has just dismissed the permission prompt     .
+    // without making a decision.
+  }
+  navigator.permissions
+    .query({ name: 'microphone' })
+    .then((permissionStatus) => {
+      permissionStatus.onchange = () => {
+        // Run the check when the status changes.
+        if (permissionStatus.state === 'granted') startUsingMic();
+      };
+      // Run the initial check.
+      if (permissionStatus.state === 'granted') startUsingMic();
+    });
+</script>
+```
+<img src="images/image7.png" width="600" alt="Description of image18">
+
+- **Fallback Solutions:** For browsers that do not support the `<permission>` element, developers can implement straightforward fallback solutions. In many cases, the `<permission>` element can augment existing permission journeys, so a polyfill may not be strictly necessary. When the `<permission>` element replaces existing journeys, polyfills are typically simple, often involving a standard HTML button that links to capability usage. User experience testing has shown that the `<permission>` element significantly outperforms other permission request flows in terms of user and developer preferred outcomes (lower decision "regret", whether granted or blocked), and a much higher success rate of users reverting past decisions they regretted, making its adoption appealing even with fallback considerations.
+  While fallback mechanisms may introduce some initial code duplication or additional layers of complexity for developers supporting unsupported browsers, we believe this is surmountable given the significant user and developer experience advantages of the `<permission>` element.
+The `<permission>` element is designed to degrade gracefully and provide a fallback experience.
+- **Shift in Effort/Burden:** The `<permission>` element represents a strategic shift in effort. 
+
+| | User Experience / Effort | Developer Effort | User Agent Effort |
+|---|---|---|---|
+| **Status Quo** | High Frustration / High Burden: Users are often overwhelmed by a "noisy web" (out-of-context prompts), leading to decision fatigue. Recovering from past denials (site or OS level) is cumbersome and difficult. | Low-Medium Effort: Requesting prompts on page load is relatively easy, with little initial thought often given to user context. However, well-behaved sites face significant effort to guide users through external permission/OS settings when access is previously blocked. | Low Effort: Primarily asks users to make permission decisions via prompts. May implement some heuristics to try and prevent/silence unwanted prompts. |
+| **With the `<permission>` element** | Empowered / Low Burden: Users trigger permission prompts in the right context and at the right time, leading to a more intuitive experience. | Medium-High Effort: Developers need to thoughtfully consider the user journey and strategically place the `<permission>` button within their site's design. | High Effort: The User Agent takes on significant complexity by managing robust security measures, styling constraints, timing, and position mitigation for the element. |
+
+
+  Under the status quo, users bear a high burden due to a 'noisy web,' decision fatigue from out-of-context prompts, and cumbersome recovery from past denies at site or OS level. Developers, while having low-to-medium effort in requesting prompts on page load, face significant effort in helping users navigate browser settings for troubleshooting. The User Agent has low effort, simply asking users to make decisions. With the `<permission>` element, the user's burden becomes low, as prompts are triggered in the right context and timing. Developers take on a medium-to-high effort, needing to thoughtfully integrate the `<permission>` button into user journeys. Crucially, the User Agent's effort becomes high due to the added complexity of security measures, styling constraints, timing, and position mitigations. Currently, well-behaved websites face a significant burden, often needing to guide users through complex, often outdated, and User Agent-specific explanations in pop-ups to troubleshoot permission settings. 
+
+
+  This burden is exacerbated because developers often don't know the exact source of a permission error. The `<permission>` element can significantly reduce these types of troubleshooting prompts. Furthermore, The `<permission>` element drastically simplifies recovery from OS-level blocks: a process that can involve more than 12 steps for users in macOS and often leads to a dead end without it, is reduced to 6 steps with the `<permission>` element.
+
+
+ - **Implementor Portability, Internationalization & Upkeep:** Ensuring the `<permission>` element remains effective across various languages, cultures, and browser versions presents ongoing challenges related to internationalization, maintenance, and portability. While continuous updates and maintenance will be required, potentially leading to usability issues if sites cannot account for future browser changes, the `<permission>` element leverages existing browser capabilities. Browsers already manage internationalization and cultural differences for their existing prompts. Most browsers already have user-recognizable iconography for common permissions such as Camera/Microphone or Location and the `<permission>` element can share strings used in the existing permission journey. The proposal does not prescribe any particular prompt UI or exact text, allowing browsers to optimize their native display for specific platforms and user expectations. The element's robust validation system and events (like onvalidationstatuschange) are designed to provide developers with the necessary signals to adapt and future-proof their websites.
