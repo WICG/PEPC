@@ -297,19 +297,19 @@ The `<permission>` element fundamentally shifts control to the user, as websites
     </td>
   </tr>
 </table>
-<p> <em>Image 4: Priming example of meet.com in Firefox (left) and Zoom.com in Chrome (right) without the `<permission>` element. </em> </p>
+<p> <em>Image 4: Priming example of meet.com in Firefox (left) and Zoom.com in Chrome (right) without the < permission > element. </em> </p>
 
 
 <table style="width: 100%; border: none;">
   <tr style="border: none;">
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet in firefox.png" style="height: 350px; object-fit: contain;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet chrome permission element.png" style="height: 350px; object-fit: contain;">
     </td>
    <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-    <td style="width: 40%; text-align: center; border: none;"> <img src="" style="height: 350px; object-fit: contain;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/zoom chrome permission element.png" style="height: 350px; object-fit: contain;">
     </td>
   </tr>
 </table>
-<p> <em>Image 5: Priming example of zoom.com  with the `<permission>` element (left) and meet.com with the confirmation UI after clicking the `<permission>` element in Chrome (right). </em> </p>
+<p> <em>Image 5: Priming example of zoom.com  with the < permission > element (left) and meet.com with the confirmation UI after clicking the < permission > element in Chrome (right). </em> </p>
  
 - **Ask at Time of Usage:** In contrast, for capabilities like geolocation, the expected user experience is typically "user-pull". Sites commonly employ in-page buttons such as "locate me" or integrate a location chooser, which users interact with to explicitly trigger a request. The `<permission>` element enshrines these existing UX patterns, allowing the permission to be requested when the user explicitly indicates intent, rather than being shown as an unsolicited pre-prompt.
 
