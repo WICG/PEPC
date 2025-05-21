@@ -315,10 +315,10 @@ The `<permission>` element fundamentally shifts control to the user, as websites
 
 <table style="width: 100%; border: none;">
   <tr style="border: none;">
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/zoom chrome permission element.png" style="height: 300px; object-fit: contain;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/target.png" style="height: 300px; object-fit: contain;">
     </td>
    <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet chrome permission element.png" style="height: 300px; object-fit: contain;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/ups.png" style="height: 300px; object-fit: contain;">
     </td>
   </tr>
 </table>
@@ -329,7 +329,18 @@ The `<permission>` element fundamentally shifts control to the user, as websites
 The `<permission>` element can also reduce priming. Currently, sites use pre-prompts to build context and clarity for users. With the `<permission>` element, sites can dare to get away without a pre-prompt, as the consequences are less severe. This is because the `<permission>` element doesn’t require a permanent block option and it offers users a clear path to safely and easily revisit decisions within the same session. This lowers the risk of accidental denials that might otherwise occur without a pre-prompt. This also helps well-behaved sites reduce the burden of guiding users through complex, often outdated, and UA-specific troubleshooting explanations. Furthermore, for well-intended sites that might accidentally prompt on load by directly calling a protected API without building sufficient context, the existence of the `<permission>` element offers signposting that there is a better solution. While this might lead to additional pre-prompts from these developers as they adopt better practices, it ultimately represents a net gain for users.
 
 
-place holder for images
+<table style="width: 100%; border: none;">
+  <tr style="border: none;">
+    <td style="width: 30%; text-align: center; border: none;"> <img src="images/meet blocked firefox.png" style="height: 200px; object-fit: contain;"> </td>
+   <td style="width: 5%; border: none;"> &nbsp;</td>
+    <td style="width: 30%; text-align: center; border: none;"> <img src="images/meet blocked safari.png" style="height: 200px; object-fit: contain;"> </td>
+   <td style="width: 5%; border: none;"> &nbsp;</td>
+    <td style="width: 30%; text-align: center; border: none;"> <img src="images/search blocked chrome.png" style="height: 200px; object-fit: contain;"> </td>
+  </tr>
+</table>
+<p> <em>Image 6:  Meet.com guiding users through Firefox settings (left), Safari settings (middle) and Google Search guiding users through Chrome Settings (right). </em> </p>
+
+
 
 **For Abusive Sites:**
 - Existing Behavior: Abusive sites are already excessively prompting and pre-prompting regardless of the existence of the permission element. If users enter a persistent block state, those sites simply navigate users to a new domain in order to be able to re-prompt the user. The `<permission>` element's goal is not to solve this specific problem.
