@@ -541,8 +541,9 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
 1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[PermissionElements]]}}.
 1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
 1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
-    constructing a new {{IntersectionObserver}}, with
-    [=HTMLPermissionElement/IntersectionObserver callback=].
+    constructing a new {{IntersectionObserver}} with
+    [=HTMLPermissionElement/IntersectionObserver callback=] and
+    &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
 1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
     with reason {{PermissionElementBlockerReason/type_invalid}}.
