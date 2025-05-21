@@ -2,24 +2,24 @@
 
 
 ## tl;dr
-The proposed **`<permission>` element** introduces a clear and consistent entry point for users' control over an origin's access to powerful features [1](https://w3c.github.io/permissions/#dfn-powerful-feature). Users' interaction with this element carries a **high degree of intent**, as the user agent controls the element's content and constrains its presentation to promote legibility and comprehension. The intentional nature of this interaction and developers' ability to place it in context gives user agents flexibility to make better decisions about any subsequent browser UI, ultimately reducing frustration for web developers and users alike by making unintentional grants or denials less likely. 
+Permissions on the web, despite their success in enabling powerful features, remain a significant source of user annoyance, friction, and abuse, leading to unintended grants or denials of critical capabilities. The proposed **`<permission>` element** introduces a clear and consistent entry point for users' control over an origin's access to powerful features [1](https://w3c.github.io/permissions/#dfn-powerful-feature). Users' interaction with this element carries a **high degree of intent**, as the user agent controls the element's content and constrains its presentation to promote legibility and comprehension. The intentional nature of this interaction and developers' ability to place it in context gives user agents flexibility to make better decisions about any subsequent browser UI, ultimately reducing frustration for web developers and users alike by making unintentional grants or denials less likely. 
 
 
  <div style="display: flex;">
   <img src="images/New_HTML_permission_element.png" style="height: 250px; margin-right: 15px; object-fit: contain;">
   <img src="images/Browser_permission_prompt.png" style="height: 250px; margin-right: 15px; object-fit: contain;">
   <img src="images/pepc_secondaryUI_animated.gif" style="height: 250px; object-fit: contain;">
-  <p style="margin-top: 5px;">The < permission > element introduces a browser-controlled HTML element (with content and styling constraints) (left) that users click with clear intent to trigger such prompts (middle, right). </p>
+  <p style="margin-top: 5px;"><em>Image 1: The < permission > element introduces a browser-controlled HTML element (with content and styling constraints) (left) that users click with clear intent to trigger such prompts (middle, right).</em> </p>
 </div>
  
 
 ## Table of Contents
 <!-- TOC start -->
 
-- [Introduction & The Core Problem](#introduction)
-- [Solution: The `<permission>` element](#solution)
-- [Goals of The `<permission>` element](#goals-non-goals)
-- [Understanding the `<permission>` element](#understanding)
+- [The Core User Problem](#problem)
+- [Solution: The `<permission>` Element](#solution)
+- [Goals of The `<permission>` Element](#goals-non-goals)
+- [Understanding The `<permission>` Element](#understanding)
 - [Technical Specifications](#tech-specs)
 - [Designing the Permission UI](#design)
 - [Security and Abuse Mitigation](#security-abuse)
@@ -27,275 +27,115 @@ The proposed **`<permission>` element** introduces a clear and consistent entry 
    * [Annoyance Mitigation](#annoyance)
 - [Developer Integration and Best Practices](#best-practice) 
 - [Priming & Pre-Prompts](#priming)
-- [User vs. Website Benefits}(#benefits)
+- [Results from the OT](#OT-results)
+- [Future of Permissions &Strategic Evolution](#future)
 - [Privacy](#privacy)
-- Appendix: FAQ Section (#faq)
+- [Appendix: FAQ Section](#faq)
 
 
 <!-- TOC end -->
 
-<a name="introduction"></a>
-<!-- TOC --><a name="introduction"></a>
-## Introduction
+<a name="problem"></a>
+<!-- TOC --><a name="problem"></a>
+## The Core User Problem
 
-When making decisions about whether or not to expose particularly powerful
-capabilities to a given website, user agents generally
-[pass the question on to users](#permission-prompts-ux-evaluation).
-Historically, this began as a fairly direct passthrough: a site would ask for
-some capability and the user agent immediately prompts asking users to make a
-decision for the request.
+The current implementation of [permissions on the web](https://www.w3.org/TR/permissions/#intro) causes significant problems for users. While permissions are crucial to the web, enabling powerful capabilities (like camera or microphone access) while safeguarding user privacy and security by delegating sensitive decisions to users, this model frequently falters in practice, leading to **frustration and perceived issues for users**.
+A prime example is video conferencing, where widespread "microphone not working" issues are often due to permission states rather than technical faults. These problems are compounded by the multi-layered nature of permissions (web origin, user agent, system level) and varying troubleshooting steps across platforms.
+A lens through which to view these failures is _false positives_ and _false negatives_: If a user ends up in the state they intended — be it permission granted (true positive) or denied (true negative) — all is well, and the browser has done its job. But if a permission is granted without the user intending it (false positive, e.g., as a result of a "dark pattern" on the page), or if it a permission is denied without intent (false negative, e.g., camera not working in video conference), the browser has failed its user.
 
-Spam and abuse have forced user agents to take a more opinionated approach to
-protect users' security, privacy, and attention. A number of preconditions and
-mitigation measures have evolved, ranging from straightforward
-[user activation requirements](https://developer.mozilla.org/en-US/docs/Web/Security/User_activation),
-permanent "block" policies, or
-[complex heuristics](https://blog.google/products/chrome/building-a-more-helpful-browser-with-machine-learning/).
-However these measures have limited effect
-[as indicated by metrics](#user-agent-abuse-mitigations).
-
-Challenges with the status quo include:
-
-1.  **Insufficiency of existing mitigations**: The present day permissions spam
-    and abuse mitigation approach has an architectural upper bound on user
-    protection because the model relies on the website to choose when to trigger
-    the permission request prompt rather than capturing a reliable signal of
-    user intent. Requiring a user gesture to
-    [request permission to use a powerful feature](https://www.w3.org/TR/permissions/#dfn-request-permission-to-use)
-    (or similar) does not solve this problem as there are many ways of tricking
-    a user into providing a so called
-    "[activation triggering input event](https://html.spec.whatwg.org/#activation-triggering-input-event)"
-    (i.e., a user gesture, such as clicking the mouse or pressing a key) .
-
-1.  **Context**: Ideally, a site's developer will request access as part of a
-    contextual flow that helps users understand what's being asked for and why,
-    enabling quick and confident responses. Often, however, permission requests
-    are correlated poorly with user expectations, up to and including prompts
-    that can come out of nowhere (see example 1). This places a burden on user
-    agents' presentation of the request. The user agent has no semantic
-    understanding of events taking place in the content area prior to the
-    permission request. User agents could make better decisions and provide
-    better prompts if they could make well-founded assumptions about the nature
-    of the user's interaction in the content area, and the user's intent. At the
-    moment user agents are limited to trying to make use of potentially ambigous
-    signals such as the time elapsed between page load and the permission
-    request.
-
-    ![](images/image1.png) \
-    *Example 1. A notification permission prompt on a news site (contents
-    blurred), shown after the user has clicked on the empty area next to the
-    article content. The user finds this prompt interruptive as they had no
-    interest in subscribing to notifications, and they will likely struggle to
-    understand why the prompt was shown to begin with.*
-
-1.  **Location**: In the ideal case above, users will interact with something on
-    a site that triggers a prompt. In less ideal cases, the user might not have
-    interacted with anything at all, or they may have interacted with an element
-    that was unrelated to the request. Given this uncertainty, user agents rely
-    on common placement of the permission prompt, usually in the top-left of the
-    page. Even in the best case, this has the unfortunate effect of shifting the
-    point to which users need to pay attention from the thing they clicked on to
-    some distant part of the user agent's UI (see example 2). User agents could
-    make better decisions and provide better prompts if they could make
-    well-founded assumptions about the nature of the user's interaction in the
-    content area, and the user's current area of focus. In effect, we think
-    there is a benefit to semantic markup for permissions.
-
-    ![](images/image2.png) \
-    *Example 2. An example where the permission prompt is far away from the
-    user's current area of focus. The permission prompt was triggered because
-    the user has just clicked on the crosshair icon in the bottom right, but the
-    prompt is easy to miss since it's on the opposite side of the page.*
-
-1.  **Regret**: Given the challenges of permission annoyance and abuse, it is
-    reasonable for user agents to suppress a site's future requests for the same
-    capability when the first request is blocked. That said, our research shows
-    that users can and do change their minds for good reasons. When they change
-    their mind, the site can no longer offer an interface in web content and the
-    user must search for the appropriate user agent surface. Our research shows
-    that users often fail when trying to do so (see example 3). In these cases,
-    the user agent's desire to protect the user backfires, and makes the user's
-    experience worse as the site will not work as the user wants. User agents
-    can help users recover from a permission regret state if they can make
-    well-founded assumptions about the nature of the user's intent and
-    interaction with web content.
+| | Camera working on site | Camera not working on site (site or OS permission missing) |
+|---|---|---|
+| **Intent to use camera on site** | True positive: Intent correctly captured. | False negative: User intended to use camera but permission is blocked (Site/OS) or they changed their mind. Solution: Clear intent by clicking the `<permission>` element to show the prompt again. |
+| **No intent to use camera on site** | False positive: Permission granted without user intent. Solution: `<permission>` element requires explicit user click on clearly labeled button to show prompt. | True negative: Intent correctly captured. |
 
 
-<div style="display: flex;">
-  <img src="images/image3.png" style="height: 350px; margin-right: 400px; object-fit: contain;">
-  <img src="images/permission_os_blocked.png" style="height: 350px; margin-right: 0px; object-fit: contain;">
-</div>
-    *Example 3. An example where the user previously blocked camera & microphone (left) or location (right) aaccess, but has now just expressed a strong intention to re-enable them by clicking the unmute (left) or "use my current location" buttons. Because the user agent has no
-    insight into this interaction in the content area, it is compelled to respect the user's previous decision. Especially in a stressful scenario
-    such as an important presentation or finding the closest store, users will struggle to navigate the settings surfaces to change the permission decision (left).*
+Users frequently encounter several challenges with current permission models:
+- **Limited Impact of Existing Mitigations:** Current spam and abuse mitigation approaches have an architectural upper bound on user protection because the model relies on the website to choose when to trigger the prompt rather than capturing a reliable signal of user intent. This is evident in metrics where most user interactions on permission prompts are negative.
+- **Contextual Blindness:** User agents currently lack semantic understanding of events in the content area prior to a permission request, limiting their ability to provide better, more contextual prompts. This often leads to prompts that can "come out of nowhere," correlated poorly with user expectations.
+- **Difficulty in Recovery from Denials:** While existing "permanent deny" policies on site or OS level reduce spam, they make it difficult for users to change their minds later, requiring them to navigate complex browser or system settings. This backfires when a user genuinely wants to re-enable a feature but struggles to do so, leading to a worse experience.
 
-1.  <a name="accessibility"></a>**Accessibility**: Permission UI for a
-    capability is triggered through the direct use of the capability. Typically
-    JavaScript invokes permission UI, presenting an issue for both screen
-    readers and magnification users.
+<table style="width: 100%; border: none;">
+  <tr style="border: none;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/image3.png" style="height: 350px; object-fit: contain;">
+    </td>
+    <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/permission_os_blocked.png" style="height: 350px; object-fit: contain;">
+    </td>
+  </tr>
+</table>
+<p> <em>Image 2: These images illustrate a common user challenge: previously denied permissions. On the left, a user had blocked camera and microphone access, but now clearly intends to re-enable them by clicking an "unmute" button. Similarly, the right shows a user who had denied location access, but now expresses strong intent to use it by clicking a "use my current location" button. In both cases, because the user agent lacks insight into these in-content interactions, it's compelled to respect the previous denial. This leaves users struggling to navigate complex browser or OS settings, especially in stressful scenarios like an important presentation or finding a nearby store.</em> </p>
 
-    Script attached to an existing DOM element is not interpreted by the screen
-    reader. If the DOM element was not accessibility tested and does not provide
-    sufficient explanation to its function, there is no way for a screen reader
-    user to know that the purpose of that element is to initiate access to a
-    capability. Current permissions can be accessible if properly implemented
-    and tested, the < permission > element is *accessible by default*.
+- **Accessibility Challenges with Current Approaches:** Current JavaScript-triggered permission UIs can present issues for screen readers and magnification users. Native HTML elements like the `<permission>` element are accessible by default.
+ 
+Therefore, a more confident signal of user intent is key to making web permissions work better for users, which the `<permission>` element aims to achieve.
 
-    Magnification users also struggle with the status quo. A page cannot detect
-    if a user is using OS level magnification tools (WAI for privacy reasons). A
-    user in a magnified state can easily miss the permission prompt if it falls
-    outside of their magnified viewport, and pages cannot assist these users.
-    With the < permission > element, the scrim and a contextually localized prompt greatly increase
-    the chance that the magnification user will observe the permission request
-    after interacting with the element.
+<!-- TOC --><a name="solution"></a>
+## Solution: The `<permission>` Element
 
-Optimizing the trade-off between usability and interruptions hit practical
-limits because, fundamentally, user agents
-[still lack any understanding of the](#permission-prompts-ux-evaluation)
-semantics of user interactions in the content area (i.e. the web page), and
-consequently lack insight into the user's present context and task they are
-trying to accomplish.
+The semantic `<permission>` HTML element will serve as an in-content entry point for permission requests, appearing and functioning much like any other HTML button [Image A]. The crucial difference is that a click on this button will trigger a permission request for which the user agent can have high confidence that it was user-initiated [Image C]. To achieve a strong signal of user intent, user agents require [user activation](https://developer.mozilla.org/en-US/docs/Web/Security/User_activation) to let a script trigger a permission prompt.
 
-To improve upon the status quo, user agents need to be able to extract
-trustworthy signals from the content about the user's task and intent, so they
-can be more opinionated and confident in their communication to users regarding
-capability access. This is especially important if user agents want to safely
-enable users to change their minds while still *respecting user's earlier
-permanent block decisions*.
+The `<permission>` element comes with browser-controlled content and styling constraints to prevent manipulation and ensure its integrity. This design unifies permission control by offering a clear, consistent, in-page access point for managing permissions in both the browser and the OS.
 
-<!-- TOC --><a name="proposal"></a>
-## Proposal
+User agents can combine the element with a louder, more opinionated design to emphasize the critical decision moment. Other user agents can tailor this experience to their needs while relying on the strong user signal the element provides. For instance, Chrome is doing an implementation that combines this semantic HTML element [Image A] with a full-page modal confirmation UI [Image B,C] that applies a scrim to obscure underlying site content during the critical decision moment. Regardless of the specifics, the `<permission>` element makes manipulation and "change blindness" more difficult. Browsers maintain strict control over the content presented to the user, ensuring it aligns with their understanding of user intent. This approach significantly enhances user intent capture, improving accessibility, security, and user-friendliness for both users and developers. The element also includes appropriate safeguards to protect users from common spam and abuse patterns such as clickjacking.
 
-*Summary: We propose a new HTML element to the web platform which will be used
-to provide an in-content entry point to permission requests. This HTML element
-will look like a button and be used just like any other HTML element. The key
-difference is that clicking this button will trigger a permission request for
-which the user agent can have good confidence that it was user-initiated. The
-element will have appropriate safeguards to protect users from common spam and
-abuse patterns such as click jacking.* *We propose the name "Page Embedded
-Permission Control" which can be abbreviated as the < permission > element.*
 
-To extract a strong signal of user intent, we believe that user agents require
-verification of the user interaction step that happened in the content area
-directly before the developer triggers the showing of the permission prompt.
 
-We propose to achieve this through introducing a `< permission >` element: a
-semantic and semi-trusted UI element that the developer can embed into the
-content area. At its simplest, the element takes the shape of a button whose
-[appearance](#locking-the-pepc-style) and [behavior](#restrictions) are
-materially [controlled](#security) by the user agent, to the extent that is
-necessary to ensure interaction with this element is a strong indication of user
-intent to use a certain capability.
+<table style="width: 100%; border: none;">
+  <tr style="border: none;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/image5.png" style="height: 400px; object-fit: contain;">
+    </td>
+    <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/image5.png" style="height: 400px; object-fit: contain;">
+    </td>
+  </tr>
+</table>
+<p> <em>Image 3: Implementation example: A video conferencing site providing a "Use microfone" button and a search site a "Use precise location" button, that triggers a microfone or geolocation permission request. </em> </p>
 
-Developers who follow best practices often implement similar permission flows
-today, either as part of their onboarding experience, or as a permanently
-displayed affordance on their UI. These developers invite the user to click on a
-button to indicate interest, and see grant rates as high as 95% in the
-permission prompts that follow. For these developers, the permission element
-will be a drop-in replacement that is straightforward to adopt and easy to
-polyfill on browsers which do not support the < permission > element. Here are some real-life
-examples:
 
-![](images/image4.png) \
-*Example 4: A video-conferencing site. Clicking on the "Enable camera" button
-triggers a camera permission request.*
 
-![](images/image5.png) \
-*Example 5: A search site. Clicking on "Use precise location" triggers a
-geolocation permission request.*
+<!-- TOC --><a name="goals-non-goals"></a>
+## Goals of The `<permission>` Element
 
-![](images/image6.png) \
-*Example 6: A messaging site, clicking on the "Enable Desktop Notifications"
-button triggers a push notifications permission request.*
+The primary goals of the `<permission>` element are:
+- More Confident and Robust Capture of User Intent: The element's design provides a strong signal of user intent, allowing user agents to make more informed decisions about presenting permission requests. This is achieved by requiring a user click on a dedicated button with an actionable message (e.g., 'use camera') in context and at the time of need, providing a more accurate capture of intentionality compared to general user gestures or mere page loads.
+- Reducing False Positives and False Negatives: The `<permission>` element specifically aims to reduce both false positives (unintended grants) and false negatives (unintended blocks), thereby driving down the number of prompts users encounter. 
+- Mitigating OS-level and Site-level Permission Regret: A significant user problem is regretting a denial, especially when it's persistent or at the OS level, making it hard to revert. The `<permission>` element provides a clear, consistent way for users to revisit and manage their permission decisions upon clear intent, facilitating necessary changes when user intent evolves
+- Better Context: The `<permission>` element allows developers to integrate permission requests into the user journey at the UX design stage, ensuring clearer context for the user. The affordance to grant permission is in-context, making it easier for legitimate use cases to explain what is being asked and why.
 
-We believe that enshrining such a user-initiated approach in standards can
-contribute to consistently better permission request flows across the web. This
-is because the permission element offers the following compelling advantages to
-users and developers alike:
+<!-- TOC --><a name="understanding"></a>
+## Understanding the `<permission>` element
 
--   It is **non-interruptive**: it is static, small, and contained in the
-    content area on the same z-level.
--   It is **discoverable**: it can be placed by the developer within the user's
-    focus of attention; with the locality making it easier to find and more
-    convenient to interact with.
--   It provides more **contextual information**: it has a visual manifestation
-    as opposed to being a procedural API, requiring developers to think about
-    integrating it into the user journey at UX design time, as opposed to being
-    left as an afterthought during implementation, resulting in knock-on effects
-    relating to clearer context.
--   It allows users to **revert** a previous "deny" decision if they have
-    changed their mind and are now interested in the feature that the site
-    provides.
--   It is more **accessible**. The < permission > element can have standard, localized, screen
-    reader announcements that make the purpose of the element comprehensible and
-    consistent across websites. The scrim and a contextually localized prompt
-    greatly increase the chance that a magnification user will observe the
-    permission request after interacting with the element.
-
-Example usage:
+The `<permission>` element is designed to be straightforward for developers to integrate into web pages like any regular button while offering robust browser control for security and user experience. For example:
 
 ```html
 <style>
   permission {
-    background-color: blue;
-    color: white;
+    background-color: lightgray;
+    color: black;
     border-radius: 10px;
   }
 </style>
-
-<permission
-  onpromptdismiss="showContextInfo()"
-  type="microphone"
-></permission>
-
-<script>
-  function showContextInfo() {
-    // Provide some additional information since the     .
-    // user has just dismissed the permission prompt     .
-    // without making a decision.
-  }
-  navigator.permissions
-    .query({ name: 'microphone' })
-    .then((permissionStatus) => {
-      permissionStatus.onchange = () => {
-        // Run the check when the status changes.
-        if (permissionStatus.state === 'granted') startUsingMic();
-      };
-      // Run the initial check.
-      if (permissionStatus.state === 'granted') startUsingMic();
-    });
-</script>
+<permission type="geolocation"></permission>
 ```
 
-<img src="images/image7.png" width="">
+<img src="images/image9.png">
 
-A sample user agent implementation given as an example. The permission element
-is a button whose text is controlled by the user agent. It can be styled by the
-developer to a degree, including limited control over colors and border styling.
-Clicking the permission element shows a permission prompt (owner by the user
-agent).
 
-<img src="images/image8.png" width="">
+<!-- TOC --><a name="tech-specs"></a>
+## Technical Specification
+- Parsing Model: The `<permission>` element's contents will be ignored by default and instead the user agent will render its own contents. This ensures its content and appearance are strictly controlled by the user agent.
+- Attributes: The element supports several attributes to define its behavior:
+ * type: Specifies which permission the element applies to (e.g., "microphone", "geolocation", "camera"). It can also be a space-separated list for grouped permissions if the user agent supports such grouping (e.g., microphone and camera requests are commonly grouped).
+preciselocation: A boolean (true/false) specific to the geolocation permission type.
+ * sysex: A boolean (true/false) specific to the MIDI permission type.
+ * pantiltzoom: A boolean (true/false) specific to the camera permission type.
+ * lang: The global lang attribute has a specific purpose here. Since the element's content is set by the user agent, this attribute indicates the desired language for the text. The user agent will attempt to provide the text in that language if possible. Note that this only determines the language of the HTML element, not the permission confirmation UI itself, which will use the user agent's primary language settings.
+- CSS Pseudo-classes:
+ * :granted: This pseudo-class is applied when the relevant permission is granted (either previously or during the current session). Sites can style the `<permission>` element differently in this state (e.g., to indicate "Location shared").
+- Fallback contents:
+The `<permission>` element’s contents can be used as a fallback in case the user agent does not support the `<permission>` element. User agents that support the `<permission>` element will ignore the contents and instead render its own. There is one exception to this: if the provided `type` attribute value is not supported, the browser will stop providing its own content and instead use the site-provided fallback content inside the `<permission>` element (if it exists).
 
-<!-- TOC --><a name="goals-non-goals"></a>
-## Goals & non-goals
 
-The goal of this proposal is to provide a definition of a Page Embedded
-Permission Control (< permission > element) as a means to improve the permission request flow and
-to provide a list of security considerations and design options that user agents
-should consider.
-
-The < permission > element should both integrate seamlessly with the site but also not be easily
-abusable by the site. The < permission > element should provide a strong signal of the user's
-intent to start using some permission-gated feature and therefore allow user
-agents to make more informed decisions about how to present permission requests
-to the user.
-
-In the long-run the < permission > element should become the default solution that sites use to
-interact with permission-gated capabilities since it provides a higher quality
-experience for the user and simplified developer ergonomics; the existing
-JS-only APIs can still be used when an in-page element solution does not fit the
-particular use case.
 
 <!-- TOC --><a name="adoption"></a>
 ## Adoption 
