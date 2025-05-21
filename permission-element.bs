@@ -897,7 +897,6 @@ permission {
 
   border-width: clamp(none, computed, 1em);
 
-  margin: clamp(4px, computed, none);
   font-style: if(computed = "normal" or computed = "italic", computed, "normal");
   display: if (computed = "inline-block" or computed = "none", computed, "inline-block");
   cursor: if (computed = "pointer" or computed = "not-allowed", computed, "pointer")
