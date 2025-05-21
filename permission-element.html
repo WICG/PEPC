@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version b25686b9f, updated Fri Mar 14 14:15:20 2025 -0700" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-element.html" rel="canonical">
-  <meta content="601e1acd47e07afb1187e1b682bc073c7b221d6c" name="revision">
+  <meta content="9ea9a85e1245b6da4e97bc08c96f14c8a023594a" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -757,7 +757,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
  <body class="h-entry">
   <div class="head">
    <h1 class="p-name no-ref" id="title">The HTML &lt;permission> Element</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-05-19">19 May 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-05-21">21 May 2025</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1274,7 +1274,8 @@ the result of <a data-link-type="dfn" href="#htmlpermissionelement-get-the-curre
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionrect-slot" id="ref-for-dom-htmlpermissionelement-intersectionrect-slot">[[IntersectionRect]]</a></code> with undefined.</p>
      <li data-md>
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionobserver-slot" id="ref-for-dom-htmlpermissionelement-intersectionobserver-slot">[[IntersectionObserver]]</a></code> with the result of
-constructing a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver①">IntersectionObserver</a></code>, with <a data-link-type="dfn" href="#htmlpermissionelement-intersectionobserver-callback" id="ref-for-htmlpermissionelement-intersectionobserver-callback">IntersectionObserver callback</a>.</p>
+constructing a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver①">IntersectionObserver</a></code> with <a data-link-type="dfn" href="#htmlpermissionelement-intersectionobserver-callback" id="ref-for-htmlpermissionelement-intersectionobserver-callback">IntersectionObserver callback</a> and
+«[ "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverinit-rootmargin" id="ref-for-dom-intersectionobserverinit-rootmargin">rootMargin</a></code>" → <code>"-4px"</code> ]».</p>
      <li data-md>
       <p>Call <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionobserver-slot" id="ref-for-dom-htmlpermissionelement-intersectionobserver-slot①">[[IntersectionObserver]]</a></code>.observe(<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>).</p>
      <li data-md>
@@ -2121,6 +2122,7 @@ of those Explainer sections.</p>
      <li><span class="dfn-paneled" id="5efd52e0">intersectionRect</span>
      <li><span class="dfn-paneled" id="e22643f2">isVisible</span>
      <li><span class="dfn-paneled" id="45cd855a">root</span>
+     <li><span class="dfn-paneled" id="4dc2902c">rootMargin</span>
     </ul>
    <li>
     <a data-link-type="biblio">[MANIFEST-APP-INFO]</a> defines the following terms:
@@ -2542,6 +2544,7 @@ let dfnPanelData = {
 "48350e83": {"dfnID":"48350e83","dfnText":"align-self","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-align-self"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-align-3/#propdef-align-self"},
 "4ad610fb": {"dfnID":"4ad610fb","dfnText":"small","external":true,"refSections":[{"refs":[{"id":"ref-for-valdef-font-size-small"},{"id":"ref-for-valdef-font-size-small\u2460"}],"title":"3.2.1. Conditions that Deactivate the Element"}],"url":"https://drafts.csswg.org/css2/#valdef-font-size-small"},
 "4c646d7b": {"dfnID":"4c646d7b","dfnText":"contrast ratio","external":true,"refSections":[{"refs":[{"id":"ref-for-contrast-ratio"}],"title":"3.2.1. Conditions that Deactivate the Element"}],"url":"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio"},
+"4dc2902c": {"dfnID":"4dc2902c","dfnText":"rootMargin","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserverinit-rootmargin"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverinit-rootmargin"},
 "50348b93": {"dfnID":"50348b93","dfnText":"inherit","external":true,"refSections":[{"refs":[{"id":"ref-for-value-def-inherit"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://www.w3.org/TR/CSS2/cascade.html#value-def-inherit"},
 "53275e46": {"dfnID":"53275e46","dfnText":"append (for list)","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"2.3.1. The type property"},{"refs":[{"id":"ref-for-list-append\u2460"}],"title":"2.3.2. Activation blockers"}],"url":"https://infra.spec.whatwg.org/#list-append"},
 "5372cca8": {"dfnID":"5372cca8","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-boolean"},{"id":"ref-for-idl-boolean\u2460"}],"title":"2. The permission element."}],"url":"https://webidl.spec.whatwg.org/#idl-boolean"},
@@ -3309,6 +3312,7 @@ let refsData = {
 "https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionratio": {"displayText":"intersectionRatio","export":true,"for_":["IntersectionObserverEntry"],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"intersectionRatio","type":"attribute","url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionratio"},
 "https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionrect": {"displayText":"intersectionRect","export":true,"for_":["IntersectionObserverEntry"],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"intersectionRect","type":"attribute","url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionrect"},
 "https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-isvisible": {"displayText":"isVisible","export":true,"for_":["IntersectionObserverEntry"],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"isVisible","type":"attribute","url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-isvisible"},
+"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverinit-rootmargin": {"displayText":"rootMargin","export":true,"for_":["IntersectionObserverInit"],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"rootMargin","type":"dict-member","url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverinit-rootmargin"},
 "https://w3c.github.io/IntersectionObserver/#intersectionobserver": {"displayText":"IntersectionObserver","export":true,"for_":[],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"IntersectionObserver","type":"interface","url":"https://w3c.github.io/IntersectionObserver/#intersectionobserver"},
 "https://w3c.github.io/IntersectionObserver/#intersectionobserverentry": {"displayText":"IntersectionObserverEntry","export":true,"for_":[],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"IntersectionObserverEntry","type":"interface","url":"https://w3c.github.io/IntersectionObserver/#intersectionobserverentry"},
 "https://w3c.github.io/hr-time/#dfn-current-high-resolution-time": {"displayText":"current high resolution time","export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"current high resolution time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time"},
