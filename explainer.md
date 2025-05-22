@@ -31,6 +31,7 @@ Permissions on the web, despite their success in enabling powerful features, rem
 - [Results from the OT](#OT-results)
 - [Future of Permissions & Strategic Evolution](#future)
 - [Privacy](#privacy)
+- [Alternative Considerations](#alternative)
 - [Appendix: FAQ Section](#faq)
 
 
@@ -378,6 +379,108 @@ While user gestures can be easily gamed by manipulative or malicious websites, t
 Extreme care needs to be taken to ensure that information exposed by the `<permission>` element is limited to what a site needs to know. Information that can already be determined (for example via the Permissions API) is fine to be exposed via the `<permission>` element. Other sensitive information should not be.
 
 For instance, many user agents provide a way for an administrator to manage certain permissions on behalf of the user. In such cases, the user agent might decide to have the `<permission>` element text reflect this state, perhaps by setting the `<permission>` element text to "Admin blocked". However, this would provide information to the site that they would otherwise not be privy to, namely that the user's settings are partially controlled by an administrator. Such sensitive information should be avoided to prevent potential fingerprinting.
+
+
+<!-- TOC --><a name="alternative"></a>
+## Alternative Considerations
+Before proposing the `<permission>`  element, we thoroughly evaluated several alternative approaches to address the persistent challenges in web permissions. Each alternative was considered for its potential to improve user experience and security, but ultimately presented limitations that led to the current proposal.
+
+### 1. No Platform Changes
+One option was to simply encourage developers to adopt current best practices by using existing HTML buttons and JavaScript APIs to trigger permission requests. This would involve promoting patterns through articles and communications.
+- Disadvantages: This approach offers no signal or guarantee of the user's intent to the user agent, meaning browsers would remain defensive against permission abuse. It also places the full burden of user experience design on the site, leading to potential inconsistencies and suboptimal experiences, especially for resource-constrained development teams.
+
+### 2. Improving Existing Usage-Triggered Permission Request Journeys
+We considered improving the existing model where permission requests are triggered directly by the use of a capability (e.g., `getUserMedia()` triggering a camera permission). While improvements to this journey are always possible and are intended to be explored in parallel, there are inherent limitations.
+- **Disadvantages:**
+  - **Accessibility:** Native HTML elements, like the proposed `<permission>`  element, are accessible by default, offering built-in roles and keyboard interactions. While JavaScript solutions can be made accessible, this requires additional developer effort.
+  - **User Intent:** JavaScript-triggered UI cannot reliably capture user intent in the same robust way as the `<permission>`  element, as user gestures are easily gamed by malicious sites.
+  - **Context:** While sites can provide context, the `<permission>`  element ensures consistent context through its browser-controlled UI and labels.
+  - **Reconsideration:** It's difficult for browsers to safely allow users to reconsider past permission denials with usage-driven UI, as it could enable spammy behavior. Guiding users through complex browser or OS settings for reconsideration places a significant, often unsuccessful, burden on developers and users.
+
+### 3. Separating the Proposal (Intent Signal vs. UI Improvements)
+An alternative was to split this proposal into two: one for improving the user intent signal and another for permission prompt UI improvements.
+- **Disadvantages:** The UI improvements are integral to understanding the full benefits of a strong user intent signal. Visualizing how user agents can act on this signal is necessary to evaluate the overall usefulness of the proposal, even without prescribing specific UI models.
+
+#### 4. Extending an Existing HTML Element
+Instead of a new element, existing HTML elements like <input type="button"> or <button> could be augmented with new attributes (e.g., permission-type="geolocation").
+This could be an example of how this would look like:
+
+```html
+<p>
+  Button:
+  <button permission-type="geolocation"></button>
+</p>
+
+<p>
+  Input:
+  <input type="permission-control" permission-type="geolocation" />
+</p>
+
+<style>
+  button[permission-type],
+  input[permission-type] {
+    background-color: white;
+    color: blue;
+  }
+</style>
+```
+
+<img src="images/image22.png">
+
+- **Disadvantages:**
+  - **Backwards Compatibility & Interoperability:** Older browsers or those not implementing the new attributes would render a non-functional button, leading to a worse user experience unless complex polyfills are used.
+  - **Counter-intuitive Behavior:** Existing elements like button offer extensive developer control over text and styling. Introducing severe browser-controlled restrictions for permission purposes would make their behavior inconsistent and counter-intuitive compared to their standard use cases, justifying a distinct element.
+  - **Flexibility (for button):** While the current proposal envisions a button-like element, future needs might involve other UI types (checkbox, link), which a new element can more flexibly accommodate.
+  - **Semantic Mismatch (for input):** The input element is primarily for data entry within forms. Adding a permission-specific type would be a poor design fit due to the lack of connection between permissions and form data.
+
+### 5. Providing a JavaScript API for Element Registration
+Another option involved a JavaScript API to register an existing HTML element (e.g., a simple button) as the permission control point.
+```html
+<button id="pepc">Share location</button>
+
+<script>
+  pepc_params = {};
+  pepc_params['type'] = 'geolocation';
+  navigator.permissions.registerPEPC(
+    document.getElementById('pepc'),
+    pepc_params,
+  );
+</script>
+```
+- **Disadvantages:**
+  - This approach doesn't inherently bring permissions into the interaction design process; it remains an implementation detail.
+  - Dynamically selecting the element complicates security verification and constraints, making it less robust than a dedicated element.
+  - Requires manual developer handling for unsupported browsers, as a non-functional button would otherwise be present.
+  - Like extending existing elements, it creates counter-intuitive behavior where a standard HTML element suddenly has highly restricted functionality.
+
+### 6. Extending the Permissions API to Provide an Anchor Point
+This approach would extend the Permissions API with a request() function that accepts an HTML element as an "anchor" for positioning the permission prompt.
+
+```html
+<p id="pepc_anchor">This is where the permission prompt will be anchored</p>
+
+<script>
+  navigator.permissions.request(
+    { name: 'geolocation' },
+    document.getElementById('pepc_anchor'),
+  );
+</script>
+```
+
+- **Disadvantages:** This would only solve the prompt positioning problem. It provides no robust signal of user intent, leaving user agents still defensive against spam. It also opens up the prompt to abuse by malicious sites who could position it without adhering to the security restrictions inherent in the `<permission>` element.
+
+### 7. Allowing Recovery via the Regular Permission Flow
+We considered modifying the regular, usage-triggered permission flow to allow users to recover from blocked states.
+- **Disadvantages:** This needs to be carefully balanced against preventing spam. Solutions like reputation-based mechanisms or heuristics were deemed ethically and technically difficult, prone to manipulation, and unlikely to achieve the same high precision of user intent as a direct interaction with a dedicated element. An unpredictable heuristic would also lead to a poor developer and user experience.
+
+### 8. Implementing an Origin-Based Permission Allow List Registry
+This alternative proposed creating a registry for "well-behaved" origins. Once authorized, these origins could have modified Permission API behavior, including easier recovery from denials.
+- **Disadvantages:**
+  - **Limited Effectiveness & Bias:** This would be ineffective at scale due to the vast number of origins and would inherently favor larger, better-known sites, excluding legitimate long-tail sites.
+  - **Faulty Reviews & Maintenance:** Reviews would be challenging, prone to errors, and unable to account for continuous site changes or cloaking behaviors.
+  - **Cost & Consistency:** It would involve significant ongoing operational costs for user agents, potentially excluding many, and lead to inconsistent experiences and guidance across different browsers.
+
+
 
 ## Appendix
 <!-- TOC --><a name="faq"></a>
