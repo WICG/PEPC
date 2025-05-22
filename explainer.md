@@ -401,7 +401,7 @@ We considered improving the existing model where permission requests are trigger
 An alternative was to split this proposal into two: one for improving the user intent signal and another for permission prompt UI improvements.
 - **Disadvantages:** The UI improvements are integral to understanding the full benefits of a strong user intent signal. Visualizing how user agents can act on this signal is necessary to evaluate the overall usefulness of the proposal, even without prescribing specific UI models.
 
-#### 4. Extending an Existing HTML Element
+### 4. Extending an Existing HTML Element
 Instead of a new element, existing HTML elements like <input type="button"> or <button> could be augmented with new attributes (e.g., permission-type="geolocation").
 This could be an example of how this would look like:
 
