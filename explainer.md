@@ -83,10 +83,10 @@ User agents can combine the element with a louder, more opinionated design to em
 
 <table style="width: 100%; border: none;">
   <tr style="border: none;">
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/image5.png" style="height: 400px; object-fit: contain;">
+    <td style="width: 60%; text-align: center; border: none;"> <img src="images/microphone permission button example.png" style="height: 220px; object-fit: contain;">
     </td>
-    <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/image5.png" style="height: 400px; object-fit: contain;">
+    <td style="width: 10%; border: none;"> &nbsp; </td>
+    <td style="width: 30%; text-align: center; border: none;"> <img src="images/image5.png" style="height: 220px; object-fit: contain;">
     </td>
   </tr>
 </table>
