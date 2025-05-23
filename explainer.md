@@ -291,10 +291,10 @@ The `<permission>` element fundamentally shifts control to the user, as websites
 
 <table style="width: 100%; border: none;">
   <tr style="border: none;">
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet in firefox.png" style="height: 350px; object-fit: contain;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet in firefox.png" style="height: 250px; object-fit: contain;">
     </td>
    <td style="width: 20%; border: none;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-    <td style="width: 40%; text-align: center; border: none;"> <img src="" style="height: 350px; object-fit: contain;">
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/meet in chrome blocked pre permission element.png" style="height: 250px; object-fit: contain;">
     </td>
   </tr>
 </table>
