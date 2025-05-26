@@ -147,7 +147,7 @@ After a user clicks the `<permission>` element, a browser-controlled confirmatio
 
 
 - **UI for Administrator-Blocked Permissions:** There are many user agents that offer mechanisms for permission granting that involve some sort of administrator or management system, which the user cannot override. In such scenarios, the `<permission>` element text itself should not change (as it can be used as a potential fingerprinting bit). Instead, the confirmation UI should clearly communicate this situation to the user (e.g., "Your administrator has blocked camera on example.com").
-<img src="images/secondary - OS admin" width="300" alt="Description of image17">
+<img src="images/secondary - OS admin.png" width="300" alt="Description of image17">
 
 - **UI When Permission is Already Granted*:* When the permission is already granted and the user clicks the `<permission>` element, a traditional permission prompt does not make much sense. Instead, the UI can be used for other reasonable purposes, such as allowing the user to easily change their previous decision (e.g., "You have allowed camera on example.com," with options to "Continue allowing" or "Don't allow camera"). While the primary goal of The `<permission>` element is not to encourage sites to revert previously granted permissions, its design includes defined behavior for such cases for completeness. This capability could offer potential incentives for sites, such as enhancing site reputation and trust by demonstrating commitment to user privacy and control, boosting user engagement and retention by reducing frustration, and even increasing initial grant rates if users know they can easily revert later.
 <img src="images/secondary - previously allowed.png" width="300" alt="Description of image19">
