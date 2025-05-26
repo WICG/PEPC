@@ -18,7 +18,7 @@ Permissions on the web, despite their success in enabling powerful features, rem
 
 - [The Core User Problem](#problem)
 - [Solution: The `<permission>` Element](#solution)
-- [Goals of The `<permission>` Element](#goals-non-goals)
+- [Goals of the `<permission>` Element](#goals-non-goals)
 - [Understanding The `<permission>` Element](#understanding)
 - [Technical Specifications](#tech-specs)
 - [Designing the Permission UI](#design)
@@ -96,7 +96,7 @@ User agents can combine the element with a louder, more opinionated design to em
 
 
 <!-- TOC --><a name="goals-non-goals"></a>
-## Goals of The `<permission>` Element
+## Goals of the `<permission>` Element
 
 The primary goals of the `<permission>` element are:
 - More Confident and Robust Capture of User Intent: The element's design provides a strong signal of user intent, allowing user agents to make more informed decisions about presenting permission requests. This is achieved by requiring a user click on a dedicated button with an actionable message (e.g., 'use camera') in context and at the time of need, providing a more accurate capture of intentionality compared to general user gestures or mere page loads.
@@ -143,17 +143,17 @@ The `<permission>` element’s contents can be used as a fallback in case the us
 
 After a user clicks the `<permission>` element, a browser-controlled confirmation UI is presented to confirm their decision and potentially allow configuration. User agents have flexibility in designing this UI, but certain considerations apply:
 - **Standard UI**: Since the user agent has a strong signal of the user's intent and current focus, it can use this to improve the general UX without risking interrupting the user. This confirmation UI can make use of the `<permission>` element's position on the page to position itself on the screen. It can also be brought more into attention by the user agent, for instance, by applying a gray filter over the site content area. The confirmation UI should also have an obvious way for the user to change their mind.
-<img src="images/image16.png" width="300" alt="Description of image16">
+<img src="images/secondary - main.png" width="300" alt="Description of image16">
 
 
 - **UI for Administrator-Blocked Permissions:** There are many user agents that offer mechanisms for permission granting that involve some sort of administrator or management system, which the user cannot override. In such scenarios, the `<permission>` element text itself should not change (as it can be used as a potential fingerprinting bit). Instead, the confirmation UI should clearly communicate this situation to the user (e.g., "Your administrator has blocked camera on example.com").
-<img src="images/image16.png" width="300" alt="Description of image17">
+<img src="images/secondary - OS admin" width="300" alt="Description of image17">
 
 - **UI When Permission is Already Granted*:* When the permission is already granted and the user clicks the `<permission>` element, a traditional permission prompt does not make much sense. Instead, the UI can be used for other reasonable purposes, such as allowing the user to easily change their previous decision (e.g., "You have allowed camera on example.com," with options to "Continue allowing" or "Don't allow camera"). While the primary goal of The `<permission>` element is not to encourage sites to revert previously granted permissions, its design includes defined behavior for such cases for completeness. This capability could offer potential incentives for sites, such as enhancing site reputation and trust by demonstrating commitment to user privacy and control, boosting user engagement and retention by reducing frustration, and even increasing initial grant rates if users know they can easily revert later.
-<img src="images/image16.png" width="300" alt="Description of image19">
+<img src="images/secondary - previously allowed.png" width="300" alt="Description of image19">
 
 - **UI When Request is Otherwise Blocked:** User agents implement many mechanisms to prevent permission requests, such as permanent denies (explicit or implicit), duration-based denies, heuristics, blocklists, or ML-based automatic blocks. Each of these mechanisms should be carefully weighed against the strong signal sent by the user clicking the `<permission>` element. This strong signal might override some of these mechanisms entirely (e.g., heuristics or ML models might not apply to `<permission>` element-triggered prompts) or lead to a compromise. For example, if a site is in a "deny" state but the user clicks the `<permission>` element, the confirmation UI could appear as: "You previously didn't allow camera on example.com" with options like "Continue not allowing" and "Allow once”. In such a case, offering "Allow once" instead of a permanent "Allow" is a deliberate choice to be on the safe side, given the user previously denied the permission. If the user then clicks the `<permission>` element again on the next visit, they would see the standard browser prompt for a full "Allow" decision.
-<img src="images/image16.png" width="300" alt="Description of image18">
+<img src="images/secondary - previously denied.png" width="300" alt="Description of image18">
 
 - **Flexibility and Future UI Considerations:** The `<permission>` element proposal does not prescribe any particular prompt UI or exact text to browsers. This flexibility allows user agents to optimize their native prompt display for specific platforms and user expectations, including handling internationalization and cultural differences, a task browsers already manage for existing prompts. Despite these UI and linguistic variations, the `<permission>` element ensures consistent, browser-controlled content and semantic meaning during the critical decision moment. Future considerations for The `<permission>` element's visual design include evolving from text-only (status quo) to 'Icon + Text' and potentially 'Icon only' displays. It's noted that in-call controls are not a primary use case for the `<permission>` element in the near future. For certain low-risk capabilities, a future design evolution could allow skipping the secondary confirmation UI entirely, while high-risk capabilities like camera and microphone would retain it. Recognizing that embedding the `<permission>` element within UI increases design challenges, including potential layout issues arising from browser variations, the proposal aims for a consistent semantic meaning and user intent capture rather than dictating a uniform device-independent UI across all browsers.
   
