@@ -37,6 +37,7 @@ spec:css2; type:property; text:padding-bottom
 spec:css2; type:property; text:padding-top
 spec:css2; type:property; text:padding-left
 spec:css2; type:property; text:padding-right
+spec:css-borders-4; type:property; text:border-color
 spec:css-borders-4; type:property; text:border-right
 spec:css-borders-4; type:property; text:border-left
 spec:css-borders-4; type:property; text:border-top
@@ -877,13 +878,14 @@ If one of these conditions is not met, then a
   Alpha has to be 1.
 
 'font-size':
-  If [=specified value=] is expressed as <a>&lt;relative-size&gt;</a>&#x3a;
+  The 'font-size' is limited as follows&#x3a;
   <ul>
-  <li>Then ''font-size'' must be between ''font-size/small'' and
-  ''font-size/xx-large''.
-  <li>Otherwise, the [=computed value=] must be larger than or equal to the
-  [=computed value=] for ''font-size/small'' and less than or equal to the
-  [=computed value=] of ''font-size/xx-large''.
+  <li> Let |min1| be the [=initial value=] of ''font-size/small''.
+  <li> Let |min2| be the [=computed value=] of ''font-size/small''.
+  <li> Let |max1| be the [=initial value=] of ''font-size/xx-large''.
+  <li> Let |max2| be the [=computed value=] of ''font-size/xx-large''.
+  <li> ''font-size'' is clamped between min(|min1|,|min2|)
+      and max(|max1|, |max2|)).
   </ul>
 
 </pre>
@@ -926,7 +928,7 @@ permission {
 
   min-height: clamp(1em, computed, none);
   max-height: clamp(none, computed, 3em);
-  min-width: clamp(none, computed, calc(fit-content));
+  min-width: clamp(none, computed, calc-size(fit-content, size));
 
   border-width: clamp(none, computed, 1em);
 
@@ -939,36 +941,29 @@ permission {
 Additionally, some rules apply based on conditions not easily expressible as
 CSS.
 
-If 'height' is `auto`, then apply:
+The limits on 'width' and 'padding-left' take multiple conditions into account.
+We distinguish between whether the element has an "obvious" border, and will
+place additional restrictions on it if not. The border is considered "obvious"
+if:
+
+* 'border-bottom', 'border-top', 'border-left', and 'border-right' are all
+    at least 1px,
+* 'border-color' is opaque,
+* the contrast ratio of 'border-color' and the element's 'color' is at least 3.
+
+* If the border is "obvious" and 'width' is [=auto=],
+  * then do nothing.
+* If the border is "obvious" and 'width' is not 'width/auto',
+  * then set 'padding-left' to `0`.
+* If the border is not "obvious" and 'width' is [=auto=],
+  * then set 'padding-left' to `clam(none, computed, 5em)`.
+* If the border is no "obvious" and 'width' is not [=auto=],
+  * then set 'padding-left' to `0`.
 
 <pre class="highlight lang-css">
 @namespace "http://www.w3.org/1999/xhtml";
 permission {
-  padding-top: clamp(1em, computed, none);
-  padding-bottom: calc(padding-top);
-}
-</pre>
-
-If 'width' is `auto`, then apply:
-
-<pre class="highlight lang-css">
-@namespace "http://www.w3.org/1999/xhtml";
-permission {
-  padding-left: clamp(none, computed, 5em);
-  padding-right: calc(padding-left);
-}
-</pre>
-
-Apply the following sheet, if the element does not have all of the following:
-
-- A border width of at least `1px`,
-- a color to background-color contrast ratio of at least 3,
-- and alpha of 1.
-
-<pre class="highlight lang-css">
-@namespace "http://www.w3.org/1999/xhtml";
-permission {
-  max-width: clamp(none, computed, calc(3 * fit-content));
+  max-width: clamp(none, computed, calc-size(fit-content, 3 * size));
 }
 </pre>
 
