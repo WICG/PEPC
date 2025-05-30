@@ -176,24 +176,7 @@ These strict constraints make the `<permission>` element minimally as safe (and 
 ### Annoyance Mitigation
 Mitigating annoyance by ensuring user intent is more complex than ensuring safety, but equally important. Without mitigating annoyance, it wouldn't be reasonable to impose the safer, but more disruptive, modal confirmation UI. Sites could use techniques to annoy users by repeatedly triggering modals. The `<permission>` element handles this through:
 - **Browser-Controlled Text:** The text on the `<permission>` element cannot be set by the site. Instead, the user agent sets it to something comprehensive (e.g., "Use location" for geolocation), preventing misleading text like "Click here to proceed".
-- **Strict Styling Constraints:** The style of the `<permission>` element is verified, validated, and overridden by the user agent as needed. This prevents obscuring the element's purpose (e.g., by setting the same text and button colors). The following CSS properties have special rules applied to them:
-  - `color`, `background-color`: Must have a contrast ratio of at least 3 for legible text; alpha must be 1.
-  - `font-size`, `zoom`: Must be within the equivalent of 'small' and 'xxxlarge'.
-  - `border-width`: Values over 1em are corrected to 1em.
-  - `outline-offset`: Negative values are corrected to 0.
-  - `margin (all)`: Values under 4px are corrected to 4px to help prevent false positives for occlusion detection.
-  - `font-weight`: Values under 200 are corrected to 200.
-  - `font-style`: Values other than 'normal' and 'italic' are corrected to 'normal'.
-  - `word-spacing`: Values over 0.5em are corrected to 0.5em; values under 0 are corrected to 0.
-  - `display`: Values other than 'inline-block' and 'none' are corrected to 'inline-block'.
-  - `letter-spacing`: Values over 0.2em are corrected to 0.2em; values under -0.05em are corrected to -0.05em.
-  - `min-height`: Defaults to 1em, taking the maximum of default and provided values.
-  - `max-height`: Defaults to 3em, taking the minimum of default and provided values.
-  - `min-width`: Defaults to 'fit-content', taking the maximum of default and provided values.
-  - `max-width`: Defaults to 3*'fit-content', taking the minimum, with exceptions for elements with a border meeting specific criteria.
-  - `padding-top`: Takes effect only if height is 'auto'; values over 1em are corrected to 1em, and padding-bottom is set to padding-top's value.
-  - `padding-left`: Takes effect only if width is 'auto'; values over 5em are corrected to 5em, and padding-right is set to padding-left's value, with exceptions for elements with a border.
-  - `cursor:` Defaults to 'pointer'; 'not-allowed' is also valid, others are corrected to 'pointer'.
+- **Strict Styling Constraints:** The style of the `<permission>` element is verified, validated, and overridden by the user agent as needed. This prevents obscuring the element's purpose (e.g., by setting the same text and button colors). The authoritative list of CSS rules is found in the [spec](https://wicg.github.io/PEPC/permission-element.html#style), and there is also a more friendly list in the [HOWTO document](https://github.com/WICG/PEPC/blob/main/HOWTO.md#applying-style-to-the-pepc).
 - **Occlusion Detection:** The user agent verifies that the `<permission>` element has been visible for a short time (e.g., 500ms) before a click is registered. User agents implementing IntersectionObserverV2 can leverage it internally for this.
 - **Movement Detection:** The user agent ensures the `<permission>` element has not been recently moved (e.g., in the past 500ms) to prevent sites from moving it under the user's cursor to trick them into clicking.
 - **Recent DOM Insertion Detection:** Similarly, the user agent ensures the `<permission>` element has not been recently inserted into the DOM (e.g., in the past 500ms).
