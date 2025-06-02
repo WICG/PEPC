@@ -382,18 +382,30 @@ Before proposing the `<permission>`  element, we thoroughly evaluated several al
 
 ### 1. No Platform Changes
 One option was to simply encourage developers to adopt current best practices by using existing HTML buttons and JavaScript APIs to trigger permission requests. This would involve promoting patterns through articles and communications.
-- Disadvantages: This approach offers no signal or guarantee of the user's intent to the user agent, meaning browsers would remain defensive against permission abuse. It also places the full burden of user experience design on the site, leading to potential inconsistencies and suboptimal experiences, especially for resource-constrained development teams.
+- **Advantages:** Minimal development effort for browsers; relies on existing, familiar developer practices.
+- **Disadvantages:** This approach offers no signal or guarantee of the user's intent to the user agent, meaning browsers would remain defensive against permission abuse. It also places the full burden of user experience design on the site, leading to potential inconsistencies and suboptimal experiences, especially for resource-constrained development teams.
 
 ### 2. Improving Existing Usage-Triggered Permission Request Journeys
 We considered improving the existing model where permission requests are triggered directly by the use of a capability (e.g., `getUserMedia()` triggering a camera permission). While improvements to this journey are always possible and are intended to be explored in parallel, there are inherent limitations.
-- **Disadvantages:**
-  - **Accessibility:** Native HTML elements, like the proposed `<permission>`  element, are accessible by default, offering built-in roles and keyboard interactions. While JavaScript solutions can be made accessible, this requires additional developer effort.
-  - **User Intent:** JavaScript-triggered UI cannot reliably capture user intent in the same robust way as the `<permission>`  element, as user gestures are easily gamed by malicious sites.
-  - **Context:** While sites can provide context, the `<permission>`  element ensures consistent context through its browser-controlled UI and labels.
-  - **Reconsideration:** It's difficult for browsers to safely allow users to reconsider past permission denials with usage-driven UI, as it could enable spammy behavior. Guiding users through complex browser or OS settings for reconsideration places a significant, often unsuccessful, burden on developers and users.
 
+For example a centered prompt could be implemented today (for user agents which don’t use a centered prompt) and it would drastically decrease the amount of missed prompts, but this would automatically increase permission prompt annoyance, especially if they are unwanted by the user.
+
+Similarly user agents could allow sites to recover from a permanently blocked state, but as long as this recovery path does require that the user initiate it, it will end-up resulting in more permission prompts from sites that were permanently blocked and the user’s decision not being respected. 
+- **Advantages:**
+  - **Developer Familiarity:** Developers are already accustomed to triggering permission requests via existing JavaScript APIs, offering a straightforward initial implementation.
+  - **Reduced Browser Overhead:** This approach avoids the overhead for browsers of implementing and maintaining a new HTML element with specific rendering and styling constraints.
+  - **Better recovery UX:** Allows for better recovery UX from sites as well as less unintentionally missed prompts.
+
+- **Disadvantages:**
+  - **Increased Annoyance & Spam Potential:** Without a strong signal of user intent, improving existing permission UIs (e.g., enabling easier recovery or centralizing prompts) risks encouraging more frequent and unwanted requests from abusive sites, leading to user fatigue and frustration.
+  - **Context:** While sites can provide context, the `<permission>`  element ensures consistent context through its browser-controlled UI and labels.
+  -  **User Intent:** JavaScript-triggered UI cannot reliably capture user intent in the same robust way as the `<permission>`  element, as user gestures are easily gamed by malicious sites.
+  - **Reconsideration:** It's difficult for browsers to safely allow users to reconsider past permission denials with usage-driven UI, as it could enable spammy behavior. Guiding users through complex browser or OS settings for reconsideration places a significant, often unsuccessful, burden on developers and users.
+  - **Accessibility:** Native HTML elements, like the proposed `<permission>`  element, are accessible by default, offering built-in roles and keyboard interactions. While JavaScript solutions can be made accessible, this requires additional developer effort.
+    
 ### 3. Separating the Proposal (Intent Signal vs. UI Improvements)
 An alternative was to split this proposal into two: one for improving the user intent signal and another for permission prompt UI improvements.
+- **Advantages:** Allows independent iteration on intent signals and UI; potential for faster adoption of individual components.
 - **Disadvantages:** The UI improvements are integral to understanding the full benefits of a strong user intent signal. Visualizing how user agents can act on this signal is necessary to evaluate the overall usefulness of the proposal, even without prescribing specific UI models.
 
 ### 4. Extending an Existing HTML Element
@@ -421,6 +433,10 @@ This could be an example of how this would look like:
 ```
 
 <img src="images/image22.png">
+- **Advantages:**
+  - **Existing Semantics:** Leverages established HTML elements, which are inherently accessible and have built-in roles and keyboard interactions.
+  - **Familiarity for Developers:** Potentially simpler integration for developers already familiar with standard HTML buttons or input fields.
+  - **Reduced New Element Overhead:** Avoids the need for browsers to introduce and support a completely new HTML element from scratch.
 
 - **Disadvantages:**
   - **Backwards Compatibility & Interoperability:** Older browsers or those not implementing the new attributes would render a non-functional button, leading to a worse user experience unless complex polyfills are used.
@@ -442,11 +458,15 @@ Another option involved a JavaScript API to register an existing HTML element (e
   );
 </script>
 ```
+- **Advantages:**
+  - **Customizable Styling:** Developers retain full control over the visual styling of the permission trigger using standard CSS.
+  - **Dynamic Placement:** Allows developers to dynamically choose and register any existing HTML element as the permission control point.
+  - **Leverages Existing Markup:** Doesn't require introducing a new HTML element type into the web page's structure.
 - **Disadvantages:**
-  - This approach doesn't inherently bring permissions into the interaction design process; it remains an implementation detail.
-  - Dynamically selecting the element complicates security verification and constraints, making it less robust than a dedicated element.
-  - Requires manual developer handling for unsupported browsers, as a non-functional button would otherwise be present.
-  - Like extending existing elements, it creates counter-intuitive behavior where a standard HTML element suddenly has highly restricted functionality.
+  - **Design Disconnect:** This approach doesn't inherently bring permissions into the interaction design process; it remains an implementation detail.
+  - **Security Complexity:** Dynamically selecting the element complicates security verification and constraints, making it less robust than a dedicated element.
+  - **Fallback Burden:** Requires manual developer handling for unsupported browsers, as a non-functional button would otherwise be present.
+  - **Counter-Intuitive Behavior:** Like extending existing elements, it creates counter-intuitive behavior where a standard HTML element suddenly has highly restricted functionality.
 
 ### 6. Extending the Permissions API to Provide an Anchor Point
 This approach would extend the Permissions API with a request() function that accepts an HTML element as an "anchor" for positioning the permission prompt.
@@ -461,16 +481,18 @@ This approach would extend the Permissions API with a request() function that ac
   );
 </script>
 ```
-
+- **Advantages:** Addresses prompt positioning for better user experience; utilizes an existing API.
 - **Disadvantages:** This would only solve the prompt positioning problem. It provides no robust signal of user intent, leaving user agents still defensive against spam. It also opens up the prompt to abuse by malicious sites who could position it without adhering to the security restrictions inherent in the `<permission>` element.
 
 ### 7. Allowing Recovery via the Regular Permission Flow
 We considered modifying the regular, usage-triggered permission flow to allow users to recover from blocked states.
-- **Disadvantages:** This needs to be carefully balanced against preventing spam. Solutions like reputation-based mechanisms or heuristics were deemed ethically and technically difficult, prone to manipulation, and unlikely to achieve the same high precision of user intent as a direct interaction with a dedicated element. An unpredictable heuristic would also lead to a poor developer and user experience.
+- **Advantages:** Streamlines the user journey by enabling reconsideration within the current flow; reduces need for complex browser/OS settings navigation.
+-  **Disadvantages:** This needs to be carefully balanced against preventing spam. Solutions like reputation-based mechanisms or heuristics were deemed ethically and technically difficult, prone to manipulation, and unlikely to achieve the same high precision of user intent as a direct interaction with a dedicated element. An unpredictable heuristic would also lead to a poor developer and user experience.
 
 ### 8. Implementing an Origin-Based Permission Allow List Registry
 This alternative proposed creating a registry for "well-behaved" origins. Once authorized, these origins could have modified Permission API behavior, including easier recovery from denials.
-- **Disadvantages:**
+- **Advantages:** Potentially offers enhanced permission behavior for trusted sites; could simplify user decisions for known origins.
+-  **Disadvantages:**
   - **Limited Effectiveness & Bias:** This would be ineffective at scale due to the vast number of origins and would inherently favor larger, better-known sites, excluding legitimate long-tail sites.
   - **Faulty Reviews & Maintenance:** Reviews would be challenging, prone to errors, and unable to account for continuous site changes or cloaking behaviors.
   - **Cost & Consistency:** It would involve significant ongoing operational costs for user agents, potentially excluding many, and lead to inconsistent experiences and guidance across different browsers.
@@ -481,6 +503,14 @@ This alternative proposed creating a registry for "well-behaved" origins. Once a
 <!-- TOC --><a name="faq"></a>
 ### FAQ Section
 - **Q: Does the `<permission>` element increase complexity for user agents?** Yes, the security measures, styling constraints, timing, and position mitigations add complexity for user agents. However, this complexity is inherent in the design, which aims to place the permission request within the user's context and control, addressing shortcomings of current permission flows, ultimately shifting the burden from users to the user agents. We believe the user benefits justify these complexities.
+- **Q: Does this break the paradigm of ask-on-use?** Yes, it does. <br/>
+Historically, "ask-on-use" assumed that a direct capability request by a developer provided sufficient user context for a permission decision. (see the [removal of request()](https://github.com/w3c/permissions/issues/83) thread). However, the developer's timing for using a capability often does not align with the user's readiness or desire to make a permission decision. <br/>
+Evidence suggests this misalignment is significant: currently, 79% of permission prompts in Chrome (May 2025 data) are triggered without a user gesture. This lack of a user gesture is a strong indicator that the user lacks context or intent to make a decision at that moment. Developers often attempt to use capabilities early in a page's lifecycle to enhance the user experience, inadvertently triggering annoying, out-of-context prompts that degrade UX, even from well-intentioned sites. This issue is evident in various use cases:
+  - **Delivery and Navigation Sites:** Need location early for relevance, but users may not be ready to share immediately.
+  - **Teleconference Sites:** Incoming calls can trigger prompts at unexpected moments.
+  - **File System API:** Used by sites that want to integrate with local files, potentially prompting before a user is ready to select files.
+  - **Calendars:** Sending notifications about upcoming events might trigger a prompt before the user explicitly engages.
+  - **Gaming Sites:** Checking for plugged-in controllers can prompt without active user input.
 - **Q: How does The `<permission>` element handle backwards compatibility?** Backwards compatibility is supported by showing fallback content if the `<permission>` element (or its specified type attribute) is not supported. This allows developers to provide a fallback experience using existing APIs. The element is designed to degrade gracefully and provide a fallback experience.
 - **Q: Does the `<permission>` element encourage websites to ask for permission ahead of access?** No, the `<permission>` element fundamentally shifts control to the user, as websites cannot proactively request permissions via this element; only the user can initiate the flow. The clear string on the button like "use <capability>" signals an immediate action, discouraging premature requests. For real-time capabilities, some proactive setup is often desired by users, and developers are responding to this need, not an encouragement from the `<permission>` element.
 - **Q: Is "priming" or "pre-prompting" a concern with the `<permission>` element?** Preparing users for permission requests is not inherently detrimental, and we want to encourage providing contextual information. The `<permission>` element facilitates a standardized approach to this. Our research indicates that helpful pre-prompting can lead to higher grant rates. Preventing sites from pre-prompting is practically infeasible. The `<permission>` element prioritizes a consistent, user-centric experience, regardless of pre-prompting, empowering users with clarity and control. The `<permission>` element can also reduce the need for sites to display troubleshooting prompts that guide users through browser settings.
