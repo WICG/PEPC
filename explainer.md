@@ -433,6 +433,7 @@ This could be an example of how this would look like:
 ```
 
 <img src="images/image22.png">
+
 - **Advantages:**
   - **Existing Semantics:** Leverages established HTML elements, which are inherently accessible and have built-in roles and keyboard interactions.
   - **Familiarity for Developers:** Potentially simpler integration for developers already familiar with standard HTML buttons or input fields.
