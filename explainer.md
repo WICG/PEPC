@@ -182,81 +182,34 @@ Example:
 | Requires using JS | No | Though complex constraints will likely require JS. |
 
 
-#### Option 2a: Individual JSON attributes: “videoconstraints” and “audioconstraints”
+#### Option 2: Inner elements
 
-Example:
+Similarly to [the \<video\> element and it’s interaction with \<source\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video), we can define a new \<constraint\> element which can be used to specify constraints directly as child elements of the permission element.
 
 ```html
-<permission type="microphone camera" 
-            videoconstraints='{
-              "width": { "min": 640, "ideal": 1920, "max": 1920 },
-              "height": { "min": 400, "ideal": 1080 },
-              "aspectRatio": 1.777777778,
-              "frameRate": { "max": 30 } }'
-            audioconstraints='{
-              "sampleSize": 16,
-              "channelCount": 2 }'>
+<permission type="microphone camera">
+
+<constraint
+  type="camera" 
+  width="min 640;ideal 1920;max 1920"
+  height="min 400;ideal 1080"
+  aspectratio=1.777777778,
+  framerate="max 30">
+<constraint
+  type="microphone"
+  samplesize=16,
+  channelcount=2>
+
 </permission>
-```
-
-| Spec maintenance | Med | Each new capability might require a new specific attribute. Introducing new attributes to the spec might be difficult if only one user agent cares about them. Additionally if any APIs have constraints which can’t be expressed using JSON types, this will further complicate things. |
-| :---- | :---- | :---- |
-| Intelligibility | Low | Difficult to parse, especially if it’s in a minified form |
-| Ease-of-use | Low | Adding JSON into attributes is cumbersome |
-| Requires using JS | It helps | Using Stringify will likely be the best way to build this attribute’s value |
-
-### 
-
-#### Option 2b: One single “constraints” JSON attribute
-
-Instead of dedicated attributes, have only 1 attribute.  
-Example:
-
-```html
-<permission type="microphone camera" 
-            constraints='"video": {
-                              "width": { "min": 640, "ideal": 1920, "max": 1920 },
-                              "height": { "min": 400, "ideal": 1080 },
-                              "aspectRatio": 1.777777778,
-                              "frameRate": { "max": 30 }
-                         },
-                         "audio": {
-                              "sampleSize": 16,
-                              "channelCount": 2
-                         }'></permission>
-```
-
-| Spec maintenance | Low | Should not require any further maintenance as various capabilities develop. |
-| :---- | :---- | :---- |
-| Intelligibility | Low | Difficult to parse especially if it’s in a minified form. Even worse than option 1\. |
-| Ease-of-use | Low | Adding JSON into attributes is cumbersome |
-| Requires using JS | It helps | Using Stringify will likely be the best way to build this attribute’s value |
-
-### 
-
-#### Option 3: many attributes, one for each constraint
-
-Example:
-
-```html
-<permission type="microphone camera" 
-            videowidth="min: 640, ideal: 1920, max: 1920",
-            videoheight="min: 400, ideal: 1080",
-            videoaspectRatio=1.777777778,
-            videoframeRate="max: 30",
-            audiosampleSize=16,
-            audiochannelCount=2></permission>
 ```
 
 | Spec maintenance | High | As capabilities develop many constraints will need to be added as attributes. There are also [maaaaany](?tab=t.0#heading=h.daev5gmqp5mo) constraints. |
 | :---- | :---- | :---- |
-| Intelligibility | Med | The constraints are separated by attribute making them easier to read.  |
-| Ease-of-use | Low | Some attributes will need to be specified in a cumbersome format to allow for specifying min/max/ideal/exact restrictions. Manipulation of attributes will become more difficult. |
+| Intelligibility | High | The constraints are separated by attribute and capability making them easier to read.  |
+| Ease-of-use | Med | Some attributes will need to be specified in a cumbersome format to allow for specifying min/max/ideal/exact restrictions. Manipulation of attributes will become more difficult. Separation into different elements for capability might help with manipulation (adding and removing entire elements might be easier). |
 | Requires using JS | No |  |
 
-### 
-
-#### Option 4: IDL-only property which can be set via JS.
+#### Option 3: IDL-only property which can be set via JS.
 
 Example:
 
@@ -291,34 +244,84 @@ Further considerations: having to run JS to set the configuration **might** caus
 * A bool attribute which informs the user agent that the permission element does have constraints. Any permission requests will then wait until constraints are actually set on the element.  
 * Some type of callback/event handler which returns a dictionary of constraints when needed and which is called by the user agent to get the constraints.
 
-### 
 
-#### Option 5: Inner elements
 
-Similarly to [the \<video\> element and it’s interaction with \<source\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video), we can define a new \<constraint\> element which can be used to specify constraints directly as child elements of the permission element.
+#### Option 4a: Individual JSON attributes: “videoconstraints” and “audioconstraints”
+
+Example:
 
 ```html
-<permission type="microphone camera">
-
-<constraint
-  type="camera" 
-  width="min 640;ideal 1920;max 1920"
-  height="min 400;ideal 1080"
-  aspectratio=1.777777778,
-  framerate="max 30">
-<constraint
-  type="microphone"
-  samplesize=16,
-  channelcount=2>
-
+<permission type="microphone camera" 
+            videoconstraints='{
+              "width": { "min": 640, "ideal": 1920, "max": 1920 },
+              "height": { "min": 400, "ideal": 1080 },
+              "aspectRatio": 1.777777778,
+              "frameRate": { "max": 30 } }'
+            audioconstraints='{
+              "sampleSize": 16,
+              "channelCount": 2 }'>
 </permission>
+```
+
+| Spec maintenance | Med | Each new capability might require a new specific attribute. Introducing new attributes to the spec might be difficult if only one user agent cares about them. Additionally if any APIs have constraints which can’t be expressed using JSON types, this will further complicate things. |
+| :---- | :---- | :---- |
+| Intelligibility | Low | Difficult to parse, especially if it’s in a minified form |
+| Ease-of-use | Low | Adding JSON into attributes is cumbersome |
+| Requires using JS | It helps | Using Stringify will likely be the best way to build this attribute’s value |
+
+### 
+
+#### Option 4b: One single “constraints” JSON attribute
+
+Instead of dedicated attributes, have only 1 attribute.  
+Example:
+
+```html
+<permission type="microphone camera" 
+            constraints='"video": {
+                              "width": { "min": 640, "ideal": 1920, "max": 1920 },
+                              "height": { "min": 400, "ideal": 1080 },
+                              "aspectRatio": 1.777777778,
+                              "frameRate": { "max": 30 }
+                         },
+                         "audio": {
+                              "sampleSize": 16,
+                              "channelCount": 2
+                         }'></permission>
+```
+
+| Spec maintenance | Low | Should not require any further maintenance as various capabilities develop. |
+| :---- | :---- | :---- |
+| Intelligibility | Low | Difficult to parse especially if it’s in a minified form. Even worse than option 1\. |
+| Ease-of-use | Low | Adding JSON into attributes is cumbersome |
+| Requires using JS | It helps | Using Stringify will likely be the best way to build this attribute’s value |
+
+### 
+
+#### Option 5: many attributes, one for each constraint
+
+Example:
+
+```html
+<permission type="microphone camera" 
+            videowidth="min: 640, ideal: 1920, max: 1920",
+            videoheight="min: 400, ideal: 1080",
+            videoaspectRatio=1.777777778,
+            videoframeRate="max: 30",
+            audiosampleSize=16,
+            audiochannelCount=2></permission>
 ```
 
 | Spec maintenance | High | As capabilities develop many constraints will need to be added as attributes. There are also [maaaaany](?tab=t.0#heading=h.daev5gmqp5mo) constraints. |
 | :---- | :---- | :---- |
-| Intelligibility | High | The constraints are separated by attribute and capability making them easier to read.  |
-| Ease-of-use | Med | Some attributes will need to be specified in a cumbersome format to allow for specifying min/max/ideal/exact restrictions. Manipulation of attributes will become more difficult. Separation into different elements for capability might help with manipulation (adding and removing entire elements might be easier). |
+| Intelligibility | Med | The constraints are separated by attribute making them easier to read.  |
+| Ease-of-use | Low | Some attributes will need to be specified in a cumbersome format to allow for specifying min/max/ideal/exact restrictions. Manipulation of attributes will become more difficult. |
 | Requires using JS | No |  |
+
+### 
+
+
+
 
 
 
