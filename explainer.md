@@ -524,9 +524,9 @@ During the origin trials, the `< permission > `element demonstrated significant 
 
 <table style="width: 100%; border: none;">
   <tr style="border: none;">
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/search_without_permission_element.gif" style="height: 300px; object-fit: contain;"> </td>
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/search_without_PermissionElement.gif" style="height: 300px; object-fit: contain;"> </td>
    <td style="width: 10%; border: none;"> &nbsp;</td>
-    <td style="width: 40%; text-align: center; border: none;"> <img src="images/search_with_permission_element.gif" style="height: 300px; object-fit: contain;"> </td>
+    <td style="width: 40%; text-align: center; border: none;"> <img src="images/search_with_PermissionElement.gif" style="height: 300px; object-fit: contain;"> </td>
   </tr>
 </table>
 <p> <em>Image 7: Users who want to use precise location for search and who explicitly clicked “use precise location” and who had blocked location permission in the past, needed more effort to recover from that block state (left), without the <permission> element vs with the <permission> element (right). </em> </p>
