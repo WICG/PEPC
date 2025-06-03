@@ -574,7 +574,7 @@ We considered improving the existing model where permission requests are trigger
 
 For example a centered prompt could be implemented today (for user agents which don’t use a centered prompt) and it would drastically decrease the amount of missed prompts, but this would automatically increase permission prompt annoyance, especially if they are unwanted by the user.
 
-Similarly user agents could allow sites to recover from a permanently blocked state, but as long as this recovery path does require that the user initiate it, it will end-up resulting in more permission prompts from sites that were permanently blocked and the user’s decision not being respected. 
+Similarly user agents could allow sites to recover from a permanently blocked state, but as long as this recovery path does not require that the user initiate it, it will end-up resulting in more permission prompts from sites that were permanently blocked and the user’s decision not being respected. 
 - **Advantages:**
   - **Developer Familiarity:** Developers are already accustomed to triggering permission requests via existing JavaScript APIs, offering a straightforward initial implementation.
   - **Reduced Browser Overhead:** This approach avoids the overhead for browsers of implementing and maintaining a new HTML element with specific rendering and styling constraints.
