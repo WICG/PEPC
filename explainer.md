@@ -21,6 +21,7 @@ Permissions on the web, despite their success in enabling powerful features, rem
 - [Goals of the `<permission>` Element](#goals-non-goals)
 - [Understanding The `<permission>` Element](#understanding)
 - [Technical Specifications](#tech-specs)
+   * [Specifying capability constraints for the `<permission>` element](#constraints)
 - [Designing the Permission UI](#design)
 - [Security and Abuse Mitigation](#security-abuse)
    * [Safety Measures](#safety)
@@ -136,6 +137,188 @@ preciselocation: A boolean (true/false) specific to the geolocation permission t
   - `:granted:` This pseudo-class is applied when the relevant permission is granted (either previously or during the current session). Sites can style the `<permission>` element differently in this state (e.g., to indicate "Location shared").
 - **Fallback contents**:
 The `<permission>` element’s contents can be used as a fallback in case the user agent does not support the `<permission>` element. User agents that support the `<permission>` element will ignore the contents and instead render its own. There is one exception to this: if the provided `type` attribute value is not supported, the browser will stop providing its own content and instead use the site-provided fallback content inside the `<permission>` element (if it exists).
+
+<!-- TOC --><a name="constraints"></a>
+### Specifying capability constraints for the `<permission>` element
+
+One consideration for the `<permission>` element, particularly for camera and microphone permissions, involves user agent permission models that are device-specific. For example, some browsers offer a dropdown list of devices within the permission prompt when multiple camera or microphone devices are available. The devices listed in this dropdown can depend on the constraints applied by `getUserMedia()`, which uses "exact," "min," or "max" values that a device must meet for the call to succeed. Some agents e.g. Firefox currently lists devices in the dropdown that match the specified constraints.
+<img src="images/per device permission example.png" width="300" alt="Description of image16">
+
+A point to note is that the `<permission>` element triggers a permission request before a subsequent `getUserMedia()` call. Due to this separation, the `getUserMedia()` constraints are not available at the time the permission prompt is displayed via the <permission> element.
+
+The following sections lists potential solutions (ordered by recommendation) to address this, enabling the `<permission>` element to be implemented within device-specific permission models. Future considerations include how other capabilities, such as high-accuracy mode for geolocation, might utilize these proposed mechanisms.
+
+#### Option 1: Inline script with type=”permissionconstraints”
+
+As the permission element is no longer void as was in the original design. We can use an inline script element to specify its constraints, similar to the [speculation rules API](https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API).
+
+Example:
+
+```html
+<permission type="microphone camera">
+<script type="permissionconstraints">
+  {
+    "video": {
+      "width": { "min": 640, "ideal": 1920, "max": 1920 },
+      "height": { "min": 400, "ideal": 1080 },
+      "aspectRatio": 1.777777778,
+      "frameRate": { "max": 30 }
+    },
+    "audio": {
+      "sampleSize": 16,
+      "channelCount": 2
+    }
+  }
+</script>
+</permission>
+
+```
+
+| Spec maintenance | Low | New capabilities will likely not require any special consideration for the permission element, as this is just returning a JSON object. However if some capabilities specify constraints in a way that does not fit into JSON types it might cause complications. |
+| :---- | :---- | :---- |
+| Intelligibility | High | More complex constraints might end-up being generated in other parts of the code and injected here (using a [tag manager](https://developer.chrome.com/docs/web-platform/prerender-pages#tag-manager) type of logic). |
+| Ease-of-use | High | JS objects are far easier to work with than strings and also match current implementations. Developers will find it easier to adapt their current implementation and avoid code duplication. |
+| Requires using JS | No | Though complex constraints will likely require JS. |
+
+
+#### Option 2a: Individual JSON attributes: “videoconstraints” and “audioconstraints”
+
+Example:
+
+```html
+<permission type="microphone camera" 
+            videoconstraints='{
+              "width": { "min": 640, "ideal": 1920, "max": 1920 },
+              "height": { "min": 400, "ideal": 1080 },
+              "aspectRatio": 1.777777778,
+              "frameRate": { "max": 30 } }'
+            audioconstraints='{
+              "sampleSize": 16,
+              "channelCount": 2 }'>
+</permission>
+```
+
+| Spec maintenance | Med | Each new capability might require a new specific attribute. Introducing new attributes to the spec might be difficult if only one user agent cares about them. Additionally if any APIs have constraints which can’t be expressed using JSON types, this will further complicate things. |
+| :---- | :---- | :---- |
+| Intelligibility | Low | Difficult to parse, especially if it’s in a minified form |
+| Ease-of-use | Low | Adding JSON into attributes is cumbersome |
+| Requires using JS | It helps | Using Stringify will likely be the best way to build this attribute’s value |
+
+### 
+
+#### Option 2b: One single “constraints” JSON attribute
+
+Instead of dedicated attributes, have only 1 attribute.  
+Example:
+
+```html
+<permission type="microphone camera" 
+            constraints='"video": {
+                              "width": { "min": 640, "ideal": 1920, "max": 1920 },
+                              "height": { "min": 400, "ideal": 1080 },
+                              "aspectRatio": 1.777777778,
+                              "frameRate": { "max": 30 }
+                         },
+                         "audio": {
+                              "sampleSize": 16,
+                              "channelCount": 2
+                         }'></permission>
+```
+
+| Spec maintenance | Low | Should not require any further maintenance as various capabilities develop. |
+| :---- | :---- | :---- |
+| Intelligibility | Low | Difficult to parse especially if it’s in a minified form. Even worse than option 1\. |
+| Ease-of-use | Low | Adding JSON into attributes is cumbersome |
+| Requires using JS | It helps | Using Stringify will likely be the best way to build this attribute’s value |
+
+### 
+
+#### Option 3: many attributes, one for each constraint
+
+Example:
+
+```html
+<permission type="microphone camera" 
+            videowidth="min: 640, ideal: 1920, max: 1920",
+            videoheight="min: 400, ideal: 1080",
+            videoaspectRatio=1.777777778,
+            videoframeRate="max: 30",
+            audiosampleSize=16,
+            audiochannelCount=2></permission>
+```
+
+| Spec maintenance | High | As capabilities develop many constraints will need to be added as attributes. There are also [maaaaany](?tab=t.0#heading=h.daev5gmqp5mo) constraints. |
+| :---- | :---- | :---- |
+| Intelligibility | Med | The constraints are separated by attribute making them easier to read.  |
+| Ease-of-use | Low | Some attributes will need to be specified in a cumbersome format to allow for specifying min/max/ideal/exact restrictions. Manipulation of attributes will become more difficult. |
+| Requires using JS | No |  |
+
+### 
+
+#### Option 4: IDL-only property which can be set via JS.
+
+Example:
+
+```html
+<permission type="microphone camera" id="id"></permission>
+<script>
+  var constraints = {
+    video: {
+      width: { min: 640, ideal: 1920, max: 1920 },
+      height: { min: 400, ideal: 1080 },
+      aspectRatio: 1.777777778,
+      frameRate: { max: 30 }
+    },
+    audio: {
+      sampleSize: 16,
+      channelCount: 2
+    }
+  };
+
+  document.getElementById('id').setConstraints(constraints);
+</script>
+```
+
+| Spec maintenance | Low | New capabilities will likely not require any special consideration for the permission element, as this is just returning a JS object which will likely be the same as the way the capability API will specify constraints. |
+| :---- | :---- | :---- |
+| Intelligibility | High | JS objects are far easier to work with than strings and also match current implementations |
+| Ease-of-use | High | JS objects are far easier to work with than strings and also match current implementations. Developers will find it easier to adapt their current implementation and avoid code duplication. |
+| Requires using JS | Mandatory | Designed to be used via JS |
+
+Further considerations: having to run JS to set the configuration **might** cause issues, if the JS did not have time to run by the time a user interacts with the permission element. If this ends up being the case, here are some possible approaches to address this:
+
+* A bool attribute which informs the user agent that the permission element does have constraints. Any permission requests will then wait until constraints are actually set on the element.  
+* Some type of callback/event handler which returns a dictionary of constraints when needed and which is called by the user agent to get the constraints.
+
+### 
+
+#### Option 5: Inner elements
+
+Similarly to [the \<video\> element and it’s interaction with \<source\>](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video), we can define a new \<constraint\> element which can be used to specify constraints directly as child elements of the permission element.
+
+```html
+<permission type="microphone camera">
+
+<constraint
+  type="camera" 
+  width="min 640;ideal 1920;max 1920"
+  height="min 400;ideal 1080"
+  aspectratio=1.777777778,
+  framerate="max 30">
+<constraint
+  type="microphone"
+  samplesize=16,
+  channelcount=2>
+
+</permission>
+```
+
+| Spec maintenance | High | As capabilities develop many constraints will need to be added as attributes. There are also [maaaaany](?tab=t.0#heading=h.daev5gmqp5mo) constraints. |
+| :---- | :---- | :---- |
+| Intelligibility | High | The constraints are separated by attribute and capability making them easier to read.  |
+| Ease-of-use | Med | Some attributes will need to be specified in a cumbersome format to allow for specifying min/max/ideal/exact restrictions. Manipulation of attributes will become more difficult. Separation into different elements for capability might help with manipulation (adding and removing entire elements might be easier). |
+| Requires using JS | No |  |
+
 
 
 <!-- TOC --><a name="design"></a>
