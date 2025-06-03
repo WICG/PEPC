@@ -142,6 +142,7 @@ The `<permission>` element’s contents can be used as a fallback in case the us
 ### Specifying capability constraints for the `<permission>` element
 
 One consideration for the `<permission>` element, particularly for camera and microphone permissions, involves user agent permission models that are device-specific. For example, some browsers offer a dropdown list of devices within the permission prompt when multiple camera or microphone devices are available. The devices listed in this dropdown can depend on the constraints applied by `getUserMedia()`, which uses "exact," "min," or "max" values that a device must meet for the call to succeed. Some agents e.g. Firefox currently lists devices in the dropdown that match the specified constraints.
+
 <img src="images/per device permission example.png" width="300" alt="Description of image16">
 
 A point to note is that the `<permission>` element triggers a permission request before a subsequent `getUserMedia()` call. Due to this separation, the `getUserMedia()` constraints are not available at the time the permission prompt is displayed via the <permission> element.
