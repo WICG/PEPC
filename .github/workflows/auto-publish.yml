@@ -24,4 +24,4 @@ jobs:
         env:
           key: main
           branches: gh-pages
-          files: demo/geolocation_explainer.md
+          files: demo/geolocation_explainer.html
