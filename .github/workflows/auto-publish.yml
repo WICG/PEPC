@@ -18,6 +18,7 @@ jobs:
     name: Copy demo page to gh-pages
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Copy To Branches Action
         uses: planetoftheweb/copy-to-branches@v1.3
         env:
