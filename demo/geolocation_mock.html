@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Restaurant Locator</title>
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: Arial, sans-serif; /* Changed from Inter to a web-safe font */
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: flex-start; /* Align items to the start (top) */
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem; /* p-4 equivalent */
+            position: relative;
+        }
+
+        @media (min-width: 640px) { /* sm:p-6 equivalent */
+            body {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) { /* lg:p-8 equivalent */
+            body {
+                padding: 2rem;
+            }
+        }
+
+        /* Main Application Container */
+        .main-container {
+            background-color: white;
+            padding: 1.5rem; /* p-6 equivalent */
+            border-radius: 0.5rem; /* rounded-lg equivalent */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl equivalent */
+            width: 100%;
+            max-width: 32rem; /* max-w-lg equivalent */
+            margin-top: 5rem; /* mt-20 equivalent */
+        }
+
+        @media (min-width: 640px) { /* sm:p-8 equivalent */
+            .main-container {
+                padding: 2rem;
+            }
+        }
+
+        @media (min-width: 768px) { /* md:p-10 equivalent */
+            .main-container {
+                padding: 2.5rem;
+            }
+        }
+
+        .main-title {
+            font-size: 1.5rem; /* text-2xl equivalent */
+            line-height: 2rem; /* leading-8 */
+            font-weight: 700; /* font-bold equivalent */
+            text-align: center;
+            color: #1f2937; /* text-gray-800 equivalent */
+            margin-bottom: 1.5rem; /* mb-6 equivalent */
+        }
+
+        @media (min-width: 640px) { /* sm:text-3xl equivalent */
+            .main-title {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+            }
+        }
+
+        /* Input and Button Container */
+        .input-button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch; /* items-stretch equivalent */
+            gap: 0.75rem; /* gap-3 equivalent */
+            margin-bottom: 1rem; /* mb-4 equivalent */
+        }
+
+        @media (min-width: 640px) { /* sm:flex-row and sm:items-center equivalent */
+            .input-button-group {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        /* Address Input Field */
+        .address-input {
+            flex-grow: 1; /* flex-grow equivalent */
+            padding: 0.75rem; /* p-3 equivalent */
+            border: 1px solid #d1d5db; /* border border-gray-300 equivalent */
+            border-radius: 0.375rem; /* rounded-md equivalent */
+            outline: none; /* focus:outline-none equivalent */
+            color: #374151; /* text-gray-700 equivalent */
+        }
+
+        .address-input:focus {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* focus:ring-2 focus:ring-blue-500 equivalent */
+            border-color: #3b82f6; /* focus:ring-blue-500 equivalent */
+        }
+
+        /* Use My Location Button */
+        .use-location-button {
+            padding: 0.75rem 1rem; /* px-4 py-3 equivalent */
+            background-color: #2563eb; /* bg-blue-600 equivalent */
+            color: white;
+            font-weight: 600; /* font-semibold equivalent */
+            border-radius: 0.375rem; /* rounded-md equivalent */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md equivalent */
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-duration: 200ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* transition duration-200 ease-in-out */
+            white-space: nowrap; /* whitespace-nowrap equivalent */
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .use-location-button:hover {
+            background-color: #1d4ed8; /* hover:bg-blue-700 equivalent */
+        }
+
+        .use-location-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px rgba(59, 130, 246, 0.5); /* focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 equivalent */
+        }
+
+        /* Use My Location Button Content Transition */
+        .use-location-button .text {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        .use-location-button .button-spinner-wrapper {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none; /* Prevent clicks on hidden spinner */
+            position: absolute;
+            inset: 0; /* absolute inset-0 equivalent */
+            display: flex;
+            align-items: center; /* items-center equivalent */
+            justify-content: center; /* justify-center equivalent */
+        }
+
+        .use-location-button.btn-loading .text {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .use-location-button.btn-loading .button-spinner-wrapper {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Find Restaurants Button */
+        .find-restaurants-button {
+            width: 100%; /* w-full equivalent */
+            padding: 0.75rem; /* py-3 equivalent */
+            background-color: #16a34a; /* bg-green-600 equivalent */
+            color: white;
+            font-weight: 700; /* font-bold equivalent */
+            border-radius: 0.375rem; /* rounded-md equivalent */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg equivalent */
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-duration: 200ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* transition duration-200 ease-in-out */
+            border: none;
+            cursor: pointer;
+        }
+
+        .find-restaurants-button:hover {
+            background-color: #15803d; /* hover:bg-green-700 equivalent */
+        }
+
+        .find-restaurants-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #22c55e, 0 0 0 4px rgba(34, 197, 94, 0.5); /* focus:ring-2 focus:ring-green-500 focus:ring-offset-2 equivalent */
+        }
+
+        /* Message Box */
+        .message-box {
+            margin-top: 1.5rem; /* mt-6 equivalent */
+            padding: 1rem; /* p-4 equivalent */
+            background-color: #fffbeb; /* bg-yellow-100 equivalent */
+            border: 1px solid #fef3c7; /* border border-yellow-200 equivalent */
+            color: #92400e; /* text-yellow-800 equivalent */
+            border-radius: 0.375rem; /* rounded-md equivalent */
+            display: none; /* hidden equivalent initially */
+        }
+
+        .message-box.block { /* For showing the message box */
+            display: block;
+        }
+
+        /* Message Box Color Variants */
+        .message-box.bg-green-100 { background-color: #dcfce7; }
+        .message-box.border-green-200 { border-color: #bbf7d0; }
+        .message-box.text-green-800 { color: #166534; }
+
+        .message-box.bg-red-100 { background-color: #fee2e2; }
+        .message-box.border-red-200 { border-color: #fecaca; }
+        .message-box.text-red-800 { color: #991b1b; }
+
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none; /* hidden equivalent */
+        }
+
+        .modal-overlay.block { /* For showing the modal */
+            display: flex;
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            font-size: 1.25rem; /* text-xl equivalent */
+            line-height: 1.75rem; /* leading-7 */
+            font-weight: 700; /* font-bold equivalent */
+            margin-bottom: 1rem; /* mb-4 equivalent */
+        }
+
+        .modal-content p {
+            margin-bottom: 1.5rem; /* mb-6 equivalent */
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem; /* gap-3 equivalent */
+        }
+
+        .modal-buttons button {
+            padding: 0.5rem 1rem; /* py-2 px-4 equivalent */
+            border-radius: 0.375rem; /* rounded-md equivalent */
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-duration: 200ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* transition duration-200 ease-in-out */
+            border: none;
+            cursor: pointer;
+        }
+
+        .modal-buttons .bg-blue-500 { background-color: #3b82f6; color: white; }
+        .modal-buttons .bg-blue-500:hover { background-color: #2563eb; } /* hover:bg-blue-600 */
+        .modal-buttons .bg-gray-300 { background-color: #d1d5db; color: #1f2937; } /* text-gray-800 */
+        .modal-buttons .bg-gray-300:hover { background-color: #9ca3af; } /* hover:bg-gray-400 */
+        .modal-buttons .bg-green-500 { background-color: #22c55e; color: white; }
+        .modal-buttons .bg-green-500:hover { background-color: #16a34a; } /* hover:bg-green-600 */
+        .modal-buttons .bg-red-500 { background-color: #ef4444; color: white; }
+        .modal-buttons .bg-red-500:hover { background-color: #dc2626; } /* hover:bg-red-600 */
+
+
+        .modal-confirm-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem; /* gap-4 equivalent */
+        }
+
+        .modal-confirm-buttons button {
+            padding: 0.5rem 1rem; /* py-2 px-4 equivalent */
+            border-radius: 0.375rem; /* rounded-md equivalent */
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-duration: 200ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* transition duration-200 ease-in-out */
+            border: none;
+            cursor: pointer;
+        }
+
+
+        /* Spinner CSS */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* Full-page spinner specific styles */
+        .full-page-spinner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none; /* hidden equivalent */
+        }
+
+        .full-page-spinner-overlay.block { /* For showing the full page spinner */
+            display: flex;
+        }
+
+        .full-page-spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid #fff;
+            border-radius: 50%;
+            width: 5rem;
+            height: 5rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Button loading state styles */
+        .btn-loading {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Simulate Later Visit Section */
+        .simulate-section {
+            position: fixed; /* Changed from absolute to fixed */
+            bottom: 1rem; /* bottom-4 equivalent */
+            left: 1rem; /* left-4 equivalent */
+            padding: 1rem; /* p-4 equivalent */
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg equivalent */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md equivalent */
+            max-width: 20rem; /* max-w-xs equivalent */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem; /* gap-2 equivalent */
+            z-index: 999; /* Ensure it stays above other content */
+        }
+
+        @media (min-width: 640px) { /* sm:max-w-sm equivalent */
+            .simulate-section {
+                max-width: 24rem;
+            }
+        }
+
+        .simulate-section h2 {
+            font-size: 1.125rem; /* text-lg equivalent */
+            line-height: 1.75rem; /* leading-7 */
+            font-weight: 700; /* font-bold equivalent */
+            color: #1f2937; /* text-gray-800 equivalent */
+        }
+
+        .simulate-section p {
+            font-size: 0.875rem; /* text-sm equivalent */
+            line-height: 1.25rem; /* leading-5 */
+            color: #4b5563; /* text-gray-600 equivalent */
+            margin-bottom: 0.5rem; /* mb-2 equivalent */
+        }
+
+        .simulate-section button {
+            padding: 0.5rem 1rem; /* px-4 py-2 equivalent */
+            background-color: #7c3aed; /* bg-purple-600 equivalent */
+            color: white;
+            font-weight: 600; /* font-semibold equivalent */
+            border-radius: 0.375rem; /* rounded-md equivalent */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md equivalent */
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+            transition-duration: 200ms;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            font-size: 0.875rem; /* text-sm equivalent */
+            border: none;
+            cursor: pointer;
+        }
+
+        .simulate-section button:hover {
+            background-color: #6d28d9; /* hover:bg-purple-700 equivalent */
+        }
+
+        .simulate-section button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #8b5cf6, 0 0 0 4px rgba(139, 92, 246, 0.5); /* focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 equivalent */
+        }
+
+        /* Mock Settings Page */
+        .settings-section {
+            position: fixed; /* Changed from absolute to fixed */
+            bottom: 1rem; /* bottom-4 equivalent */
+            right: 1rem; /* right-4 equivalent */
+            padding: 1rem; /* p-4 equivalent */
+            background-color: white;
+            border-radius: 0.5rem; /* rounded-lg equivalent */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md equivalent */
+            max-width: 20rem; /* max-w-xs equivalent */
+            width: 100%;
+            z-index: 999; /* Ensure it stays above other content */
+        }
+
+        @media (min-width: 640px) { /* sm:max-w-xs equivalent */
+            .settings-section {
+                max-width: 20rem;
+            }
+        }
+
+        .settings-section h2 {
+            font-size: 1.125rem; /* text-lg equivalent */
+            line-height: 1.75rem; /* leading-7 */
+            font-weight: 700; /* font-bold equivalent */
+            margin-bottom: 0.5rem; /* mb-2 equivalent */
+            color: #1f2937; /* text-gray-800 equivalent */
+        }
+
+        .settings-section .select-wrapper {
+            margin-bottom: 0.5rem; /* mb-2 equivalent */
+        }
+
+        .settings-section label {
+            display: block;
+            font-size: 0.875rem; /* text-sm equivalent */
+            line-height: 1.25rem;
+            font-weight: 500; /* font-medium equivalent */
+            color: #374151; /* text-gray-700 equivalent */
+        }
+
+        .settings-section select {
+            margin-top: 0.25rem; /* mt-1 equivalent */
+            display: block;
+            width: 100%; /* w-full equivalent */
+            padding: 0.5rem; /* p-2 equivalent */
+            border: 1px solid #d1d5db; /* border border-gray-300 equivalent */
+            border-radius: 0.375rem; /* rounded-md equivalent */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm equivalent */
+            outline: none; /* focus:outline-none equivalent */
+            color: #374151; /* text-gray-700 equivalent */
+        }
+
+        .settings-section select:focus {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* focus:ring-2 focus:ring-blue-500 equivalent */
+            border-color: #3b82f6; /* focus:border-blue-500 equivalent */
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Full Page Spinner Overlay -->
+    <div id="fullPageSpinner" class="full-page-spinner-overlay">
+        <div class="full-page-spinner"></div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="mainContainer" class="main-container">
+        <h1 class="main-title">Find Restaurants Near You</h1>
+
+        <!-- Address Input and "Use My Location" Button -->
+        <div class="input-button-group">
+            <input
+                type="text"
+                id="addressInput"
+                placeholder="Enter your address"
+                class="address-input"
+            >
+            <button
+                id="useLocationBtn"
+                class="use-location-button"
+            >
+                <span class="text">Use My Location</span>
+                <span class="button-spinner-wrapper">
+                    <div class="spinner"></div>
+                </span>
+            </button>
+        </div>
+
+        <!-- Find Restaurants Button -->
+        <button
+            id="findRestaurantsBtn"
+            class="find-restaurants-button"
+        >
+            Find Restaurants
+        </button>
+
+        <!-- Message Box for User Feedback -->
+        <div id="messageBox" class="message-box">
+            <!-- Messages will appear here -->
+        </div>
+    </div>
+
+    <!-- Simulate Later Visit Section -->
+    <div id="simulateSection" class="simulate-section">
+        <h2 class="text-lg font-bold text-gray-800">Simulate Visit</h2>
+        <p class="text-sm text-gray-600 mb-2">Push this button to simulate leaving the site and returning at a later date.</p>
+        <button
+            id="simulateLaterVisitBtn"
+            class="px-4 py-2 bg-purple-600 text-white font-semibold rounded-md shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 ease-in-out whitespace-nowrap text-sm"
+        >
+            <span class="text">Simulate a later visit</span>
+        </button>
+    </div>
+
+    <!-- Mock Settings Page -->
+    <div id="settingsSection" class="settings-section">
+        <h2 class="text-lg font-bold mb-2 text-gray-800">Mock Settings Page</h2>
+        <div class="mb-2">
+            <label for="settingsPermissionStatus" class="block text-sm font-medium text-gray-700">Permission Status:</label>
+            <select id="settingsPermissionStatus" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700">
+                <option value="ask">Ask</option>
+                <option value="allow once">Allow Once</option>
+                <option value="allow on button">Allow on Button</option>
+                <option value="allow any time">Allow Any Time</option>
+                <option value="deny">Deny</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Custom Permission Request Modal -->
+    <div id="permissionModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold mb-4">Allow Geolocation?</h2>
+            <p class="mb-6">This site wants to know your location.</p>
+            <div class="flex flex-col gap-3 modal-buttons">
+                <button id="allowOnceBtn" class="bg-blue-500 text-white">Allow One Time</button>
+                <button id="allowOnButtonBtn" class="bg-blue-500 text-white">Allow on Button Push</button>
+                <button id="allowAnytimeBtn" class="bg-blue-500 text-white">Allow Anytime</button>
+                <button id="denyPermissionBtn" class="bg-gray-300 text-gray-800">Deny</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Deny Confirmation Modal -->
+    <div id="denyConfirmationModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold mb-4">Geolocation Denied</h2>
+            <p class="mb-6">You have previously denied GEOLOCATION for this site. Are you sure you want to change this?</p>
+            <div class="flex justify-center gap-4 modal-confirm-buttons">
+                <button id="confirmYesBtn" class="bg-green-500 text-white">Yes</button>
+                <button id="confirmNoBtn" class="bg-red-500 text-white">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get references to DOM elements
+        const addressInput = document.getElementById('addressInput');
+        const useLocationBtn = document.getElementById('useLocationBtn');
+        const findRestaurantsBtn = document.getElementById('findRestaurantsBtn');
+        const messageBox = document.getElementById('messageBox');
+        const simulateLaterVisitBtn = document.getElementById('simulateLaterVisitBtn');
+
+        // Modals and their buttons
+        const permissionModal = document.getElementById('permissionModal');
+        const allowOnceBtn = document.getElementById('allowOnceBtn');
+        const allowOnButtonBtn = document.getElementById('allowOnButtonBtn');
+        const allowAnytimeBtn = document.getElementById('allowAnytimeBtn');
+        const denyPermissionBtn = document.getElementById('denyPermissionBtn');
+
+        const denyConfirmationModal = document.getElementById('denyConfirmationModal');
+        const confirmYesBtn = document.getElementById('confirmYesBtn');
+        const confirmNoBtn = document.getElementById('confirmNoBtn');
+
+        // Settings dropdown
+        const settingsPermissionStatus = document.getElementById('settingsPermissionStatus');
+
+        // Full page spinner elements
+        const fullPageSpinner = document.getElementById('fullPageSpinner');
+        const mainContainer = document.getElementById('mainContainer');
+        const simulateSection = document.getElementById('simulateSection');
+        const settingsSection = document.getElementById('settingsSection');
+
+
+        // Initialize GEOLOCATION permission status
+        // Possible states: "ask", "allow once", "allow on button", "allow any time", "deny"
+        let geolocationPermissionStatus = localStorage.getItem('geolocationPermissionStatus') || 'ask';
+
+        /**
+         * Updates the settings dropdown to reflect the current permission status.
+         */
+        function updateSettingsDropdown() {
+            settingsPermissionStatus.value = geolocationPermissionStatus; // Set dropdown to current status
+        }
+
+        /**
+         * Displays a message in the message box.
+         * @param {string} message The message to display.
+         * @param {string} type The type of message (e.g., 'info', 'success', 'error').
+         */
+        function showMessage(message, type = 'info') {
+            messageBox.textContent = message;
+            // Remove all existing type classes before adding new ones
+            messageBox.classList.remove('hidden', 'bg-yellow-100', 'bg-green-100', 'bg-red-100', 'border-yellow-200', 'border-green-200', 'border-red-200', 'text-yellow-800', 'text-green-800', 'text-red-800');
+            messageBox.classList.add('block'); // Ensure it's visible
+
+            switch (type) {
+                case 'success':
+                    messageBox.classList.add('bg-green-100', 'border-green-200', 'text-green-800');
+                    break;
+                case 'error':
+                    messageBox.classList.add('bg-red-100', 'border-red-200', 'text-red-800');
+                    break;
+                case 'info':
+                default:
+                    messageBox.classList.add('bg-yellow-100', 'border-yellow-200', 'text-yellow-800');
+                    break;
+            }
+        }
+
+        /**
+         * Clears the message box.
+         */
+        function clearMessage() {
+            messageBox.classList.add('hidden');
+            messageBox.textContent = '';
+        }
+
+        /**
+         * Adds a spinner and disables the button.
+         * @param {HTMLElement} button The button element.
+         */
+        function showLoading(button) {
+            button.classList.add('btn-loading');
+            button.disabled = true;
+            // Hide the text and show the spinner wrapper using opacity
+            button.querySelector('.text').style.opacity = '0';
+            button.querySelector('.text').style.pointerEvents = 'none';
+            button.querySelector('.button-spinner-wrapper').style.opacity = '1';
+            button.querySelector('.button-spinner-wrapper').style.pointerEvents = 'auto';
+        }
+
+        /**
+         * Removes the spinner and re-enables the button.
+         * @param {HTMLElement} button The button element.
+         */
+        function hideLoading(button) {
+            button.classList.remove('btn-loading');
+            button.disabled = false;
+            // Show the text and hide the spinner wrapper using opacity
+            button.querySelector('.text').style.opacity = '1';
+            button.querySelector('.text').style.pointerEvents = 'auto';
+            button.querySelector('.button-spinner-wrapper').style.opacity = '0';
+            button.querySelector('.button-spinner-wrapper').style.pointerEvents = 'none';
+        }
+
+        /**
+         * Simulates filling the address input with a mock location.
+         * @param {HTMLElement} button The button that triggered the action.
+         */
+        function fillMockLocation(button) {
+            addressInput.value = "South Pole (Mock Location)";
+            hideLoading(button); // Hide loading after filling location
+        }
+
+        /**
+         * Handles the logic when "Use My Location" button is clicked.
+         */
+        function handleUseLocationClick() {
+            clearMessage(); // Clear any messages when this button is pressed
+            switch (geolocationPermissionStatus) {
+                case 'allow once':
+                case 'allow on button':
+                case 'allow any time':
+                    showLoading(useLocationBtn);
+                    setTimeout(() => {
+                        fillMockLocation(useLocationBtn);
+                    }, 1000); // 1-second delay for spinner
+                    break;
+                case 'ask':
+                    permissionModal.classList.remove('hidden'); // Show permission dialog
+                    permissionModal.classList.add('block');
+                    break;
+                case 'deny':
+                    denyConfirmationModal.classList.remove('hidden'); // Show deny confirmation dialog
+                    denyConfirmationModal.classList.add('block');
+                    break;
+                default:
+                    console.error('Unknown permission status:', geolocationPermissionStatus);
+            }
+            updateSettingsDropdown(); // Update settings dropdown after potential status change
+        }
+
+        // --- Event Listeners ---
+
+        // "Use My Location" button click
+        useLocationBtn.addEventListener('click', handleUseLocationClick);
+
+        // "Find Restaurants" button click (existing mock functionality)
+        findRestaurantsBtn.addEventListener('click', () => {
+            clearMessage(); // Clear previous messages
+            const address = addressInput.value.trim();
+            if (address) {
+                showMessage(`Searching for restaurants near: "${address}"... (This is a mock search)`, 'info');
+                console.log('Searching for restaurants near:', address);
+
+                // Simulate a delay for a mock search
+                setTimeout(() => {
+                    showMessage(`Mock search complete! No actual restaurants are listed as this is a demo.`, 'success');
+                }, 1500);
+
+            } else {
+                showMessage('Please enter an address or use your current location.', 'error');
+            }
+        });
+
+        // Permission Modal Button Listeners
+        allowOnceBtn.addEventListener('click', () => {
+            localStorage.setItem('geolocationPermissionStatus', 'allow once');
+            geolocationPermissionStatus = 'allow once';
+            permissionModal.classList.remove('block'); // hide
+            permissionModal.classList.add('hidden');
+            // When allowed, trigger the loading state on the useLocationBtn
+            showLoading(useLocationBtn);
+            setTimeout(() => {
+                fillMockLocation(useLocationBtn);
+            }, 1000);
+            updateSettingsDropdown();
+        });
+
+        allowOnButtonBtn.addEventListener('click', () => {
+            localStorage.setItem('geolocationPermissionStatus', 'allow on button');
+            geolocationPermissionStatus = 'allow on button';
+            permissionModal.classList.remove('block'); // hide
+            permissionModal.classList.add('hidden');
+            // When allowed, trigger the loading state on the useLocationBtn
+            showLoading(useLocationBtn);
+            setTimeout(() => {
+                fillMockLocation(useLocationBtn);
+            }, 1000);
+            updateSettingsDropdown();
+        });
+
+        allowAnytimeBtn.addEventListener('click', () => {
+            localStorage.setItem('geolocationPermissionStatus', 'allow any time');
+            geolocationPermissionStatus = 'allow any time';
+            permissionModal.classList.remove('block'); // hide
+            permissionModal.classList.add('hidden');
+            // When allowed, trigger the loading state on the useLocationBtn
+            showLoading(useLocationBtn);
+            setTimeout(() => {
+                fillMockLocation(useLocationBtn);
+            }, 1000);
+            updateSettingsDropdown();
+        });
+
+        denyPermissionBtn.addEventListener('click', () => {
+            localStorage.setItem('geolocationPermissionStatus', 'deny');
+            geolocationPermissionStatus = 'deny';
+            permissionModal.classList.remove('block'); // hide
+            permissionModal.classList.add('hidden');
+            updateSettingsDropdown();
+        });
+
+        // Deny Confirmation Modal Button Listeners
+        confirmYesBtn.addEventListener('click', () => {
+            denyConfirmationModal.classList.remove('block'); // hide
+            denyConfirmationModal.classList.add('hidden');
+            // If user confirms 'Yes', set status back to 'ask' and re-trigger main logic
+            localStorage.setItem('geolocationPermissionStatus', 'ask');
+            geolocationPermissionStatus = 'ask';
+            updateSettingsDropdown();
+            // Automatically re-trigger the permission request flow
+            handleUseLocationClick();
+        });
+
+        confirmNoBtn.addEventListener('click', () => {
+            denyConfirmationModal.classList.remove('block'); // hide
+            denyConfirmationModal.classList.add('hidden');
+            updateSettingsDropdown();
+        });
+
+        // Settings dropdown change listener
+        settingsPermissionStatus.addEventListener('change', (event) => {
+            geolocationPermissionStatus = event.target.value;
+            localStorage.setItem('geolocationPermissionStatus', geolocationPermissionStatus);
+            updateSettingsDropdown();
+            clearMessage(); // Clear messages when status is manually changed
+            addressInput.value = ""; // Clear address when status is manually changed
+        });
+
+        // Simulate Later Visit button listener
+        simulateLaterVisitBtn.addEventListener('click', () => {
+            // Hide all UI and show full page spinner
+            mainContainer.classList.add('hidden');
+            simulateSection.classList.add('hidden');
+            settingsSection.classList.add('hidden');
+            fullPageSpinner.classList.remove('hidden');
+            fullPageSpinner.classList.add('block'); // Show full page spinner
+
+            setTimeout(() => {
+                // After 1 second, show UI back and then proceed with logic
+                fullPageSpinner.classList.remove('block'); // Hide full page spinner
+                fullPageSpinner.classList.add('hidden');
+                mainContainer.classList.remove('hidden');
+                simulateSection.classList.remove('hidden');
+                settingsSection.classList.remove('hidden');
+
+                // Always clear address and message first
+                addressInput.value = "";
+                clearMessage();
+
+                if (geolocationPermissionStatus === 'allow once') {
+                    // Reset 'allow once' to 'ask'
+                    localStorage.setItem('geolocationPermissionStatus', 'ask');
+                    geolocationPermissionStatus = 'ask';
+                } else if (geolocationPermissionStatus === 'allow any time') {
+                    // If 'allow any time', immediately fill location after spinner on Use My Location button
+                    showLoading(useLocationBtn); // Show spinner on 'Use My Location' button
+                    setTimeout(() => {
+                        fillMockLocation(useLocationBtn); // Fill location and hide spinner on 'Use My Location' button
+                        showMessage('Location populated without interaction since the permission status allows it', 'info');
+                    }, 1000);
+                }
+                // For other statuses ('ask', 'allow on button', 'deny'), status remains unchanged.
+
+                updateSettingsDropdown(); // Always update dropdown
+            }, 1000); // 1-second delay for the full page spinner
+        });
+
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSettingsDropdown();
+            // Ensure modals are hidden initially via JS as well, in case CSS 'hidden' is overridden
+            permissionModal.classList.add('hidden');
+            denyConfirmationModal.classList.add('hidden');
+            fullPageSpinner.classList.add('hidden');
+
+            // New logic for auto-populating on page load if "allow any time"
+            if (geolocationPermissionStatus === 'allow any time') {
+                showLoading(useLocationBtn); // Show spinner on 'Use My Location' button
+                setTimeout(() => {
+                    fillMockLocation(useLocationBtn); // Fill location and hide spinner on 'Use My Location' button
+                    showMessage('Location populated without interaction since the permission status allows it', 'info');
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
