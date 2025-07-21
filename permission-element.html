@@ -4,9 +4,9 @@
   <title>The HTML &lt;permission> Element</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 9a7a6709a, updated Tue May 27 16:45:34 2025 -0700" name="generator">
+  <meta content="Bikeshed version 7a96e07ec, updated Mon Jul 14 11:12:36 2025 -0700" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-element.html" rel="canonical">
-  <meta content="d208d919d022656a145075fd9387c12e447b32bc" name="revision">
+  <meta content="e488e3db42484ef71016e65013176c38d03d6150" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -757,7 +757,8 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
  <body class="h-entry">
   <div class="head">
    <h1 class="p-name no-ref" id="title">The HTML &lt;permission> Element</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>, <time class="dt-updated" datetime="2025-06-03">3 June 2025</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
+    <time class="dt-updated" datetime="2025-07-21">21 July 2025</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -771,7 +772,8 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
    </div>
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 the Contributors to the The HTML &lt;permission> Element Specification, published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
-A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available. </p>
+A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.
+</p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
@@ -786,12 +788,17 @@ the current permission flows.</p>
   <div data-fill-with="at-risk"></div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> This specification was published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
+   <p>
+  This specification was published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
   It is not a W3C Standard nor is it on the W3C Standards Track.
 
-  Please note that under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a> there is a limited opt-out and other conditions apply.
+  Please note that under the
+  <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>
+  there is a limited opt-out and other conditions apply.
 
-  Learn more about <a href="http://www.w3.org/community/">W3C Community and Business Groups</a>. </p>
+  Learn more about
+  <a href="http://www.w3.org/community/">W3C Community and Business Groups</a>.
+</p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -858,7 +865,8 @@ to take a more opinionated approach to protect users' security, privacy, and
 attention. The status quo is that users get a multitude of permission requests,
 where it’s oftentimes unclear to users what the consequences of these requests
 might be.</p>
-   <p>This spec introduces a new mechanism that requests access to <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①">powerful features</a> through an in-page element, with built-in protections
+   <p>This spec introduces a new mechanism that requests access to
+<a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①">powerful features</a> through an in-page element, with built-in protections
 against abuse. This wants to tie permission requests to the actual context
 in which they will be used, thus reducing "permission spam" and at the same
 time providing implementations with a better signal of user intent.</p>
@@ -876,7 +884,10 @@ time providing implementations with a better signal of user intent.</p>
     <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes">Content attributes</a>:
     <dd><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#global-attributes" id="ref-for-global-attributes">Global attributes</a>
     <dd><code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type">type</a></code> — Type of permission this element applies to.
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-preciselocation" id="ref-for-dom-htmlpermissionelement-preciselocation">preciseLocation</a></code> — Whether access to the <a data-link-type="biblio" href="#biblio-geolocation" title="Geolocation">"geolocation"</a> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature②">powerful feature</a> is requested with <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy">enableHighAccuracy</a></code>. 
+    <dd><code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-preciselocation" id="ref-for-dom-htmlpermissionelement-preciselocation">preciseLocation</a></code> — Whether access to the
+  <a data-link-type="biblio" href="#biblio-geolocation" title="Geolocation">"geolocation"</a> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature②">powerful feature</a> is requested with
+  <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy">enableHighAccuracy</a></code>.
+  
     <dd><code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-isvalid" id="ref-for-dom-htmlpermissionelement-isvalid">isValid</a></code> — query whether the element can currently be activated.
     <dd><code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-invalidreason" id="ref-for-dom-htmlpermissionelement-invalidreason">invalidReason</a></code> — Return a string representation of why the element currently cannot be activated.
     <dd><code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onpromptdismiss" id="ref-for-dom-htmlpermissionelement-onpromptdismiss">onpromptdismiss</a></code> — notifies when the user has dismissed the permission prompt.
@@ -912,21 +923,28 @@ time providing implementations with a better signal of user intent.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type①">type</a></code> attribute controls the behavior of the
 permission element when it is activated. Is is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute" id="ref-for-enumerated-attribute">enumerated attribute</a>,
 whose values are the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-name" id="ref-for-dfn-name">names</a> of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature③">powerful features</a>. It
-has neither a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#missing-value-default" id="ref-for-missing-value-default">missing value default</a> state nor a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#invalid-value-default" id="ref-for-invalid-value-default">invalid value default</a> state.</p>
+has neither a
+<a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#missing-value-default" id="ref-for-missing-value-default">missing value default</a> state nor a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#invalid-value-default" id="ref-for-invalid-value-default">invalid value default</a> state.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-preciselocation" id="ref-for-dom-htmlpermissionelement-preciselocation①">preciseLocation</a></code> attribute reflects whether
 the <code>"geolocation"</code> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature④">permission</a> is meant for
 location requests with <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy①">enableHighAccuracy</a></code>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-isvalid" id="ref-for-dom-htmlpermissionelement-isvalid②">isValid</a></code> attribute reflects whether a the
 permission element is not currently blocked.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-invalidreason" id="ref-for-dom-htmlpermissionelement-invalidreason②">invalidReason</a></code> attribute is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute" id="ref-for-enumerated-attribute①">enumerated attribute</a> that reflects the internal state of the permission
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-invalidreason" id="ref-for-dom-htmlpermissionelement-invalidreason②">invalidReason</a></code> attribute is an
+<a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute" id="ref-for-enumerated-attribute①">enumerated attribute</a> that reflects the internal state of the permission
 element. It’s value set are <code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason①">PermissionElementBlockerReason</a></code></p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-istypesupported" id="ref-for-dom-htmlpermissionelement-istypesupported">isTypeSupported</a></code> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-static-operation" id="ref-for-dfn-static-operation">static operation</a> whether a
-gives <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type②">type</a></code>, that is, a given <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute" id="ref-for-enumerated-attribute②">enumeration</a> of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑤">powerful features</a>, is supported.
-It predicts whether creating a <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①">permission</a></code> element and assigning the given <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type③">type</a></code> string will work, or whether it will create
-an element blocked by a <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid">type_invalid</a></code> <a data-link-type="dfn" href="#permanent-blocker" id="ref-for-permanent-blocker">permanent blocker</a>.</p>
+gives <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type②">type</a></code>, that is, a given
+<a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute" id="ref-for-enumerated-attribute②">enumeration</a> of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑤">powerful features</a>, is supported.
+It predicts whether creating a <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①">permission</a></code> element and assigning the given
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type③">type</a></code> string will work, or whether it will create
+an element blocked by a <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid">type_invalid</a></code>
+<a data-link-type="dfn" href="#permanent-blocker" id="ref-for-permanent-blocker">permanent blocker</a>.</p>
    <p>The global <a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/dom.html#dom-lang" id="ref-for-dom-lang">lang</a> attribute is
 observed by the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②">permission</a></code> element to select localized text.</p>
-   <p>The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a> for the global <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex" id="ref-for-attr-tabindex">tabindex</a></code> content attribute on the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③">permission</a></code> element is 0.</p>
+   <p>The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
+for the global <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex" id="ref-for-attr-tabindex">tabindex</a></code> content attribute on the
+<code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③">permission</a></code> element is 0.</p>
    <p>The following are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers" id="ref-for-event-handlers">event handlers</a> (and their corresponding <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type">event handler event types</a>) that must be supported on <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④">permission</a></code> elements <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-idl-attributes" id="ref-for-event-handler-idl-attributes">event handler IDL attributes</a>:</p>
    <table class="def">
     <tbody>
@@ -953,26 +971,39 @@ an internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissione
    <ul>
     <li data-md>
      <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-blockerlist-slot"><code>[[BlockerList]]</code></dfn> is a
-list of records, containing a <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker-timestamp">blocker timestamp</dfn> and a <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker-reason">blocker reason</dfn>. The <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason">blocker reason</a> is a <code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason②">PermissionElementBlockerReason</a></code>, but not the empty string.</p>
+list of records, containing a
+<dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker-timestamp">blocker timestamp</dfn> and a
+<dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker-reason">blocker reason</dfn>. The <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason">blocker reason</a> is a <code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason②">PermissionElementBlockerReason</a></code>, but not the empty string.</p>
     <li data-md>
-     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-intersectionobserver-slot"><code>[[IntersectionObserver]]</code></dfn> is a reference to an <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver">IntersectionObserver</a></code>.</p>
+     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-intersectionobserver-slot"><code>[[IntersectionObserver]]</code></dfn>
+is a reference to an <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver">IntersectionObserver</a></code>.</p>
     <li data-md>
      <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-types-slot"><code>[[Types]]</code></dfn> is null
 or an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑥">powerful features</a>. Null represents the
 uninitialized state, which allows the value to be modified. The empty
 list «[]» is the state in which no permission applies, and which
-will no longer allow modification. Note that the <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type④">type</a></code> property reflects this internal state.</p>
+will no longer allow modification. Note that the
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type④">type</a></code> property reflects this internal state.</p>
     <li data-md>
-     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-intersectionrect-slot"><code>[[IntersectionRect]]</code></dfn> is a <code class="idl"><a data-link-type="idl" href="https://drafts.fxtf.org/geometry-1/#domrectreadonly" id="ref-for-domrectreadonly">DOMRectReadOnly</a></code> that stores the most recently seen intersection, i.e.
+     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-intersectionrect-slot"><code>[[IntersectionRect]]</code></dfn> is a
+<code class="idl"><a data-link-type="idl" href="https://drafts.fxtf.org/geometry-1/#domrectreadonly" id="ref-for-domrectreadonly">DOMRectReadOnly</a></code> that stores the most recently seen intersection, i.e.
 the position of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission⑨">permission</a></code> relative to the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0">viewport</a>.</p>
     <li data-md>
-     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-lastnotifiedvalidstate-slot"><code>[[LastNotifiedValidState]]</code></dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#boolean" id="ref-for-boolean">boolean</a> that stores the most recently notified state of <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-isvalid" id="ref-for-dom-htmlpermissionelement-isvalid③">isValid</a></code>.</p>
+     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-lastnotifiedvalidstate-slot"><code>[[LastNotifiedValidState]]</code></dfn>
+is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#boolean" id="ref-for-boolean">boolean</a> that stores the most recently notified state of
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-isvalid" id="ref-for-dom-htmlpermissionelement-isvalid③">isValid</a></code>.</p>
     <li data-md>
-     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-lastnotifiedinvalidreason-slot"><code>[[LastNotifiedInvalidReason]]</code></dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string">string</a> that stores the most recently notified state of <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-invalidreason" id="ref-for-dom-htmlpermissionelement-invalidreason③">invalidReason</a></code>. <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-lastnotifiedvalidstate-slot" id="ref-for-dom-htmlpermissionelement-lastnotifiedvalidstate-slot">[[LastNotifiedValidState]]</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-lastnotifiedinvalidreason-slot" id="ref-for-dom-htmlpermissionelement-lastnotifiedinvalidreason-slot">[[LastNotifiedInvalidReason]]</a></code> are
-used to determine whether an <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onvalidationstatuschange" id="ref-for-dom-htmlpermissionelement-onvalidationstatuschange①">onvalidationstatuschange</a></code> event needs to be
+     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-lastnotifiedinvalidreason-slot"><code>[[LastNotifiedInvalidReason]]</code></dfn>
+is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string" id="ref-for-string">string</a> that stores the most recently notified state of
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-invalidreason" id="ref-for-dom-htmlpermissionelement-invalidreason③">invalidReason</a></code>.
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-lastnotifiedvalidstate-slot" id="ref-for-dom-htmlpermissionelement-lastnotifiedvalidstate-slot">[[LastNotifiedValidState]]</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-lastnotifiedinvalidreason-slot" id="ref-for-dom-htmlpermissionelement-lastnotifiedinvalidreason-slot">[[LastNotifiedInvalidReason]]</a></code> are
+used to determine whether an
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onvalidationstatuschange" id="ref-for-dom-htmlpermissionelement-onvalidationstatuschange①">onvalidationstatuschange</a></code> event needs to be
 dispatches.</p>
     <li data-md>
-     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-initialpermissionstatus-slot"><code>[[InitialPermissionStatus]]</code></dfn> is a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate②">PermissionState</a></code> that stores the initial <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate③">PermissionState</a></code> for <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot">[[Types]]</a></code>.</p>
+     <p><dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-initialpermissionstatus-slot"><code>[[InitialPermissionStatus]]</code></dfn>
+is a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate②">PermissionState</a></code> that stores the initial <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate③">PermissionState</a></code> for
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot">[[Types]]</a></code>.</p>
    </ul>
    <h3 class="heading settled" data-level="2.2" id="permission-element-external-state"><span class="secno">2.2. </span><span class="content"><code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①⓪">permission</a></code>-supporting state at the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable">navigable</a></span><a class="self-link" href="#permission-element-external-state"></a></h3>
    <p>In order to support the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①①">permission</a></code> element, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable①">navigable</a> maintains
@@ -1005,16 +1036,23 @@ pepc<c- p>.</c->type<c- p>;</c->  <c- c1>// "". Reflects the internal state, whi
 
 </pre>
    <div class="algorithm" data-algorithm="HTMLPermissionElement/types getter">
-     The HTMLPermissionElement’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type⑥">type</a></code> getter steps are: 
+    
+The HTMLPermissionElement’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type⑥">type</a></code> getter steps are:
+
+
     <ol>
      <li data-md>
       <p>If <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①">[[Types]]</a></code> is null: Return <code>""</code>.</p>
      <li data-md>
-      <p>Return a string, containing the concatenation of all <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑦">powerful feature</a> names in <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot②">[[Types]]</a></code>, seperated by " ".</p>
+      <p>Return a string, containing the concatenation of all <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑦">powerful feature</a>
+names in <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot②">[[Types]]</a></code>, seperated by " ".</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="HTMLPermissionElement/types setter">
-     The HTMLPermissionElement’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type⑦">type</a></code> setter steps are: 
+    
+The HTMLPermissionElement’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type⑦">type</a></code> setter steps are:
+
+
     <ol>
      <li data-md>
       <p>If <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot③">[[Types]]</a></code> is not null: Return.</p>
@@ -1028,14 +1066,18 @@ input string.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> each <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑧">powerful feature</a> name to the <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot⑤">[[Types]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set③">ordered set</a>.</p>
      <li data-md>
-      <p>Set <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-initialpermissionstatus-slot" id="ref-for-dom-htmlpermissionelement-initialpermissionstatus-slot">[[InitialPermissionStatus]]</a></code> to the result of <a data-link-type="dfn" href="#htmlpermissionelement-get-the-current-permission-state" id="ref-for-htmlpermissionelement-get-the-current-permission-state">get the current permission state</a>.</p>
+      <p>Set <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-initialpermissionstatus-slot" id="ref-for-dom-htmlpermissionelement-initialpermissionstatus-slot">[[InitialPermissionStatus]]</a></code> to the result of
+<a data-link-type="dfn" href="#htmlpermissionelement-get-the-current-permission-state" id="ref-for-htmlpermissionelement-get-the-current-permission-state">get the current permission state</a>.</p>
     </ol>
     <p class="note" role="note"><span class="marker">Note:</span> The supported sets of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑨">powerful features</a> is <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#implementation-defined" id="ref-for-implementation-defined">implementation-defined</a>.</p>
    </div>
    <p>To query whether a feature (or group of features) is supported:</p>
    <div class="algorithm" data-algorithm="HTMLPermissionElement/isTypeSupported()">
-     HTMLPermissionElement’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-istypesupported" id="ref-for-dom-htmlpermissionelement-istypesupported①">isTypeSupported()</a></code> method
-steps with argument with <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString②">DOMString</a></code> <var>type</var>are: 
+    
+HTMLPermissionElement’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-istypesupported" id="ref-for-dom-htmlpermissionelement-istypesupported①">isTypeSupported()</a></code> method
+steps with argument with <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString②">DOMString</a></code> <var>type</var>are:
+
+
     <ol>
      <li data-md>
       <p>Let <var>features</var> be the result of calling <a data-link-type="dfn" href="#parse-a-type-string" id="ref-for-parse-a-type-string①">parse a type string</a> with <var>type</var>.</p>
@@ -1044,14 +1086,19 @@ steps with argument with <code class="idl"><a data-link-type="idl" href="https:/
     </ol>
    </div>
    <div class="algorithm" data-algorithm="parse a type string">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="parse-a-type-string">parse a type string</dfn> a given string <var>type</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="parse-a-type-string">parse a type string</dfn> a given string <var>type</var>:
+
+
     <ol>
      <li data-md>
-      <p>Let <var>list</var> be the result of parsing <var>type</var> as a string of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①⓪">powerful feature</a> names, seperated by whitespace.</p>
+      <p>Let <var>list</var> be the result of parsing <var>type</var> as a string of
+<a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①⓪">powerful feature</a> names, seperated by whitespace.</p>
      <li data-md>
       <p>If any errors occured, return None.</p>
      <li data-md>
-      <p>Check if the set of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①①">powerful features</a> is supported for the <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement">HTMLPermissionElement</a></code> by the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent①">user agent</a>. If not, return None.</p>
+      <p>Check if the set of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①①">powerful features</a> is supported for the
+<code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement">HTMLPermissionElement</a></code> by the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent①">user agent</a>. If not, return None.</p>
      <li data-md>
       <p>Return <var>list</var>.</p>
     </ol>
@@ -1081,7 +1128,8 @@ An example is a <code><a data-link-type="element" href="#elementdef-permission" 
     <dd data-md>
      <p>This is a blocker that will only be valid until the blocking condition no
 no longer occurs. An example is a <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①⑨">permission</a></code> element that is not
-currently in view. All <a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker">temporary blockers</a> turn into <a data-link-type="dfn" href="#expiring-blocker" id="ref-for-expiring-blocker">expiring blockers</a> once the condition no longer applies.</p>
+currently in view. All <a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker">temporary blockers</a> turn into
+<a data-link-type="dfn" href="#expiring-blocker" id="ref-for-expiring-blocker">expiring blockers</a> once the condition no longer applies.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="expiring-blocker">Expiring blocker</dfn>
     <dd data-md>
      <p>This is a blocker that is only valid for a fixed period of time. This is
@@ -1089,62 +1137,104 @@ used to block abuse scenarios like "click jacking". An example is
 a <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⓪">permission</a></code> element that has recently been moved.</p>
    </dl>
    <div>
-     <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="blocker reason table" data-noexport id="blocker-reason-table"></dfn> 
+    
+<dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="blocker reason table" data-noexport id="blocker-reason-table"></dfn>
+
     <table class="def">
      <thead>
       <tr>
-       <th>Blocker name 
-       <th>Blocker type 
-       <th>Example condition 
-       <th>Order hint 
+       <th>Blocker name
+
+       <th>Blocker type
+
+       <th>Example condition
+
+       <th>Order hint
+
      <tbody>
       <tr>
-       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid①">type_invalid</a></code> 
-       <td><a data-link-type="dfn" href="#permanent-blocker" id="ref-for-permanent-blocker①">permanent</a> 
+       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid①">type_invalid</a></code>
+
+       <td><a data-link-type="dfn" href="#permanent-blocker" id="ref-for-permanent-blocker①">permanent</a>
+
        <td>When an unsupported <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type⑧">permission type</a></code> has been
-    set. 
-       <td>1 
+    set.
+
+       <td>1
+
       <tr>
-       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-illegal_subframe" id="ref-for-dom-permissionelementblockerreason-illegal_subframe">illegal_subframe</a></code> 
-       <td><a data-link-type="dfn" href="#permanent-blocker" id="ref-for-permanent-blocker②">permanent</a> 
-       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②①">permission</a></code> element is used inside a <code><a data-link-type="element" href="https://wicg.github.io/fenced-frame/#elementdef-fencedframe" id="ref-for-elementdef-fencedframe①">fencedframe</a></code>. 
-       <td>2 
+       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-illegal_subframe" id="ref-for-dom-permissionelementblockerreason-illegal_subframe">illegal_subframe</a></code>
+
+       <td><a data-link-type="dfn" href="#permanent-blocker" id="ref-for-permanent-blocker②">permanent</a>
+
+       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②①">permission</a></code> element is used inside a <code><a data-link-type="element" href="https://wicg.github.io/fenced-frame/#elementdef-fencedframe" id="ref-for-elementdef-fencedframe①">fencedframe</a></code>.
+
+       <td>2
+
       <tr>
-       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-unsuccesful_registration" id="ref-for-dom-permissionelementblockerreason-unsuccesful_registration①">unsuccesful_registration</a></code> 
-       <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker①">temporary</a> 
-       <td>When too many other <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②②">permission</a></code> elements for the same <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①②">powerful feature</a> have been inserted into the same document. 
-       <td>3 
+       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-unsuccesful_registration" id="ref-for-dom-permissionelementblockerreason-unsuccesful_registration①">unsuccesful_registration</a></code>
+
+       <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker①">temporary</a>
+
+       <td>When too many other <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②②">permission</a></code> elements for the same
+    <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①②">powerful feature</a> have been inserted into the same document.
+
+       <td>3
+
       <tr>
-       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-recently_attached" id="ref-for-dom-permissionelementblockerreason-recently_attached">recently_attached</a></code> 
-       <td><a data-link-type="dfn" href="#expiring-blocker" id="ref-for-expiring-blocker①">expiring</a> 
+       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-recently_attached" id="ref-for-dom-permissionelementblockerreason-recently_attached">recently_attached</a></code>
+
+       <td><a data-link-type="dfn" href="#expiring-blocker" id="ref-for-expiring-blocker①">expiring</a>
+
        <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②③">permission</a></code> element has just been attached to the
-  DOM. 
-       <td>4 
+  DOM.
+
+       <td>4
+
       <tr>
-       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_changed" id="ref-for-dom-permissionelementblockerreason-intersection_changed">intersection_changed</a></code> 
-       <td><a data-link-type="dfn" href="#expiring-blocker" id="ref-for-expiring-blocker②">expiring</a> 
-       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②④">permission</a></code> element is being moved. 
-       <td>6 
+       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_changed" id="ref-for-dom-permissionelementblockerreason-intersection_changed">intersection_changed</a></code>
+
+       <td><a data-link-type="dfn" href="#expiring-blocker" id="ref-for-expiring-blocker②">expiring</a>
+
+       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②④">permission</a></code> element is being moved.
+
+       <td>6
+
       <tr>
-       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped" id="ref-for-dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped">intersection_out_of_viewport_or_clipped</a></code> 
-       <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker②">temporary</a> 
-       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑤">permission</a></code> element is not or not fully in the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0①">viewport</a>. 
-       <td>7 
+       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped" id="ref-for-dom-permissionelementblockerreason-intersection_out_of_viewport_or_clipped">intersection_out_of_viewport_or_clipped</a></code>
+
+       <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker②">temporary</a>
+
+       <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑤">permission</a></code> element is not or not fully in the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0①">viewport</a>.
+
+       <td>7
+
       <tr>
-       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_occluded_or_distorted" id="ref-for-dom-permissionelementblockerreason-intersection_occluded_or_distorted">intersection_occluded_or_distorted</a></code> 
-       <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker③">temporary</a> 
+       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_occluded_or_distorted" id="ref-for-dom-permissionelementblockerreason-intersection_occluded_or_distorted">intersection_occluded_or_distorted</a></code>
+
+       <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker③">temporary</a>
+
        <td>When the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑥">permission</a></code> element is fully in the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0②">viewport</a>,
-    but still not fully visible (e.g. because it’s partly behind other content). 
-       <td>8 
+    but still not fully visible (e.g. because it’s partly behind other content).
+
+       <td>8
+
       <tr>
-       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-style_invalid" id="ref-for-dom-permissionelementblockerreason-style_invalid">style_invalid</a></code> 
-       <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker④">temporary</a> 
+       <th><code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-style_invalid" id="ref-for-dom-permissionelementblockerreason-style_invalid">style_invalid</a></code>
+
+       <td><a data-link-type="dfn" href="#temporary-blocker" id="ref-for-temporary-blocker④">temporary</a>
+
        <td>
-       <td>9 
+       <td>9
+
     </table>
    </div>
    <div class="algorithm" data-algorithm="add a blocker" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-add-a-blocker">add a blocker</dfn> with a <code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason③">PermissionElementBlockerReason</a></code> <var>reason</var> and an optional flag <var>expires</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-add-a-blocker">add a blocker</dfn> with a
+<code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason③">PermissionElementBlockerReason</a></code> <var>reason</var> and an optional flag <var>expires</var>:
+
+
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert">Assert</a>: <var>reason</var> is not <code>""</code>.
@@ -1153,14 +1243,22 @@ is present. Why would you add a non-blocking blockern empty string?)</p>
      <li data-md>
       <p>Let <var>timestamp</var> be None.</p>
      <li data-md>
-      <p>If <var>expires</var>, then let <var>timestamp</var> be <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time">current high resolution time</a> plus the <a data-link-type="dfn" href="#htmlpermissionelement-blocker-delay" id="ref-for-htmlpermissionelement-blocker-delay">blocker delay</a>.</p>
+      <p>If <var>expires</var>, then let <var>timestamp</var> be <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time">current high resolution time</a>
+plus the <a data-link-type="dfn" href="#htmlpermissionelement-blocker-delay" id="ref-for-htmlpermissionelement-blocker-delay">blocker delay</a>.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append①">Append</a> an entry to the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot①">[[BlockerList]]</a></code> with <var>reason</var> and <var>timestamp</var>.</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append①">Append</a> an entry to the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot①">[[BlockerList]]</a></code> with <var>reason</var>
+and <var>timestamp</var>.</p>
     </ol>
    </div>
-   <div> The <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker-delay">blocker delay</dfn> is 500ms. </div>
+   <div>
+The <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker-delay">blocker delay</dfn> is 500ms.
+</div>
    <div class="algorithm" data-algorithm="add an expiring blocker" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-add-an-expiring-blocker">add an expiring blocker</dfn> with a <code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason⑤">PermissionElementBlockerReason</a></code> <var>reason</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-add-an-expiring-blocker">add an expiring blocker</dfn> with a
+<code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason⑤">PermissionElementBlockerReason</a></code> <var>reason</var>:
+
+
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert①">Assert</a>: <var>reason</var> is listed as "expiring" in the <a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table">blocker reason table</a>.</p>
@@ -1169,7 +1267,11 @@ is present. Why would you add a non-blocking blockern empty string?)</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="add a temporary blocker" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-add-a-temporary-blocker">add a temporary blocker</dfn> with a <code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason⑥">PermissionElementBlockerReason</a></code> <var>reason</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-add-a-temporary-blocker">add a temporary blocker</dfn> with a
+<code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason⑥">PermissionElementBlockerReason</a></code> <var>reason</var>:
+
+
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert②">Assert</a>: <var>reason</var> is listed as "temporary" in the <a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table①">blocker reason table</a>.</p>
@@ -1178,7 +1280,11 @@ is present. Why would you add a non-blocking blockern empty string?)</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="add a permanent blocker" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-add-a-permanent-blocker">add a permanent blocker</dfn> with a <code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason⑦">PermissionElementBlockerReason</a></code> <var>reason</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-add-a-permanent-blocker">add a permanent blocker</dfn> with a
+<code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason⑦">PermissionElementBlockerReason</a></code> <var>reason</var>:
+
+
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert③">Assert</a>: <var>reason</var> is listed as "permanent" in the <a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table②">blocker reason table</a>.</p>
@@ -1187,25 +1293,36 @@ is present. Why would you add a non-blocking blockern empty string?)</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="remove blockers" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-remove-blockers">remove blockers</dfn> with <code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason⑧">PermissionElementBlockerReason</a></code> <var>reason</var> from an <var>element</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-remove-blockers">remove blockers</dfn> with
+<code class="idl"><a data-link-type="idl" href="#enumdef-permissionelementblockerreason" id="ref-for-enumdef-permissionelementblockerreason⑧">PermissionElementBlockerReason</a></code> <var>reason</var> from an <var>element</var>:
+
+
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert④">Assert</a>: <var>reason</var> is listed as "temporary" in the <a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table③">blocker reason table</a>.</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert④">Assert</a>: <var>reason</var> is listed as "temporary" in the
+<a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table③">blocker reason table</a>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">For each</a> <var>entry</var> in <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot②">[[BlockerList]]</a></code>:</p>
       <ol>
        <li data-md>
-        <p>If <var>entry</var>’s reason <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-is" id="ref-for-string-is">equals</a> <var>reason</var>, then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-remove" id="ref-for-list-remove">remove</a> <var>entry</var> from <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot③">[[BlockerList]]</a></code>.</p>
+        <p>If <var>entry</var>’s reason <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-is" id="ref-for-string-is">equals</a> <var>reason</var>, then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-remove" id="ref-for-list-remove">remove</a>
+<var>entry</var> from <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot③">[[BlockerList]]</a></code>.</p>
       </ol>
      <li data-md>
       <p><a data-link-type="dfn" href="#htmlpermissionelement-add-a-blocker" id="ref-for-htmlpermissionelement-add-a-blocker③">Add a blocker</a> with <var>reason</var> and true.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="blocker" data-algorithm-for="HTMLPermissionElement">
-     To determine a <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement①">HTMLPermissionElement</a></code> <var>element</var>’s <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker">blocker</dfn>: 
+    
+To determine a <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement①">HTMLPermissionElement</a></code> <var>element</var>’s
+<dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker">blocker</dfn>:
+
+
     <ol>
      <li data-md>
-      <p>Let <var>blockers</var> be the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-sort-in-ascending-order" id="ref-for-list-sort-in-ascending-order">sorting</a> <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot④">[[BlockerList]]</a></code> with the <a data-link-type="dfn" href="#htmlpermissionelement-blocker-ordering" id="ref-for-htmlpermissionelement-blocker-ordering">blocker ordering</a> algorithm.</p>
+      <p>Let <var>blockers</var> be the result of <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-sort-in-ascending-order" id="ref-for-list-sort-in-ascending-order">sorting</a> <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot④">[[BlockerList]]</a></code>
+with the <a data-link-type="dfn" href="#htmlpermissionelement-blocker-ordering" id="ref-for-htmlpermissionelement-blocker-ordering">blocker ordering</a> algorithm.</p>
      <li data-md>
       <p>If <var>blockers</var> is not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-empty" id="ref-for-list-empty">empty</a> and <var>blockers</var>[0] is <a data-link-type="dfn" href="#htmlpermissionelement-blocking" id="ref-for-htmlpermissionelement-blocking">blocking</a>, then return <var>blockers</var>[0].</p>
      <li data-md>
@@ -1213,8 +1330,11 @@ is present. Why would you add a non-blocking blockern empty string?)</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="blocker ordering" data-algorithm-for="HTMLPermissionElement">
-     To determine <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker-ordering">blocker ordering</dfn> for
-two blockers <var>a</var> and <var>b</var>: 
+    
+To determine <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocker-ordering">blocker ordering</dfn> for
+two blockers <var>a</var> and <var>b</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>really large number</var> be 99.</p>
@@ -1223,16 +1343,22 @@ two blockers <var>a</var> and <var>b</var>:
 greater than <var>really large number</var>.</p>
      <li data-md>
       <p>If <var>a</var> is <a data-link-type="dfn" href="#htmlpermissionelement-blocking" id="ref-for-htmlpermissionelement-blocking①">blocking</a>, then let <var>a hint</var> be the
-order hint of <var>a</var>’s <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason①">reason</a> in the <a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table⑤">blocker reason table</a>, otherwise let <var>a hint</var> be <var>really large number</var>.</p>
+order hint of <var>a</var>’s <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason①">reason</a> in the
+<a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table⑤">blocker reason table</a>, otherwise let <var>a hint</var> be <var>really large number</var>.</p>
      <li data-md>
       <p>If <var>b</var> is <a data-link-type="dfn" href="#htmlpermissionelement-blocking" id="ref-for-htmlpermissionelement-blocking②">blocking</a>, then let <var>b hint</var> be the
-order hint of <var>b</var>’s <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason②">reason</a> in the <a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table⑥">blocker reason table</a>, otherwise let <var>b hint</var> be <var>really large number</var>.</p>
+order hint of <var>b</var>’s <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason②">reason</a> in the
+<a data-link-type="dfn" href="#blocker-reason-table" id="ref-for-blocker-reason-table⑥">blocker reason table</a>, otherwise let <var>b hint</var> be <var>really large number</var>.</p>
      <li data-md>
       <p>Return whether <var>a hint</var> is less than or equal to <var>b hint</var>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="blocking" data-algorithm-for="HTMLPermissionElement">
-     An <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement②">HTMLPermissionElement</a></code>’s <a data-link-type="dfn" href="#htmlpermissionelement-blocker" id="ref-for-htmlpermissionelement-blocker①">blocker</a> list’s <var>entry</var> is <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocking">blocking</dfn> if: 
+    
+An <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement②">HTMLPermissionElement</a></code>’s <a data-link-type="dfn" href="#htmlpermissionelement-blocker" id="ref-for-htmlpermissionelement-blocker①">blocker</a> list’s <var>entry</var> is
+<dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-blocking">blocking</dfn> if:
+
+
     <ol>
      <li data-md>
       <p><var>entry</var> has no <a data-link-type="dfn" href="#htmlpermissionelement-blocker-timestamp" id="ref-for-htmlpermissionelement-blocker-timestamp">blocker timestamp</a>,</p>
@@ -1250,7 +1376,10 @@ greater or equal to the <a data-link-type="dfn" href="https://w3c.github.io/hr-t
     opportunities for implementations to handle this more efficiently.</p>
    <h3 class="heading settled" data-level="2.4" id="permission-element-algorithms"><span class="secno">2.4. </span><span class="content"><code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑦">permission</a></code> element algorithms</span><a class="self-link" href="#permission-element-algorithms"></a></h3>
    <div class="algorithm" data-algorithm="HTMLPermissionElement/constructor">
-     The <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement③">HTMLPermissionElement</a></code> constructor steps are: 
+    
+The <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement③">HTMLPermissionElement</a></code> constructor steps are:
+
+
     <ol>
      <li data-md>
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot⑥">[[Types]]</a></code> slot to null.</p>
@@ -1267,7 +1396,10 @@ the result of <a data-link-type="dfn" href="#htmlpermissionelement-get-the-curre
     </ol>
    </div>
    <div class="algorithm" data-algorithm="HTMLPermissionElement/insertion steps">
-     The <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement④">HTMLPermissionElement</a></code> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-insert-ext" id="ref-for-concept-node-insert-ext">insertion steps</a> are: 
+    
+The <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement④">HTMLPermissionElement</a></code> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-insert-ext" id="ref-for-concept-node-insert-ext">insertion steps</a> are:
+
+
     <ol>
      <li data-md>
       <p>If <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot⑦">[[Types]]</a></code> is null, set <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot⑧">[[Types]]</a></code> to «[]».</p>
@@ -1279,24 +1411,34 @@ the result of <a data-link-type="dfn" href="#htmlpermissionelement-get-the-curre
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionrect-slot" id="ref-for-dom-htmlpermissionelement-intersectionrect-slot">[[IntersectionRect]]</a></code> with undefined.</p>
      <li data-md>
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionobserver-slot" id="ref-for-dom-htmlpermissionelement-intersectionobserver-slot">[[IntersectionObserver]]</a></code> with the result of
-constructing a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver①">IntersectionObserver</a></code> with <a data-link-type="dfn" href="#htmlpermissionelement-intersectionobserver-callback" id="ref-for-htmlpermissionelement-intersectionobserver-callback">IntersectionObserver callback</a> and
+constructing a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver①">IntersectionObserver</a></code> with
+<a data-link-type="dfn" href="#htmlpermissionelement-intersectionobserver-callback" id="ref-for-htmlpermissionelement-intersectionobserver-callback">IntersectionObserver callback</a> and
 «[ "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverinit-rootmargin" id="ref-for-dom-intersectionobserverinit-rootmargin">rootMargin</a></code>" → <code>"-4px"</code> ]».</p>
      <li data-md>
       <p>Call <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionobserver-slot" id="ref-for-dom-htmlpermissionelement-intersectionobserver-slot①">[[IntersectionObserver]]</a></code>.observe(<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>).</p>
      <li data-md>
-      <p>If <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot⑨">[[Types]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-is-empty" id="ref-for-list-is-empty">is empty</a>, then <a data-link-type="dfn" href="#htmlpermissionelement-add-a-permanent-blocker" id="ref-for-htmlpermissionelement-add-a-permanent-blocker">add a permanent blocker</a> with reason <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid②">type_invalid</a></code>.</p>
+      <p>If <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot⑨">[[Types]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-is-empty" id="ref-for-list-is-empty">is empty</a>, then <a data-link-type="dfn" href="#htmlpermissionelement-add-a-permanent-blocker" id="ref-for-htmlpermissionelement-add-a-permanent-blocker">add a permanent blocker</a>
+with reason <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid②">type_invalid</a></code>.</p>
      <li data-md>
-      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a> is not <a data-link-type="dfn" href="#htmlpermissionelement-type-permissible" id="ref-for-htmlpermissionelement-type-permissible">type permissible</a>, then <a data-link-type="dfn" href="#htmlpermissionelement-add-a-temporary-blocker" id="ref-for-htmlpermissionelement-add-a-temporary-blocker">add a temporary blocker</a> with <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-unsuccesful_registration" id="ref-for-dom-permissionelementblockerreason-unsuccesful_registration②">unsuccesful_registration</a></code>.</p>
+      <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a> is not <a data-link-type="dfn" href="#htmlpermissionelement-type-permissible" id="ref-for-htmlpermissionelement-type-permissible">type permissible</a>, then <a data-link-type="dfn" href="#htmlpermissionelement-add-a-temporary-blocker" id="ref-for-htmlpermissionelement-add-a-temporary-blocker">add a temporary blocker</a>
+with <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-unsuccesful_registration" id="ref-for-dom-permissionelementblockerreason-unsuccesful_registration②">unsuccesful_registration</a></code>.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="#htmlpermissionelement-add-an-expiring-blocker" id="ref-for-htmlpermissionelement-add-an-expiring-blocker">Add an expiring blocker</a> with reason <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-recently_attached" id="ref-for-dom-permissionelementblockerreason-recently_attached①">recently_attached</a></code>.</p>
+      <p><a data-link-type="dfn" href="#htmlpermissionelement-add-an-expiring-blocker" id="ref-for-htmlpermissionelement-add-an-expiring-blocker">Add an expiring blocker</a> with reason
+<code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-recently_attached" id="ref-for-dom-permissionelementblockerreason-recently_attached①">recently_attached</a></code>.</p>
      <li data-md>
-      <p>If the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-traversable" id="ref-for-nav-traversable">traversable navigable</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable①">node navigable</a> of <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a> is a <a data-link-type="dfn" href="https://wicg.github.io/fenced-frame/#fenced-navigable-container-fenced-navigable" id="ref-for-fenced-navigable-container-fenced-navigable">fenced navigable</a>, then <a data-link-type="dfn" href="#htmlpermissionelement-add-a-permanent-blocker" id="ref-for-htmlpermissionelement-add-a-permanent-blocker①">add a permanent blocker</a> with <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-illegal_subframe" id="ref-for-dom-permissionelementblockerreason-illegal_subframe①">illegal_subframe</a></code>.</p>
+      <p>If the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-traversable" id="ref-for-nav-traversable">traversable navigable</a> of the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable①">node navigable</a> of
+<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>
+is a <a data-link-type="dfn" href="https://wicg.github.io/fenced-frame/#fenced-navigable-container-fenced-navigable" id="ref-for-fenced-navigable-container-fenced-navigable">fenced navigable</a>, then <a data-link-type="dfn" href="#htmlpermissionelement-add-a-permanent-blocker" id="ref-for-htmlpermissionelement-add-a-permanent-blocker①">add a permanent blocker</a>
+with <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-illegal_subframe" id="ref-for-dom-permissionelementblockerreason-illegal_subframe①">illegal_subframe</a></code>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="#htmlpermissionelement-maybe-dispatch-onvalidstatechange" id="ref-for-htmlpermissionelement-maybe-dispatch-onvalidstatechange">Maybe dispatch onvalidstatechange</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="HTMLPermissionElement/removing steps">
-     The <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement⑤">HTMLPermissionElement</a></code> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-remove-ext" id="ref-for-concept-node-remove-ext">removing steps</a> are: 
+    
+The <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement⑤">HTMLPermissionElement</a></code> <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-node-remove-ext" id="ref-for-concept-node-remove-ext">removing steps</a> are:
+
+
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-remove" id="ref-for-list-remove①">Remove</a> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a> from <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable②">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot①">[[PermissionElements]]</a></code>.</p>
@@ -1307,14 +1449,20 @@ constructing a new <code class="idl"><a data-link-type="idl" href="https://w3c.g
     </ol>
    </div>
    <div class="algorithm" data-algorithm="isValid" data-algorithm-for="HTMLPermissionElement">
-     HTMLPermissionElement <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-isvalid"><code>isValid</code></dfn> getter steps are: 
+    
+HTMLPermissionElement <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-isvalid"><code>isValid</code></dfn> getter steps are:
+
+
     <ol>
      <li data-md>
       <p>Return whether <var>element</var>’s <a data-link-type="dfn" href="#htmlpermissionelement-blocker" id="ref-for-htmlpermissionelement-blocker②">blocker</a> is Nothing.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="invalidReason" data-algorithm-for="HTMLPermissionElement">
-     HTMLPermissionElement <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-invalidreason"><code>invalidReason</code></dfn> getter steps are: 
+    
+HTMLPermissionElement <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-invalidreason"><code>invalidReason</code></dfn> getter steps are:
+
+
     <ol>
      <li data-md>
       <p>If <var>element</var>’s <a data-link-type="dfn" href="#htmlpermissionelement-blocker" id="ref-for-htmlpermissionelement-blocker③">blocker</a> is Nothing, return <code>""</code>.</p>
@@ -1323,21 +1471,35 @@ constructing a new <code class="idl"><a data-link-type="idl" href="https://w3c.g
     </ol>
    </div>
    <div class="algorithm" data-algorithm="initialPermissionStatus" data-algorithm-for="HTMLPermissionElement">
-     HTMLPermissionElement <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-initialpermissionstatus"><code>initialPermissionStatus</code></dfn> getter steps are: 
+    
+HTMLPermissionElement <var>element</var>’s
+<dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-initialpermissionstatus"><code>initialPermissionStatus</code></dfn>
+getter steps are:
+
+
     <ol>
      <li data-md>
       <p>Return <var>element</var>’s internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-initialpermissionstatus-slot" id="ref-for-dom-htmlpermissionelement-initialpermissionstatus-slot②">[[InitialPermissionStatus]]</a></code>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="permissionStatus" data-algorithm-for="HTMLPermissionElement">
-     HTMLPermissionElement <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-permissionstatus"><code>permissionStatus</code></dfn> getter steps are: 
+    
+HTMLPermissionElement <var>element</var>’s
+<dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export id="dom-htmlpermissionelement-permissionstatus"><code>permissionStatus</code></dfn>
+getter steps are:
+
+
     <ol>
      <li data-md>
-      <p>Return <a data-link-type="dfn" href="#htmlpermissionelement-get-the-current-permission-state" id="ref-for-htmlpermissionelement-get-the-current-permission-state②">get the current permission state</a> for <var>element</var>.</p>
+      <p>Return <a data-link-type="dfn" href="#htmlpermissionelement-get-the-current-permission-state" id="ref-for-htmlpermissionelement-get-the-current-permission-state②">get the current permission state</a> for
+<var>element</var>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="activation">
-     A <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑧">permission</a></code> <var>element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#eventtarget-activation-behavior" id="ref-for-eventtarget-activation-behavior">activation behavior</a> given <var>event</var> is: 
+    
+A <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑧">permission</a></code> <var>element</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#eventtarget-activation-behavior" id="ref-for-eventtarget-activation-behavior">activation behavior</a> given <var>event</var> is:
+
+
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert⑥">Assert</a>: <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①⓪">[[Types]]</a></code> is not null.</p>
@@ -1348,13 +1510,18 @@ constructing a new <code class="idl"><a data-link-type="idl" href="https://w3c.g
      <li data-md>
       <p>If <var>element</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-isvalid" id="ref-for-dom-htmlpermissionelement-isvalid④">isValid</a></code> is false, then return.</p>
      <li data-md>
-      <p>Let <var>descriptor</var> be the result of <a data-link-type="dfn" href="#htmlpermissionelement-build-a-permission-descriptor" id="ref-for-htmlpermissionelement-build-a-permission-descriptor">build a permission descriptor</a> for <var>element</var>.</p>
+      <p>Let <var>descriptor</var> be the result of <a data-link-type="dfn" href="#htmlpermissionelement-build-a-permission-descriptor" id="ref-for-htmlpermissionelement-build-a-permission-descriptor">build a permission descriptor</a> for
+<var>element</var>.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">Request permission to use</a> the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①③">powerful features</a> described by <var>descriptor</var>.</p>
+      <p><a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">Request permission to use</a> the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①③">powerful features</a> described by
+<var>descriptor</var>.</p>
      <li data-md>
-      <p>If the previous step was cancelled or dismissed by the user, then <a data-link-type="dfn" href="#htmlpermisssionelement-dispatch-onpromptdismiss" id="ref-for-htmlpermisssionelement-dispatch-onpromptdismiss">dispatch onpromptdismiss</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a> and return.</p>
-      <p class="issue" id="issue-017890a3"><a class="self-link" href="#issue-017890a3"></a> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[PERMISSIONS]</a> spec assumes that <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use①">request permission to use</a> will always succeed. That is, it assumes that the user will always make a
-choice and that the algorithm will always deliver a <code>grant</code>/<code>deny</code> answer corresponding to that choice. But you can’t force a user to do that.
+      <p>If the previous step was cancelled or dismissed by the user, then
+<a data-link-type="dfn" href="#htmlpermisssionelement-dispatch-onpromptdismiss" id="ref-for-htmlpermisssionelement-dispatch-onpromptdismiss">dispatch onpromptdismiss</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a> and return.</p>
+      <p class="issue" id="issue-017890a3"><a class="self-link" href="#issue-017890a3"></a> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[PERMISSIONS]</a> spec assumes that <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use①">request permission to use</a>
+will always succeed. That is, it assumes that the user will always make a
+choice and that the algorithm will always deliver a <code>grant</code>/<code>deny</code>
+answer corresponding to that choice. But you can’t force a user to do that.
 Some <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent②">user agents</a> may have different UI affordances for an explicit
 denial (e.g. a "deny" button) on one hand, and cancelling or dismissing the
 request dialog (e.g. an "X" button in the top right corner). Here, we
@@ -1365,9 +1532,14 @@ in the underlying specification.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="build a permission descriptor" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-build-a-permission-descriptor">build a permission descriptor</dfn> for an <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement⑥">HTMLPermissionElement</a></code> <var>element</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-build-a-permission-descriptor">build a permission descriptor</dfn> for an
+<code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement⑥">HTMLPermissionElement</a></code> <var>element</var>:
+
+
     <p class="issue" id="issue-f681da45"><a class="self-link" href="#issue-f681da45"></a> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a> specification assumes a descriptor describes a
-single permission without parameters (like an equivalent of <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy②">enableHighAccuracy</a></code>). Here, we assume a permissions model
+single permission without parameters (like an equivalent of
+<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy②">enableHighAccuracy</a></code>). Here, we assume a permissions model
 that is more expressive. This needs to be resolved -- likely upstream,
 in <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a>, plus adaptions here.</p>
     <ol>
@@ -1377,9 +1549,11 @@ in <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Pe
       <p>Fill in <var>result</var>:</p>
       <ul>
        <li data-md>
-        <p>Include the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①④">powerful feature</a> names contained in <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①②">[[Types]]</a></code>.</p>
+        <p>Include the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①④">powerful feature</a> names contained in
+<var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①②">[[Types]]</a></code>.</p>
        <li data-md>
-        <p>If <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①③">[[Types]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> <code>"geolocation"</code> and <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-preciselocation" id="ref-for-dom-htmlpermissionelement-preciselocation②">preciseLocation</a></code> is true, then <var>result</var> applies
+        <p>If <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①③">[[Types]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> <code>"geolocation"</code> and
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-preciselocation" id="ref-for-dom-htmlpermissionelement-preciselocation②">preciseLocation</a></code> is true, then <var>result</var> applies
 to position requests with <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy③">enableHighAccuracy</a></code> set
 to true.</p>
       </ul>
@@ -1388,12 +1562,17 @@ to true.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="HTMLPermissionElement/IntersectionObserver callback">
-     The HTMLPermissionElement’s <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-intersectionobserver-callback">IntersectionObserver callback</dfn> implements <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#callbackdef-intersectionobservercallback" id="ref-for-callbackdef-intersectionobservercallback">IntersectionObserverCallback</a></code> and runs the following steps: 
+    
+The HTMLPermissionElement’s <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-intersectionobserver-callback">IntersectionObserver callback</dfn> implements <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#callbackdef-intersectionobservercallback" id="ref-for-callbackdef-intersectionobservercallback">IntersectionObserverCallback</a></code> and runs the following steps:
+
+
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert⑦">Assert</a>: The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver②">IntersectionObserver</a></code>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#dom-intersectionobserver-root" id="ref-for-dom-intersectionobserver-root">root</a></code> is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document">document</a></p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert⑦">Assert</a>: The <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver②">IntersectionObserver</a></code>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#dom-intersectionobserver-root" id="ref-for-dom-intersectionobserver-root">root</a></code>
+is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document" id="ref-for-concept-document">document</a></p>
      <li data-md>
-      <p>Let <var>entries</var> be the value of the first callback parameter, the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserverentry" id="ref-for-intersectionobserverentry">intersection observer entries</a></code>.</p>
+      <p>Let <var>entries</var> be the value of the first callback parameter, the
+<a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list" id="ref-for-list">list</a> of <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserverentry" id="ref-for-intersectionobserverentry">intersection observer entries</a></code>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert⑧">Assert</a>: <var>entries</var> is not <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-is-empty" id="ref-for-list-is-empty②">empty</a>.</p>
      <li data-md>
@@ -1425,47 +1604,67 @@ to true.</p>
         <p><a data-link-type="dfn" href="#htmlpermissionelement-add-a-temporary-blocker" id="ref-for-htmlpermissionelement-add-a-temporary-blocker①">Add a temporary blocker</a> with <var>reason</var>.</p>
       </ol>
      <li data-md>
-      <p>If <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionrect-slot" id="ref-for-dom-htmlpermissionelement-intersectionrect-slot①">[[IntersectionRect]]</a></code> does not equal <var>entry</var>.<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionrect" id="ref-for-dom-intersectionobserverentry-intersectionrect">intersectionRect</a></code> then <a data-link-type="dfn" href="#htmlpermissionelement-add-an-expiring-blocker" id="ref-for-htmlpermissionelement-add-an-expiring-blocker①">add an expiring blocker</a> with <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_changed" id="ref-for-dom-permissionelementblockerreason-intersection_changed①">intersection_changed</a></code>.</p>
+      <p>If <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionrect-slot" id="ref-for-dom-htmlpermissionelement-intersectionrect-slot①">[[IntersectionRect]]</a></code> does not equal
+<var>entry</var>.<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionrect" id="ref-for-dom-intersectionobserverentry-intersectionrect">intersectionRect</a></code> then
+<a data-link-type="dfn" href="#htmlpermissionelement-add-an-expiring-blocker" id="ref-for-htmlpermissionelement-add-an-expiring-blocker①">add an expiring blocker</a> with
+<code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-intersection_changed" id="ref-for-dom-permissionelementblockerreason-intersection_changed①">intersection_changed</a></code>.</p>
      <li data-md>
-      <p>Set <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionrect-slot" id="ref-for-dom-htmlpermissionelement-intersectionrect-slot②">[[IntersectionRect]]</a></code> to <var>entry</var>.<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionrect" id="ref-for-dom-intersectionobserverentry-intersectionrect①">intersectionRect</a></code></p>
+      <p>Set <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-intersectionrect-slot" id="ref-for-dom-htmlpermissionelement-intersectionrect-slot②">[[IntersectionRect]]</a></code> to
+<var>entry</var>.<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionrect" id="ref-for-dom-intersectionobserverentry-intersectionrect①">intersectionRect</a></code></p>
      <li data-md>
       <p><a data-link-type="dfn" href="#htmlpermissionelement-maybe-dispatch-onvalidstatechange" id="ref-for-htmlpermissionelement-maybe-dispatch-onvalidstatechange②">Maybe dispatch onvalidstatechange</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this</a>.</p>
     </ol>
     <p class="issue" id="issue-9a5604dc"><a class="self-link" href="#issue-9a5604dc"></a> Do I need to define dictionary equality?</p>
    </div>
    <div class="algorithm" data-algorithm="type permissible" data-algorithm-for="HTMLPermissionElement">
-     To determine whether an <var>element</var> is <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-type-permissible">type permissible</dfn>: 
+    
+To determine whether an <var>element</var> is <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-type-permissible">type permissible</dfn>:
+
+
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert⑨">Assert</a>: <var>element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable④">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot②">[[PermissionElements]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain①">contains</a> <var>element</var>.</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert⑨">Assert</a>: <var>element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable④">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot②">[[PermissionElements]]</a></code>
+<a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain①">contains</a> <var>element</var>.</p>
      <li data-md>
       <p>Let <var>count</var> be 0.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>current</var> in <var>element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable⑤">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot③">[[PermissionElements]]</a></code>:</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>current</var> in
+<var>element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable⑤">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot③">[[PermissionElements]]</a></code>:</p>
       <ol>
        <li data-md>
         <p>If <var>current</var> is <var>element</var>, then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-break" id="ref-for-iteration-break">break</a>.</p>
        <li data-md>
-        <p>If <var>element</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①④">[[Types]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-equal" id="ref-for-set-equal">equals</a> <var>current</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①⑤">[[Types]]</a></code> then increment <var>count</var> by 1.</p>
+        <p>If <var>element</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①④">[[Types]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-equal" id="ref-for-set-equal">equals</a> <var>current</var>.<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①⑤">[[Types]]</a></code>
+then increment <var>count</var> by 1.</p>
       </ol>
      <li data-md>
       <p>Return whether <var>count</var> is less than 3.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="recheck type permissibility" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-recheck-type-permissibility">recheck type permissibility</dfn> for a <var>document</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-recheck-type-permissibility">recheck type permissibility</dfn> for a
+<var>document</var>:
+
+
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate②">For each</a> <var>current</var> in <var>document</var>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot④">[[PermissionElements]]</a></code>:</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate②">For each</a> <var>current</var> in <var>document</var>’s
+<code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot④">[[PermissionElements]]</a></code>:</p>
       <ol>
        <li data-md>
-        <p>If <var>current</var> is <a data-link-type="dfn" href="#htmlpermissionelement-type-permissible" id="ref-for-htmlpermissionelement-type-permissible①">type permissible</a>, then <a data-link-type="dfn" href="#htmlpermissionelement-remove-blockers" id="ref-for-htmlpermissionelement-remove-blockers②">remove blockers</a> with <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-unsuccesful_registration" id="ref-for-dom-permissionelementblockerreason-unsuccesful_registration③">unsuccesful_registration</a></code> from <var>current</var>.</p>
+        <p>If <var>current</var> is <a data-link-type="dfn" href="#htmlpermissionelement-type-permissible" id="ref-for-htmlpermissionelement-type-permissible①">type permissible</a>, then <a data-link-type="dfn" href="#htmlpermissionelement-remove-blockers" id="ref-for-htmlpermissionelement-remove-blockers②">remove blockers</a> with
+<code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-unsuccesful_registration" id="ref-for-dom-permissionelementblockerreason-unsuccesful_registration③">unsuccesful_registration</a></code> from
+<var>current</var>.</p>
       </ol>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="get the current permission state" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-get-the-current-permission-state">get the current permission state</dfn> for
-an <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement⑦">HTMLPermissionElement</a></code> <var>element</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-get-the-current-permission-state">get the current permission state</dfn> for
+an <code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement⑦">HTMLPermissionElement</a></code> <var>element</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>types</var> be <var>element</var>’s internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①⑥">[[Types]]</a></code>.</p>
@@ -1478,10 +1677,14 @@ return <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/per
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate③">For each</a> <var>type</var> of <var>types</var>:</p>
       <ol>
        <li data-md>
-        <p>Let <var>state</var> be the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-getting-the-current-permission-state" id="ref-for-dfn-getting-the-current-permission-state">get the current permission state</a> for <var>type</var>.</p>
+        <p>Let <var>state</var> be the result of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-getting-the-current-permission-state" id="ref-for-dfn-getting-the-current-permission-state">get the current permission state</a> for
+<var>type</var>.</p>
        <li data-md>
         <p>Let <var>current</var> be the smaller of <var>current</var> and <var>state</var>, assuming the
-following ordering: <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted①">granted</a></code> > <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt" id="ref-for-dom-permissionstate-prompt①">prompt</a></code> > <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied">denied</a></code>.</p>
+following ordering:
+<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted①">granted</a></code> >
+<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt" id="ref-for-dom-permissionstate-prompt①">prompt</a></code> >
+<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied">denied</a></code>.</p>
       </ol>
      <li data-md>
       <p>Return <var>current</var>.</p>
@@ -1492,7 +1695,10 @@ following ordering: <code class="idl"><a data-link-type="idl" href="https://w3c.
    </div>
    <h3 class="heading settled" data-level="2.5" id="events"><span class="secno">2.5. </span><span class="content"><code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission②⑨">permission</a></code> element event algorithms</span><a class="self-link" href="#events"></a></h3>
    <div class="algorithm" data-algorithm="maybe dispatch onvalidstatechange" data-algorithm-for="HTMLPermissionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-maybe-dispatch-onvalidstatechange">maybe dispatch onvalidstatechange</dfn> for <var>element</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermissionElement" data-dfn-type="dfn" data-noexport id="htmlpermissionelement-maybe-dispatch-onvalidstatechange">maybe dispatch onvalidstatechange</dfn> for <var>element</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>oldState</var> be <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-lastnotifiedvalidstate-slot" id="ref-for-dom-htmlpermissionelement-lastnotifiedvalidstate-slot②">[[LastNotifiedValidState]]</a></code>.</p>
@@ -1503,7 +1709,8 @@ following ordering: <code class="idl"><a data-link-type="idl" href="https://w3c.
      <li data-md>
       <p>Let <var>oldReason</var> be <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-lastnotifiedinvalidreason-slot" id="ref-for-dom-htmlpermissionelement-lastnotifiedinvalidreason-slot②">[[LastNotifiedInvalidReason]]</a></code>.</p>
      <li data-md>
-      <p>Let <var>newReason</var> be whether <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-invalidreason" id="ref-for-dom-htmlpermissionelement-invalidreason④">invalidReason</a></code>.</p>
+      <p>Let <var>newReason</var> be whether <var>element</var>’s
+<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-invalidreason" id="ref-for-dom-htmlpermissionelement-invalidreason④">invalidReason</a></code>.</p>
      <li data-md>
       <p>Set <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-lastnotifiedinvalidreason-slot" id="ref-for-dom-htmlpermissionelement-lastnotifiedinvalidreason-slot③">[[LastNotifiedInvalidReason]]</a></code> to <var>newReason</var>.</p>
      <li data-md>
@@ -1512,30 +1719,54 @@ following ordering: <code class="idl"><a data-link-type="idl" href="https://w3c.
        <li data-md>
         <p>Let <var>event</var> be a new <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event" id="ref-for-event">Event</a></code>.</p>
        <li data-md>
-        <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-initialize" id="ref-for-concept-event-initialize">Initialize</a> <var>event</var> with <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type" id="ref-for-dom-event-initevent-type-bubbles-cancelable-type">type</a> "<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onvalidationstatuschange" id="ref-for-dom-htmlpermissionelement-onvalidationstatuschange②">onvalidationstatuschange</a></code>", <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles" id="ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles">bubbles</a> true, and <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable" id="ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable">cancelable</a> true.</p>
+        <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-initialize" id="ref-for-concept-event-initialize">Initialize</a> <var>event</var> with
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type" id="ref-for-dom-event-initevent-type-bubbles-cancelable-type">type</a>
+"<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onvalidationstatuschange" id="ref-for-dom-htmlpermissionelement-onvalidationstatuschange②">onvalidationstatuschange</a></code>",
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles" id="ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles">bubbles</a>
+true, and
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable" id="ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable">cancelable</a>
+true.</p>
        <li data-md>
         <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-dispatch" id="ref-for-concept-event-dispatch">Dispatch</a> <var>event</var> to <var>element</var>.</p>
       </ol>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="dispatch onpromptaction" data-algorithm-for="HTMLPermisssionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermisssionElement" data-dfn-type="dfn" data-noexport id="htmlpermisssionelement-dispatch-onpromptaction">dispatch onpromptaction</dfn> for <var>element</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermisssionElement" data-dfn-type="dfn" data-noexport id="htmlpermisssionelement-dispatch-onpromptaction">dispatch onpromptaction</dfn> for <var>element</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>event</var> be a new <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event" id="ref-for-event①">Event</a></code>.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-initialize" id="ref-for-concept-event-initialize①">Initialize</a> <var>event</var> with <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type" id="ref-for-dom-event-initevent-type-bubbles-cancelable-type①">type</a> "<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onpromptaction" id="ref-for-dom-htmlpermissionelement-onpromptaction①">onpromptaction</a></code>", <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles" id="ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles①">bubbles</a> true, and <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable" id="ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable①">cancelable</a> true.</p>
+      <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-initialize" id="ref-for-concept-event-initialize①">Initialize</a> <var>event</var> with
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type" id="ref-for-dom-event-initevent-type-bubbles-cancelable-type①">type</a>
+"<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onpromptaction" id="ref-for-dom-htmlpermissionelement-onpromptaction①">onpromptaction</a></code>",
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles" id="ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles①">bubbles</a>
+true, and
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable" id="ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable①">cancelable</a>
+true.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-dispatch" id="ref-for-concept-event-dispatch①">Dispatch</a> <var>event</var> to <var>element</var>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="dispatch onpromptdismiss" data-algorithm-for="HTMLPermisssionElement">
-     To <dfn class="dfn-paneled" data-dfn-for="HTMLPermisssionElement" data-dfn-type="dfn" data-noexport id="htmlpermisssionelement-dispatch-onpromptdismiss">dispatch onpromptdismiss</dfn> for <var>element</var>: 
+    
+To <dfn class="dfn-paneled" data-dfn-for="HTMLPermisssionElement" data-dfn-type="dfn" data-noexport id="htmlpermisssionelement-dispatch-onpromptdismiss">dispatch onpromptdismiss</dfn> for <var>element</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>event</var> be a new <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event" id="ref-for-event②">Event</a></code>.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-initialize" id="ref-for-concept-event-initialize②">Initialize</a> <var>event</var> with <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type" id="ref-for-dom-event-initevent-type-bubbles-cancelable-type②">type</a> "<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onpromptdismiss" id="ref-for-dom-htmlpermissionelement-onpromptdismiss①">onpromptdismiss</a></code>", <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles" id="ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles②">bubbles</a> true, and <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable" id="ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable②">cancelable</a> true.</p>
+      <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-initialize" id="ref-for-concept-event-initialize②">Initialize</a> <var>event</var> with
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type" id="ref-for-dom-event-initevent-type-bubbles-cancelable-type②">type</a>
+"<code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-onpromptdismiss" id="ref-for-dom-htmlpermissionelement-onpromptdismiss①">onpromptdismiss</a></code>",
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles" id="ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles②">bubbles</a>
+true, and
+<a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable" id="ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable②">cancelable</a>
+true.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-dispatch" id="ref-for-concept-event-dispatch②">Dispatch</a> <var>event</var> to <var>element</var>.</p>
     </ol>
@@ -1543,20 +1774,24 @@ following ordering: <code class="idl"><a data-link-type="idl" href="https://w3c.
    <h2 class="heading settled" data-level="3" id="rendering"><span class="secno">3. </span><span class="content">Rendering the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⓪">permission</a></code> Element</span><a class="self-link" href="#rendering"></a></h2>
    <p>The <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③①">permission</a></code> element is a <a data-link-type="dfn" href="https://drafts.csswg.org/css-ui-4/#non-devolvable" id="ref-for-non-devolvable">non-devolvable widget</a> and is chiefly
 rendered like a <code><a data-link-type="element" href="https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element" id="ref-for-the-button-element">button</a></code>. The button label is largely expected to be
-determined by the browser, rather than the page, and reflects the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①⑤">powerful features</a> listed in <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①⑦">[[Types]]</a></code>, expressed as text and icons.</p>
+determined by the browser, rather than the page, and reflects the
+<a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①⑤">powerful features</a> listed in <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-types-slot" id="ref-for-dom-htmlpermissionelement-types-slot①⑦">[[Types]]</a></code>, expressed as text and icons.</p>
    <p>The page can influence the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③②">permission</a></code> element’s styling, but with
 constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
-the label itself). The page can also select a locale for the text via the <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/dom.html#attr-lang" id="ref-for-attr-lang">lang</a></code> attribute.</p>
+the label itself). The page can also select a locale for the text via the
+<code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/dom.html#attr-lang" id="ref-for-attr-lang">lang</a></code> attribute.</p>
    <p>The <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③③">permission</a></code> element supports <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content①">fallback content</a>, which will be
 displayed by any browser not yet supporting <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③④">permission</a></code>. Note that
-there are also conditions under which a browser that supports <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⑤">permission</a></code> falls back to its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content②">fallback content</a>.</p>
+there are also conditions under which a browser that supports
+<code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⑤">permission</a></code> falls back to its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content②">fallback content</a>.</p>
    <h3 class="heading settled" data-level="3.1" id="presentation"><span class="secno">3.1. </span><span class="content">Presentation</span><a class="self-link" href="#presentation"></a></h3>
    <p class="issue" id="issue-59f2ad87"><a class="self-link" href="#issue-59f2ad87"></a> There isn’t much precedence for describing the user agent UI in detail.
     It may be better to leave more freedom to user agents.</p>
    <p>The <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⑥">permission</a></code> element contains browser-chosen content, text and maybe an
 icon. Activating it will <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-prompt-the-user-to-choose" id="ref-for-dfn-prompt-the-user-to-choose">prompt the user to choose</a>.
 This provides two bits of user interface that a user can interact with.
-The <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent③">user agent</a> is largely free to determine these — rendering of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⑦">permission</a></code> element and the subsequent <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-prompt-the-user-to-choose" id="ref-for-dfn-prompt-the-user-to-choose①">permission
+The <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent③">user agent</a> is largely free to determine these — rendering of the
+<code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⑦">permission</a></code> element and the subsequent <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-prompt-the-user-to-choose" id="ref-for-dfn-prompt-the-user-to-choose①">permission
 prompt</a> — in whichever way it thinks best convey’s the element’s intent.</p>
    <p>UI options for the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⑧">permission</a></code> element’s presentation include:</p>
    <ul>
@@ -1569,7 +1804,8 @@ if present.</p>
      <p>An icon indicating the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①⑦">powerful feature</a> type or types.</p>
     <li data-md>
      <p>The current <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-state" id="ref-for-dfn-permission-state">permission state</a> of the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①⑧">powerful feature</a> in questions.
-For example, if the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①⑨">permission</a> is already <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted②">granted</a></code>, the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⑨">permission</a></code> element might be labeled
+For example, if the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature①⑨">permission</a> is already
+<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted②">granted</a></code>, the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission③⑨">permission</a></code> element might be labeled
 as "geolocation already in use".</p>
     <li data-md>
      <p>A modal <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-prompt-the-user-to-choose" id="ref-for-dfn-prompt-the-user-to-choose②">prompt</a> with a "scrim".
@@ -1577,7 +1813,8 @@ as "geolocation already in use".</p>
 This would normally quite disruptive. But here our goal is to ensure a
 user means to make this choice.</p>
    </ul>
-   <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent④">User agents</a> are encouraged to name or describe the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature②⓪">powerful features</a> in a way that’s consistent with similar usage in program or the platform it
+   <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent④">User agents</a> are encouraged to name or describe the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature②⓪">powerful features</a>
+in a way that’s consistent with similar usage in program or the platform it
 is running on.</p>
    <p>Very non-normative examples might be:</p>
    <ul>
@@ -1586,7 +1823,8 @@ is running on.</p>
     <li data-md>
      <p><code>&lt;permission types="microphone"></code> (in an English language page): "Use microphone. 🎤".</p>
     <li data-md>
-     <p>Upon activiating <code>&lt;permission types="microphone"></code>, when the corresponding <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-state" id="ref-for-dfn-permission-state①">permission state</a> is <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied①">denied</a></code>, modify the text to
+     <p>Upon activiating <code>&lt;permission types="microphone"></code>, when the corresponding
+<a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission-state" id="ref-for-dfn-permission-state①">permission state</a> is <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-denied" id="ref-for-dom-permissionstate-denied①">denied</a></code>, modify the text to
 "Continue blocking".</p>
    </ul>
    <h3 class="heading settled" data-level="3.2" id="style"><span class="secno">3.2. </span><span class="content">Styling</span><a class="self-link" href="#style"></a></h3>
@@ -1603,21 +1841,32 @@ cannot be easily expressed in CSS. For example, if the style bounds are
 expressed relative to the computed style of the element.</p>
    </ol>
    <h4 class="heading settled" data-level="3.2.1" id="style-blockers"><span class="secno">3.2.1. </span><span class="content">Conditions that Deactivate the Element</span><a class="self-link" href="#style-blockers"></a></h4>
-   <p>If one of these conditions is not met, then a <a data-link-type="dfn" href="#htmlpermissionelement-add-a-temporary-blocker" id="ref-for-htmlpermissionelement-add-a-temporary-blocker②">temporary blocker is added</a> with type <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-style_invalid" id="ref-for-dom-permissionelementblockerreason-style_invalid①">style_invalid</a></code>.</p>
+   <p>If one of these conditions is not met, then a
+<a data-link-type="dfn" href="#htmlpermissionelement-add-a-temporary-blocker" id="ref-for-htmlpermissionelement-add-a-temporary-blocker②">temporary blocker is added</a> with type
+<code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-style_invalid" id="ref-for-dom-permissionelementblockerreason-style_invalid①">style_invalid</a></code>.</p>
    <table class="def">
     <tbody>
      <tr>
       <th>'color', 'background-color'
-      <td> Set by default to the user agent’s default <code>button</code> colors.
+      <td>
+Set by default to the user agent’s default <code>button</code> colors.
 The <a data-link-type="dfn" href="https://drafts.csswg.org/mediaqueries-5/#contrast-ratio" id="ref-for-contrast-ratio">contrast ratio</a> between the 2 colors needs to be at least 3.
-Alpha has to be 1. 
+Alpha has to be 1.
+
      <tr>
       <th>'font-size'
       <td>
-        If <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#specified-value" id="ref-for-specified-value">specified value</a> is expressed as <a class="css" data-link-type="type" href="https://drafts.csswg.org/css2/#value-def-relative-size" id="ref-for-value-def-relative-size">&lt;relative-size></a>: 
+       
+If <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#specified-value" id="ref-for-specified-value">specified value</a> is expressed as <a class="css" data-link-type="type" href="https://drafts.csswg.org/css2/#value-def-relative-size" id="ref-for-value-def-relative-size">&lt;relative-size></a>:
+
        <ul>
-        <li>Then <span class="css">font-size</span> must be between <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-small" id="ref-for-valdef-font-size-small">small</a> and <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-xx-large" id="ref-for-valdef-font-size-xx-large">xx-large</a>. 
-        <li>Otherwise, the <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#computed-value" id="ref-for-computed-value">computed value</a> must be larger than or equal to the <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#computed-value" id="ref-for-computed-value①">computed value</a> for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-small" id="ref-for-valdef-font-size-small①">small</a> and less than or equal to the <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#computed-value" id="ref-for-computed-value②">computed value</a> of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-xx-large" id="ref-for-valdef-font-size-xx-large①">xx-large</a>. 
+        <li>Then <span class="css">font-size</span> must be between <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-small" id="ref-for-valdef-font-size-small">small</a> and
+<a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-xx-large" id="ref-for-valdef-font-size-xx-large">xx-large</a>.
+
+        <li>Otherwise, the <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#computed-value" id="ref-for-computed-value">computed value</a> must be larger than or equal to the
+<a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#computed-value" id="ref-for-computed-value①">computed value</a> for <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-small" id="ref-for-valdef-font-size-small①">small</a> and less than or equal to the
+<a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#computed-value" id="ref-for-computed-value②">computed value</a> of <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-xx-large" id="ref-for-valdef-font-size-xx-large①">xx-large</a>.
+
        </ul>
    </table>
    <p class="issue" id="issue-76cb758c"><a class="self-link" href="#issue-76cb758c"></a> Define "alpha".</p>
@@ -1715,7 +1964,9 @@ permission <c- p>{</c->
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border" id="ref-for-propdef-border">border</a> and all <a href="https://drafts.csswg.org/css-backgrounds-3/#border-shorthands">border shorthand properties</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-top" id="ref-for-propdef-border-top">border-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-right" id="ref-for-propdef-border-right">border-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-bottom" id="ref-for-propdef-border-bottom">border-bottom</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-left" id="ref-for-propdef-border-left">border-left</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border" id="ref-for-propdef-border">border</a> and all
+<a href="https://drafts.csswg.org/css-backgrounds-3/#border-shorthands">border shorthand properties</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-top" id="ref-for-propdef-border-top">border-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-right" id="ref-for-propdef-border-right">border-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-bottom" id="ref-for-propdef-border-bottom">border-bottom</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-left" id="ref-for-propdef-border-left">border-left</a></p>
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-clear" id="ref-for-propdef-clear">clear</a></p>
     <li data-md>
@@ -1749,11 +2000,16 @@ permission <c- p>{</c->
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-break-3/#propdef-orphans" id="ref-for-propdef-orphans">orphans</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a> and mostly its <a href="https://drafts.csswg.org/css-ui-4/#outline">longhands</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-color" id="ref-for-propdef-outline-color">outline-color</a> and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-style" id="ref-for-propdef-outline-style">outline-style</a>. <br>Note that <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-offset" id="ref-for-propdef-outline-offset">outline-offset</a> is clamped by the rules above.</p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a> and mostly its <a href="https://drafts.csswg.org/css-ui-4/#outline">longhands</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-color" id="ref-for-propdef-outline-color">outline-color</a> and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-style" id="ref-for-propdef-outline-style">outline-style</a>.
+<br>Note that <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-offset" id="ref-for-propdef-outline-offset">outline-offset</a> is clamped by the rules above.</p>
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor" id="ref-for-propdef-overflow-anchor">overflow-anchor</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior" id="ref-for-propdef-overscroll-behavior">overscroll-behavior</a> and its <a href="https://drafts.csswg.org/css-overscroll-1/#overscroll-behavior-longhands-physical">longhands</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-inline" id="ref-for-propdef-overscroll-behavior-inline">overscroll-behavior-inline</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-block" id="ref-for-propdef-overscroll-behavior-block">overscroll-behavior-block</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x" id="ref-for-propdef-overscroll-behavior-x">overscroll-behavior-x</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y" id="ref-for-propdef-overscroll-behavior-y">overscroll-behavior-y</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior" id="ref-for-propdef-overscroll-behavior">overscroll-behavior</a> and its
+<a href="https://drafts.csswg.org/css-overscroll-1/#overscroll-behavior-longhands-physical">longhands</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-inline" id="ref-for-propdef-overscroll-behavior-inline">overscroll-behavior-inline</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-block" id="ref-for-propdef-overscroll-behavior-block">overscroll-behavior-block</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x" id="ref-for-propdef-overscroll-behavior-x">overscroll-behavior-x</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y" id="ref-for-propdef-overscroll-behavior-y">overscroll-behavior-y</a></p>
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-page-3/#propdef-page" id="ref-for-propdef-page">page</a></p>
     <li data-md>
@@ -1765,9 +2021,15 @@ permission <c- p>{</c->
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-right" id="ref-for-propdef-right">right</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin">scroll-margin</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-top" id="ref-for-propdef-scroll-margin-top">scroll-margin-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-right" id="ref-for-propdef-scroll-margin-right">scroll-margin-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin①">scroll-margin</a>bottom', <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-left" id="ref-for-propdef-scroll-margin-left">scroll-margin-left</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin">scroll-margin</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-top" id="ref-for-propdef-scroll-margin-top">scroll-margin-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-right" id="ref-for-propdef-scroll-margin-right">scroll-margin-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin①">scroll-margin</a>bottom',
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-left" id="ref-for-propdef-scroll-margin-left">scroll-margin-left</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding" id="ref-for-propdef-scroll-padding">scroll-padding</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-top" id="ref-for-propdef-scroll-padding-top">scroll-padding-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right" id="ref-for-propdef-scroll-padding-right">scroll-padding-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-bottom" id="ref-for-propdef-scroll-padding-bottom">scroll-padding-bottom</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left" id="ref-for-propdef-scroll-padding-left">scroll-padding-left</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-start" id="ref-for-propdef-scroll-padding-inline-start">scroll-padding-inline-start</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start">scroll-padding-block-start</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start①">scroll-padding-block-start</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-end" id="ref-for-propdef-scroll-padding-inline-end">scroll-padding-inline-end</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-end" id="ref-for-propdef-scroll-padding-block-end">scroll-padding-block-end</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding" id="ref-for-propdef-scroll-padding">scroll-padding</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-top" id="ref-for-propdef-scroll-padding-top">scroll-padding-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right" id="ref-for-propdef-scroll-padding-right">scroll-padding-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-bottom" id="ref-for-propdef-scroll-padding-bottom">scroll-padding-bottom</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left" id="ref-for-propdef-scroll-padding-left">scroll-padding-left</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-start" id="ref-for-propdef-scroll-padding-inline-start">scroll-padding-inline-start</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start">scroll-padding-block-start</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start①">scroll-padding-block-start</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-end" id="ref-for-propdef-scroll-padding-inline-end">scroll-padding-inline-end</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-end" id="ref-for-propdef-scroll-padding-block-end">scroll-padding-block-end</a></p>
     <li data-md>
      <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim" id="ref-for-propdef-text-spacing-trim">text-spacing-trim</a></p>
     <li data-md>
@@ -1797,14 +2059,19 @@ will be ignored.</p>
    <h3 class="heading settled" data-level="3.3" id="fallback"><span class="secno">3.3. </span><span class="content">Falling Back</span><a class="self-link" href="#fallback"></a></h3>
    <p>A <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent⑤">user agent</a> that does not support <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④④">permission</a></code> elements would
 recognize them as <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/dom.html#htmlunknownelement" id="ref-for-htmlunknownelement">HTMLUnknownElement</a></code> and render their children as
-regular HTML. <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent⑥">User agents</a> that support <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑤">permission</a></code> elements should usually
+regular HTML.
+<a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent⑥">User agents</a> that support <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑤">permission</a></code> elements should usually
 render the element as described in <a href="#rendering">§ 3 Rendering the permission Element</a>, but are still
 required to render the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content③">fallback content</a> under one condition:</p>
-   <p>If the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot⑧">[[BlockerList]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain②">contains</a> a record whose <a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason③">blocker reason</a> is <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid③">type_invalid</a></code>,
-then the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑥">permission</a></code> element should render the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content④">fallback content</a> instead of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑦">permission</a></code>’s usual rendering.</p>
+   <p>If the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-blockerlist-slot" id="ref-for-dom-htmlpermissionelement-blockerlist-slot⑧">[[BlockerList]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain②">contains</a> a record whose
+<a data-link-type="dfn" href="#htmlpermissionelement-blocker-reason" id="ref-for-htmlpermissionelement-blocker-reason③">blocker reason</a> is <code class="idl"><a data-link-type="idl" href="#dom-permissionelementblockerreason-type_invalid" id="ref-for-dom-permissionelementblockerreason-type_invalid③">type_invalid</a></code>,
+then the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑥">permission</a></code> element should render the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content④">fallback content</a>
+instead of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission④⑦">permission</a></code>’s usual rendering.</p>
    <p class="issue" id="issue-9bf11023"><a class="self-link" href="#issue-9bf11023"></a> Add example(s) here.</p>
    <h2 class="heading settled" data-level="4" id="secpriv"><span class="secno">4. </span><span class="content">Security &amp; Privacy Considerations</span><a class="self-link" href="#secpriv"></a></h2>
-   <p class="note" role="note"><span class="marker">Note:</span> Security &amp; Privacy Considerations can be found <a href="https://github.com/WICG/PEPC/blob/main/explainer.md#security">here</a> &amp; <a href="https://github.com/WICG/PEPC/blob/main/explainer.md#privacy">there</a>,
+   <p class="note" role="note"><span class="marker">Note:</span> Security &amp; Privacy Considerations can be found
+<a href="https://github.com/WICG/PEPC/blob/main/explainer.md#security">here</a> &amp;
+<a href="https://github.com/WICG/PEPC/blob/main/explainer.md#privacy">there</a>,
 in the <a href="https://github.com/WICG/PEPC/blob/main/explainer.md">Explainer</a>.
 This section will eventually contain a specification-worthy transcription
 of those Explainer sections.</p>
@@ -2317,15 +2584,18 @@ of those Explainer sections.</p>
    <div class="issue"> Check attribute &amp; event handler &amp; invalid reason names against
     current proposal(s). <a class="issue-return" href="#issue-699ff1e6" title="Jump to section">↵</a></div>
    <div class="issue"> onvalidationstatuschange is probably not a simple Event. <a class="issue-return" href="#issue-f7a720ba" title="Jump to section">↵</a></div>
-   <div class="issue"> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[PERMISSIONS]</a> spec assumes that <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use">request permission to use</a> will always succeed. That is, it assumes that the user will always make a
-choice and that the algorithm will always deliver a <code>grant</code>/<code>deny</code> answer corresponding to that choice. But you can’t force a user to do that.
+   <div class="issue"> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[PERMISSIONS]</a> spec assumes that <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use">request permission to use</a>
+will always succeed. That is, it assumes that the user will always make a
+choice and that the algorithm will always deliver a <code>grant</code>/<code>deny</code>
+answer corresponding to that choice. But you can’t force a user to do that.
 Some <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent">user agents</a> may have different UI affordances for an explicit
 denial (e.g. a "deny" button) on one hand, and cancelling or dismissing the
 request dialog (e.g. an "X" button in the top right corner). Here, we
 distinguish between these two actions, despite no clear hook for this
 in the underlying specification. <a class="issue-return" href="#issue-017890a3" title="Jump to section">↵</a></div>
    <div class="issue"> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a> specification assumes a descriptor describes a
-single permission without parameters (like an equivalent of <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy">enableHighAccuracy</a></code>). Here, we assume a permissions model
+single permission without parameters (like an equivalent of
+<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy">enableHighAccuracy</a></code>). Here, we assume a permissions model
 that is more expressive. This needs to be resolved -- likely upstream,
 in <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a>, plus adaptions here. <a class="issue-return" href="#issue-f681da45" title="Jump to section">↵</a></div>
    <div class="issue"> Do I need to define dictionary equality? <a class="issue-return" href="#issue-9a5604dc" title="Jump to section">↵</a></div>
