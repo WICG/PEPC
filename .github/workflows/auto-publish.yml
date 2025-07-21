@@ -14,3 +14,13 @@ jobs:
           SOURCE: permission-element.bs
           TOOLCHAIN: bikeshed
           GH_PAGES_BRANCH: gh-pages
+  copy_demo:
+    name: Copy demo page to gh-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy To Branches Action
+      - uses: planetoftheweb/copy-to-branches@v1.3
+        env:
+          key: main
+          branches: gh-pages
+          files: demo/geolocation_explainer.md
