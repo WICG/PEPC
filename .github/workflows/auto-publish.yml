@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy To Branches Action
-      - uses: planetoftheweb/copy-to-branches@v1.3
+        uses: planetoftheweb/copy-to-branches@v1.3
         env:
           key: main
           branches: gh-pages
