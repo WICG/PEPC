@@ -1,4 +1,4 @@
-# The `<geolocation>` element \- seamless and safe user location sharing
+# The `<geolocation>` element \- seamless and safe user location usage
 
 ### Tl;dr
 
