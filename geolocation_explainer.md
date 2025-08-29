@@ -77,7 +77,7 @@ The `<geolocation>` element should be submittable via form:
 1) Add the `<geolocation>` element to the [submittable elements list](https://html.spec.whatwg.org/multipage/forms.html#category-submit)  
 2) Adjust the [construct the entry list](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#constructing-the-form-data-set%20) algorithm to handle the `<geolocation>` element by including an entry with the element’s name and the value set to the return value of [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) on the `position` attribute.
 
-#### User agent considerations
+#### User agent considerations: permission models and prompts
 
 This section is purely informative and provides some consideration for user agents’s permissions model and permission prompt:
 
@@ -99,7 +99,23 @@ Possible other aspects to consider:
 
 * The `<geolocation>` element is generally designed to still be interactable even when the permission status would otherwise deny a call like getCurrentPosition without a prompt. User agents should consider what the `<geolocation>` element should do exactly when the permission status is denied, whether the prompt should be different or the element itself should look different (for example a strike-through icon).  
 * The presence of some attribute (for example the `watch` or `autolocate` attributes) might be used by user agents to alter their permission prompts. For example: if the `autolocate` attribute is not present, the permanent grant option could not be part of the prompt, or if the `watch` attribute is present the text of the permission prompt could be used to reflect this.  
-* If clicked when the permission element is granted, the [permission element](https://github.com/WICG/PEPC/blob/main/explainer.md#designing-the-permission-ui) proposal suggests triggering permission prompts which allow revoking the permission status. For the `<geolocation>` element, user agents should consider instead simply fetching location again directly. 
+* If clicked when the permission element is granted, the [permission element](https://github.com/WICG/PEPC/blob/main/explainer.md#designing-the-permission-ui) proposal suggests triggering permission prompts which allow revoking the permission status. For the `<geolocation>` element, user agents should consider instead simply fetching location again directly.
+
+#### User agents considerations: handling revocation
+In principle permission regret (a user wishing to undo a previous permission decision) can fall under 2 categories:
+
+* Regretting blocking a capability 
+* Regretting allowing a capability (revocation)
+
+While these essentially stem from the same root cause, addressing them requires different approaches since there are significant differences, and especially: the impact on the user (annoyance or being unable to complete a task vs a security/privacy risk), and the willingness of the site itself to help (interested vs neutral/actively disinterested), etc. Because of this it’s not reasonable to expect the same solution to work for both categories.
+
+The initial `<permission>` element focused mostly on regretting blocking a capability. While it did also try to help with revoking permissions (see [UI When Permission is Already Granted](https://github.com/WICG/PEPC/blob/main/explainer.md#designing-the-permission-ui)), it was ultimately dependent on the site’s cooperation (keeping it in the page after the permission was granted). However, based on Chrome's Origin Trial experience this is unlikely to happen: sites often remove the permission element after the permission is granted, or they simply don't show it when permission is already granted. Meaning that both the `<permission>` element and now the `<geolocation>` element are poorly positioned to help with revoking permissions. Instead the existing UI surfaces and indicators (usually called "usage indicators") at the browser, OS and sometimes even device level, should continue to be used and improved.
+
+Ultimately the `<geolocation>` element is no longer designed as an element that help with managing permission status, rather an element which helps users safely send their location to the site if they wish to, without being intrusive if they don't. Just like the equivalent API, if this also involves requesting permission from the user, the browser should handle that (and now with the added strong signal of user intent).
+
+However there are still aspects that browsers might consider exploring here, for example:
+* A simple heuristic of users clicking the button repeteadly in quick succession might indicate a frustration with the current status and an opportunity to open the relevant settings UI where the user can alter the permission status.
+* Adding animation to the `<geolocation>` element while the location is being sent can help clarify behavior, especially if `autolocate` is present.
 
 #### Comparison Overview: Geolocation Handling Models
 
