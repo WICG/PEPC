@@ -113,9 +113,13 @@ The initial `<permission>` element focused mostly on regretting blocking a capab
 
 Ultimately the `<geolocation>` element is no longer designed as an element that help with managing permission status, rather an element which helps users safely send their location to the site if they wish to, without being intrusive if they don't. Just like the equivalent API, if this also involves requesting permission from the user, the browser should handle that (and now with the added strong signal of user intent).
 
-However there are still aspects that browsers might consider exploring here, for example:
+While the details of how to better address revocation are a user agent implementation detail, this is still a good opportunity to list various aspects that browsers might consider exploring here:
 * A simple heuristic of users clicking the button repeteadly in quick succession might indicate a frustration with the current status and an opportunity to open the relevant settings UI where the user can alter the permission status.
 * Adding animation to the `<geolocation>` element while the location is being sent can help clarify behavior, especially if `autolocate` is present.
+* Adding some UI element to the `<geolocation>` element which could be clicked to open a revocation UI. (for example a drop-down arrow next to the button).
+* Adding revocation options to the context menu of the `<geolocation>` element (so that users can revoke via right-clicking or long tapping).
+* Adding guidance for the first time(s) the user encounters a `<geolocation>` element which is in a granted state, which informs the user how to revoke this state.
+* Adding guidance for the first time(s) the user grants permission via a `<geolocation>` element, which informs the user how to revoke this state.
 
 #### Comparison Overview: Geolocation Handling Models
 
