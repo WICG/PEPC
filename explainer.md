@@ -685,7 +685,14 @@ This alternative proposed creating a registry for "well-behaved" origins. Once a
   - **Faulty Reviews & Maintenance:** Reviews would be challenging, prone to errors, and unable to account for continuous site changes or cloaking behaviors.
   - **Cost & Consistency:** It would involve significant ongoing operational costs for user agents, potentially excluding many, and lead to inconsistent experiences and guidance across different browsers.
 
+### 9. PEPC-light
+An alternative proposed in https://github.com/WICG/PEPC/issues/63 would be to avoid having complicated style/text checks and restrictions and just require a button click (as a form of specific user activation). 
 
+This is an improvement to [alternative 1](#1-no-platform-changes) as it adds some enforcement of the fact that the permission prompt should come in response to a user's button click.
+
+However the disadvantage of [alternative 1](#1-no-platform-changes) remains: it is still insuficient as a signal of user intent. The simple event of a button being clicked is insufficient for the user agent to gain understanding about the user's intent. The act of clicking a button happens often and regularly during user journeys which don't involve access to powerful capabilities. Additionally simply clicking *any button* would not provide information for the user agent about which capability the user is interested in enabling (assuming they have an interest in a particular capability in the first place).
+
+In order for a button click to signal user intent, additional information about the button needs to be evaluated, specifically the text of said button should reasonably convey the idea of using the capability and the user should have had sufficient opportunity to read this text before the button click. However this basically leads back to the permission element proposal, an element whose text is either predetermined (reasonably easy) or for which the text can be evaluated to be sufficiently informative (very difficult), and additionally this text has been visible to the user for a sufficient amount of time before the button click has occured. The goal of the style checks and validations and restrictions outlined in this explainer is to ensure that the text conveys the message and that it has been visible for some time.
 
 ## Appendix
 <!-- TOC --><a name="faq"></a>
