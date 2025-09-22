@@ -1,5 +1,12 @@
 # The < permission > element - Seamless user control of powerful capabilities
 
+## Important update
+
+After many discussions, feedback and developments, this proposal has evolved into individual elements, each one focusing on a particular capability, but all of them having the `<permission>` element itself as a common base. The following explainers go into more detail on each element (and likely more will be added):
+* [Geolocation element](https://github.com/WICG/PEPC/blob/main/geolocation_explainer.md)
+* [Usermedia element](https://github.com/WICG/PEPC/blob/main/usermedia_element.md)
+
+This explainer is still accurate as to the base class the `<permission>` element, from which the other elements derive from. However the permission element itself is no longer proposed to be usable directly, instead the approprite more specific element would be used.
 
 ## tl;dr
 Permissions on the web, despite their success in enabling powerful features, remain a significant source of user annoyance, friction, and abuse, leading to unintended grants as well as unintended denials of critical capabilities. The proposed **`<permission>` element** introduces a clear and consistent interaction pattern for users to control an origin's access to powerful features [1](https://w3c.github.io/permissions/#dfn-powerful-feature). Users' interaction with this element carries with it a **stronger signal of user  intent** than the pre-existing transient user activation, as the user agent controls the element's content and constrains its presentation to promote legibility and comprehension. The intentional nature of this interaction and developers' ability to place it in context gives user agents flexibility to make better decisions about any subsequent browser UI, ultimately reducing frustration for web developers and users alike by making unintentional grants or denials less likely. 
