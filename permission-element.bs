@@ -1,5 +1,5 @@
 <pre class="metadata">
-Title: The HTML &lt;permission&gt; Element
+Title: The HTML Permission Elements
 Status: CG-DRAFT
 Group: WICG
 URL: https://wicg.github.io/PEPC/permission-element.html
@@ -105,7 +105,102 @@ in which they will be used, thus reducing "permission spam" and at the same
 time providing implementations with a better signal of user intent.
 
 
-# The <dfn element export>permission</dfn> element. # {#the-permission-element}
+# Common Behaviours Of The HTML Permission Elements # {#permission-mixin}
+
+The elements in this specification exhibit a number of common behaviours, which
+are captured by the {{InPagePermissionMixin}} and the associated state,
+algorithms, and rendering rules.
+
+
+<dl class="element">
+ <dt>[=Content attributes=]:</dt>
+  <dd>{{InPagePermissionMixin/isValid}} — query whether the element can currently be activated.</dd>
+  <dd>{{InPagePermissionMixin/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
+  <dd>{{InPagePermissionMixin/onpromptdismiss}} — notifies when the user has dismissed the permission prompt.</dd>
+  <dd>{{InPagePermissionMixin/onpromptaction}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
+  <dd>{{InPagePermissionMixin/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd>TODO</dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    interface mixin InPagePermissionMixin {
+      readonly attribute boolean isValid;
+      readonly attribute PermissionElementBlockerReason invalidReason;
+      readonly attribute PermissionState initialPermissionStatus;
+      readonly attribute PermissionState permissionStatus;
+
+      attribute EventHandler onpromptaction;
+      attribute EventHandler onpromptdismiss;
+      attribute EventHandler onvalidationstatuschange;
+    };
+   </pre>
+  </dd>
+</dl>
+
+The {{InPagePermissionMixin/isValid}} attribute reflects whether a the
+permission element is not currently blocked.
+
+The {{InPagePermissionMixin/invalidReason}} attribute is an
+[=enumerated attribute=] that reflects the internal state of the permission
+element. It's value set are {{PermissionElementBlockerReason}}
+
+The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on elements that include the {{InPagePermissionMixin}}:
+
+<pre class=simpledef>
+onpromptaction: Event
+onpromptdismiss: Event
+onvalidationstatuschange: Event
+</pre>
+
+ISSUE: onvalidationstatuschange is probably not a simple Event.
+
+
+## {{InPagePermissionMixin|Mixin}} internal state ## {#mixin-internal-state}
+
+{{InPagePermissionMixin}} elements have the following internal slots:
+
+* The <dfn attribute for="InPagePermissionMixin">\[[BlockerList]]</dfn> is a
+    list of records, containing a
+    <dfn for="InPagePermissionMixin">blocker timestamp</dfn> and a
+    <dfn for="InPagePermissionMixin">blocker reason</dfn>. The [=blocker
+    reason=] is a {{PermissionElementBlockerReason}}, but not the empty string.
+
+* <dfn attribute for="InPagePermissionMixin">\[[IntersectionObserver]]</dfn>
+    is a reference to an {{IntersectionObserver}}.
+
+* <dfn attribute for="InPagePermissionMixin">\[[IntersectionRect]]</dfn> is a
+    {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
+    the position of the <{permission}> relative to the [=viewport=].
+
+* <dfn attribute for="InPagePermissionMixin">\[[LastNotifiedValidState]]</dfn>
+    is a [=boolean=] that stores the most recently notified state of
+    {{HTMLPermissionElement/isValid}}.
+
+* <dfn attribute for="InPagePermissionMixin">\[[LastNotifiedInvalidReason]]</dfn>
+    is a [=string=] that stores the most recently notified state of
+    {{HTMLPermissionElement/invalidReason}}.
+    {{[[LastNotifiedValidState]]}} and {{[[LastNotifiedInvalidReason]]}} are
+    used to determine whether an
+    {{InPagePermissionMixin/onvalidationstatuschange}} event needs to be
+    dispatches.
+
+
+## {{InPagePermissionMixin|Mixin}}-supporting state at the navigable ## {#mixin-navigable-state}
+## {{InPagePermissionMixin|Mixin}} interesting behaviours ## {#mixin-behaviours}
+## {{InPagePermissionMixin|Mixin}} algorithms ## {#mixin-algorithms}
+## {{InPagePermissionMixin|Mixin}} event algorithms ## {#mixin-event-algorithms}
+
+
+# The <dfn element export>permission</dfn> Element # {#the-permission-element}
+
+Note: The <{permission}> element is the original proposed in-page permission
+  element, which can work with any [=powerful feature=] or feature combinations.
+  While we do not wish to preempt future standards discussion, we presently
+  expect that this element will be removed in favour of the more specific
+  elements detailled in the following chapters.
+
+The HTML <{permission}> element can request arbitrary [=powerful features=].
 
 <dl class="element">
  <dt>[=Categories=]:</dt>
@@ -123,11 +218,6 @@ time providing implementations with a better signal of user intent.
   <dd>{{HTMLPermissionElement/preciseLocation}} — Whether access to the
   [[Geolocation|"geolocation"]] [=powerful feature=] is requested with
   {{PositionOptions/enableHighAccuracy}}.
-  <dd>{{HTMLPermissionElement/isValid}} — query whether the element can currently be activated.</dd>
-  <dd>{{HTMLPermissionElement/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
-  <dd>{{HTMLPermissionElement/onpromptdismiss}} — notifies when the user has dismissed the permission prompt.</dd>
-  <dd>{{HTMLPermissionElement/onpromptaction}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
-  <dd>{{HTMLPermissionElement/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
  <dt>[=Accessibility considerations=]:</dt>
   <dd></dd>
  <dt>[=DOM interface=]:</dt>
@@ -138,18 +228,9 @@ time providing implementations with a better signal of user intent.
       [HTMLConstructor] constructor();
       [CEReactions, Reflect] attribute DOMString type;
       [CEReactions, Reflect] attribute boolean preciseLocation;
-
-      readonly attribute boolean isValid;
-      readonly attribute PermissionElementBlockerReason invalidReason;
-      readonly attribute PermissionState initialPermissionStatus;
-      readonly attribute PermissionState permissionStatus;
-
       static boolean isTypeSupported(DOMString type);
-
-      attribute EventHandler onpromptaction;
-      attribute EventHandler onpromptdismiss;
-      attribute EventHandler onvalidationstatuschange;
     };
+    HTMLPermissionElement includes InPagePermissionMixin;
    </pre>
   </dd>
 </dl>
@@ -170,14 +251,6 @@ has neither a
 The {{HTMLPermissionElement/preciseLocation}} attribute reflects whether
 the `"geolocation"` [=powerful feature|permission=] is meant for
 location requests with {{PositionOptions/enableHighAccuracy}}.
-
-The {{HTMLPermissionElement/isValid}} attribute reflects whether a the
-permission element is not currently blocked.
-
-The {{HTMLPermissionElement/invalidReason}} attribute is an
-[=enumerated attribute=] that reflects the internal state of the permission
-element. It's value set are {{PermissionElementBlockerReason}}
-
 The {{HTMLPermissionElement/isTypeSupported}} [=static operation=] whether a
 gives {{HTMLPermissionElement/type}}, that is, a given
 [=enumerated attribute|enumeration=] of [=powerful features=], is supported.
@@ -193,16 +266,6 @@ The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#d
 for the global <{htmlsvg-global/tabindex}> content attribute on the
 <{permission}> element is 0.
 
-The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on <{permission}> elements [=event handler IDL attributes=]:
-
-<pre class=simpledef>
-onpromptaction: Event
-onpromptdismiss: Event
-onvalidationstatuschange: Event
-</pre>
-
-ISSUE: onvalidationstatuschange is probably not a simple Event.
-
 
 ## <{permission}> element internal state ## {#permission-element-internal-state}
 
@@ -214,16 +277,9 @@ this, the element checks whether the activation event is {{Event/isTrusted|trust
 (partially) occluded, or if it has recently been moved. The element maintains
 an internal {{[[BlockerList]]}} to keep track of this.
 
-The <{permission}> element has the following internal slots:
-
-* The <dfn attribute for="HTMLPermissionElement">\[[BlockerList]]</dfn> is a
-    list of records, containing a
-    <dfn for="HTMLPermissionElement">blocker timestamp</dfn> and a
-    <dfn for="HTMLPermissionElement">blocker reason</dfn>. The [=blocker
-    reason=] is a {{PermissionElementBlockerReason}}, but not the empty string.
-
-* <dfn attribute for="HTMLPermissionElement">\[[IntersectionObserver]]</dfn>
-    is a reference to an {{IntersectionObserver}}.
+In additional to the [[#mixin-internal-state|internal state]] from the
+{{InPagePermissionMixin}}, the <{permission}> element has the following
+internal slots:
 
 * <dfn attribute for="HTMLPermissionElement">\[[Types]]</dfn> is null
     or an [=ordered set=] of [=powerful features=]. Null represents the
@@ -231,22 +287,6 @@ The <{permission}> element has the following internal slots:
     list &laquo;[]&raquo; is the state in which no permission applies, and which
     will no longer allow modification. Note that the
     {{HTMLPermissionElement/type}} property reflects this internal state.
-
-* <dfn attribute for="HTMLPermissionElement">\[[IntersectionRect]]</dfn> is a
-    {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
-    the position of the <{permission}> relative to the [=viewport=].
-
-* <dfn attribute for="HTMLPermissionElement">\[[LastNotifiedValidState]]</dfn>
-    is a [=boolean=] that stores the most recently notified state of
-    {{HTMLPermissionElement/isValid}}.
-
-* <dfn attribute for="HTMLPermissionElement">\[[LastNotifiedInvalidReason]]</dfn>
-    is a [=string=] that stores the most recently notified state of
-    {{HTMLPermissionElement/invalidReason}}.
-    {{[[LastNotifiedValidState]]}} and {{[[LastNotifiedInvalidReason]]}} are
-    used to determine whether an
-    {{HTMLPermissionElement/onvalidationstatuschange}} event needs to be
-    dispatches.
 
 * <dfn attribute for="HTMLPermissionElement">\[[InitialPermissionStatus]]</dfn>
     is a {{PermissionState}} that stores the initial {{PermissionState}} for
@@ -743,7 +783,7 @@ ISSUE: It's not clear what the PermissionState for 'no valid permission type'
 ## <{permission}> element event algorithms ## {#events}
 
 <div algorithm>
-To <dfn for=HTMLPermissionElement>maybe dispatch onvalidstatechange</dfn> for |element|:
+To <dfn for=InPagePermissionMixin>maybe dispatch onvalidstatechange</dfn> for |element|:
 
 1. Let |oldState| be {{[[LastNotifiedValidState]]}}.
 1. Let |newState| be whether |element|’s [=blocker=] is Nothing.
@@ -756,7 +796,7 @@ To <dfn for=HTMLPermissionElement>maybe dispatch onvalidstatechange</dfn> for |e
     1. Let |event| be a new {{Event}}.
     1. [=Event/Initialize=] |event| with
         <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-        "{{HTMLPermissionElement/onvalidationstatuschange}}",
+        "{{InPagePermissionMixin/onvalidationstatuschange}}",
         <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
         true, and
         <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
@@ -766,12 +806,12 @@ To <dfn for=HTMLPermissionElement>maybe dispatch onvalidstatechange</dfn> for |e
 </div>
 
 <div algorithm>
-To <dfn for=HTMLPermisssionElement>dispatch onpromptaction</dfn> for |element|:
+To <dfn for=InPagePermissionMixin>dispatch onpromptaction</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
 1. [=Event/Initialize=] |event| with
     <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{HTMLPermissionElement/onpromptaction}}",
+    "{{InPagePermissionMixin/onpromptaction}}",
     <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
     true, and
     <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
@@ -781,12 +821,12 @@ To <dfn for=HTMLPermisssionElement>dispatch onpromptaction</dfn> for |element|:
 </div>
 
 <div algorithm>
-To <dfn for=HTMLPermisssionElement>dispatch onpromptdismiss</dfn> for |element|:
+To <dfn for=InPagePermissionMixin>dispatch onpromptdismiss</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
 1. [=Event/Initialize=] |event| with
     <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{HTMLPermissionElement/onpromptdismiss}}",
+    "{{InPagePermissionMixin/onpromptdismiss}}",
     <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
     true, and
     <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
@@ -795,7 +835,46 @@ To <dfn for=HTMLPermisssionElement>dispatch onpromptdismiss</dfn> for |element|:
 
 </div>
 
-# Rendering the <{permission}> Element # {#rendering}
+
+
+# The <dfn element export>geolocation</dfn> Element # {#geolocation-element}
+
+<dl class=element>
+ <dt>[=Categories=]:</dt>
+  <dd>[=Flow content=].</dd>
+  <dd>[=Phrasing content=].</dd>
+  <dd>[=Interactive content=].</dd>
+  <dd>[=Palpable content=].</dd>
+ <dt>[=Contexts in which this element can be used=]:</dt>
+  <dd>Where [=phrasing content=] is expected.</dd>
+ <dt>[=Content model=]:</dt>
+  <dd>[=Flow content=].</dd>
+ <dt>[=Content attributes=]:</dt>
+  <dd>[=Global attributes=].</dd>
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd></dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    [Exposed=Window]
+    interface HTMLGeolocationElement : HTMLElement {
+      [HTMLConstructor] constructor();
+
+      readonly attribute GeolocationPosition position;
+      readonly attribute GeolocationPositionError error;
+      [CEReactions] attribute boolean precise;
+      [CEReactions] attribute boolean autolocate;
+      [CEReactions] attribute boolean watch;
+
+      attribute EventHandler onlocation;
+    };
+    HTMLGeolocationElement includes InPagePermissionMixin;
+   </pre>
+  </dd>
+</dl>
+
+
+# Rendering the HTML Permission Elements # {#rendering}
 
 The <{permission}> element is a [=non-devolvable widget=] and is chiefly
 rendered like a <{button}>. The button label is largely expected to be
@@ -1057,6 +1136,8 @@ then the <{permission}> element should render the [=fallback content=]
 instead of the <{permission}>'s usual rendering.
 
 ISSUE: Add example(s) here.
+
+
 
 # Security & Privacy Considerations # {#secpriv}
 
