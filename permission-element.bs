@@ -1,5 +1,5 @@
 <pre class="metadata">
-Title: The HTML &lt;permission&gt; Element
+Title: The HTML Permission Elements
 Status: CG-DRAFT
 Group: WICG
 URL: https://wicg.github.io/PEPC/permission-element.html
@@ -105,7 +105,369 @@ in which they will be used, thus reducing "permission spam" and at the same
 time providing implementations with a better signal of user intent.
 
 
-# The <dfn element export>permission</dfn> element. # {#the-permission-element}
+# Common Behaviours Of The HTML Permission Elements # {#permission-mixin}
+
+The elements in this specification exhibit a number of common behaviours, which
+are captured by the {{InPagePermissionMixin}} and the associated state,
+algorithms, and rendering rules.
+
+
+<dl class="element">
+ <dt>[=Content attributes=]:</dt>
+  <dd>{{InPagePermissionMixin/isValid}} — query whether the element can currently be activated.</dd>
+  <dd>{{InPagePermissionMixin/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
+  <dd>{{InPagePermissionMixin/onpromptdismiss}} — notifies when the user has dismissed the permission prompt.</dd>
+  <dd>{{InPagePermissionMixin/onpromptaction}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
+  <dd>{{InPagePermissionMixin/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd>TODO</dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    interface mixin InPagePermissionMixin {
+      readonly attribute boolean isValid;
+      readonly attribute InPagePermissionMixinBlockerReason invalidReason;
+      readonly attribute PermissionState initialPermissionStatus;
+      readonly attribute PermissionState permissionStatus;
+
+      attribute EventHandler onpromptaction;
+      attribute EventHandler onpromptdismiss;
+      attribute EventHandler onvalidationstatuschange;
+    };
+   </pre>
+  </dd>
+</dl>
+
+The {{InPagePermissionMixin/isValid}} attribute reflects whether a the
+permission element is not currently blocked.
+
+The {{InPagePermissionMixin/invalidReason}} attribute is an
+[=enumerated attribute=] that reflects the internal state of the permission
+element. It's value set are {{InPagePermissionMixinBlockerReason}}
+
+The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on elements that include the {{InPagePermissionMixin}}:
+
+<pre class=simpledef>
+onpromptaction: Event
+onpromptdismiss: Event
+onvalidationstatuschange: Event
+</pre>
+
+ISSUE: onvalidationstatuschange is probably not a simple Event.
+
+
+## {{InPagePermissionMixin|Mixin}} internal state ## {#mixin-internal-state}
+
+{{InPagePermissionMixin}} elements have the following internal slots:
+
+* The <dfn attribute for="InPagePermissionMixin">\[[BlockerList]]</dfn> is a
+    list of records, containing a
+    <dfn for="InPagePermissionMixin">blocker timestamp</dfn> and a
+    <dfn for="InPagePermissionMixin">blocker reason</dfn>. The [=blocker
+    reason=] is a {{InPagePermissionMixinBlockerReason}}, but not the empty string.
+
+* <dfn attribute for="InPagePermissionMixin">\[[IntersectionObserver]]</dfn>
+    is a reference to an {{IntersectionObserver}}.
+
+* <dfn attribute for="InPagePermissionMixin">\[[IntersectionRect]]</dfn> is a
+    {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
+    the position of the <{permission}> relative to the [=viewport=].
+
+* <dfn attribute for="InPagePermissionMixin">\[[LastNotifiedValidState]]</dfn>
+    is a [=boolean=] that stores the most recently notified state of
+    {{InPagePermissionMixin/isValid}}.
+
+* <dfn attribute for="InPagePermissionMixin">\[[LastNotifiedInvalidReason]]</dfn>
+    is a [=string=] that stores the most recently notified state of
+    {{InPagePermissionMixin/invalidReason}}.
+    {{[[LastNotifiedValidState]]}} and {{[[LastNotifiedInvalidReason]]}} are
+    used to determine whether an
+    {{InPagePermissionMixin/onvalidationstatuschange}} event needs to be
+    dispatches.
+
+
+## {{InPagePermissionMixin|Mixin}}-supporting state at the navigable ## {#mixin-navigable-state}
+
+## {{InPagePermissionMixin|Mixin}} activation and activation blockers ## {#mixin-activation}
+
+The key goal of the family of permission elements is to reflect a user's
+conscious choice, and we need to make sure the user cannot easily be tricked
+into activating it. To do so, the permission elements maintain a list of
+blocker reasons, which may - permanently or temporarily - prevent the element
+from being activated.
+
+The majority of these behaviours should be identical to all permission elements.
+For simplicity, we'll also include blockers that only apply to one or a subset
+of elements.
+
+<pre class=idl>
+enum InPagePermissionMixinBlockerReason {
+  // No blocker reason.
+  "",
+
+  // Blocker reasons supported by all InPagePermissionMixin users.
+  "illegal_subframe", "unsuccesful_registration",
+  "recently_attached", "intersection_changed",
+  "intersection_out_of_viewport_or_clipped",
+  "intersection_occluded_or_distorted", "style_invalid",
+
+  // Blocker reason specific to HTMLPermissionElement.
+  "type_invalid",
+};
+</pre>
+
+The permission elements keep track of "blockers", reasons why the element (currently) cannot be activated. These blockers come with three lifetimes: Permanent, temporary, and expiring.
+
+: <dfn>Permanent blocker</dfn>
+:: Once an element has a permanent blocker, it will be disabled permanently.
+    There are used for issues that the website owner is expected to fix.
+    An example is a <{permission}> element inside a <{fencedframe}>.
+: <dfn>Temporary blocker</dfn>
+:: This is a blocker that will only be valid until the blocking condition no
+    no longer occurs. An example is a <{permission}> element that is not
+    currently in view. All [=temporary blockers=] turn into
+    [=expiring blockers=] once the condition no longer applies.
+: <dfn>Expiring blocker</dfn>
+:: This is a blocker that is only valid for a fixed period of time. This is
+    used to block abuse scenarios like "click jacking". An example is
+    a <{permission}> element that has recently been moved.
+
+<div>
+<dfn dfn lt="blocker reason table"></dfn>
+<table class="def">
+<thead>
+<tr><th>Blocker name
+<th>Blocker type
+<th>Example condition
+<th>Order hint
+</thead>
+<tbody>
+<tr><th>{{InPagePermissionMixinBlockerReason/type_invalid}}
+<td>[=permanent blocker|permanent=]
+<td>When an unsupported {{HTMLPermissionElement/type|permission type}} has been
+    set.
+<td>1
+<tr><th>{{InPagePermissionMixinBlockerReason/illegal_subframe}}
+<td>[=permanent blocker|permanent=]
+<td>When the <{permission}> element is used inside a <{fencedframe}>.
+<td>2
+<tr><th>{{InPagePermissionMixinBlockerReason/unsuccesful_registration}}
+<td>[=temporary blocker|temporary=]
+<td>When too many other <{permission}> elements for the same
+    [=powerful feature=] have been inserted into the same document.
+<td>3
+<tr><th>{{InPagePermissionMixinBlockerReason/recently_attached}}
+<td>[=expiring blocker|expiring=]
+<td>When the <{permission}> element has just been attached to the
+  DOM.
+<td>4
+<tr><th>{{InPagePermissionMixinBlockerReason/intersection_changed}}
+<td>[=expiring blocker|expiring=]
+<td>When the <{permission}> element is being moved.
+<td>6
+<tr><th>{{InPagePermissionMixinBlockerReason/intersection_out_of_viewport_or_clipped}}
+<td>[=temporary blocker|temporary=]
+<td>When the <{permission}> element is not or not fully in the [=viewport=].
+<td>7
+<tr><th>{{InPagePermissionMixinBlockerReason/intersection_occluded_or_distorted}}
+<td>[=temporary blocker|temporary=]
+<td>When the <{permission}> element is fully in the [=viewport=],
+    but still not fully visible (e.g. because it's partly behind other content).
+<td>8
+<tr><th>{{InPagePermissionMixinBlockerReason/style_invalid}}
+<td>[=temporary blocker|temporary=]
+<td>
+<td>9
+</tbody>
+</table>
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">add a blocker</dfn> with a
+{{InPagePermissionMixinBlockerReason}} |reason| and an optional flag |expires|:
+
+1. [=Assert=]: |reason| is not `""`.
+    (The empty string in {{InPagePermissionMixinBlockerReason}} signals no blocker
+    is present. Why would you add a non-blocking blockern empty string?)
+1. Let |timestamp| be None.
+1. If |expires|, then let |timestamp| be [=current high resolution time=]
+    plus the [=blocker delay=].
+1. [=list/Append=] an entry to the internal {{[[BlockerList]]}} with |reason|
+    and |timestamp|.
+
+</div>
+
+<div>
+The <dfn for="InPagePermissionMixin">blocker delay</dfn> is 500ms.
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">add an expiring blocker</dfn> with a
+{{InPagePermissionMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "expiring" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and true.
+
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">add a temporary blocker</dfn> with a
+{{InPagePermissionMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "temporary" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and false.
+
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">add a permanent blocker</dfn> with a
+{{InPagePermissionMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "permanent" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and false.
+
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">remove blockers</dfn> with
+{{InPagePermissionMixinBlockerReason}} |reason| from an |element|:
+
+1. [=Assert=]: |reason| is listed as "temporary" in the
+    [=blocker reason table=].
+1. [=list/iterate|For each=] |entry| in |element|'s {{[[BlockerList]]}}:
+    1. If |entry|'s reason [=string/is|equals=] |reason|, then [=list/remove=]
+        |entry| from |element|'s {{[[BlockerList]]}}.
+1. [=Add a blocker=] with |reason| and true.
+
+</div>
+
+<div algorithm>
+To determine a {{InPagePermissionMixin}} |element|'s
+<dfn for="InPagePermissionMixin">blocker</dfn>:
+
+1. Let |blockers| be the result of [=list/sorting=] |element|'s {{[[BlockerList]]}}
+    with the [=blocker ordering=] algorithm.
+1. If |blockers| is not [=list/empty=] and |blockers|[0] is [=InPagePermissionMixin/blocking=], then return |blockers|[0].
+1. Return nothing.
+
+</div>
+
+<div algorithm>
+To determine <dfn for="InPagePermissionMixin">blocker ordering</dfn> for
+two blockers |a| and |b|:
+
+1. Let |really large number| be 99.
+1. [=Assert=]: No order hint in the [=blocker reason table=] is equal to or
+    greater than |really large number|.
+1. If |a| is [=InPagePermissionMixin/blocking=], then let |a hint| be the
+    order hint of |a|'s [=blocker reason|reason=] in the
+    [=blocker reason table=], otherwise let |a hint| be |really large number|.
+1. If |b| is [=InPagePermissionMixin/blocking=], then let |b hint| be the
+    order hint of |b|'s [=blocker reason|reason=] in the
+    [=blocker reason table=], otherwise let |b hint| be |really large number|.
+1. Return whether |a hint| is less than or equal to |b hint|.
+
+</div>
+
+<div algorithm>
+An {{InPagePermissionMixin}}'s [=blocker=] list's |entry| is
+<dfn for="InPagePermissionMixin">blocking</dfn> if:
+
+1. |entry| has no [=blocker timestamp=],
+1. or |entry| has a [=blocker timestamp=], and the [=blocker timestamp=] is
+    greater or equal to the [=current high resolution time=].
+
+</div>
+
+NOTE: The spec maintains blockers as a list {{[[BlockerList]]}}, which may
+    potentially grow indefinitely (since some blocker types simply expire,
+    but are not removed).
+    This structure is chosen for the simplicity of explanation, rather than for
+    efficiency. The details of this blocker structure are not observable except
+    for a handful of algorithms defined here, which should open plenty of
+    opportunities for implementations to handle this more efficiently.
+
+
+## {{InPagePermissionMixin|Mixin}} algorithms ## {#mixin-algorithms}
+
+
+<div algorithm>
+An {{InPagePermissionMixin}} |element|'s <dfn attribute for="InPagePermissionMixin">isValid</dfn> getter steps are:
+
+1. Return whether |element|'s [=InPagePermissionMixin/blocker=] is Nothing.
+
+</div>
+
+<div algorithm>
+An {{InPagePermissionMixin}} |element|'s <dfn attribute for="InPagePermissionMixin">invalidReason</dfn> getter steps are:
+
+1. If |element|'s [=InPagePermissionMixin/blocker=] is Nothing, return `""`.
+1. Otherwise, |element|'s [=InPagePermissionMixin/blocker=]'s reason string.
+
+</div>
+
+<div algorithm>
+An {{InPagePermissionMixin}} |element|'s
+<dfn attribute for="InPagePermissionMixin">initialPermissionStatus</dfn>
+getter steps are:
+
+1. Return |element|'s internal {{[[InitialPermissionStatus]]}}.
+
+</div>
+
+<div algorithm>
+An {{InPagePermissionMixin}} |element|'s
+<dfn attribute for="InPagePermissionMixin">permissionStatus</dfn>
+getter steps are:
+
+1. Return [=InPagePermissionMixin/get the current permission state=] for
+    |element|.
+
+</div>
+
+<div algorithm>
+How to <dfn for="InPagePermissionMixin">get the current permission state</dfn>
+for an {{InPagePermissionMixin}} <var ignore>element</var> depends on the
+particular element that includes the mixin.
+So each element must define its own algorithm.
+</div>
+
+## {{InPagePermissionMixin|Mixin}} event algorithms ## {#mixin-event-algorithms}
+
+
+<div algorithm>
+To <dfn for=InPagePermissionMixin>maybe dispatch onvalidstatechange</dfn> for |element|:
+
+1. Let |oldState| be {{[[LastNotifiedValidState]]}}.
+1. Let |newState| be whether |element|’s [=blocker=] is Nothing.
+1. Set {{[[LastNotifiedValidState]]}} to |newState|.
+1. Let |oldReason| be {{[[LastNotifiedInvalidReason]]}}.
+1. Let |newReason| be whether |element|’s
+    {{InPagePermissionMixin/invalidReason}}.
+1. Set {{[[LastNotifiedInvalidReason]]}} to |newReason|.
+1. If |oldState| != |newState| or |oldReason| != |newReason|, then:
+    1. Let |event| be a new {{Event}}.
+    1. [=Event/Initialize=] |event| with
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+        "{{InPagePermissionMixin/onvalidationstatuschange}}",
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+        true, and
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+        true.
+    1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+
+# The <dfn element export>permission</dfn> Element # {#the-permission-element}
+
+Note: The <{permission}> element is the original proposed in-page permission
+  element, which can work with any [=powerful feature=] or feature combinations.
+  While we do not wish to preempt future standards discussion, we presently
+  expect that this element will be removed in favour of the more specific
+  elements detailled in the following chapters.
+
+The HTML <{permission}> element can request arbitrary [=powerful features=].
 
 <dl class="element">
  <dt>[=Categories=]:</dt>
@@ -123,11 +485,6 @@ time providing implementations with a better signal of user intent.
   <dd>{{HTMLPermissionElement/preciseLocation}} — Whether access to the
   [[Geolocation|"geolocation"]] [=powerful feature=] is requested with
   {{PositionOptions/enableHighAccuracy}}.
-  <dd>{{HTMLPermissionElement/isValid}} — query whether the element can currently be activated.</dd>
-  <dd>{{HTMLPermissionElement/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
-  <dd>{{HTMLPermissionElement/onpromptdismiss}} — notifies when the user has dismissed the permission prompt.</dd>
-  <dd>{{HTMLPermissionElement/onpromptaction}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
-  <dd>{{HTMLPermissionElement/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
  <dt>[=Accessibility considerations=]:</dt>
   <dd></dd>
  <dt>[=DOM interface=]:</dt>
@@ -138,18 +495,9 @@ time providing implementations with a better signal of user intent.
       [HTMLConstructor] constructor();
       [CEReactions, Reflect] attribute DOMString type;
       [CEReactions, Reflect] attribute boolean preciseLocation;
-
-      readonly attribute boolean isValid;
-      readonly attribute PermissionElementBlockerReason invalidReason;
-      readonly attribute PermissionState initialPermissionStatus;
-      readonly attribute PermissionState permissionStatus;
-
       static boolean isTypeSupported(DOMString type);
-
-      attribute EventHandler onpromptaction;
-      attribute EventHandler onpromptdismiss;
-      attribute EventHandler onvalidationstatuschange;
     };
+    HTMLPermissionElement includes InPagePermissionMixin;
    </pre>
   </dd>
 </dl>
@@ -170,20 +518,12 @@ has neither a
 The {{HTMLPermissionElement/preciseLocation}} attribute reflects whether
 the `"geolocation"` [=powerful feature|permission=] is meant for
 location requests with {{PositionOptions/enableHighAccuracy}}.
-
-The {{HTMLPermissionElement/isValid}} attribute reflects whether a the
-permission element is not currently blocked.
-
-The {{HTMLPermissionElement/invalidReason}} attribute is an
-[=enumerated attribute=] that reflects the internal state of the permission
-element. It's value set are {{PermissionElementBlockerReason}}
-
 The {{HTMLPermissionElement/isTypeSupported}} [=static operation=] whether a
 gives {{HTMLPermissionElement/type}}, that is, a given
 [=enumerated attribute|enumeration=] of [=powerful features=], is supported.
 It predicts whether creating a <{permission}> element and assigning the given
 {{HTMLPermissionElement/type}} string will work, or whether it will create
-an element blocked by a {{PermissionElementBlockerReason/type_invalid}}
+an element blocked by a {{InPagePermissionMixinBlockerReason/type_invalid}}
 [=permanent blocker=].
 
 The global <a attribute spec=html for=HTMLElement>lang</a> attribute is
@@ -192,16 +532,6 @@ observed by the <{permission}> element to select localized text.
 The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
 for the global <{htmlsvg-global/tabindex}> content attribute on the
 <{permission}> element is 0.
-
-The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on <{permission}> elements [=event handler IDL attributes=]:
-
-<pre class=simpledef>
-onpromptaction: Event
-onpromptdismiss: Event
-onvalidationstatuschange: Event
-</pre>
-
-ISSUE: onvalidationstatuschange is probably not a simple Event.
 
 
 ## <{permission}> element internal state ## {#permission-element-internal-state}
@@ -214,16 +544,9 @@ this, the element checks whether the activation event is {{Event/isTrusted|trust
 (partially) occluded, or if it has recently been moved. The element maintains
 an internal {{[[BlockerList]]}} to keep track of this.
 
-The <{permission}> element has the following internal slots:
-
-* The <dfn attribute for="HTMLPermissionElement">\[[BlockerList]]</dfn> is a
-    list of records, containing a
-    <dfn for="HTMLPermissionElement">blocker timestamp</dfn> and a
-    <dfn for="HTMLPermissionElement">blocker reason</dfn>. The [=blocker
-    reason=] is a {{PermissionElementBlockerReason}}, but not the empty string.
-
-* <dfn attribute for="HTMLPermissionElement">\[[IntersectionObserver]]</dfn>
-    is a reference to an {{IntersectionObserver}}.
+In additional to the [[#mixin-internal-state|internal state]] from the
+{{InPagePermissionMixin}}, the <{permission}> element has the following
+internal slots:
 
 * <dfn attribute for="HTMLPermissionElement">\[[Types]]</dfn> is null
     or an [=ordered set=] of [=powerful features=]. Null represents the
@@ -232,22 +555,6 @@ The <{permission}> element has the following internal slots:
     will no longer allow modification. Note that the
     {{HTMLPermissionElement/type}} property reflects this internal state.
 
-* <dfn attribute for="HTMLPermissionElement">\[[IntersectionRect]]</dfn> is a
-    {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
-    the position of the <{permission}> relative to the [=viewport=].
-
-* <dfn attribute for="HTMLPermissionElement">\[[LastNotifiedValidState]]</dfn>
-    is a [=boolean=] that stores the most recently notified state of
-    {{HTMLPermissionElement/isValid}}.
-
-* <dfn attribute for="HTMLPermissionElement">\[[LastNotifiedInvalidReason]]</dfn>
-    is a [=string=] that stores the most recently notified state of
-    {{HTMLPermissionElement/invalidReason}}.
-    {{[[LastNotifiedValidState]]}} and {{[[LastNotifiedInvalidReason]]}} are
-    used to determine whether an
-    {{HTMLPermissionElement/onvalidationstatuschange}} event needs to be
-    dispatches.
-
 * <dfn attribute for="HTMLPermissionElement">\[[InitialPermissionStatus]]</dfn>
     is a {{PermissionState}} that stores the initial {{PermissionState}} for
     {{[[Types]]}}.
@@ -255,7 +562,7 @@ The <{permission}> element has the following internal slots:
 ## <{permission}>-supporting state at the [=/navigable=] ## {#permission-element-external-state}
 
 In order to support the <{permission}> element, the [=/navigable=] maintains
-an [=ordered set=] of <{permission}> elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{PermissionElementBlockerReason/unsuccesful_registration}}.
+an [=ordered set=] of <{permission}> elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
 
 ## <{permission}> element interesting behaviours ## {#permission-element-very-interesting}
 
@@ -337,195 +644,6 @@ To <dfn>parse a type string</dfn> a given string |type|:
 
 </div>
 
-### Activation blockers ### {#permission-element-activation-blockers}
-
-The key goal of the <{permission}> element is to reflect a user's conscious
-choice, and we need to make sure the user cannot easily be tricked into
-activating it. To do so, the <{permission}> maintains a list of blocker reasons,
-which may - permanently or temporarily - prevent the element from being
-activated.
-
-<pre class=idl>
-enum PermissionElementBlockerReason {
-  "",  // No blocker reason.
-  "type_invalid", "illegal_subframe", "unsuccesful_registration",
-  "recently_attached", "intersection_changed",
-  "intersection_out_of_viewport_or_clipped",
-  "intersection_occluded_or_distorted", "style_invalid"
-};
-</pre>
-
-The permission element keeps track of "blockers", reasons why the element (currently) cannot be activated. These blockers come with three lifetimes: Permanent, temporary, and expiring.
-
-: <dfn>Permanent blocker</dfn>
-:: Once an element has a permanent blocker, it will be disabled permanently.
-    There are used for issues that the website owner is expected to fix.
-    An example is a <{permission}> element inside a <{fencedframe}>.
-: <dfn>Temporary blocker</dfn>
-:: This is a blocker that will only be valid until the blocking condition no
-    no longer occurs. An example is a <{permission}> element that is not
-    currently in view. All [=temporary blockers=] turn into
-    [=expiring blockers=] once the condition no longer applies.
-: <dfn>Expiring blocker</dfn>
-:: This is a blocker that is only valid for a fixed period of time. This is
-    used to block abuse scenarios like "click jacking". An example is
-    a <{permission}> element that has recently been moved.
-
-<div>
-<dfn dfn lt="blocker reason table"></dfn>
-<table class="def">
-<thead>
-<tr><th>Blocker name
-<th>Blocker type
-<th>Example condition
-<th>Order hint
-</thead>
-<tbody>
-<tr><th>{{PermissionElementBlockerReason/type_invalid}}
-<td>[=permanent blocker|permanent=]
-<td>When an unsupported {{HTMLPermissionElement/type|permission type}} has been
-    set.
-<td>1
-<tr><th>{{PermissionElementBlockerReason/illegal_subframe}}
-<td>[=permanent blocker|permanent=]
-<td>When the <{permission}> element is used inside a <{fencedframe}>.
-<td>2
-<tr><th>{{PermissionElementBlockerReason/unsuccesful_registration}}
-<td>[=temporary blocker|temporary=]
-<td>When too many other <{permission}> elements for the same
-    [=powerful feature=] have been inserted into the same document.
-<td>3
-<tr><th>{{PermissionElementBlockerReason/recently_attached}}
-<td>[=expiring blocker|expiring=]
-<td>When the <{permission}> element has just been attached to the
-  DOM.
-<td>4
-<tr><th>{{PermissionElementBlockerReason/intersection_changed}}
-<td>[=expiring blocker|expiring=]
-<td>When the <{permission}> element is being moved.
-<td>6
-<tr><th>{{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}
-<td>[=temporary blocker|temporary=]
-<td>When the <{permission}> element is not or not fully in the [=viewport=].
-<td>7
-<tr><th>{{PermissionElementBlockerReason/intersection_occluded_or_distorted}}
-<td>[=temporary blocker|temporary=]
-<td>When the <{permission}> element is fully in the [=viewport=],
-    but still not fully visible (e.g. because it's partly behind other content).
-<td>8
-<tr><th>{{PermissionElementBlockerReason/style_invalid}}
-<td>[=temporary blocker|temporary=]
-<td>
-<td>9
-</tbody>
-</table>
-</div>
-
-<div algorithm>
-To <dfn for="HTMLPermissionElement">add a blocker</dfn> with a
-{{PermissionElementBlockerReason}} |reason| and an optional flag |expires|:
-
-1. [=Assert=]: |reason| is not `""`.
-    (The empty string in {{PermissionElementBlockerReason}} signals no blocker
-    is present. Why would you add a non-blocking blockern empty string?)
-1. Let |timestamp| be None.
-1. If |expires|, then let |timestamp| be [=current high resolution time=]
-    plus the [=blocker delay=].
-1. [=list/Append=] an entry to the internal {{[[BlockerList]]}} with |reason|
-    and |timestamp|.
-
-</div>
-
-<div>
-The <dfn for="HTMLPermissionElement">blocker delay</dfn> is 500ms.
-</div>
-
-<div algorithm>
-To <dfn for="HTMLPermissionElement">add an expiring blocker</dfn> with a
-{{PermissionElementBlockerReason}} |reason|:
-
-1. [=Assert=]: |reason| is listed as "expiring" in the [=blocker reason table=].
-1. [=Add a blocker=] with |reason| and true.
-
-</div>
-
-<div algorithm>
-To <dfn for="HTMLPermissionElement">add a temporary blocker</dfn> with a
-{{PermissionElementBlockerReason}} |reason|:
-
-1. [=Assert=]: |reason| is listed as "temporary" in the [=blocker reason table=].
-1. [=Add a blocker=] with |reason| and false.
-
-</div>
-
-<div algorithm>
-To <dfn for="HTMLPermissionElement">add a permanent blocker</dfn> with a
-{{PermissionElementBlockerReason}} |reason|:
-
-1. [=Assert=]: |reason| is listed as "permanent" in the [=blocker reason table=].
-1. [=Add a blocker=] with |reason| and false.
-
-</div>
-
-<div algorithm>
-To <dfn for="HTMLPermissionElement">remove blockers</dfn> with
-{{PermissionElementBlockerReason}} |reason| from an |element|:
-
-1. [=Assert=]: |reason| is listed as "temporary" in the
-    [=blocker reason table=].
-1. [=list/iterate|For each=] |entry| in |element|'s {{[[BlockerList]]}}:
-    1. If |entry|'s reason [=string/is|equals=] |reason|, then [=list/remove=]
-        |entry| from |element|'s {{[[BlockerList]]}}.
-1. [=Add a blocker=] with |reason| and true.
-
-</div>
-
-<div algorithm>
-To determine a {{HTMLPermissionElement}} |element|'s
-<dfn for="HTMLPermissionElement">blocker</dfn>:
-
-1. Let |blockers| be the result of [=list/sorting=] |element|'s {{[[BlockerList]]}}
-    with the [=blocker ordering=] algorithm.
-1. If |blockers| is not [=list/empty=] and |blockers|[0] is [=HTMLPermissionElement/blocking=], then return |blockers|[0].
-1. Return nothing.
-
-</div>
-
-<div algorithm>
-To determine <dfn for="HTMLPermissionElement">blocker ordering</dfn> for
-two blockers |a| and |b|:
-
-1. Let |really large number| be 99.
-1. [=Assert=]: No order hint in the [=blocker reason table=] is equal to or
-    greater than |really large number|.
-1. If |a| is [=HTMLPermissionElement/blocking=], then let |a hint| be the
-    order hint of |a|'s [=blocker reason|reason=] in the
-    [=blocker reason table=], otherwise let |a hint| be |really large number|.
-1. If |b| is [=HTMLPermissionElement/blocking=], then let |b hint| be the
-    order hint of |b|'s [=blocker reason|reason=] in the
-    [=blocker reason table=], otherwise let |b hint| be |really large number|.
-1. Return whether |a hint| is less than or equal to |b hint|.
-
-</div>
-
-<div algorithm>
-An {{HTMLPermissionElement}}'s [=blocker=] list's |entry| is
-<dfn for="HTMLPermissionElement">blocking</dfn> if:
-
-1. |entry| has no [=blocker timestamp=],
-1. or |entry| has a [=blocker timestamp=], and the [=blocker timestamp=] is
-    greater or equal to the [=current high resolution time=].
-
-</div>
-
-NOTE: The spec maintains blockers as a list {{[[BlockerList]]}}, which may
-    potentially grow indefinitely (since some blocker types simply expire,
-    but are not removed).
-    This structure is chosen for the simplicity of explanation, rather than for
-    efficiency. The details of this blocker structure are not observable except
-    for a handful of algorithms defined here, which should open plenty of
-    opportunities for implementations to handle this more efficiently.
-
 ## <{permission}> element algorithms ## {#permission-element-algorithms}
 
 <div algorithm="HTMLPermissionElement/constructor">
@@ -554,15 +672,15 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
     &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
 1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
-    with reason {{PermissionElementBlockerReason/type_invalid}}.
+    with reason {{InPagePermissionMixinBlockerReason/type_invalid}}.
 1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
-    with {{PermissionElementBlockerReason/unsuccesful_registration}}.
+    with {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
 1. [=Add an expiring blocker=] with reason
-    {{PermissionElementBlockerReason/recently_attached}}.
+    {{InPagePermissionMixinBlockerReason/recently_attached}}.
 1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
     [=this=]
     is a [=fenced navigable=], then [=add a permanent blocker=]
-    with {{PermissionElementBlockerReason/illegal_subframe}}.
+    with {{InPagePermissionMixinBlockerReason/illegal_subframe}}.
 1. [=Maybe dispatch onvalidstatechange=] on [=this=].
 
 </div>
@@ -576,47 +694,13 @@ The {{HTMLPermissionElement}} [=removing steps=] are:
 
 </div>
 
-<div algorithm>
-HTMLPermissionElement |element|'s <dfn attribute for="HTMLPermissionElement">isValid</dfn> getter steps are:
-
-1. Return whether |element|'s [=HTMLPermissionElement/blocker=] is Nothing.
-
-</div>
-
-<div algorithm>
-HTMLPermissionElement |element|'s <dfn attribute for="HTMLPermissionElement">invalidReason</dfn> getter steps are:
-
-1. If |element|'s [=HTMLPermissionElement/blocker=] is Nothing, return `""`.
-1. Otherwise, |element|'s [=HTMLPermissionElement/blocker=]'s reason string.
-
-</div>
-
-<div algorithm>
-HTMLPermissionElement |element|'s
-<dfn attribute for="HTMLPermissionElement">initialPermissionStatus</dfn>
-getter steps are:
-
-1. Return |element|'s internal {{[[InitialPermissionStatus]]}}.
-
-</div>
-
-<div algorithm>
-HTMLPermissionElement |element|'s
-<dfn attribute for="HTMLPermissionElement">permissionStatus</dfn>
-getter steps are:
-
-1. Return [=HTMLPermissionElement/get the current permission state=] for
-    |element|.
-
-</div>
-
 <div algorithm=activation>
 A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| is:
 
 1. [=Assert=]: |element|'s {{[[Types]]}} is not null.
 1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
 1. If |event|.{{Event/isTrusted}} is false, then return.
-1. If |element|.{{HTMLPermissionElement/isValid}} is false, then return.
+1. If |element|.{{InPagePermissionMixin/isValid}} is false, then return.
 1. Let |descriptor| be the result of [=build a permission descriptor=] for
     |element|.
 1. [=Request permission to use=] the [=powerful features=] described by
@@ -670,18 +754,18 @@ The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserve
 1. [=Assert=]: |entries| is not [=list/is empty|empty=].
 1. Let |entry| be |entries|'s last [=list/item=].
 1. If |entry|.{{IntersectionObserverEntry/isVisible}}, then:
-    1. [=Remove blockers=] with {{PermissionElementBlockerReason/intersection_occluded_or_distorted}}.
-    1. [=Remove blockers=] with {{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}.
+    1. [=Remove blockers=] with {{InPagePermissionMixinBlockerReason/intersection_occluded_or_distorted}}.
+    1. [=Remove blockers=] with {{InPagePermissionMixinBlockerReason/intersection_out_of_viewport_or_clipped}}.
 1. Otherwise:
     1. If |entry|.{{IntersectionObserverEntry/intersectionRatio}} >= 1, then:
-        1. Let |reason| be {{PermissionElementBlockerReason/intersection_occluded_or_distorted}}.
+        1. Let |reason| be {{InPagePermissionMixinBlockerReason/intersection_occluded_or_distorted}}.
     1. Otherwise:
-        1. Let |reason| be {{PermissionElementBlockerReason/intersection_out_of_viewport_or_clipped}}.
+        1. Let |reason| be {{InPagePermissionMixinBlockerReason/intersection_out_of_viewport_or_clipped}}.
     1. [=Add a temporary blocker=] with |reason|.
 1. If {{[[IntersectionRect]]}} does not equal
     |entry|.{{IntersectionObserverEntry/intersectionRect}} then
     [=add an expiring blocker=] with
-    {{PermissionElementBlockerReason/intersection_changed}}.
+    {{InPagePermissionMixinBlockerReason/intersection_changed}}.
 1. Set {{[[IntersectionRect]]}} to
     |entry|.{{IntersectionObserverEntry/intersectionRect}}
 1. [=Maybe dispatch onvalidstatechange=] on [=this=].
@@ -711,7 +795,7 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
 1. [=list/iterate|For each=] |current| in |document|'s
     {{[[PermissionElements]]}}:
     1. If |current| is [=type permissible=], then [=remove blockers=] with
-        {{PermissionElementBlockerReason/unsuccesful_registration}} from
+        {{InPagePermissionMixinBlockerReason/unsuccesful_registration}} from
         |current|.
 
 </div>
@@ -743,35 +827,12 @@ ISSUE: It's not clear what the PermissionState for 'no valid permission type'
 ## <{permission}> element event algorithms ## {#events}
 
 <div algorithm>
-To <dfn for=HTMLPermissionElement>maybe dispatch onvalidstatechange</dfn> for |element|:
-
-1. Let |oldState| be {{[[LastNotifiedValidState]]}}.
-1. Let |newState| be whether |element|’s [=blocker=] is Nothing.
-1. Set {{[[LastNotifiedValidState]]}} to |newState|.
-1. Let |oldReason| be {{[[LastNotifiedInvalidReason]]}}.
-1. Let |newReason| be whether |element|’s
-    {{HTMLPermissionElement/invalidReason}}.
-1. Set {{[[LastNotifiedInvalidReason]]}} to |newReason|.
-1. If |oldState| != |newState| or |oldReason| != |newReason|, then:
-    1. Let |event| be a new {{Event}}.
-    1. [=Event/Initialize=] |event| with
-        <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-        "{{HTMLPermissionElement/onvalidationstatuschange}}",
-        <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
-        true, and
-        <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
-        true.
-    1. [=/Dispatch=] |event| to |element|.
-
-</div>
-
-<div algorithm>
-To <dfn for=HTMLPermisssionElement>dispatch onpromptaction</dfn> for |element|:
+To <dfn for=InPagePermissionMixin>dispatch onpromptaction</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
 1. [=Event/Initialize=] |event| with
     <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{HTMLPermissionElement/onpromptaction}}",
+    "{{InPagePermissionMixin/onpromptaction}}",
     <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
     true, and
     <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
@@ -781,12 +842,12 @@ To <dfn for=HTMLPermisssionElement>dispatch onpromptaction</dfn> for |element|:
 </div>
 
 <div algorithm>
-To <dfn for=HTMLPermisssionElement>dispatch onpromptdismiss</dfn> for |element|:
+To <dfn for=InPagePermissionMixin>dispatch onpromptdismiss</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
 1. [=Event/Initialize=] |event| with
     <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{HTMLPermissionElement/onpromptdismiss}}",
+    "{{InPagePermissionMixin/onpromptdismiss}}",
     <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
     true, and
     <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
@@ -795,7 +856,46 @@ To <dfn for=HTMLPermisssionElement>dispatch onpromptdismiss</dfn> for |element|:
 
 </div>
 
-# Rendering the <{permission}> Element # {#rendering}
+
+
+# The <dfn element export>geolocation</dfn> Element # {#geolocation-element}
+
+<dl class=element>
+ <dt>[=Categories=]:</dt>
+  <dd>[=Flow content=].</dd>
+  <dd>[=Phrasing content=].</dd>
+  <dd>[=Interactive content=].</dd>
+  <dd>[=Palpable content=].</dd>
+ <dt>[=Contexts in which this element can be used=]:</dt>
+  <dd>Where [=phrasing content=] is expected.</dd>
+ <dt>[=Content model=]:</dt>
+  <dd>[=Flow content=].</dd>
+ <dt>[=Content attributes=]:</dt>
+  <dd>[=Global attributes=].</dd>
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd></dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    [Exposed=Window]
+    interface HTMLGeolocationElement : HTMLElement {
+      [HTMLConstructor] constructor();
+
+      readonly attribute GeolocationPosition position;
+      readonly attribute GeolocationPositionError error;
+      [CEReactions] attribute boolean precise;
+      [CEReactions] attribute boolean autolocate;
+      [CEReactions] attribute boolean watch;
+
+      attribute EventHandler onlocation;
+    };
+    HTMLGeolocationElement includes InPagePermissionMixin;
+   </pre>
+  </dd>
+</dl>
+
+
+# Rendering the HTML Permission Elements # {#rendering}
 
 The <{permission}> element is a [=non-devolvable widget=] and is chiefly
 rendered like a <{button}>. The button label is largely expected to be
@@ -868,7 +968,7 @@ These constraints come in three flavours:
 
 If one of these conditions is not met, then a
 [=add a temporary blocker|temporary blocker is added=] with type
-{{PermissionElementBlockerReason/style_invalid}}.
+{{InPagePermissionMixinBlockerReason/style_invalid}}.
 
 <pre class="simpledef">
 'color', 'background-color':
@@ -1052,11 +1152,13 @@ render the element as described in [[#rendering]], but are still
 required to render the [=fallback content=] under one condition:
 
 If the internal {{[[BlockerList]]}} [=list/contains=] a record whose
-[=blocker reason=] is {{PermissionElementBlockerReason/type_invalid}},
+[=blocker reason=] is {{InPagePermissionMixinBlockerReason/type_invalid}},
 then the <{permission}> element should render the [=fallback content=]
 instead of the <{permission}>'s usual rendering.
 
 ISSUE: Add example(s) here.
+
+
 
 # Security & Privacy Considerations # {#secpriv}
 
