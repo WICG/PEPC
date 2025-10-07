@@ -1,0 +1,6 @@
+<pre class="metadata">
+Title: The HTML Permission Elements
+Shortname: pepc
+Status: DREAM
+Abstract: Just a placeholder, for now.
+</pre>
