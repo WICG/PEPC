@@ -1,6 +1,1217 @@
 <pre class="metadata">
 Title: The HTML Permission Elements
+Status: CG-DRAFT
+Group: WICG
+URL: https://wicg.github.io/PEPC/permission-elements.html
+Repository: WICG/PEPC
 Shortname: pepc
-Status: DREAM
-Abstract: Just a placeholder, for now.
+Level: 0
+Boilerplate: omit conformance
+Markup Shorthands: markdown on
+Editor: Daniel Vogelheim, Google LLC, vogelheim@google.com, https://www.google.com/
+Abstract: HTML elements to request browser permissions in-page.
+
+  This specifies a set of new HTML elements, whose common goal is to provide
+  users with a way to control browser permissions and the associated
+  capabilities from within the page.
+
+  Suitable styling and UI constraints on this new element ensure that the user
+  understands what a click on it means, and thus gives the browser a high level
+  of confidence of user intent to make a permission decision.
+  These permission elements aim to be more accessible, more secure, and more
+  user friendly than the current, script-triggered permission flows.
 </pre>
+<pre class=link-defaults>
+# Disambiguation between multiple definitions with the same text:
+spec:infra; type:dfn; text:user agent
+spec:css2; type:dfn; text:viewport
+spec:css2; type:dfn; text:specified value
+spec:css2; type:dfn; text:computed value
+spec:css2; type:dfn; text:inherited value
+spec:css2; type:dfn; text:inherit
+spec:css2; type:property; text:color
+spec:css2; type:property; text:background-color
+spec:css2; type:property; text:font-size
+spec:css2; type:property; text:font-style
+spec:css2; type:property; text:display
+spec:css2; type:property; text:margin
+spec:css2; type:property; text:min-width
+spec:css2; type:property; text:max-width
+spec:css2; type:property; text:padding-bottom
+spec:css2; type:property; text:padding-top
+spec:css2; type:property; text:padding-left
+spec:css2; type:property; text:padding-right
+spec:css-borders-4; type:property; text:border-right
+spec:css-borders-4; type:property; text:border-left
+spec:css-borders-4; type:property; text:border-top
+spec:css-borders-4; type:property; text:border-bottom
+
+# Non-exported definitions, which we should be free to use when -- some day --
+# this will be integrated into the HTML spec.
+spec:html; type:dfn; text:missing value default
+spec:html; type:dfn; text:invalid value default
+spec:html; type:dfn; text:represent
+spec:html; type:dfn; text:fallback content
+
+# The big element box:
+spec:html; type:dfn; text:contexts in which this element can be used
+spec:html; type:dfn; text:content model
+spec:html; type:dfn; text:nothing
+spec:html; type:dfn; text:content attributes
+spec:html; type:dfn; text:global attributes
+spec:html; type:dfn; text:accessibility considerations
+spec:html; type:dfn; text:dom interface
+</pre>
+
+<style>
+/* Imitate some styles that W3C specs use:*/
+
+/* WHATWG-style element definition class */
+.element { background: #EEFFEE; }
+dt { margin-top: 12px; color: black; }
+dl, dd { padding-left: .5em; }
+
+/* Boxes around algorithms. */
+[data-algorithm]:not(.heading) {
+  padding: .5em;
+  border: thin solid #ddd; border-radius: .5em;
+  margin: .5em calc(-0.5em - 1px);
+}
+[data-algorithm]:not(.heading) > :first-child { margin-top: 0; }
+[data-algorithm]:not(.heading) > :last-child { margin-bottom: 0; }
+[data-algorithm] [data-algorithm] { margin: 1em 0; }
+
+/* vars in italics */
+dfn var { font-style: italic; }
+</style>
+
+
+# Introduction # {#intro}
+
+[=User agents=] expose [=powerful features=] to web sites, which are features
+that are important to some use cases, but can be easily abused. The arguably
+canonical example of such a powerful feature is camera access, which is
+essential to many use cases like online meetups, but unsolicited camera
+activation would be a major privacy issue. To handle this, user
+agents use [=permissions=] to ask the user whether they wish for a particular
+access to be allowed or not.
+
+These permission requests began as a fairly direct passthrough: A site would
+ask for some capability and the user agent immediately prompts the user to make
+a decision for the request. Meanwhile, spam and abuse have forced user agents
+to take a more opinionated approach to protect users' security, privacy, and
+attention. The status quo is that users get a multitude of permission requests,
+where it's oftentimes unclear to users what the consequences of these requests
+might be.
+
+This spec introduces a new mechanism that requests access to
+[=powerful features=] through an in-page element, with built-in protections
+against abuse. This wants to tie permission requests to the actual context
+in which they will be used, thus reducing "permission spam" and at the same
+time providing implementations with a better signal of user intent.
+
+
+# {{InPagePermissionMixin}}: Common Behaviours Of The HTML Permission Elements # {#permission-mixin}
+
+The elements in this specification exhibit a number of common behaviours, which
+are captured by the {{InPagePermissionMixin}} and the associated state,
+algorithms, and rendering rules.
+
+<dl class="element">
+ <dt>[=Content attributes=]:</dt>
+  <dd>{{InPagePermissionMixin/isValid}} — query whether the element can currently be activated.</dd>
+  <dd>{{InPagePermissionMixin/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
+  <dd>{{InPagePermissionMixin/onpromptdismiss}} — notifies when the user has dismissed the permission prompt.</dd>
+  <dd>{{InPagePermissionMixin/onpromptaction}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
+  <dd>{{InPagePermissionMixin/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd>TODO</dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    interface mixin InPagePermissionMixin {
+      readonly attribute boolean isValid;
+      readonly attribute InPagePermissionMixinBlockerReason invalidReason;
+      readonly attribute PermissionState initialPermissionStatus;
+      readonly attribute PermissionState permissionStatus;
+
+      attribute EventHandler onpromptaction;
+      attribute EventHandler onpromptdismiss;
+      attribute EventHandler onvalidationstatuschange;
+    };
+   </pre>
+  </dd>
+</dl>
+
+The {{InPagePermissionMixin/isValid}} attribute reflects whether a the
+permission element is not currently blocked.
+
+The {{InPagePermissionMixin/invalidReason}} attribute is an
+[=enumerated attribute=] that reflects the internal state of the permission
+element. Its value set is {{InPagePermissionMixinBlockerReason}}.
+
+The global <a attribute spec=html for=HTMLElement>lang</a> attribute is
+observed by the element to select localized text.
+
+The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
+for the global <{htmlsvg-global/tabindex}> content attribute on the
+element is 0.
+
+The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on elements that include the {{InPagePermissionMixin}}:
+
+<pre class=simpledef>
+onpromptaction: Event
+onpromptdismiss: Event
+onvalidationstatuschange: Event
+</pre>
+
+ISSUE: onvalidationstatuschange is probably not a simple Event.
+
+
+## {{InPagePermissionMixin|Mixin}} internal state ## {#mixin-internal-state}
+
+{{InPagePermissionMixin}} elements have the following internal slots:
+
+* The <dfn attribute for="InPagePermissionMixin">\[[BlockerList]]</dfn> is a
+    list of records, containing a
+    <dfn for="InPagePermissionMixin">blocker timestamp</dfn> and a
+    <dfn for="InPagePermissionMixin">blocker reason</dfn>. The [=blocker
+    reason=] is a {{InPagePermissionMixinBlockerReason}}, but not the empty string.
+
+* <dfn attribute for="InPagePermissionMixin">\[[IntersectionObserver]]</dfn>
+    is a reference to an {{IntersectionObserver}}.
+
+* <dfn attribute for="InPagePermissionMixin">\[[IntersectionRect]]</dfn> is a
+    {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
+    the position of the <{permission}> relative to the [=viewport=].
+
+* <dfn attribute for="InPagePermissionMixin">\[[LastNotifiedValidState]]</dfn>
+    is a [=boolean=] that stores the most recently notified state of
+    {{InPagePermissionMixin/isValid}}.
+
+* <dfn attribute for="InPagePermissionMixin">\[[LastNotifiedInvalidReason]]</dfn>
+    is a [=string=] that stores the most recently notified state of
+    {{InPagePermissionMixin/invalidReason}}.
+    {{[[LastNotifiedValidState]]}} and {{[[LastNotifiedInvalidReason]]}} are
+    used to determine whether an
+    {{InPagePermissionMixin/onvalidationstatuschange}} event needs to be
+    dispatches.
+
+
+## {{InPagePermissionMixin|Mixin}}-supporting state at the navigable ## {#mixin-navigable-state}
+
+## {{InPagePermissionMixin|Mixin}} activation and activation blockers ## {#mixin-activation}
+
+The key goal of the family of permission elements is to reflect a user's
+conscious choice, and we need to make sure the user cannot easily be tricked
+into activating it. To do so, the permission elements maintain a list of
+blocker reasons, which may - permanently or temporarily - prevent the element
+from being activated.
+
+The majority of these behaviours should be identical to all permission elements.
+For simplicity, we'll also include blockers that only apply to one or a subset
+of elements.
+
+<pre class=idl>
+enum InPagePermissionMixinBlockerReason {
+  // No blocker reason.
+  "",
+
+  // Blocker reasons supported by all InPagePermissionMixin users.
+  "illegal_subframe", "unsuccesful_registration",
+  "recently_attached", "intersection_changed",
+  "intersection_out_of_viewport_or_clipped",
+  "intersection_occluded_or_distorted", "style_invalid",
+
+  // Blocker reason specific to HTMLPermissionElement.
+  "type_invalid",
+};
+</pre>
+
+The permission elements keep track of "blockers", reasons why the element (currently) cannot be activated. These blockers come with three lifetimes: Permanent, temporary, and expiring.
+
+: <dfn>Permanent blocker</dfn>
+:: Once an element has a permanent blocker, it will be disabled permanently.
+    There are used for issues that the website owner is expected to fix.
+    An example is a <{permission}> element inside a <{fencedframe}>.
+: <dfn>Temporary blocker</dfn>
+:: This is a blocker that will only be valid until the blocking condition no
+    no longer occurs. An example is a <{permission}> element that is not
+    currently in view. All [=temporary blockers=] turn into
+    [=expiring blockers=] once the condition no longer applies.
+: <dfn>Expiring blocker</dfn>
+:: This is a blocker that is only valid for a fixed period of time. This is
+    used to block abuse scenarios like "click jacking". An example is
+    a <{permission}> element that has recently been moved.
+
+<div>
+<dfn dfn lt="blocker reason table"></dfn>
+<table class="def">
+<thead>
+<tr><th>Blocker name
+<th>Blocker type
+<th>Example condition
+<th>Order hint
+</thead>
+<tbody>
+<tr><th>{{InPagePermissionMixinBlockerReason/type_invalid}}
+<td>[=permanent blocker|permanent=]
+<td>When an unsupported {{HTMLPermissionElement/type|permission type}} has been
+    set.
+<td>1
+<tr><th>{{InPagePermissionMixinBlockerReason/illegal_subframe}}
+<td>[=permanent blocker|permanent=]
+<td>When the <{permission}> element is used inside a <{fencedframe}>.
+<td>2
+<tr><th>{{InPagePermissionMixinBlockerReason/unsuccesful_registration}}
+<td>[=temporary blocker|temporary=]
+<td>When too many other <{permission}> elements for the same
+    [=powerful feature=] have been inserted into the same document.
+<td>3
+<tr><th>{{InPagePermissionMixinBlockerReason/recently_attached}}
+<td>[=expiring blocker|expiring=]
+<td>When the <{permission}> element has just been attached to the
+  DOM.
+<td>4
+<tr><th>{{InPagePermissionMixinBlockerReason/intersection_changed}}
+<td>[=expiring blocker|expiring=]
+<td>When the <{permission}> element is being moved.
+<td>6
+<tr><th>{{InPagePermissionMixinBlockerReason/intersection_out_of_viewport_or_clipped}}
+<td>[=temporary blocker|temporary=]
+<td>When the <{permission}> element is not or not fully in the [=viewport=].
+<td>7
+<tr><th>{{InPagePermissionMixinBlockerReason/intersection_occluded_or_distorted}}
+<td>[=temporary blocker|temporary=]
+<td>When the <{permission}> element is fully in the [=viewport=],
+    but still not fully visible (e.g. because it's partly behind other content).
+<td>8
+<tr><th>{{InPagePermissionMixinBlockerReason/style_invalid}}
+<td>[=temporary blocker|temporary=]
+<td>
+<td>9
+</tbody>
+</table>
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">add a blocker</dfn> with a
+{{InPagePermissionMixinBlockerReason}} |reason| and an optional flag |expires|:
+
+1. [=Assert=]: |reason| is not `""`.
+    (The empty string in {{InPagePermissionMixinBlockerReason}} signals no blocker
+    is present. Why would you add a non-blocking blockern empty string?)
+1. Let |timestamp| be None.
+1. If |expires|, then let |timestamp| be [=current high resolution time=]
+    plus the [=blocker delay=].
+1. [=list/Append=] an entry to the internal {{[[BlockerList]]}} with |reason|
+    and |timestamp|.
+
+</div>
+
+<div>
+The <dfn for="InPagePermissionMixin">blocker delay</dfn> is 500ms.
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">add an expiring blocker</dfn> with a
+{{InPagePermissionMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "expiring" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and true.
+
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">add a temporary blocker</dfn> with a
+{{InPagePermissionMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "temporary" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and false.
+
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">add a permanent blocker</dfn> with a
+{{InPagePermissionMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "permanent" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and false.
+
+</div>
+
+<div algorithm>
+To <dfn for="InPagePermissionMixin">remove blockers</dfn> with
+{{InPagePermissionMixinBlockerReason}} |reason| from an |element|:
+
+1. [=Assert=]: |reason| is listed as "temporary" in the
+    [=blocker reason table=].
+1. [=list/iterate|For each=] |entry| in |element|'s {{[[BlockerList]]}}:
+    1. If |entry|'s reason [=string/is|equals=] |reason|, then [=list/remove=]
+        |entry| from |element|'s {{[[BlockerList]]}}.
+1. [=Add a blocker=] with |reason| and true.
+
+</div>
+
+<div algorithm>
+To determine a {{InPagePermissionMixin}} |element|'s
+<dfn for="InPagePermissionMixin">blocker</dfn>:
+
+1. Let |blockers| be the result of [=list/sorting=] |element|'s {{[[BlockerList]]}}
+    with the [=blocker ordering=] algorithm.
+1. If |blockers| is not [=list/empty=] and |blockers|[0] is [=InPagePermissionMixin/blocking=], then return |blockers|[0].
+1. Return nothing.
+
+</div>
+
+<div algorithm>
+To determine <dfn for="InPagePermissionMixin">blocker ordering</dfn> for
+two blockers |a| and |b|:
+
+1. Let |really large number| be 99.
+1. [=Assert=]: No order hint in the [=blocker reason table=] is equal to or
+    greater than |really large number|.
+1. If |a| is [=InPagePermissionMixin/blocking=], then let |a hint| be the
+    order hint of |a|'s [=blocker reason|reason=] in the
+    [=blocker reason table=], otherwise let |a hint| be |really large number|.
+1. If |b| is [=InPagePermissionMixin/blocking=], then let |b hint| be the
+    order hint of |b|'s [=blocker reason|reason=] in the
+    [=blocker reason table=], otherwise let |b hint| be |really large number|.
+1. Return whether |a hint| is less than or equal to |b hint|.
+
+</div>
+
+<div algorithm>
+An {{InPagePermissionMixin}}'s [=blocker=] list's |entry| is
+<dfn for="InPagePermissionMixin">blocking</dfn> if:
+
+1. |entry| has no [=blocker timestamp=],
+1. or |entry| has a [=blocker timestamp=], and the [=blocker timestamp=] is
+    greater or equal to the [=current high resolution time=].
+
+</div>
+
+NOTE: The spec maintains blockers as a list {{[[BlockerList]]}}, which may
+    potentially grow indefinitely (since some blocker types simply expire,
+    but are not removed).
+    This structure is chosen for the simplicity of explanation, rather than for
+    efficiency. The details of this blocker structure are not observable except
+    for a handful of algorithms defined here, which should open plenty of
+    opportunities for implementations to handle this more efficiently.
+
+
+## {{InPagePermissionMixin|Mixin}} algorithms ## {#mixin-algorithms}
+
+
+<div algorithm>
+An {{InPagePermissionMixin}} |element|'s <dfn attribute for="InPagePermissionMixin">isValid</dfn> getter steps are:
+
+1. Return whether |element|'s [=InPagePermissionMixin/blocker=] is Nothing.
+
+</div>
+
+<div algorithm>
+An {{InPagePermissionMixin}} |element|'s <dfn attribute for="InPagePermissionMixin">invalidReason</dfn> getter steps are:
+
+1. If |element|'s [=InPagePermissionMixin/blocker=] is Nothing, return `""`.
+1. Otherwise, |element|'s [=InPagePermissionMixin/blocker=]'s reason string.
+
+</div>
+
+<div algorithm>
+An {{InPagePermissionMixin}} |element|'s
+<dfn attribute for="InPagePermissionMixin">initialPermissionStatus</dfn>
+getter steps are:
+
+1. Return |element|'s internal {{[[InitialPermissionStatus]]}}.
+
+</div>
+
+<div algorithm>
+An {{InPagePermissionMixin}} |element|'s
+<dfn attribute for="InPagePermissionMixin">permissionStatus</dfn>
+getter steps are:
+
+1. Return [=InPagePermissionMixin/get the current permission state=] for
+    |element|.
+
+</div>
+
+<div algorithm>
+How to <dfn for="InPagePermissionMixin">get the current permission state</dfn>
+for an {{InPagePermissionMixin}} <var ignore>element</var> depends on the
+particular element that includes the mixin.
+So each element must define its own algorithm.
+</div>
+
+## {{InPagePermissionMixin|Mixin}} event algorithms ## {#mixin-event-algorithms}
+
+
+<div algorithm>
+To <dfn for=InPagePermissionMixin>maybe dispatch onvalidstatechange</dfn> for |element|:
+
+1. Let |oldState| be {{[[LastNotifiedValidState]]}}.
+1. Let |newState| be whether |element|’s [=blocker=] is Nothing.
+1. Set {{[[LastNotifiedValidState]]}} to |newState|.
+1. Let |oldReason| be {{[[LastNotifiedInvalidReason]]}}.
+1. Let |newReason| be whether |element|’s
+    {{InPagePermissionMixin/invalidReason}}.
+1. Set {{[[LastNotifiedInvalidReason]]}} to |newReason|.
+1. If |oldState| != |newState| or |oldReason| != |newReason|, then:
+    1. Let |event| be a new {{Event}}.
+    1. [=Event/Initialize=] |event| with
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+        "{{InPagePermissionMixin/onvalidationstatuschange}}",
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+        true, and
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+        true.
+    1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+
+# Common Rendering, and Styling Restrictions # {#rendering}
+
+The permission elements are [=non-devolvable widget=] and are chiefly
+rendered like a <{button}>. The button label is largely expected to be
+determined by the browser, rather than the page, and reflects one or several
+of the [=powerful features=] listed in {{[[Types]]}}, expressed as text and
+icons. The element may also convey information about the current state of
+the underlying [=powerful feature=]. The actual rendering is defined by each
+element.
+
+The page can influence the permission elements' styling, but with
+constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
+the label itself). The page can also select a locale for the text via the
+<{html-global/lang}> attribute.
+
+The permission elements support [=fallback content=], which will be
+displayed by any browser not yet supporting that element. Note that
+there are also conditions under which a browser that supports
+a respective permission element falls back to its [=fallback content=].
+
+## Presentation ## {#presentation}
+
+ISSUE: There isn't much precedence for describing the user agent UI in detail.
+    It may be better to leave more freedom to user agents.
+
+The permission elements contains browser-chosen content, text and maybe an
+icon. Activating them will [=prompt the user to choose=].
+This provides two bits of user interface that a user can interact with.
+The [=user agent=] is largely free to determine these &mdash; rendering of the
+<{permission}> element and the subsequent [=prompt the user to choose|permission
+prompt=] &mdash; in whichever way it thinks best convey's the element's intent.
+
+
+UI options for the permission elements' presentation include:
+
+* Name the [=powerful features=] listed in {{[[Types]]}}, in the language
+    indicated by the [=language=] of the element. Note that this would
+    always be the language indicated by the <{html-global/lang}> attribute,
+    if present.
+* An icon indicating the [=powerful feature=] type or types.
+* The current [=permission state=] of the [=powerful feature=] in questions.
+    For example, if the [=powerful feature|permission=] is already
+    {{PermissionState/granted}}, the <{permission}> element might be labeled
+    as "geolocation already in use".
+* A modal [=prompt the user to choose|prompt=] with a "scrim".
+    (I.e., darkening out the page behind the prompt.)
+    This would normally quite disruptive. But here our goal is to ensure a
+    user means to make this choice.
+
+[=User agents=] are encouraged to name or describe the [=powerful features=]
+in a way that's consistent with similar usage in program or the platform it
+is running on.
+
+Very non-normative examples might be:
+
+* `<permission lang="de" types="geolocation">`: "Standort verwenden".
+* `<permission types="microphone">` (in an English language page): "Use microphone. &#x1f3a4;".
+* Upon activiating `<permission types="microphone">`, when the corresponding
+    [=permission state=] is {{PermissionState/denied}}, modify the text to
+    "Continue blocking".
+
+## Styling ## {#style}
+
+Permission elements constrain the styling that can be applied to them.
+These constraints come in three flavours:
+
+1. If the condition isn't met, the element is deactivated.
+1. A user-agent defined stylesheet enforces certain styling.
+1. The user-agent enforces bounds on additional styles, where the bounds
+    cannot be easily expressed in CSS. For example, if the style bounds are
+    expressed relative to the computed style of the element.
+
+### Conditions that Deactivate the Element ### {#style-blockers}
+
+If one of these conditions is not met, then a
+[=add a temporary blocker|temporary blocker is added=] with type
+{{InPagePermissionMixinBlockerReason/style_invalid}}.
+
+<pre class="simpledef">
+'color', 'background-color':
+  Set by default to the user agent's default `button` colors.
+  The [=contrast ratio=] between the 2 colors needs to be at least 3.
+  Alpha has to be 1.
+
+'font-size':
+  If [=specified value=] is expressed as <a>&lt;relative-size&gt;</a>&#x3a;
+  <ul>
+  <li>Then ''font-size'' must be between ''font-size/small'' and
+  ''font-size/xx-large''.
+  <li>Otherwise, the [=computed value=] must be larger than or equal to the
+  [=computed value=] for ''font-size/small'' and less than or equal to the
+  [=computed value=] of ''font-size/xx-large''.
+  </ul>
+
+</pre>
+
+ISSUE: Define "alpha".
+
+### User-Agent Defined Stylesheet ### {#style-stylesheet}
+
+A permission element is expected to render with the following styles:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission, geolocation {
+  opacity: 1.0;
+  line-height: normal;
+  whitespace: nowrap;
+  user-select: none;
+  appearance: auto;
+  box-sizing: content-box !important;
+}
+</pre>
+
+### Additional User-Agent Defined Style Bounds ### {#style-style-bounds}
+Permission elements define several bounds on styles. For example, we want
+the font size are constraints on the  The style bounds are explained below.
+
+For notational convenience, we imagine that the [=computed value=] of an element
+could be accessed in CSS rules with <code>computed</code>, just like the
+inherited value of an element can via the <code>[=inherit=]</code> keyword.
+Then the following sheet expresses the style bounds:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  outline-offset: clamp(0, computed, none); /* No negative outline-offsets. */
+  font-weight: clamp(200, computed, none);  /* No font-weights below 200. */
+  word-spacing: clamp(0, computed, 0.5em);  /* Word-spacing between 0..0.5em */
+  letter-spacing: clamp(-0.05em, commputed, 0.2em);  /* Letter spacing between -0.05..0.2em */
+
+  min-height: clamp(1em, computed, none);
+  max-height: clamp(none, computed, 3em);
+  min-width: clamp(none, computed, calc(fit-content));
+
+  border-width: clamp(none, computed, 1em);
+
+  font-style: if(computed = "normal" or computed = "italic", computed, "normal");
+  display: if (computed = "inline-block" or computed = "none", computed, "inline-block");
+  cursor: if (computed = "pointer" or computed = "not-allowed", computed, "pointer")
+}
+</pre>
+
+Additionally, some rules apply based on conditions not easily expressible as
+CSS.
+
+If 'height' is `auto`, then apply:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  padding-top: clamp(1em, computed, none);
+  padding-bottom: calc(padding-top);
+}
+</pre>
+
+If 'width' is `auto`, then apply:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  padding-left: clamp(none, computed, 5em);
+  padding-right: calc(padding-left);
+}
+</pre>
+
+Apply the following sheet, if the element does not have all of the following:
+
+- A border width of at least `1px`,
+- a color to background-color contrast ratio of at least 3,
+- and alpha of 1.
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+permission {
+  max-width: clamp(none, computed, calc(3 * fit-content));
+}
+</pre>
+
+The following CSS properties can be used normally:
+
+* 'font-kerning'
+* 'font-optical-sizing'
+* 'font-stretch'
+* 'font-synthesis-weight'
+* 'font-synthesis-style'
+* 'font-synthesis-small-caps'
+* 'font-feature-settings'
+* 'forced-color-adjust'
+* 'text-rendering'
+* 'align-self'
+* 'anchor-name'
+* 'aspect-ratio'
+* 'border' and all
+    [[css-backgrounds-3#border-shorthands|border shorthand properties]],
+    'border-top', 'border-right', 'border-bottom', 'border-left'
+* 'clear'
+* 'color-scheme'
+* 'contain'
+* 'contain-intrinsic-width'
+* 'contain-intrinsic-height'
+* 'container-name'
+* 'container-type'
+* 'counter-reset', 'counter-increment', 'counter-set'
+* 'flex' and its longhands, 'flex-grow', 'flex-shrink', 'flex-basis'
+* 'float'
+* 'height'
+* 'isolation'
+* 'justify-self'
+* 'left'
+* 'order'
+* 'orphans'
+* 'outline' and mostly its [[css-ui-4#outline|longhands]],
+    'outline-color' and 'outline-style'.
+    <br>Note that 'outline-offset' is clamped by the rules above.
+* 'overflow-anchor'
+* 'overscroll-behavior' and its
+    [[css-overscroll-1#overscroll-behavior-longhands-physical|longhands]],
+    'overscroll-behavior-inline', 'overscroll-behavior-block',
+    'overscroll-behavior-x', 'overscroll-behavior-y'
+* 'page'
+* 'position'
+* 'position-anchor'
+* 'content-visibility'
+* 'right'
+* 'scroll-margin' and its [[css-scroll-snap-1#longhands|longhands]],
+    'scroll-margin-top', 'scroll-margin-right', 'scroll-margin'bottom',
+    'scroll-margin-left'
+* 'scroll-padding' and its [[css-scroll-snap-1#longhands|longhands]],
+    'scroll-padding-top', 'scroll-padding-right', 'scroll-padding-bottom',
+    'scroll-padding-left', 'scroll-padding-inline-start',
+    'scroll-padding-block-start', 'scroll-padding-block-start',
+    'scroll-padding-inline-end', 'scroll-padding-block-end'
+* 'text-spacing-trim'
+* 'text-transform'
+* 'top'
+* 'visibility'
+* 'x'
+* 'y'
+* 'ruby-position'
+* 'user-select'
+* 'width'
+* 'will-change'
+* 'z-index'
+
+Properties that are not listed above, or in the rules in this section,
+and aren't logically equivalent to one of the properties mentioned here,
+will be ignored.
+
+## Falling Back ## {#fallback}
+
+A [=user agent=] that does not support a particular permission element would
+recognize them as {{HTMLUnknownElement}} and render their children as
+regular HTML.
+[=User agents=] that support such an element should usually
+render the element as described in [[#rendering]], but are still
+required to render the [=fallback content=] under one condition:
+
+If the internal {{[[BlockerList]]}} [=list/contains=] a record whose
+[=blocker reason=] is {{InPagePermissionMixinBlockerReason/type_invalid}},
+then the <{permission}> element should render the [=fallback content=]
+instead of the <{permission}>'s usual rendering.
+
+ISSUE: Add example(s) here.
+
+
+# The <dfn element export>permission</dfn> Element # {#the-permission-element}
+
+Note: The <{permission}> element is the original proposed in-page permission
+  element, which can work with any [=powerful feature=] or feature combinations.
+  While we do not wish to preempt future standards discussion, we presently
+  expect that this element will be removed in favour of the more specific
+  elements detailled in the following chapters.
+
+The HTML <{permission}> element can request arbitrary [=powerful features=].
+
+<dl class="element">
+ <dt>[=Categories=]:</dt>
+  <dd>[=Flow content=].</dd>
+  <dd>[=Phrasing content=].</dd>
+  <dd>[=Interactive content=].</dd>
+  <dd>[=Palpable content=].</dd>
+ <dt>[=Contexts in which this element can be used=]:</dt>
+  <dd>Where [=phrasing content=] is expected.</dd>
+ <dt>[=Content model=]:</dt>
+  <dd>[=flow content=].</dd>
+ <dt>[=Content attributes=]:</dt>
+  <dd>[=Global attributes=]</dd>
+  <dd>{{HTMLPermissionElement/type}} — Type of permission this element applies to.</dd>
+  <dd>{{HTMLPermissionElement/preciseLocation}} — Whether access to the
+  [[Geolocation|"geolocation"]] [=powerful feature=] is requested with
+  {{PositionOptions/enableHighAccuracy}}.
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd></dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    [Exposed=Window]
+    interface HTMLPermissionElement : HTMLElement {
+      [HTMLConstructor] constructor();
+      [CEReactions, Reflect] attribute DOMString type;
+      [CEReactions, Reflect] attribute boolean preciseLocation;
+      static boolean isTypeSupported(DOMString type);
+    };
+    HTMLPermissionElement includes InPagePermissionMixin;
+   </pre>
+  </dd>
+</dl>
+
+ISSUE: Add accessibility considerations.
+
+ISSUE: Check attribute & event handler & invalid reason names against
+    current proposal(s).
+
+The <{permission}> element's content, if any, are its [=fallback content=].
+
+The {{HTMLPermissionElement/type}} attribute controls the behavior of the
+permission element when it is activated. Is is an [=enumerated attribute=],
+whose values are the [=powerful feature/names=] of [=powerful features=]. It
+has neither a
+[=missing value default=] state nor a [=invalid value default=] state.
+
+The {{HTMLPermissionElement/preciseLocation}} attribute reflects whether
+the `"geolocation"` [=powerful feature|permission=] is meant for
+location requests with {{PositionOptions/enableHighAccuracy}}.
+The {{HTMLPermissionElement/isTypeSupported}} [=static operation=] whether a
+gives {{HTMLPermissionElement/type}}, that is, a given
+[=enumerated attribute|enumeration=] of [=powerful features=], is supported.
+It predicts whether creating a <{permission}> element and assigning the given
+{{HTMLPermissionElement/type}} string will work, or whether it will create
+an element blocked by a {{InPagePermissionMixinBlockerReason/type_invalid}}
+[=permanent blocker=].
+
+The global <a attribute spec=html for=HTMLElement>lang</a> attribute is
+observed by the <{permission}> element to select localized text.
+
+The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
+for the global <{htmlsvg-global/tabindex}> content attribute on the
+<{permission}> element is 0.
+
+
+## <{permission}> element internal state ## {#permission-element-internal-state}
+
+The <{permission}> element [=represents=] a user-requestable [=permission=],
+which the user can activate to enable (or disable) a particular permission or
+set of permissions. It is core to the <{permission}> element that these
+requests are triggered by the user, and not by the page's script. To enforce
+this, the element checks whether the activation event is {{Event/isTrusted|trusted}}. Additionally it watches a number of conditions, like whether the element is
+(partially) occluded, or if it has recently been moved. The element maintains
+an internal {{[[BlockerList]]}} to keep track of this.
+
+In additional to the [[#mixin-internal-state|internal state]] from the
+{{InPagePermissionMixin}}, the <{permission}> element has the following
+internal slots:
+
+* <dfn attribute for="HTMLPermissionElement">\[[Types]]</dfn> is null
+    or an [=ordered set=] of [=powerful features=]. Null represents the
+    uninitialized state, which allows the value to be modified. The empty
+    list &laquo;[]&raquo; is the state in which no permission applies, and which
+    will no longer allow modification. Note that the
+    {{HTMLPermissionElement/type}} property reflects this internal state.
+
+* <dfn attribute for="HTMLPermissionElement">\[[InitialPermissionStatus]]</dfn>
+    is a {{PermissionState}} that stores the initial {{PermissionState}} for
+    {{[[Types]]}}.
+
+## <{permission}>-supporting state at the [=/navigable=] ## {#permission-element-external-state}
+
+In order to support the <{permission}> element, the [=/navigable=] maintains
+an [=ordered set=] of <{permission}> elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
+
+## <{permission}> element interesting behaviours ## {#permission-element-very-interesting}
+
+The <{permission}> element has a few surprising behaviours, to support its
+security properties:
+
+### The {{HTMLPermissionElement/type}} property ### {#permission-element-type-property}
+
+The permission type cannot be modified. Modifying the permission type at will
+may lead to user confusion, and hence we'd like to prevent it. Since, however,
+a page may create a <{permission}> element dynamically we still need to offer
+an API to modify it. To do do, we distinguish between a freshly initialized and
+an empty or invalid (no permission) state, where the former allows setting the
+type and the latter does not.
+
+Example:
+```js
+// Changing a valid type:
+var pepc = document.createElement("permission");
+pepc.type = "camera";  // Okay.
+pepc.type;  // "camera".
+pepc.type = "geolocation";  // Not okay. Would have been okay as initial assignment.
+pepc.type;  // "camera". Reflects the internal state, which has not changed.
+
+// Setting an invalid type:
+pepc = document.createElement("permission");
+pepc.type = "icecream";  // Ice cream is not a powerful browser feature. Not okay.
+pepc.type;  // "". Reflects the internal state.
+pepc.type = "camera";  // Still Not okay, because type as already been set.
+                       // Would have been okay as initial assignment.
+pepc.type;  // "". Reflects the internal state, which has not changed.
+
+```
+
+<div algorithm="HTMLPermissionElement/types getter">
+The HTMLPermissionElement's {{HTMLPermissionElement/type}} getter steps are:
+
+1. If {{[[Types]]}} is null: Return `""`.
+1. Return a string, containing the concatenation of all [=powerful feature=]
+    names in {{[[Types]]}}, seperated by " ".
+
+</div>
+
+<div algorithm="HTMLPermissionElement/types setter">
+The HTMLPermissionElement's {{HTMLPermissionElement/type}} setter steps are:
+
+1. If {{[[Types]]}} is not null: Return.
+1. Set {{[[Types]]}} to &laquo;[]&raquo;.
+1. Let |features| be the result of calling [=parse a type string=] with the
+    input string.
+1. If |features| is None, return.
+1. [=list/Append=] each [=powerful feature=] name to the {{[[Types]]}} [=ordered set=].
+1. Set {{[[InitialPermissionStatus]]}} to the result of
+    [=HTMLPermissionElement/get the current permission state=].
+
+Note: The supported sets of [=powerful features=] is [=implementation-defined=].
+</div>
+
+To query whether a feature (or group of features) is supported:
+
+<div algorithm="HTMLPermissionElement/isTypeSupported()">
+HTMLPermissionElement's {{HTMLPermissionElement/isTypeSupported()}} method
+steps with argument with {{DOMString}} |type|are:
+
+1. Let |features| be the result of calling [=parse a type string=] with |type|.
+1. Return whether |features| is not None.
+
+</div>
+
+<div algorithm>
+To <dfn>parse a type string</dfn> a given string |type|:
+
+1. Let |list| be the result of parsing |type| as a string of
+    [=powerful feature=] names, seperated by whitespace.
+1. If any errors occured, return None.
+1. Check if the set of [=powerful features=] is supported for the
+    {{HTMLPermissionElement}} by the [=user agent=]. If not, return None.
+1. Return |list|.
+
+</div>
+
+## <{permission}> element algorithms ## {#permission-element-algorithms}
+
+<div algorithm="HTMLPermissionElement/constructor">
+The {{HTMLPermissionElement}} constructor steps are:
+
+1. Initialize the internal {{[[Types]]}} slot to null.
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
+1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
+1. Initialize the internal {{[[LastNotifiedInvalidReason]]}} with the empty
+    string.
+1. Initialize the internal {{[[InitialPermissionStatus]]}} to
+    the result of [=HTMLPermissionElement/get the current permission state=].
+
+</div>
+
+<div algorithm="HTMLPermissionElement/insertion steps">
+The {{HTMLPermissionElement}} [=insertion steps=] are:
+
+1. If {{[[Types]]}} is null, set {{[[Types]]}} to &laquo;[]&raquo;.
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
+1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[PermissionElements]]}}.
+1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
+1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
+    constructing a new {{IntersectionObserver}} with
+    [=HTMLPermissionElement/IntersectionObserver callback=] and
+    &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
+1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
+1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
+    with reason {{InPagePermissionMixinBlockerReason/type_invalid}}.
+1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
+    with {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
+1. [=Add an expiring blocker=] with reason
+    {{InPagePermissionMixinBlockerReason/recently_attached}}.
+1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
+    [=this=]
+    is a [=fenced navigable=], then [=add a permanent blocker=]
+    with {{InPagePermissionMixinBlockerReason/illegal_subframe}}.
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
+
+</div>
+
+<div algorithm="HTMLPermissionElement/removing steps">
+The {{HTMLPermissionElement}} [=removing steps=] are:
+
+1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[PermissionElements]]}}.
+1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
+
+</div>
+
+<div algorithm=activation>
+A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| is:
+
+1. [=Assert=]: |element|'s {{[[Types]]}} is not null.
+1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
+1. If |event|.{{Event/isTrusted}} is false, then return.
+1. If |element|.{{InPagePermissionMixin/isValid}} is false, then return.
+1. Let |descriptor| be the result of [=build a permission descriptor=] for
+    |element|.
+1. [=Request permission to use=] the [=powerful features=] described by
+    |descriptor|.
+1. If the previous step was cancelled or dismissed by the user, then
+    [=dispatch onpromptdismiss=] on [=this=] and return.
+
+    Issue: The [[PERMISSIONS]] spec assumes that [=request permission to use=]
+    will always succeed. That is, it assumes that the user will always make a
+    choice and that the algorithm will always deliver a `grant`/`deny`
+    answer corresponding to that choice. But you can't force a user to do that.
+    Some [=user agents=] may have different UI affordances for an explicit
+    denial (e.g. a "deny" button) on one hand, and cancelling or dismissing the
+    request dialog (e.g. an "X" button in the top right corner). Here, we
+    distinguish between these two actions, despite no clear hook for this
+    in the underlying specification.
+
+1. [=Dispatch onpromptaction=] on [=this=].
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">build a permission descriptor</dfn> for an
+{{HTMLPermissionElement}} |element|:
+
+ISSUE: The [[Permissions]] specification assumes a descriptor describes a
+single permission without parameters (like an equivalent of
+{{PositionOptions/enableHighAccuracy}}). Here, we assume a permissions model
+that is more expressive. This needs to be resolved -- likely upstream,
+in [[Permissions]], plus adaptions here.
+
+1. Let |result| be a new {{PermissionDescriptor}}.
+1. Fill in |result|:
+    * Include the [=powerful feature=] names contained in
+        |element|'s {{[[Types]]}}.
+    * If |element|'s {{[[Types]]}} [=list/contains=] `"geolocation"` and
+        {{HTMLPermissionElement/preciseLocation}} is true, then |result| applies
+        to position requests with {{PositionOptions/enableHighAccuracy}} set
+        to true.
+1. Return |result|.
+
+</div>
+
+<div algorithm="HTMLPermissionElement/IntersectionObserver callback">
+The HTMLPermissionElement's <dfn for="HTMLPermissionElement">IntersectionObserver callback</dfn> implements {{IntersectionObserverCallback}} and runs the following steps:
+
+1. [=Assert=]: The {{IntersectionObserver}}'s {{IntersectionObserver/root}}
+    is the [=/document=]
+1. Let |entries| be the value of the first callback parameter, the
+    [=/list=] of {{IntersectionObserverEntry|intersection observer entries}}.
+1. [=Assert=]: |entries| is not [=list/is empty|empty=].
+1. Let |entry| be |entries|'s last [=list/item=].
+1. If |entry|.{{IntersectionObserverEntry/isVisible}}, then:
+    1. [=Remove blockers=] with {{InPagePermissionMixinBlockerReason/intersection_occluded_or_distorted}}.
+    1. [=Remove blockers=] with {{InPagePermissionMixinBlockerReason/intersection_out_of_viewport_or_clipped}}.
+1. Otherwise:
+    1. If |entry|.{{IntersectionObserverEntry/intersectionRatio}} >= 1, then:
+        1. Let |reason| be {{InPagePermissionMixinBlockerReason/intersection_occluded_or_distorted}}.
+    1. Otherwise:
+        1. Let |reason| be {{InPagePermissionMixinBlockerReason/intersection_out_of_viewport_or_clipped}}.
+    1. [=Add a temporary blocker=] with |reason|.
+1. If {{[[IntersectionRect]]}} does not equal
+    |entry|.{{IntersectionObserverEntry/intersectionRect}} then
+    [=add an expiring blocker=] with
+    {{InPagePermissionMixinBlockerReason/intersection_changed}}.
+1. Set {{[[IntersectionRect]]}} to
+    |entry|.{{IntersectionObserverEntry/intersectionRect}}
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
+
+ISSUE: Do I need to define dictionary equality?
+</div>
+
+<div algorithm>
+To determine whether an |element| is <dfn for="HTMLPermissionElement">type permissible</dfn>:
+
+1. [=Assert=]: |element|'s [=node navigable=]'s {{[[PermissionElements]]}}
+    [=set/contains=] |element|.
+1. Let |count| be 0.
+1. [=list/iterate|For each=] |current| in
+    |element|'s [=node navigable=]'s {{[[PermissionElements]]}}:
+    1. If |current| is |element|, then [=iteration/break=].
+    1. If |element|.{{[[Types]]}} [=set/equals=] |current|.{{[[Types]]}}
+        then increment |count| by 1.
+1. Return whether |count| is less than 3.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
+|document|:
+
+1. [=list/iterate|For each=] |current| in |document|'s
+    {{[[PermissionElements]]}}:
+    1. If |current| is [=type permissible=], then [=remove blockers=] with
+        {{InPagePermissionMixinBlockerReason/unsuccesful_registration}} from
+        |current|.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLPermissionElement">get the current permission state</dfn> for
+an {{HTMLPermissionElement}} |element|:
+
+1. Let |types| be |element|'s internal {{[[Types]]}}.
+1. If |types| is null or |types| is [=list/empty=],
+    return {{PermissionState/prompt}}.
+1. Let |current| be {{PermissionState/granted}}.
+1. [=list/iterate|For each=] |type| of |types|:
+    1. Let |state| be the result of [=/get the current permission state=] for
+        |type|.
+    1. Let |current| be the smaller of |current| and |state|, assuming the
+        following ordering:
+        {{PermissionState/granted}} >
+        {{PermissionState/prompt}} >
+        {{PermissionState/denied}}.
+1. Return |current|.
+
+ISSUE: It's not clear what the PermissionState for 'no valid permission type'
+    should be. Here I pick "prompt" based on Chrome's implementation; but that
+    choice is arbitrary.
+
+</div>
+
+## <{permission}> element event algorithms ## {#events}
+
+<div algorithm>
+To <dfn for=InPagePermissionMixin>dispatch onpromptaction</dfn> for |element|:
+
+1. Let |event| be a new {{Event}}.
+1. [=Event/Initialize=] |event| with
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+    "{{InPagePermissionMixin/onpromptaction}}",
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+    true, and
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+    true.
+1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+<div algorithm>
+To <dfn for=InPagePermissionMixin>dispatch onpromptdismiss</dfn> for |element|:
+
+1. Let |event| be a new {{Event}}.
+1. [=Event/Initialize=] |event| with
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+    "{{InPagePermissionMixin/onpromptdismiss}}",
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+    true, and
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+    true.
+1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+
+
+# The <dfn element export>geolocation</dfn> Element # {#geolocation-element}
+
+The HTML <{geolocation}> element can request access to
+<a permission>"geolocation"</a>.
+
+<dl class=element>
+ <dt>[=Categories=]:</dt>
+  <dd>[=Flow content=].</dd>
+  <dd>[=Phrasing content=].</dd>
+  <dd>[=Interactive content=].</dd>
+  <dd>[=Palpable content=].</dd>
+ <dt>[=Contexts in which this element can be used=]:</dt>
+  <dd>Where [=phrasing content=] is expected.</dd>
+ <dt>[=Content model=]:</dt>
+  <dd>[=Flow content=].</dd>
+ <dt>[=Content attributes=]:</dt>
+  <dd>[=Global attributes=].</dd>
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd></dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    [Exposed=Window]
+    interface HTMLGeolocationElement : HTMLElement {
+      [HTMLConstructor] constructor();
+
+      readonly attribute GeolocationPosition position;
+      readonly attribute GeolocationPositionError error;
+      [CEReactions] attribute boolean autolocate;
+      [CEReactions] attribute boolean watch;
+
+      attribute EventHandler onlocation;
+    };
+    HTMLGeolocationElement includes InPagePermissionMixin;
+   </pre>
+  </dd>
+</dl>
+
+The {{InPagePermissionMixin/isValid}} and
+{{InPagePermissionMixin/invalidReason}}, as well as the global
+<a attribute spec=html for=HTMLElement>lang</a> and
+<{htmlsvg-global/tabindex}> content attributes, and the
+{{InPagePermissionMixin/onpromptaction}},
+{{InPagePermissionMixin/onpromptdismiss}}, and
+{{InPagePermissionMixin/onvalidationstatuschange}} event handlers follow the
+description in [[#permission-mixin]].
+
+If the user has decided to allow access to geolocation information, the readonly
+attributes {{HTMLGeolocationElement/position}} and
+{{HTMLGeolocationElement/error}} reflect the current {{GeolocationPosition}}
+and {{GeolocationPositionError}} values, just like the {{PositionCallback}} and
+{{PositionErrorCallback}} callbacks (respectively) would have returned
+
+If the [=boolean=] attribute {{HTMLGeolocationElement/autolocate}} is true,
+and if the <a permission>"geolocation"</a> permission has already been granted by
+the user, then the location should be retrieved immediately when the
+<{geolocation}> element is attached to the document. If the permission has
+not already been granted at insertion time, then this attribute has no effect.
+
+If the [=boolean=] attribute {{HTMLGeolocationElement/watch}} is set to true,
+the {{HTMLGeolocationElement/onlocation}} event is called
+every time the position changes, matching the behaviour of {{Geolocation/watchPosition}}.
+
+When a location is available, an {{Event}} is [=/dispatched=] on the
+{{HTMLGeolocationElement/onlocation}} event handler. When the event is
+dispatched, the location, or information about a failure to retrieve the
+location, are available in the {{HTMLGeolocationElement/position}} or the
+{{HTMLGeolocationElement/error}} attributes. Depending on the
+{{HTMLGeolocationElement/watch}} element this happens once, or continously.
+
+
+# Security & Privacy Considerations # {#secpriv}
+
+Note: Security & Privacy Considerations can be found
+[here](https://github.com/WICG/PEPC/blob/main/explainer.md#security) &
+[there](https://github.com/WICG/PEPC/blob/main/explainer.md#privacy),
+in the [Explainer](https://github.com/WICG/PEPC/blob/main/explainer.md).
+This section will eventually contain a specification-worthy transcription
+of those Explainer sections.
