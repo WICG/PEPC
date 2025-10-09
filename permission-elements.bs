@@ -107,7 +107,7 @@ attention. The status quo is that users get a multitude of permission requests,
 where it's oftentimes unclear to users what the consequences of these requests
 might be.
 
-This spec introduces a new mechanism that requests access to
+This spec introduces a new mechanism that requests and initiates access to
 [=powerful features=] through an in-page element, with built-in protections
 against abuse. This wants to tie permission requests to the actual context
 in which they will be used, thus reducing "permission spam" and at the same
@@ -123,9 +123,9 @@ algorithms, and rendering rules.
 <dl class="element">
  <dt>[=Content attributes=]:</dt>
   <dd>{{InPagePermissionMixin/isValid}} — query whether the element can currently be activated.</dd>
-  <dd>{{InPagePermissionMixin/invalidReason}} — Return a string representation of why the element currently cannot be activated.</dd>
-  <dd>{{InPagePermissionMixin/onpromptdismiss}} — notifies when the user has dismissed the permission prompt.</dd>
-  <dd>{{InPagePermissionMixin/onpromptaction}} — notifies when a permission prompt has been answered by the user (positively or negatively).</dd>
+  <dd>{{InPagePermissionMixin/invalidReason}} — return a string representation of why the element currently cannot be activated.</dd>
+  <dd>{{InPagePermissionMixin/onpromptdismiss}} — notifies when the user has dismissed a permission prompt that resulted from an interaction with the element</dd>
+  <dd>{{InPagePermissionMixin/onpromptaction}} — notifies when a permission prompt that resulted from an interaction with the element has been answered by the user (positively or negatively).</dd>
   <dd>{{InPagePermissionMixin/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
  <dt>[=Accessibility considerations=]:</dt>
   <dd>TODO</dd>
@@ -168,14 +168,12 @@ onpromptdismiss: Event
 onvalidationstatuschange: Event
 </pre>
 
-ISSUE: onvalidationstatuschange is probably not a simple Event.
-
 
 ## {{InPagePermissionMixin|Mixin}} internal state ## {#mixin-internal-state}
 
-The HTML permission elements [=represent=] user-requestable [=permissions=],
-which the user can activate to enable (or disable) a particular permission or
-set of permissions. It is core to the these elements that such requests are
+The HTML permission elements [=represent=] capabilities gated by user-requestable [=permissions=],
+which the user can activate to allow the site to start accessing them.
+It is core to the these elements that such requests are
 triggered by the user, and not by the page's script. To enforce
 this, the element checks whether the activation event is {{Event/isTrusted|trusted}}. Additionally it watches a number of conditions, like whether the element is
 (partially) occluded, or if it has recently been moved. The element maintains
@@ -283,29 +281,29 @@ The permission elements keep track of "blockers", reasons why the element (curre
 <td>1
 <tr><th>{{InPagePermissionMixinBlockerReason/illegal_subframe}}
 <td>[=permanent blocker|permanent=]
-<td>When the <{permission}> element is used inside a <{fencedframe}>.
+<td>When the element is used inside a <{fencedframe}>.
 <td>2
 <tr><th>{{InPagePermissionMixinBlockerReason/unsuccesful_registration}}
 <td>[=temporary blocker|temporary=]
-<td>When too many other <{permission}> elements for the same
+<td>When too many other elements for the same
     [=powerful feature=] have been inserted into the same document.
 <td>3
 <tr><th>{{InPagePermissionMixinBlockerReason/recently_attached}}
 <td>[=expiring blocker|expiring=]
-<td>When the <{permission}> element has just been attached to the
+<td>When the element has just been attached to the
   DOM.
 <td>4
 <tr><th>{{InPagePermissionMixinBlockerReason/intersection_changed}}
 <td>[=expiring blocker|expiring=]
-<td>When the <{permission}> element is being moved.
+<td>When the element is being moved.
 <td>6
 <tr><th>{{InPagePermissionMixinBlockerReason/intersection_out_of_viewport_or_clipped}}
 <td>[=temporary blocker|temporary=]
-<td>When the <{permission}> element is not or not fully in the [=viewport=].
+<td>When the element is not or not fully in the [=viewport=].
 <td>7
 <tr><th>{{InPagePermissionMixinBlockerReason/intersection_occluded_or_distorted}}
 <td>[=temporary blocker|temporary=]
-<td>When the <{permission}> element is fully in the [=viewport=],
+<td>When the element is fully in the [=viewport=],
     but still not fully visible (e.g. because it's partly behind other content).
 <td>8
 <tr><th>{{InPagePermissionMixinBlockerReason/style_invalid}}
@@ -519,10 +517,10 @@ ISSUE: There isn't much precedence for describing the user agent UI in detail.
     It may be better to leave more freedom to user agents.
 
 The permission elements contains browser-chosen content, text and maybe an
-icon. Activating them will [=prompt the user to choose=].
+icon. Activating them will often [=prompt the user to choose=].
 This provides two bits of user interface that a user can interact with.
 The [=user agent=] is largely free to determine these &mdash; rendering of the
-<{permission}> element and the subsequent [=prompt the user to choose|permission
+element and the subsequent [=prompt the user to choose|permission
 prompt=] &mdash; in whichever way it thinks best convey's the element's intent.
 
 
@@ -691,7 +689,6 @@ The following CSS properties can be used normally:
     'border-top', 'border-right', 'border-bottom', 'border-left'
 * 'clear'
 * 'color-scheme'
-* 'contain'
 * 'contain-intrinsic-width'
 * 'contain-intrinsic-height'
 * 'container-name'
@@ -716,7 +713,6 @@ The following CSS properties can be used normally:
 * 'page'
 * 'position'
 * 'position-anchor'
-* 'content-visibility'
 * 'right'
 * 'scroll-margin' and its [[css-scroll-snap-1#longhands|longhands]],
     'scroll-margin-top', 'scroll-margin-right', 'scroll-margin'bottom',
