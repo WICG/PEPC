@@ -1191,17 +1191,28 @@ is set to true, the {{HTMLGeolocationElement/onlocation}} event is called
 every time the position changes, matching the behaviour of {{Geolocation/watchPosition}}.
 
 When a location is available, an {{Event}} is [=/dispatched=] on the
-{{HTMLGeolocationElement/onlocation}} event handler. When the event is
+<dfn attribute for=HTMLGeolocationElement>onlocation</dfn> event handler.
+When the event is
 dispatched, the location, or information about a failure to retrieve the
 location, are available in the {{HTMLGeolocationElement/position}} or the
 {{HTMLGeolocationElement/error}} attributes. Depending on the
-{{HTMLGeolocationElement/watch}} element this happens once, or continously.
+{{HTMLGeolocationElement/watch}} element this happens once (if absent or false),
+or continously (if true).
+
+<{geolocation}> wants to mirror the {{Geolocation}} interface, and there is a
+direct correspondance:
+
+<pre class=simpledef>
+position: Result of {{PositionCallback}}.
+error: Result of {{PositionErrorCallback}}.
+watch: Use {{Geolocation/watchPosition()}}.
+&not;&nbsp;watch: Use {{Geolocation/getCurrentPosition()}}.
+</pre>
 
 ## <{geolocation}> element internal state ## {#geolocation-element-internal-state}
 
-The <{geolocation}> element uses all the internal slots from the {{InPagePermissionMixin}}, described in [[#mixin-internal-state]].
-
-Additionally, <{geolocation}> has the following internal slots:
+The <{geolocation}> element uses all the internal slots from the {{InPagePermissionMixin}}, described in [[#mixin-internal-state]]. Additionally,
+<{geolocation}> has the following internal slots:
 
 * A constant <dfn attribute for=HTMLGeolocationElement>\[[watchIDs]]</dfn>,
     which is used with the [=request a position=] algorithm.
@@ -1316,10 +1327,16 @@ To <dfn for=HTMLGeolocationElement>maybe autolocate</dfn>:
 <div algorithm>
 To <dfn for=HTMLGeolocationElement>fetch location</dfn>:
 
-1. Let |positionCallback| be a callback that performs the following steps:
-    1. TODO.
-1. Let |errorCallback| be a callback that performs the following steps:
-    1. TODO.
+1. Let |positionCallback| be a {{PositionCallback}} that performs the following steps:
+    1. Set [=this=]'s {{[[positionError]]}} to undefined.
+    1. Set [=this=]'s {{[[position]]}} to {{PositionCallback}}'s position
+        argument.
+    1. [=Dispatch onlocation=] to [=this=].
+1. Let |errorCallback| be a {{PositionErrorCallback}} that performs the following steps:
+    1. Set [=this=]'s {{[[position]]}} to undefined.
+    1. Set [=this=]'s {{[[positionError]]}} to {{PositionCallback}}'s
+        positionError argument.
+    1. [=Dispatch onlocation=] to [=this=].
 1. Let |positionOptions| be &laquo;[]&raquo;
 1. Let |geolocation| be the [=relevant global object=]'s {{Geolocation}}.
 1. If [=this=]'s {{HTMLGeolocationElement/watch}} is true:
@@ -1328,6 +1345,17 @@ To <dfn for=HTMLGeolocationElement>fetch location</dfn>:
 1. Otherwise:
     1. [=Request a position=] with |geolocation|, |positionCallback|,
         |errorCallback|, |positionOptions|.
+
+</div>
+
+## <{geolocation}> element event algorithms ## {#geolocation-event-algorithms}
+
+<div algorithm>
+To <dfn>dispatch onlocation</dfn> for |element|:
+    1. Let |event| be a new {{Event}}.
+    1. [=Event/Initialize=] |event| with {{Event/type}}
+        "{{HTMLGeolocationElement/onlocation}}".
+    1. [=/Dispatch=] |event| to |element|.
 
 </div>
 
