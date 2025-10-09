@@ -1,6 +1,6 @@
 <pre class="metadata">
 Title: The HTML &lt;permission&gt; Element
-Status: CG-DRAFT
+Status: UD
 Group: WICG
 URL: https://wicg.github.io/PEPC/permission-element.html
 Repository: WICG/PEPC
@@ -79,6 +79,11 @@ dl, dd { padding-left: .5em; }
 /* vars in italics */
 dfn var { font-style: italic; }
 </style>
+
+NOTE: This draft has been superseded by
+[HTML Permission Elements](permission-elements.html), which deconstructs the
+<{permission}> element described here into a family of elements, each targeting
+a specific permission and use case.
 
 # Introduction # {#intro}
 
