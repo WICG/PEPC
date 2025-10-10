@@ -219,7 +219,7 @@ an internal {{[[BlockerList]]}} to keep track of this.
 
 ## {{InPagePermissionMixin|Mixin}}-supporting state at the [=/navigable=] ## {#mixin-navigable-state}
 
-In order to support the{{InPagePermissionMixin}}, the [=/navigable=] maintains
+In order to support the {{InPagePermissionMixin}}, the [=/navigable=] maintains
 an [=ordered set=] of elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
 
 
@@ -637,7 +637,6 @@ permission, geolocation {
   vertical-align: middle !important;
   text-emphasis: initial !important;
   text-shadow: initial !important;
-  -webkit-text-security: none !important;
 }
 </pre>
 
