@@ -181,16 +181,15 @@ an internal {{[[BlockerList]]}} to keep track of this.
 
 {{InPagePermissionMixin}} elements have the following internal slots:
 
-* <dfn attribute for="InPagePermissionMixin">\[[Types]]</dfn> is null
-    or an [=ordered set=] of [=powerful features=]. Null represents the
-    uninitialized state, which allows the value to be modified. The empty
-    list &laquo;&raquo; is the state in which no permission applies, and which
-    will no longer allow modification. Note that the
-    {{HTMLPermissionElement/type}} property reflects this internal state.
+* <dfn attribute for="InPagePermissionMixin">\[[Features]]</dfn> is null
+    or an [=ordered set=] of [=powerful features=]. For most permission
+    elements this is likely a fixed set, while for some this may be variable.
+    Making it an internal slot allows us to write algorithms that work for all
+    of them.
 
 * <dfn attribute for="InPagePermissionMixin">\[[InitialPermissionStatus]]</dfn>
     is a {{PermissionState}} that stores the initial {{PermissionState}} for
-    {{[[Types]]}}.
+    {{[[Features]]}}.
 
 * The <dfn attribute for="InPagePermissionMixin">\[[BlockerList]]</dfn> is a
     list of records, containing a
@@ -218,7 +217,11 @@ an internal {{[[BlockerList]]}} to keep track of this.
     dispatches.
 
 
-## {{InPagePermissionMixin|Mixin}}-supporting state at the navigable ## {#mixin-navigable-state}
+## {{InPagePermissionMixin|Mixin}}-supporting state at the [=/navigable=] ## {#mixin-navigable-state}
+
+In order to support the{{InPagePermissionMixin}}, the [=/navigable=] maintains
+an [=ordered set=] of elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
+
 
 ## {{InPagePermissionMixin|Mixin}} activation and activation blockers ## {#mixin-activation}
 
@@ -490,13 +493,42 @@ To <dfn for=InPagePermissionMixin>maybe dispatch onvalidstatechange</dfn> for |e
 
 </div>
 
+<div algorithm>
+To <dfn for=InPagePermissionMixin>dispatch onpromptaction</dfn> for |element|:
+
+1. Let |event| be a new {{Event}}.
+1. [=Event/Initialize=] |event| with
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+    "{{InPagePermissionMixin/onpromptaction}}",
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+    true, and
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+    true.
+1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+<div algorithm>
+To <dfn for=InPagePermissionMixin>dispatch onpromptdismiss</dfn> for |element|:
+
+1. Let |event| be a new {{Event}}.
+1. [=Event/Initialize=] |event| with
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+    "{{InPagePermissionMixin/onpromptdismiss}}",
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+    true, and
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+    true.
+1. [=/Dispatch=] |event| to |element|.
+
+</div>
 
 # Common Rendering, and Styling Restrictions # {#rendering}
 
 The permission elements are [=non-devolvable widget=] and are chiefly
 rendered like a <{button}>. The button label is largely expected to be
 determined by the browser, rather than the page, and reflects one or several
-of the [=powerful features=] listed in {{[[Types]]}}, expressed as text and
+of the [=powerful features=] listed in {{[[Features]]}}, expressed as text and
 icons. The element may also convey information about the current state of
 the underlying [=powerful feature=]. The actual rendering is defined by each
 element.
@@ -526,7 +558,7 @@ prompt=] &mdash; in whichever way it thinks best convey's the element's intent.
 
 UI options for the permission elements' presentation include:
 
-* Name the [=powerful features=] listed in {{[[Types]]}}, in the language
+* Name the [=powerful features=] listed in {{[[Features]]}}, in the language
     indicated by the [=language=] of the element. Note that this would
     always be the language indicated by the <{html-global/lang}> attribute,
     if present.
@@ -597,11 +629,15 @@ A permission element is expected to render with the following styles:
 @namespace "http://www.w3.org/1999/xhtml";
 permission, geolocation {
   opacity: 1.0;
-  line-height: normal;
-  whitespace: nowrap;
-  user-select: none;
-  appearance: auto;
+  line-height: normal !important;
+  whitespace: nowrap !important;
+  user-select: none !important;
+  appearance: auto !important;
   box-sizing: content-box !important;
+  vertical-align: middle !important;
+  text-emphasis: initial !important;
+  text-shadow: initial !important;
+  -webkit-text-security: none !important;
 }
 </pre>
 
@@ -827,11 +863,6 @@ for the global <{htmlsvg-global/tabindex}> content attribute on the
 
 The <{permission}> element has the same internal slots as the {{InPagePermissionMixin}}, described in [[#mixin-internal-state]].
 
-## <{permission}>-supporting state at the [=/navigable=] ## {#permission-element-external-state}
-
-In order to support the <{permission}> element, the [=/navigable=] maintains
-an [=ordered set=] of <{permission}> elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
-
 ## <{permission}> element interesting behaviours ## {#permission-element-very-interesting}
 
 The <{permission}> element has a few surprising behaviours, to support its
@@ -868,21 +899,21 @@ pepc.type;  // "". Reflects the internal state, which has not changed.
 <div algorithm="HTMLPermissionElement/types getter">
 The HTMLPermissionElement's {{HTMLPermissionElement/type}} getter steps are:
 
-1. If {{[[Types]]}} is null: Return `""`.
+1. If {{[[Features]]}} is null: Return `""`.
 1. Return a string, containing the concatenation of all [=powerful feature=]
-    names in {{[[Types]]}}, seperated by " ".
+    names in {{[[Features]]}}, seperated by " ".
 
 </div>
 
 <div algorithm="HTMLPermissionElement/types setter">
 The HTMLPermissionElement's {{HTMLPermissionElement/type}} setter steps are:
 
-1. If {{[[Types]]}} is not null: Return.
-1. Set {{[[Types]]}} to &laquo;&raquo;.
+1. If {{[[Features]]}} is not null: Return.
+1. Set {{[[Features]]}} to &laquo;&raquo;.
 1. Let |features| be the result of calling [=parse a type string=] with the
     input string.
 1. If |features| is None, return.
-1. [=list/Append=] each [=powerful feature=] name to the {{[[Types]]}} [=ordered set=].
+1. [=list/Append=] each [=powerful feature=] name to the {{[[Features]]}} [=ordered set=].
 1. Set {{[[InitialPermissionStatus]]}} to the result of
     [=HTMLPermissionElement/get the current permission state=].
 
@@ -917,7 +948,7 @@ To <dfn>parse a type string</dfn> a given string |type|:
 <div algorithm>
 The {{HTMLPermissionElement}} <dfn constructor for=HTMLPermissionElement>constructor()</dfn> steps are:
 
-1. Initialize the internal {{[[Types]]}} slot to null.
+1. Initialize the internal {{[[Features]]}} slot to null.
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
 1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
 1. Initialize the internal {{[[LastNotifiedInvalidReason]]}} with the empty
@@ -930,7 +961,7 @@ The {{HTMLPermissionElement}} <dfn constructor for=HTMLPermissionElement>constru
 <div algorithm="HTMLPermissionElement/insertion steps">
 The {{HTMLPermissionElement}} [=insertion steps=] are:
 
-1. If {{[[Types]]}} is null, set {{[[Types]]}} to &laquo;&raquo;.
+1. If {{[[Features]]}} is null, set {{[[Features]]}} to &laquo;&raquo;.
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
 1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[PermissionElements]]}}.
 1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
@@ -939,7 +970,7 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
     [=HTMLPermissionElement/IntersectionObserver callback=] and
     &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
-1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
+1. If {{[[Features]]}} [=list/is empty=], then [=add a permanent blocker=]
     with reason {{InPagePermissionMixinBlockerReason/type_invalid}}.
 1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
     with {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
@@ -965,8 +996,8 @@ The {{HTMLPermissionElement}} [=removing steps=] are:
 <div algorithm=activation>
 A <{permission}> |element|'s [=EventTarget/activation behavior=] given |event| is:
 
-1. [=Assert=]: |element|'s {{[[Types]]}} is not null.
-1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
+1. [=Assert=]: |element|'s {{[[Features]]}} is not null.
+1. If |element|'s {{[[Features]]}} [=list/is empty=], then return.
 1. If |event|.{{Event/isTrusted}} is false, then return.
 1. If |element|.{{InPagePermissionMixin/isValid}} is false, then return.
 1. Let |descriptor| be the result of [=build a permission descriptor=] for
@@ -1003,7 +1034,7 @@ in [[Permissions]], plus adaptions here.
 1. Let |result| be a new {{PermissionDescriptor}}.
 1. Fill in |result|:
     * Include the [=powerful feature=] names contained in
-        |element|'s {{[[Types]]}}.
+        |element|'s {{[[Features]]}}.
 1. Return |result|.
 
 </div>
@@ -1046,7 +1077,7 @@ To determine whether an |element| is <dfn for="HTMLPermissionElement">type permi
 1. [=list/iterate|For each=] |current| in
     |element|'s [=node navigable=]'s {{[[PermissionElements]]}}:
     1. If |current| is |element|, then [=iteration/break=].
-    1. If |element|.{{[[Types]]}} [=set/equals=] |current|.{{[[Types]]}}
+    1. If |element|.{{[[Features]]}} [=set/equals=] |current|.{{[[Features]]}}
         then increment |count| by 1.
 1. Return whether |count| is less than 3.
 
@@ -1068,7 +1099,7 @@ To <dfn for="HTMLPermissionElement">recheck type permissibility</dfn> for a
 To <dfn for="HTMLPermissionElement">get the current permission state</dfn> for
 an {{HTMLPermissionElement}} |element|:
 
-1. Let |types| be |element|'s internal {{[[Types]]}}.
+1. Let |types| be |element|'s internal {{[[Features]]}}.
 1. If |types| is null or |types| is [=list/empty=],
     return {{PermissionState/prompt}}.
 1. Let |current| be {{PermissionState/granted}}.
@@ -1087,40 +1118,6 @@ ISSUE: It's not clear what the PermissionState for 'no valid permission type'
     choice is arbitrary.
 
 </div>
-
-## <{permission}> element event algorithms ## {#events}
-
-<div algorithm>
-To <dfn for=InPagePermissionMixin>dispatch onpromptaction</dfn> for |element|:
-
-1. Let |event| be a new {{Event}}.
-1. [=Event/Initialize=] |event| with
-    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{InPagePermissionMixin/onpromptaction}}",
-    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
-    true, and
-    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
-    true.
-1. [=/Dispatch=] |event| to |element|.
-
-</div>
-
-<div algorithm>
-To <dfn for=InPagePermissionMixin>dispatch onpromptdismiss</dfn> for |element|:
-
-1. Let |event| be a new {{Event}}.
-1. [=Event/Initialize=] |event| with
-    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{InPagePermissionMixin/onpromptdismiss}}",
-    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
-    true, and
-    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
-    true.
-1. [=/Dispatch=] |event| to |element|.
-
-</div>
-
-
 
 # The <dfn element export>geolocation</dfn> Element # {#geolocation-element}
 
@@ -1222,7 +1219,7 @@ The <{geolocation}> element uses all the internal slots from the {{InPagePermiss
 <div algorithm>
 The {{HTMLGeolocationElement}} <dfn constructor for=HTMLGeolocationElement>constructor()</dfn> steps are:
 
-1. Initialize the internal {{[[Types]]}} slot to &laquo; <a permission>"geolocation"</a> &raquo;
+1. Initialize the internal {{[[Features]]}} slot to &laquo; <a permission>"geolocation"</a> &raquo;
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
 1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
 1. Initialize the internal {{[[LastNotifiedInvalidReason]]}} with the empty
@@ -1248,7 +1245,7 @@ The {{HTMLGeolocationElement}} [=insertion steps=] are:
     [=HTMLPermissionElement/IntersectionObserver callback=] and
     &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
-1. If {{[[Types]]}} [=list/is empty=], then [=add a permanent blocker=]
+1. If {{[[Features]]}} [=list/is empty=], then [=add a permanent blocker=]
     with reason {{InPagePermissionMixinBlockerReason/type_invalid}}.
 1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
     with {{InPagePermissionMixinBlockerReason/unsuccesful_registration}}.
@@ -1275,8 +1272,8 @@ The {{HTMLGeolocationElement}} [=removing steps=] are:
 <div algorithm="HTMLGeolocationElement/activation">
 The {{HTMLGeolocationElement}} |element|'s [=EventTarget/activation behavior=] given |event| is:
 
-1. [=Assert=]: |element|'s {{[[Types]]}} is not null.
-1. If |element|'s {{[[Types]]}} [=list/is empty=], then return.
+1. [=Assert=]: |element|'s {{[[Features]]}} is not null.
+1. If |element|'s {{[[Features]]}} [=list/is empty=], then return.
 1. If |event|.{{Event/isTrusted}} is false, then return.
 1. If |element|.{{InPagePermissionMixin/isValid}} is false, then return.
 1. Let |descriptor| be the result of [=build a permission descriptor=] for
@@ -1297,6 +1294,7 @@ The {{HTMLGeolocationElement}} |element|'s [=EventTarget/activation behavior=] g
     in the underlying specification.
 
 1. [=Dispatch onpromptaction=] on [=this=].
+1. [=Fetch location=].
 
 </div>
 
