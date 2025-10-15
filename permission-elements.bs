@@ -108,16 +108,16 @@ where it's oftentimes unclear to users what the consequences of these requests
 might be.
 
 This spec introduces a new mechanism that requests and initiates access to
-[=powerful features=] through an in-page element, with built-in protections
+[=powerful features=] through in-page elements, with built-in protections
 against abuse. This wants to tie permission requests to the actual context
 in which they will be used, thus reducing "permission spam" and at the same
 time providing implementations with a better signal of user intent.
 
 
-# {{InPagePermissionMixin}}: Common Behaviours Of The HTML Permission Elements # {#permission-mixin}
+# Common Behaviours Of The HTML Permission Elements: {{InPagePermissionMixin}} # {#permission-mixin}
 
 The elements in this specification exhibit a number of common behaviours, which
-are captured by the {{InPagePermissionMixin}} and the associated state,
+are captured by the {{InPagePermissionMixin}} and its associated state,
 algorithms, and rendering rules.
 
 <dl class="element">
@@ -161,13 +161,13 @@ for the global <{htmlsvg-global/tabindex}> content attribute on the
 element is 0.
 
 The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on elements that include the {{InPagePermissionMixin}}:
-
+<dfn lt="permission elements attributes">
 <pre class=simpledef>
 onpromptaction: Event
 onpromptdismiss: Event
 onvalidationstatuschange: Event
 </pre>
-
+</dfn>
 
 ## {{InPagePermissionMixin|Mixin}} internal state ## {#mixin-internal-state}
 
@@ -798,7 +798,7 @@ Note: The <{permission}> element is the original proposed in-page permission
   expect that this element will be removed in favour of the more specific
   elements detailled in the following chapters.
 
-The HTML <{permission}> element can request arbitrary [=powerful features=].
+The <{permission}> element can request arbitrary [=powerful features=].
 
 <dl class="element">
  <dt>[=Categories=]:</dt>
@@ -809,24 +809,16 @@ The HTML <{permission}> element can request arbitrary [=powerful features=].
  <dt>[=Contexts in which this element can be used=]:</dt>
   <dd>Where [=phrasing content=] is expected.</dd>
  <dt>[=Content model=]:</dt>
-  <dd>[=flow content=].</dd>
+  <dd>[=Flow content=].</dd>
  <dt>[=Content attributes=]:</dt>
   <dd>[=Global attributes=]</dd>
-  <dd>{{HTMLPermissionElement/type}} — Type of permission this element applies to.</dd>
+  <dd>[=Permission elements attributes=]</dd>
+  <dd><{permission/type}> — Type of permission this element applies to.</dd>
+  <dd><{permission/lang}> — Like the global <a element-attr for=html-global>lang</a> attribute.
  <dt>[=Accessibility considerations=]:</dt>
   <dd></dd>
  <dt>[=DOM interface=]:</dt>
-  <dd>
-   <pre class=idl>
-    [Exposed=Window]
-    interface HTMLPermissionElement : HTMLElement {
-      [HTMLConstructor] constructor();
-      [CEReactions, Reflect] attribute DOMString type;
-      static boolean isTypeSupported(DOMString type);
-    };
-    HTMLPermissionElement includes InPagePermissionMixin;
-   </pre>
-  </dd>
+  <dd>{{HTMLPermissionElement}}</dd>
 </dl>
 
 ISSUE: Add accessibility considerations.
@@ -836,27 +828,42 @@ ISSUE: Check attribute & event handler & invalid reason names against
 
 The <{permission}> element's content, if any, are its [=fallback content=].
 
-The <dfn attribute for=HTMLPermissionElement>type</dfn> attribute controls the behavior of the
-permission element when it is activated. Is is an [=enumerated attribute=],
+The <dfn element-attr for=permission>type</dfn> attribute controls the behavior
+of the
+<{permission}> element when it is activated. Is is an [=enumerated attribute=],
 whose values are the [=powerful feature/names=] of [=powerful features=]. It
 has neither a
 [=missing value default=] state nor a [=invalid value default=] state.
 
-The {{HTMLPermissionElement/isTypeSupported()}} [=static operation=] whether a
-gives {{HTMLPermissionElement/type}}, that is, a given
-[=enumerated attribute|enumeration=] of [=powerful features=], is supported.
-It predicts whether creating a <{permission}> element and assigning the given
-{{HTMLPermissionElement/type}} string will work, or whether it will create
-an element blocked by a {{InPagePermissionMixinBlockerReason/type_invalid}}
-[=permanent blocker=].
-
-The global <a attribute spec=html for=HTMLElement>lang</a> attribute is
+The <dfn element-attr for=permission>lang</dfn> attribute is the same as the
+global <a element-attr for=html-global>lang</a> attribute. It is
 observed by the <{permission}> element to select localized text.
 
 The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
 for the global <{htmlsvg-global/tabindex}> content attribute on the
 <{permission}> element is 0.
 
+<pre class=idl>
+[Exposed=Window]
+interface HTMLPermissionElement : HTMLElement {
+  [HTMLConstructor] constructor();
+  [CEReactions, Reflect] attribute DOMString type;
+  static boolean isTypeSupported(DOMString type);
+};
+HTMLPermissionElement includes InPagePermissionMixin;
+</pre>
+
+The {{HTMLPermissionElement/type}} attribute [=reflects=] the <{permission/type}> element attribute.
+
+The {{HTMLPermissionElement/isTypeSupported(type)}}
+[=static operation=] determines whether a given {{DOMString}}
+{{HTMLPermissionElement/isTypeSupported(type)/type}},
+that is, a given
+[=enumerated attribute|enumeration=] of [=powerful features=], is supported.
+It predicts whether creating a <{permission}> element and assigning the given
+{{HTMLPermissionElement/type}} string will work, or whether it will create
+an element blocked by a {{InPagePermissionMixinBlockerReason/type_invalid}}
+[=permanent blocker=].
 
 ## <{permission}> element internal state ## {#permission-element-internal-state}
 
@@ -1135,25 +1142,13 @@ The HTML <{geolocation}> element can request access to
   <dd>[=Flow content=].</dd>
  <dt>[=Content attributes=]:</dt>
   <dd>[=Global attributes=].</dd>
+  <dd>[=Permission elements attributes=].</dd>
+  <dd><{geolocation/autolocate}> — Whether to locate right away (if permission has already been granted).</dd>
+  <dd><{geolocation/watch}> — Wether to read the position once, or watch it continously.</dd>
  <dt>[=Accessibility considerations=]:</dt>
   <dd></dd>
  <dt>[=DOM interface=]:</dt>
-  <dd>
-   <pre class=idl>
-    [Exposed=Window]
-    interface HTMLGeolocationElement : HTMLElement {
-      [HTMLConstructor] constructor();
-
-      readonly attribute GeolocationPosition position;
-      readonly attribute GeolocationPositionError error;
-      [CEReactions, Reflect] attribute boolean autolocate;
-      [CEReactions, Reflect] attribute boolean watch;
-
-      attribute EventHandler onlocation;
-    };
-    HTMLGeolocationElement includes InPagePermissionMixin;
-   </pre>
-  </dd>
+  <dd>{{HTMLGeolocationElement}}</dd>
 </dl>
 
 The {{InPagePermissionMixin/isValid}} and
@@ -1164,6 +1159,28 @@ The {{InPagePermissionMixin/isValid}} and
 {{InPagePermissionMixin/onpromptdismiss}}, and
 {{InPagePermissionMixin/onvalidationstatuschange}} event handlers follow the
 description in [[#permission-mixin]].
+
+The <dfn element-attr for=geolocation>autolocate</dfn> attribute determines
+whether the <{geolocation}> element should start locating immediately (if
+permission has already been granted).
+
+The <dfn element-attr for=geolocation>watch</dfn> attribute determine whether
+the <{geolocation}> element report the location once or continously.
+
+<pre class=idl>
+[Exposed=Window]
+interface HTMLGeolocationElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  readonly attribute GeolocationPosition position;
+  readonly attribute GeolocationPositionError error;
+  [CEReactions, Reflect] attribute boolean autolocate;
+  [CEReactions, Reflect] attribute boolean watch;
+
+  attribute EventHandler onlocation;
+};
+HTMLGeolocationElement includes InPagePermissionMixin;
+</pre>
 
 If the user has decided to allow access to geolocation information, the
 readonly attributes <dfn attribute for=HTMLGeolocationElement>position</dfn> and
@@ -1191,8 +1208,8 @@ location, are available in the {{HTMLGeolocationElement/position}} or the
 {{HTMLGeolocationElement/watch}} element this happens once (if absent or false),
 or continously (if true).
 
-<{geolocation}> wants to mirror the {{Geolocation}} interface, and there is a
-direct correspondance:
+{{HTMLGeolocationElement}} wants to mirror the {{Geolocation}} interface.
+There is a direct correspondance:
 
 <pre class=simpledef>
 position: Result of {{PositionCallback}}.
