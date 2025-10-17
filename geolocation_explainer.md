@@ -33,7 +33,7 @@ Example code for how the `<geolocation>` element might be used:
 <geolocation id="geo"
              onlocation="populateAddress()"
              autolocate
-             precise>
+             accuracymode="precise">
 <!-- here maybe some fallback contents -->
 </geolocation>
 <script>
