@@ -4,9 +4,9 @@
   <title>The HTML Permission Elements</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
+  <meta content="Bikeshed version 7b3ff057a, updated Sun Nov 9 18:39:50 2025 -0800" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-elements.html" rel="canonical">
-  <meta content="63728b43b015845c5a44b99a37bdfcefe703aad5" name="revision">
+  <meta content="b60a37de84d810203e8c29cbdbc4b9b3bcf18406" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -340,7 +340,7 @@ body {
 }
 .invalid.example:not(.no-marker)::before,
 .illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
+    content: "Invalid Example " counter(example);
 }
 
 figcaption {
@@ -756,9 +756,9 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
 </style>
  <body class="h-entry">
   <div class="head">
-   <h1 class="p-name no-ref" id="title">The HTML Permission Elements</h1>
+   <h1 class="no-ref p-name" id="title">The HTML Permission Elements</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2025-10-17">17 October 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-14">14 November 2025</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -767,7 +767,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
      <dd><a href="https://github.com/WICG/PEPC/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editor:
-     <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="https://www.google.com/">Daniel Vogelheim</a> (<span class="p-org org">Google LLC</span>) <a class="u-email email" href="mailto:vogelheim@google.com">vogelheim@google.com</a>
+     <dd class="editor h-card p-author vcard"><a class="fn p-name u-url url" href="https://www.google.com/">Daniel Vogelheim</a> (<span class="org p-org">Google LLC</span>) <a class="email u-email" href="mailto:vogelheim@google.com">vogelheim@google.com</a>
     </dl>
    </div>
    <div data-fill-with="warning"></div>
@@ -777,7 +777,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
-   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>HTML elements to request browser permissions in-page.</p>
    <p>This specifies a set of new HTML elements, whose common goal is to provide
 users with a way to control browser permissions and the associated
@@ -789,7 +789,7 @@ These permission elements aim to be more accessible, more secure, and more
 user friendly than the current, script-triggered permission flows.</p>
   </div>
   <div data-fill-with="at-risk"></div>
-  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+  <h2 class="heading no-num no-ref no-toc settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
    <p>
   This specification was published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
@@ -806,7 +806,7 @@ user friendly than the current, script-triggered permission flows.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
-   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
     <li>
@@ -901,7 +901,7 @@ algorithms, and rendering rules.</p>
     <dd>TODO
     <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom">DOM interface</a>:
     <dd>
-<pre class="idl highlight def"><c- b>interface</c-> <c- b>mixin</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="inpagepermissionmixin"><code><c- g>InPagePermissionMixin</c-></code></dfn> {
+<pre class="def highlight idl"><c- b>interface</c-> <c- b>mixin</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="inpagepermissionmixin"><code><c- g>InPagePermissionMixin</c-></code></dfn> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-inpagepermissionmixin-isvalid" id="ref-for-dom-inpagepermissionmixin-isvalid①"><c- g>isValid</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-inpagepermissionmixinblockerreason" id="ref-for-enumdef-inpagepermissionmixinblockerreason"><c- n>InPagePermissionMixinBlockerReason</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="InPagePermissionMixinBlockerReason" href="#dom-inpagepermissionmixin-invalidreason" id="ref-for-dom-inpagepermissionmixin-invalidreason①"><c- g>invalidReason</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-inpagepermissionmixin-initialpermissionstatus" id="ref-for-dom-inpagepermissionmixin-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
@@ -995,7 +995,7 @@ from being activated.</p>
    <p>The majority of these behaviours should be identical to all permission elements.
 For simplicity, we’ll also include blockers that only apply to one or a subset
 of elements.</p>
-<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-inpagepermissionmixinblockerreason"><code><c- g>InPagePermissionMixinBlockerReason</c-></code></dfn> {
+<pre class="def highlight idl"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-inpagepermissionmixinblockerreason"><code><c- g>InPagePermissionMixinBlockerReason</c-></code></dfn> {
   // No blocker reason.
   <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixinBlockerReason" data-dfn-type="enum-value" data-export id="dom-inpagepermissionmixinblockerreason"><code><c- s>""</c-></code></dfn>,
 
@@ -1545,14 +1545,14 @@ permission <c- p>{</c->
 </pre>
    <p>Additionally, some rules apply based on conditions not easily expressible as
 CSS.</p>
-   <p>If <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> is <code>auto</code>, then apply:</p>
+   <p>If <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> is <code>auto</code>, then apply:</p>
 <pre class="highlight lang-css"><c- n>@namespace</c-> <c- s>"http://www.w3.org/1999/xhtml"</c-><c- p>;</c->
 permission <c- p>{</c->
   <c- k>padding-top</c-><c- p>:</c-> <c- nf>clamp</c-><c- p>(</c-><c- m>1</c-><c- k>em</c-><c- p>,</c-> computed<c- p>,</c-> none<c- p>);</c->
   <c- k>padding-bottom</c-><c- p>:</c-> <c- nf>calc</c-><c- p>(</c->padding-top<c- p>);</c->
 <c- p>}</c->
 </pre>
-   <p>If <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a> is <code>auto</code>, then apply:</p>
+   <p>If <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a> is <code>auto</code>, then apply:</p>
 <pre class="highlight lang-css"><c- n>@namespace</c-> <c- s>"http://www.w3.org/1999/xhtml"</c-><c- p>;</c->
 permission <c- p>{</c->
   <c- k>padding-left</c-><c- p>:</c-> <c- nf>clamp</c-><c- p>(</c->none<c- p>,</c-> computed<c- p>,</c-> <c- m>5</c-><c- k>em</c-><c- p>);</c->
@@ -1576,114 +1576,114 @@ permission <c- p>{</c->
    <p>The following CSS properties can be used normally:</p>
    <ul>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-kerning" id="ref-for-propdef-font-kerning">font-kerning</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-kerning" id="ref-for-propdef-font-kerning">font-kerning</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-optical-sizing" id="ref-for-propdef-font-optical-sizing">font-optical-sizing</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-optical-sizing" id="ref-for-propdef-font-optical-sizing">font-optical-sizing</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-stretch" id="ref-for-propdef-font-stretch">font-stretch</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-stretch" id="ref-for-propdef-font-stretch">font-stretch</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight" id="ref-for-propdef-font-synthesis-weight">font-synthesis-weight</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight" id="ref-for-propdef-font-synthesis-weight">font-synthesis-weight</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-style" id="ref-for-propdef-font-synthesis-style">font-synthesis-style</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-style" id="ref-for-propdef-font-synthesis-style">font-synthesis-style</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-small-caps" id="ref-for-propdef-font-synthesis-small-caps">font-synthesis-small-caps</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-small-caps" id="ref-for-propdef-font-synthesis-small-caps">font-synthesis-small-caps</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-feature-settings" id="ref-for-propdef-font-feature-settings">font-feature-settings</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-feature-settings" id="ref-for-propdef-font-feature-settings">font-feature-settings</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-color-adjust-1/#propdef-forced-color-adjust" id="ref-for-propdef-forced-color-adjust">forced-color-adjust</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-color-adjust-1/#propdef-forced-color-adjust" id="ref-for-propdef-forced-color-adjust">forced-color-adjust</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://svgwg.org/svg2-draft/painting.html#TextRenderingProperty" id="ref-for-TextRenderingProperty">text-rendering</a></p>
+     <p><a class="css property" data-link-type="property" href="https://svgwg.org/svg2-draft/painting.html#TextRenderingProperty" id="ref-for-TextRenderingProperty">text-rendering</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-align-self" id="ref-for-propdef-align-self">align-self</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-align-self" id="ref-for-propdef-align-self">align-self</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name" id="ref-for-propdef-anchor-name">anchor-name</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name" id="ref-for-propdef-anchor-name">anchor-name</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border" id="ref-for-propdef-border">border</a> and all
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border" id="ref-for-propdef-border">border</a> and all
 <a href="https://drafts.csswg.org/css-backgrounds-3/#border-shorthands">border shorthand properties</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-top" id="ref-for-propdef-border-top">border-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-right" id="ref-for-propdef-border-right">border-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-bottom" id="ref-for-propdef-border-bottom">border-bottom</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-left" id="ref-for-propdef-border-left">border-left</a></p>
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-top" id="ref-for-propdef-border-top">border-top</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-right" id="ref-for-propdef-border-right">border-right</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-bottom" id="ref-for-propdef-border-bottom">border-bottom</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-left" id="ref-for-propdef-border-left">border-left</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-clear" id="ref-for-propdef-clear">clear</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-clear" id="ref-for-propdef-clear">clear</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-color-adjust-1/#propdef-color-scheme" id="ref-for-propdef-color-scheme">color-scheme</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-color-adjust-1/#propdef-color-scheme" id="ref-for-propdef-color-scheme">color-scheme</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-width" id="ref-for-propdef-contain-intrinsic-width">contain-intrinsic-width</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-width" id="ref-for-propdef-contain-intrinsic-width">contain-intrinsic-width</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-height" id="ref-for-propdef-contain-intrinsic-height">contain-intrinsic-height</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-height" id="ref-for-propdef-contain-intrinsic-height">contain-intrinsic-height</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-name" id="ref-for-propdef-container-name">container-name</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-name" id="ref-for-propdef-container-name">container-name</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-type" id="ref-for-propdef-container-type">container-type</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-type" id="ref-for-propdef-container-type">container-type</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-reset" id="ref-for-propdef-counter-reset">counter-reset</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-increment" id="ref-for-propdef-counter-increment">counter-increment</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-set" id="ref-for-propdef-counter-set">counter-set</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-reset" id="ref-for-propdef-counter-reset">counter-reset</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-increment" id="ref-for-propdef-counter-increment">counter-increment</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-set" id="ref-for-propdef-counter-set">counter-set</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex" id="ref-for-propdef-flex">flex</a> and its longhands, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow" id="ref-for-propdef-flex-grow">flex-grow</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink" id="ref-for-propdef-flex-shrink">flex-shrink</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis" id="ref-for-propdef-flex-basis">flex-basis</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex" id="ref-for-propdef-flex">flex</a> and its longhands, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow" id="ref-for-propdef-flex-grow">flex-grow</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink" id="ref-for-propdef-flex-shrink">flex-shrink</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis" id="ref-for-propdef-flex-basis">flex-basis</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-float" id="ref-for-propdef-float">float</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-float" id="ref-for-propdef-float">float</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.fxtf.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.fxtf.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-self" id="ref-for-propdef-justify-self">justify-self</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-self" id="ref-for-propdef-justify-self">justify-self</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-left" id="ref-for-propdef-left">left</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-left" id="ref-for-propdef-left">left</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-order" id="ref-for-propdef-order">order</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-order" id="ref-for-propdef-order">order</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-break-3/#propdef-orphans" id="ref-for-propdef-orphans">orphans</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-break-3/#propdef-orphans" id="ref-for-propdef-orphans">orphans</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a> and mostly its <a href="https://drafts.csswg.org/css-ui-4/#outline">longhands</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-color" id="ref-for-propdef-outline-color">outline-color</a> and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-style" id="ref-for-propdef-outline-style">outline-style</a>.
-<br>Note that <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-offset" id="ref-for-propdef-outline-offset">outline-offset</a> is clamped by the rules above.</p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a> and mostly its <a href="https://drafts.csswg.org/css-ui-4/#outline">longhands</a>,
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-color" id="ref-for-propdef-outline-color">outline-color</a> and <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-style" id="ref-for-propdef-outline-style">outline-style</a>.
+<br>Note that <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-offset" id="ref-for-propdef-outline-offset">outline-offset</a> is clamped by the rules above.</p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor" id="ref-for-propdef-overflow-anchor">overflow-anchor</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor" id="ref-for-propdef-overflow-anchor">overflow-anchor</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior" id="ref-for-propdef-overscroll-behavior">overscroll-behavior</a> and its
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior" id="ref-for-propdef-overscroll-behavior">overscroll-behavior</a> and its
 <a href="https://drafts.csswg.org/css-overscroll-1/#overscroll-behavior-longhands-physical">longhands</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-inline" id="ref-for-propdef-overscroll-behavior-inline">overscroll-behavior-inline</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-block" id="ref-for-propdef-overscroll-behavior-block">overscroll-behavior-block</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x" id="ref-for-propdef-overscroll-behavior-x">overscroll-behavior-x</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y" id="ref-for-propdef-overscroll-behavior-y">overscroll-behavior-y</a></p>
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-inline" id="ref-for-propdef-overscroll-behavior-inline">overscroll-behavior-inline</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-block" id="ref-for-propdef-overscroll-behavior-block">overscroll-behavior-block</a>,
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x" id="ref-for-propdef-overscroll-behavior-x">overscroll-behavior-x</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y" id="ref-for-propdef-overscroll-behavior-y">overscroll-behavior-y</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-page-3/#propdef-page" id="ref-for-propdef-page">page</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-page-3/#propdef-page" id="ref-for-propdef-page">page</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position">position</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position">position</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-anchor" id="ref-for-propdef-position-anchor">position-anchor</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-anchor" id="ref-for-propdef-position-anchor">position-anchor</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-right" id="ref-for-propdef-right">right</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-right" id="ref-for-propdef-right">right</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin">scroll-margin</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-top" id="ref-for-propdef-scroll-margin-top">scroll-margin-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-right" id="ref-for-propdef-scroll-margin-right">scroll-margin-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin①">scroll-margin</a>bottom',
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-left" id="ref-for-propdef-scroll-margin-left">scroll-margin-left</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin">scroll-margin</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-top" id="ref-for-propdef-scroll-margin-top">scroll-margin-top</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-right" id="ref-for-propdef-scroll-margin-right">scroll-margin-right</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin①">scroll-margin</a>bottom',
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-left" id="ref-for-propdef-scroll-margin-left">scroll-margin-left</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding" id="ref-for-propdef-scroll-padding">scroll-padding</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-top" id="ref-for-propdef-scroll-padding-top">scroll-padding-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right" id="ref-for-propdef-scroll-padding-right">scroll-padding-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-bottom" id="ref-for-propdef-scroll-padding-bottom">scroll-padding-bottom</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left" id="ref-for-propdef-scroll-padding-left">scroll-padding-left</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-start" id="ref-for-propdef-scroll-padding-inline-start">scroll-padding-inline-start</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start">scroll-padding-block-start</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start①">scroll-padding-block-start</a>,
-<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-end" id="ref-for-propdef-scroll-padding-inline-end">scroll-padding-inline-end</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-end" id="ref-for-propdef-scroll-padding-block-end">scroll-padding-block-end</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding" id="ref-for-propdef-scroll-padding">scroll-padding</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-top" id="ref-for-propdef-scroll-padding-top">scroll-padding-top</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right" id="ref-for-propdef-scroll-padding-right">scroll-padding-right</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-bottom" id="ref-for-propdef-scroll-padding-bottom">scroll-padding-bottom</a>,
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left" id="ref-for-propdef-scroll-padding-left">scroll-padding-left</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-start" id="ref-for-propdef-scroll-padding-inline-start">scroll-padding-inline-start</a>,
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start">scroll-padding-block-start</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start①">scroll-padding-block-start</a>,
+<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-end" id="ref-for-propdef-scroll-padding-inline-end">scroll-padding-inline-end</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-end" id="ref-for-propdef-scroll-padding-block-end">scroll-padding-block-end</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim" id="ref-for-propdef-text-spacing-trim">text-spacing-trim</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim" id="ref-for-propdef-text-spacing-trim">text-spacing-trim</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-transform" id="ref-for-propdef-text-transform">text-transform</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-transform" id="ref-for-propdef-text-transform">text-transform</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-top" id="ref-for-propdef-top">top</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-top" id="ref-for-propdef-top">top</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-visibility" id="ref-for-propdef-visibility">visibility</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-visibility" id="ref-for-propdef-visibility">visibility</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://svgwg.org/svg2-draft/geometry.html#XProperty" id="ref-for-XProperty">x</a></p>
+     <p><a class="css property" data-link-type="property" href="https://svgwg.org/svg2-draft/geometry.html#XProperty" id="ref-for-XProperty">x</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://svgwg.org/svg2-draft/geometry.html#YProperty" id="ref-for-YProperty">y</a></p>
+     <p><a class="css property" data-link-type="property" href="https://svgwg.org/svg2-draft/geometry.html#YProperty" id="ref-for-YProperty">y</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ruby-1/#propdef-ruby-position" id="ref-for-propdef-ruby-position">ruby-position</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ruby-1/#propdef-ruby-position" id="ref-for-propdef-ruby-position">ruby-position</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-user-select" id="ref-for-propdef-user-select">user-select</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-user-select" id="ref-for-propdef-user-select">user-select</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width①">width</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width①">width</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-will-change-1/#propdef-will-change" id="ref-for-propdef-will-change">will-change</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-will-change-1/#propdef-will-change" id="ref-for-propdef-will-change">will-change</a></p>
     <li data-md>
-     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-z-index" id="ref-for-propdef-z-index">z-index</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-z-index" id="ref-for-propdef-z-index">z-index</a></p>
    </ul>
    <p>Properties that are not listed above, or in the rules in this section,
 and aren’t logically equivalent to one of the properties mentioned here,
@@ -1744,7 +1744,7 @@ observed by the <code><a data-link-type="element" href="#elementdef-permission" 
    <p>The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
 for the global <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex" id="ref-for-attr-tabindex①">tabindex</a></code> content attribute on the
 <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①②">permission</a></code> element is 0.</p>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="htmlpermissionelement"><code><c- g>HTMLPermissionElement</c-></code></dfn> : <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement" id="ref-for-htmlelement"><c- n>HTMLElement</c-></a> {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/dom.html#htmlconstructor" id="ref-for-htmlconstructor"><c- g>HTMLConstructor</c-></a>] <a class="idl-code" data-link-type="constructor" href="#dom-htmlpermissionelement-constructor" id="ref-for-dom-htmlpermissionelement-constructor"><c- g>constructor</c-></a>();
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions" id="ref-for-cereactions"><c- g>CEReactions</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#xattr-reflect" id="ref-for-xattr-reflect"><c- g>Reflect</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-htmlpermissionelement-type"><code><c- g>type</c-></code></dfn>;
@@ -1775,7 +1775,7 @@ an API to modify it. To do do, we distinguish between a freshly initialized and
 an empty or invalid (no permission) state, where the former allows setting the
 type and the latter does not.</p>
    <p>Example:</p>
-<pre class="language-js highlight"><c- c1>// Changing a valid type:</c->
+<pre class="highlight language-js"><c- c1>// Changing a valid type:</c->
 <c- a>var</c-> pepc <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"permission"</c-><c- p>);</c->
 pepc<c- p>.</c->type <c- o>=</c-> <c- u>"camera"</c-><c- p>;</c->  <c- c1>// Okay.</c->
 pepc<c- p>.</c->type<c- p>;</c->  <c- c1>// "camera".</c->
@@ -2162,7 +2162,7 @@ whether the <code><a data-link-type="element" href="#elementdef-geolocation" id=
 permission has already been granted).</p>
    <p>The <dfn class="dfn-paneled" data-dfn-for="geolocation" data-dfn-type="element-attr" data-export id="element-attrdef-geolocation-watch"><code>watch</code></dfn> attribute determine whether
 the <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation②">geolocation</a></code> element report the location once or continously.</p>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="htmlgeolocationelement"><code><c- g>HTMLGeolocationElement</c-></code></dfn> : <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement" id="ref-for-htmlelement①"><c- n>HTMLElement</c-></a> {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/dom.html#htmlconstructor" id="ref-for-htmlconstructor①"><c- g>HTMLConstructor</c-></a>] <a class="idl-code" data-link-type="constructor" href="#dom-htmlgeolocationelement-constructor" id="ref-for-dom-htmlgeolocationelement-constructor"><c- g>constructor</c-></a>();
 
@@ -2443,8 +2443,8 @@ This section will eventually contain a specification-worthy transcription
 of those Explainer sections.</p>
   </main>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#dom-inpagepermissionmixinblockerreason">""</a><span>, in § 2.3</span>
    <li><a href="#inpagepermissionmixin-add-a-blocker">add a blocker</a><span>, in § 2.3</span>
@@ -2544,7 +2544,7 @@ of those Explainer sections.</p>
     </ul>
    <li><a href="#dom-htmlgeolocationelement-watchids-slot">[[watchIDs]]</a><span>, in § 5.1</span>
   </ul>
-  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[COMPOSITING-2]</a> defines the following terms:
@@ -2884,8 +2884,8 @@ of those Explainer sections.</p>
      <li><span class="dfn-paneled" id="e97a9688">unsigned long</span>
     </ul>
   </ul>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-compositing-2">[COMPOSITING-2]
    <dd><a href="https://drafts.fxtf.org/compositing-2/"><cite>Compositing and Blending Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.fxtf.org/compositing-2/">https://drafts.fxtf.org/compositing-2/</a>
@@ -2904,7 +2904,7 @@ of those Explainer sections.</p>
    <dt id="biblio-css-conditional-5">[CSS-CONDITIONAL-5]
    <dd>Chris Lilley; et al. <a href="https://drafts.csswg.org/css-conditional-5/"><cite>CSS Conditional Rules Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-conditional-5/">https://drafts.csswg.org/css-conditional-5/</a>
    <dt id="biblio-css-display-4">[CSS-DISPLAY-4]
-   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-display/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-display/">https://drafts.csswg.org/css-display/</a>
+   <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-display-4/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-display-4/">https://drafts.csswg.org/css-display-4/</a>
    <dt id="biblio-css-flexbox-1">[CSS-FLEXBOX-1]
    <dd>Elika Etemad; Tab Atkins Jr.; Rossen Atanassov. <a href="https://drafts.csswg.org/css-flexbox/"><cite>CSS Flexible Box Layout Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-flexbox/">https://drafts.csswg.org/css-flexbox/</a>
    <dt id="biblio-css-fonts-4">[CSS-FONTS-4]
@@ -2962,8 +2962,8 @@ of those Explainer sections.</p>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
-  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl highlight def"><c- b>interface</c-> <c- b>mixin</c-> <a href="#inpagepermissionmixin"><code><c- g>InPagePermissionMixin</c-></code></a> {
+  <h2 class="heading no-num no-ref settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="def highlight idl"><c- b>interface</c-> <c- b>mixin</c-> <a href="#inpagepermissionmixin"><code><c- g>InPagePermissionMixin</c-></code></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-inpagepermissionmixin-isvalid"><c- g>isValid</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-inpagepermissionmixinblockerreason"><c- n>InPagePermissionMixinBlockerReason</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="InPagePermissionMixinBlockerReason" href="#dom-inpagepermissionmixin-invalidreason"><c- g>invalidReason</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-inpagepermissionmixin-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
@@ -3010,7 +3010,7 @@ of those Explainer sections.</p>
 <a data-link-type="idl-name" href="#htmlgeolocationelement"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#inpagepermissionmixin"><c- n>InPagePermissionMixin</c-></a>;
 
 </pre>
-  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> There isn’t much precedence for describing the user agent UI in detail.
     It may be better to leave more freedom to user agents. <a class="issue-return" href="#issue-59f2ad87" title="Jump to section">↵</a></div>
