@@ -1245,8 +1245,8 @@ The {{HTMLGeolocationElement}} <dfn constructor for=HTMLGeolocationElement>const
 1. Initialize the internal {{[[watchIDs]]}} to &laquo; |watchID| &raquo;, where
     |watchID| is an [=implementation-defined=] {{unsigned long}} that is
     greater than zero.
-1. Initialize the internal {{[[position]]}} to `null`.
-1. Initialize the internal {{[[positionError]]}} to `null`.
+1. Initialize the internal {{[[position]]}} to null.
+1. Initialize the internal {{[[positionError]]}} to null.
 
 </div>
 
