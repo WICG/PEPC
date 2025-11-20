@@ -1172,8 +1172,8 @@ the <{geolocation}> element report the location once or continously.
 interface HTMLGeolocationElement : HTMLElement {
   [HTMLConstructor] constructor();
 
-  readonly attribute GeolocationPosition position;
-  readonly attribute GeolocationPositionError error;
+  readonly attribute GeolocationPosition? position;
+  readonly attribute GeolocationPositionError? error;
   [CEReactions, Reflect] attribute boolean autolocate;
   [CEReactions, Reflect] attribute boolean watch;
 
@@ -1245,8 +1245,8 @@ The {{HTMLGeolocationElement}} <dfn constructor for=HTMLGeolocationElement>const
 1. Initialize the internal {{[[watchIDs]]}} to &laquo; |watchID| &raquo;, where
     |watchID| is an [=implementation-defined=] {{unsigned long}} that is
     greater than zero.
-1. Initialize the internal {{[[position]]}} to undefined.
-1. Initialize the internal {{[[positionError]]}} to undefined.
+1. Initialize the internal {{[[position]]}} to null.
+1. Initialize the internal {{[[positionError]]}} to null.
 
 </div>
 
