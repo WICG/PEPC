@@ -4,9 +4,9 @@
   <title>The HTML Permission Elements</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 7b3ff057a, updated Sun Nov 9 18:39:50 2025 -0800" name="generator">
+  <meta content="Bikeshed version 86e3be07a, updated Tue Nov 18 16:58:08 2025 +0000" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-elements.html" rel="canonical">
-  <meta content="b60a37de84d810203e8c29cbdbc4b9b3bcf18406" name="revision">
+  <meta content="d6ac7b4c35794bec5165c625b35a630e4557ae66" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -758,7 +758,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="no-ref p-name" id="title">The HTML Permission Elements</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2025-11-14">14 November 2025</time></p>
+    <time class="dt-updated" datetime="2025-11-20">20 November 2025</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2166,8 +2166,8 @@ the <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="htmlgeolocationelement"><code><c- g>HTMLGeolocationElement</c-></code></dfn> : <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement" id="ref-for-htmlelement①"><c- n>HTMLElement</c-></a> {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/dom.html#htmlconstructor" id="ref-for-htmlconstructor①"><c- g>HTMLConstructor</c-></a>] <a class="idl-code" data-link-type="constructor" href="#dom-htmlgeolocationelement-constructor" id="ref-for-dom-htmlgeolocationelement-constructor"><c- g>constructor</c-></a>();
 
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/geolocation/#dom-geolocationposition" id="ref-for-dom-geolocationposition"><c- n>GeolocationPosition</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="GeolocationPosition" href="#dom-htmlgeolocationelement-position" id="ref-for-dom-htmlgeolocationelement-position"><c- g>position</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/geolocation/#dom-geolocationpositionerror" id="ref-for-dom-geolocationpositionerror"><c- n>GeolocationPositionError</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="GeolocationPositionError" href="#dom-htmlgeolocationelement-error" id="ref-for-dom-htmlgeolocationelement-error"><c- g>error</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/geolocation/#dom-geolocationposition" id="ref-for-dom-geolocationposition"><c- n>GeolocationPosition</c-></a>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="GeolocationPosition?" href="#dom-htmlgeolocationelement-position" id="ref-for-dom-htmlgeolocationelement-position"><c- g>position</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/geolocation/#dom-geolocationpositionerror" id="ref-for-dom-geolocationpositionerror"><c- n>GeolocationPositionError</c-></a>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="GeolocationPositionError?" href="#dom-htmlgeolocationelement-error" id="ref-for-dom-htmlgeolocationelement-error"><c- g>error</c-></a>;
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions" id="ref-for-cereactions①"><c- g>CEReactions</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#xattr-reflect" id="ref-for-xattr-reflect①"><c- g>Reflect</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-type="boolean" href="#dom-htmlgeolocationelement-autolocate" id="ref-for-dom-htmlgeolocationelement-autolocate"><c- g>autolocate</c-></a>;
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions" id="ref-for-cereactions②"><c- g>CEReactions</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#xattr-reflect" id="ref-for-xattr-reflect②"><c- g>Reflect</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean③"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-type="boolean" href="#dom-htmlgeolocationelement-watch" id="ref-for-dom-htmlgeolocationelement-watch"><c- g>watch</c-></a>;
 
@@ -2252,9 +2252,9 @@ the result of <a data-link-type="dfn" href="#htmlpermissionelement-get-the-curre
 <var>watchID</var> is an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#implementation-defined" id="ref-for-implementation-defined①">implementation-defined</a> <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-unsigned-long" id="ref-for-idl-unsigned-long">unsigned long</a></code> that is
 greater than zero.</p>
      <li data-md>
-      <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlgeolocationelement-position-slot" id="ref-for-dom-htmlgeolocationelement-position-slot">[[position]]</a></code> to undefined.</p>
+      <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlgeolocationelement-position-slot" id="ref-for-dom-htmlgeolocationelement-position-slot">[[position]]</a></code> to null.</p>
      <li data-md>
-      <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlgeolocationelement-positionerror-slot" id="ref-for-dom-htmlgeolocationelement-positionerror-slot">[[positionError]]</a></code> to undefined.</p>
+      <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlgeolocationelement-positionerror-slot" id="ref-for-dom-htmlgeolocationelement-positionerror-slot">[[positionError]]</a></code> to null.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="HTMLGeolocationElement/insertion steps">
@@ -3000,8 +3000,8 @@ of those Explainer sections.</p>
 <c- b>interface</c-> <a href="#htmlgeolocationelement"><code><c- g>HTMLGeolocationElement</c-></code></a> : <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement"><c- n>HTMLElement</c-></a> {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/dom.html#htmlconstructor"><c- g>HTMLConstructor</c-></a>] <a class="idl-code" data-link-type="constructor" href="#dom-htmlgeolocationelement-constructor"><c- g>constructor</c-></a>();
 
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/geolocation/#dom-geolocationposition"><c- n>GeolocationPosition</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="GeolocationPosition" href="#dom-htmlgeolocationelement-position"><c- g>position</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/geolocation/#dom-geolocationpositionerror"><c- n>GeolocationPositionError</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="GeolocationPositionError" href="#dom-htmlgeolocationelement-error"><c- g>error</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/geolocation/#dom-geolocationposition"><c- n>GeolocationPosition</c-></a>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="GeolocationPosition?" href="#dom-htmlgeolocationelement-position"><c- g>position</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/geolocation/#dom-geolocationpositionerror"><c- n>GeolocationPositionError</c-></a>? <a class="idl-code" data-link-type="attribute" data-readonly data-type="GeolocationPositionError?" href="#dom-htmlgeolocationelement-error"><c- g>error</c-></a>;
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions"><c- g>CEReactions</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#xattr-reflect"><c- g>Reflect</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-type="boolean" href="#dom-htmlgeolocationelement-autolocate"><c- g>autolocate</c-></a>;
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions"><c- g>CEReactions</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#xattr-reflect"><c- g>Reflect</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-type="boolean" href="#dom-htmlgeolocationelement-watch"><c- g>watch</c-></a>;
 
