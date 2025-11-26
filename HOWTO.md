@@ -124,6 +124,20 @@ rules as their equivalent.
 
 You can use the `:granted` CSS pseudo-class to target permission elements for which the permission is already granted in order to use a different style for them.
 
+The icon can be selected and styled using the `::permission-icon` selector. The styling of the icon is also restricted and controlled. Only the following CSS properties can be used on the icon.
+
+| Property            | Rules |
+| ---                 | ---   |
+| `display`           | Can be used to show or hide the icon. It is visible by default and can be hidden using `display: none`.
+| `fill`              | Can be used to change the color of the icon. |
+| `stroke`            | Can be used to change the color of the outline of the icon |
+| `stroke-width`      | Can be used to change the thickness of the outline of the icon |
+| `height`            | Will have a default value of 1.3em. It can be set to anything between 0 and 1.5em. Note that the width will always be equal to the height. |
+| `min-height`        | Values over 1.5em will be corrected to to 1.5em |
+| `max-height`        | Can be used as normal, but the height will never exceed 1.5em |
+| `margin-inline-end` | Can be used to control the distance between icon and text, limited to 3em. Other margins are immutable. |
+
+
 ## Providing feedback
 If you're a dev and you have feedback for improvements on the ergonomics or shape of the API, please feel free raise an issue against this repository.
 
