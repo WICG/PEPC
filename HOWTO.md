@@ -124,8 +124,14 @@ rules as their equivalent.
 
 You can use the `:granted` CSS pseudo-class to target permission elements for which the permission is already granted in order to use a different style for them.
 
+## Enabling UserMedia
+The `<usermedia>` element is the in-place replacement to the `<permission>` element and can be activated with the command line flag `--enable-blink-features=UserMediaElement` from Chrome M144 onwards.
+
+At this point the element is under active design development so expect its functionality to change rapidly. As of M144 it does not have any additional functionality compared to the `<permission>` element.
+
 ## Providing feedback
 If you're a dev and you have feedback for improvements on the ergonomics or shape of the API, please feel free raise an issue against this repository.
 
 If you have found an implementation bug in one specific browser, you can report it by raising an issue against that specific browser tracking system:
 * Chrome/Chromium - https://crbug.com/ (please use the component `Chromium>Internals>Permissions>PermissionElement`).
+
