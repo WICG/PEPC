@@ -4,4 +4,5 @@ rule bikeshed
 
 build permission-element.html: bikeshed permission-element.bs
 build permission-elements.html: bikeshed permission-elements.bs
-default permission-elements.html
+build geolocation-element.html: bikeshed geolocation-element.bs
+default permission-element.html permission-elements.html geolocation-element.html
