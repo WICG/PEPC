@@ -16,11 +16,6 @@ jobs:
           GH_PAGES_BRANCH: gh-pages
       - uses: w3c/spec-prod@v2
         with:
-          SOURCE: permission-elements.bs
-          TOOLCHAIN: bikeshed
-          GH_PAGES_BRANCH: gh-pages
-      - uses: w3c/spec-prod@v2
-        with:
           SOURCE: geolocation-element.bs
           TOOLCHAIN: bikeshed
           GH_PAGES_BRANCH: gh-pages

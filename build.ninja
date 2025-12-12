@@ -3,6 +3,5 @@ rule bikeshed
   description = bikeshed $in
 
 build permission-element.html: bikeshed permission-element.bs
-build permission-elements.html: bikeshed permission-elements.bs
 build geolocation-element.html: bikeshed geolocation-element.bs
-default permission-element.html permission-elements.html geolocation-element.html
+default permission-element.html geolocation-element.html
