@@ -4,6 +4,10 @@ A drop-in JavaScript polyfill for the `<geolocation>` HTML element. It provides
 a declarative, privacy-conscious interface for the Geolocation API with built-in
 form participation and UI.
 
+## Demo
+
+Check out the [live demo](https://wicg.github.io/PEPC/polyfills/geolocation/).
+
 ## Features
 
 - **Declarative HTML**: Use `<geolocation>` tags directly in your markup.
