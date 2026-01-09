@@ -92,7 +92,7 @@
     render() {
       if (this.shadowRoot.innerHTML.trim() !== '') return; // Don't re-render if exists
 
-      const style = `
+      const style = /* html */ `
         <style>
           :host { display: inline-block; font-family: system-ui, sans-serif; }
           button {
@@ -114,7 +114,7 @@
         </style>
       `;
 
-      this.shadowRoot.innerHTML = `
+      this.shadowRoot.innerHTML = /* html */ `
         ${style}
         <button type="button">
           <span class="icon"></span>
