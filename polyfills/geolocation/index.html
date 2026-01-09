@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>&lt;geolocation&gt; polyfill</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <script type="module">
+      if (!('HTMLGeolocationElement' in window)) {
+        await import('./index.js');
+      }
+    </script>
+
+    <h1>&lt;geolocation&gt; polyfill</h1>
+
+    <h2>Precise geolocation, auto-locating</h2>
+    <geolocation
+      onlocation="handleLocation(event)"
+      autolocate
+      accuracymode="precise"
+    >
+    </geolocation>
+
+    <p>Geolocation: <span>N/A</span></p>
+
+    <h2>Approximate geolocation, auto-locating, form-participating</h2>
+
+    <form method="GET">
+      <geolocation
+        name="coordinates"
+        onlocation="handleLocation(event)"
+        autolocate
+        accuracymode="approximate"
+      ></geolocation>
+      <button type="submit">Send Data</button>
+    </form>
+
+    <p>Geolocation: <span>N/A</span></p>
+
+    <script>
+      function handleLocation(event) {
+        // Directly access the GeolocationPosition object on the element
+        if (event.target.position) {
+          const { latitude, longitude } = event.target.position.coords;
+          console.log(
+            'Location retrieved',
+            event.target.accuracymode,
+            latitude,
+            longitude
+          );
+          document.querySelectorAll('span')[
+            event.target.accuracymode === 'precise' ? 0 : 1
+          ].textContent = `${latitude}, ${longitude}`;
+        } else if (event.target.error) {
+          console.error('Error:', event.target.error.message);
+        }
+      }
+    </script>
+  </body>
+</html>
