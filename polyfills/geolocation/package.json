@@ -17,7 +17,9 @@
   "author": "Thomas Steiner (tomac@google.com)",
   "type": "module",
   "main": "index.js",
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "start": "npx http-server"
   },
