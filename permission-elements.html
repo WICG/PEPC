@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-elements.html" rel="canonical">
-  <meta content="60ebeb5914da82e95865a448143a3586ce829dc8" name="revision">
+  <meta content="447a46efe4a94243777e417d99e99837de06f2d5" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -758,7 +758,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="no-ref p-name" id="title">The HTML Permission Elements</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2025-11-28">28 November 2025</time></p>
+    <time class="dt-updated" datetime="2026-01-09">9 January 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -771,7 +771,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2025 the Contributors to the The HTML Permission Elements Specification, published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2026 the Contributors to the The HTML Permission Elements Specification, published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a> under the <a href="https://www.w3.org/community/about/agreements/cla/">W3C Community Contributor License Agreement (CLA)</a>.
 A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/">summary</a> is available.
 </p>
    <hr title="Separator for header">
@@ -968,7 +968,7 @@ list of records, containing a
 is a reference to an <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#intersectionobserver" id="ref-for-intersectionobserver">IntersectionObserver</a></code>.</p>
     <li data-md>
      <p><dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-intersectionrect-slot"><code>[[IntersectionRect]]</code></dfn> is a
-<code class="idl"><a data-link-type="idl" href="https://drafts.fxtf.org/geometry-1/#domrectreadonly" id="ref-for-domrectreadonly">DOMRectReadOnly</a></code> that stores the most recently seen intersection, i.e.
+<code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/geometry-1/#domrectreadonly" id="ref-for-domrectreadonly">DOMRectReadOnly</a></code> that stores the most recently seen intersection, i.e.
 the position of the <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission">permission</a></code> relative to the <a data-link-type="dfn" href="https://drafts.csswg.org/css2/#viewport%E2%91%A0" id="ref-for-viewport%E2%91%A0">viewport</a>.</p>
     <li data-md>
      <p><dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-lastnotifiedvalidstate-slot"><code>[[LastNotifiedValidState]]</code></dfn>
@@ -1624,7 +1624,7 @@ permission <c- p>{</c->
     <li data-md>
      <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.fxtf.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation</a></p>
     <li data-md>
      <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-self" id="ref-for-propdef-justify-self">justify-self</a></p>
     <li data-md>
@@ -2549,7 +2549,7 @@ of those Explainer sections.</p>
    <li>
     <a data-link-type="biblio">[COMPOSITING-2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="559a1521">isolation</span>
+     <li><span class="dfn-paneled" id="73e0120b">isolation</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-ALIGN-3]</a> defines the following terms:
@@ -2761,7 +2761,7 @@ of those Explainer sections.</p>
    <li>
     <a data-link-type="biblio">[GEOMETRY-1]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="fdd2dd4e">DOMRectReadOnly</span>
+     <li><span class="dfn-paneled" id="956a2c19">DOMRectReadOnly</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HR-TIME-3]</a> defines the following terms:
@@ -2892,7 +2892,7 @@ of those Explainer sections.</p>
    <dt id="biblio-css-align-3">[CSS-ALIGN-3]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-align/"><cite>CSS Box Alignment Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-align/">https://drafts.csswg.org/css-align/</a>
    <dt id="biblio-css-anchor-position-1">[CSS-ANCHOR-POSITION-1]
-   <dd>Tab Atkins Jr.; Elika Etemad; Ian Kilpatrick. <a href="https://drafts.csswg.org/css-anchor-position-1/"><cite>CSS Anchor Positioning</cite></a>. URL: <a href="https://drafts.csswg.org/css-anchor-position-1/">https://drafts.csswg.org/css-anchor-position-1/</a>
+   <dd>Tab Atkins Jr.; Elika Etemad; Ian Kilpatrick. <a href="https://drafts.csswg.org/css-anchor-position-1/"><cite>CSS Anchor Positioning Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-anchor-position-1/">https://drafts.csswg.org/css-anchor-position-1/</a>
    <dt id="biblio-css-backgrounds-3">[CSS-BACKGROUNDS-3]
    <dd>Elika Etemad; Brad Kemper. <a href="https://drafts.csswg.org/css-backgrounds/"><cite>CSS Backgrounds and Borders Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-backgrounds/">https://drafts.csswg.org/css-backgrounds/</a>
    <dt id="biblio-css-borders-4">[CSS-BORDERS-4]
@@ -2942,7 +2942,7 @@ of those Explainer sections.</p>
    <dt id="biblio-geolocation">[GEOLOCATION]
    <dd>Marcos Caceres; Reilly Grant. <a href="https://w3c.github.io/geolocation/"><cite>Geolocation</cite></a>. URL: <a href="https://w3c.github.io/geolocation/">https://w3c.github.io/geolocation/</a>
    <dt id="biblio-geometry-1">[GEOMETRY-1]
-   <dd>Simon Pieters; Chris Harrelson. <a href="https://drafts.fxtf.org/geometry/"><cite>Geometry Interfaces Module Level 1</cite></a>. URL: <a href="https://drafts.fxtf.org/geometry/">https://drafts.fxtf.org/geometry/</a>
+   <dd>Sebastian Zartner; Yehonatan Daniv. <a href="https://drafts.csswg.org/geometry/"><cite>Geometry Interfaces Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/geometry/">https://drafts.csswg.org/geometry/</a>
    <dt id="biblio-hr-time-3">[HR-TIME-3]
    <dd>Yoav Weiss. <a href="https://w3c.github.io/hr-time/"><cite>High Resolution Time</cite></a>. URL: <a href="https://w3c.github.io/hr-time/">https://w3c.github.io/hr-time/</a>
    <dt id="biblio-html">[HTML]
@@ -3307,7 +3307,6 @@ let dfnPanelData = {
 "53275e46": {"dfnID":"53275e46","dfnText":"append (for list)","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"2.3. Mixin activation and activation blockers"},{"refs":[{"id":"ref-for-list-append\u2460"}],"title":"4.2.1. The type property"}],"url":"https://infra.spec.whatwg.org/#list-append"},
 "5372cca8": {"dfnID":"5372cca8","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-boolean"}],"title":"2. Common Behaviours Of The HTML Permission Elements: InPagePermissionMixin"},{"refs":[{"id":"ref-for-idl-boolean\u2460"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-idl-boolean\u2461"},{"id":"ref-for-idl-boolean\u2462"}],"title":"5. The geolocation Element"}],"url":"https://webidl.spec.whatwg.org/#idl-boolean"},
 "54f0976d": {"dfnID":"54f0976d","dfnText":"enableHighAccuracy","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-positionoptions-enablehighaccuracy"}],"title":"4.3. permission element algorithms"}],"url":"https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy"},
-"559a1521": {"dfnID":"559a1521","dfnText":"isolation","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-isolation"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.fxtf.org/compositing-2/#propdef-isolation"},
 "583af179": {"dfnID":"583af179","dfnText":"Geolocation","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-geolocation"}],"title":"5. The geolocation Element"},{"refs":[{"id":"ref-for-dom-geolocation\u2460"}],"title":"5.2. geolocation element algorithms"}],"url":"https://w3c.github.io/geolocation/#dom-geolocation"},
 "5a37bda5": {"dfnID":"5a37bda5","dfnText":"IntersectionObserverCallback","external":true,"refSections":[{"refs":[{"id":"ref-for-callbackdef-intersectionobservercallback"}],"title":"4.3. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#callbackdef-intersectionobservercallback"},
 "5ab7b520": {"dfnID":"5ab7b520","dfnText":"reflect","external":true,"refSections":[{"refs":[{"id":"ref-for-reflect"}],"title":"4. The permission Element"}],"url":"https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect"},
@@ -3330,6 +3329,7 @@ let dfnPanelData = {
 "6f01662d": {"dfnID":"6f01662d","dfnText":"non-devolvable widget","external":true,"refSections":[{"refs":[{"id":"ref-for-non-devolvable"}],"title":"3. Common Rendering, and Styling Restrictions"}],"url":"https://drafts.csswg.org/css-ui-4/#non-devolvable"},
 "72ea3a96": {"dfnID":"72ea3a96","dfnText":"overscroll-behavior-x","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overscroll-behavior-x"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x"},
 "73a16e8f": {"dfnID":"73a16e8f","dfnText":"flex","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex"},
+"73e0120b": {"dfnID":"73e0120b","dfnText":"isolation","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-isolation"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/compositing-2/#propdef-isolation"},
 "75ee8688": {"dfnID":"75ee8688","dfnText":"request a position","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-request-a-position"}],"title":"5.1. geolocation element internal state"},{"refs":[{"id":"ref-for-dfn-request-a-position\u2460"},{"id":"ref-for-dfn-request-a-position\u2461"}],"title":"5.2. geolocation element algorithms"}],"url":"https://w3c.github.io/geolocation/#dfn-request-a-position"},
 "770d5330": {"dfnID":"770d5330","dfnText":"initialize","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-event-initialize"},{"id":"ref-for-concept-event-initialize\u2460"},{"id":"ref-for-concept-event-initialize\u2461"}],"title":"2.5. Mixin event algorithms"},{"refs":[{"id":"ref-for-concept-event-initialize\u2462"}],"title":"5.3. geolocation element event algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-event-initialize"},
 "77b4c09a": {"dfnID":"77b4c09a","dfnText":"assert","external":true,"refSections":[{"refs":[{"id":"ref-for-assert"},{"id":"ref-for-assert\u2460"},{"id":"ref-for-assert\u2461"},{"id":"ref-for-assert\u2462"},{"id":"ref-for-assert\u2463"},{"id":"ref-for-assert\u2464"}],"title":"2.3. Mixin activation and activation blockers"},{"refs":[{"id":"ref-for-assert\u2465"},{"id":"ref-for-assert\u2466"},{"id":"ref-for-assert\u2467"},{"id":"ref-for-assert\u2468"}],"title":"4.3. permission element algorithms"},{"refs":[{"id":"ref-for-assert\u2460\u24ea"}],"title":"5.2. geolocation element algorithms"}],"url":"https://infra.spec.whatwg.org/#assert"},
@@ -3352,6 +3352,7 @@ let dfnPanelData = {
 "8dd12dcb": {"dfnID":"8dd12dcb","dfnText":"contain-intrinsic-width","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-contain-intrinsic-width"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-width"},
 "8fc74046": {"dfnID":"8fc74046","dfnText":"global attributes","external":true,"refSections":[{"refs":[{"id":"ref-for-global-attributes"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-global-attributes\u2460"}],"title":"5. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#global-attributes"},
 "9436e460": {"dfnID":"9436e460","dfnText":"clear","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-clear"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css2/#propdef-clear"},
+"956a2c19": {"dfnID":"956a2c19","dfnText":"DOMRectReadOnly","external":true,"refSections":[{"refs":[{"id":"ref-for-domrectreadonly"}],"title":"2.1. Mixin internal state"}],"url":"https://drafts.csswg.org/geometry-1/#domrectreadonly"},
 "95c866a0": {"dfnID":"95c866a0","dfnText":"sorting","external":true,"refSections":[{"refs":[{"id":"ref-for-list-sort-in-ascending-order"}],"title":"2.3. Mixin activation and activation blockers"}],"url":"https://infra.spec.whatwg.org/#list-sort-in-ascending-order"},
 "96797491": {"dfnID":"96797491","dfnText":"tabindex","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-tabindex"}],"title":"2. Common Behaviours Of The HTML Permission Elements: InPagePermissionMixin"},{"refs":[{"id":"ref-for-attr-tabindex\u2460"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-attr-tabindex\u2461"}],"title":"5. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex"},
 "96e13811": {"dfnID":"96e13811","dfnText":"enumerated attribute","external":true,"refSections":[{"refs":[{"id":"ref-for-enumerated-attribute"}],"title":"2. Common Behaviours Of The HTML Permission Elements: InPagePermissionMixin"},{"refs":[{"id":"ref-for-enumerated-attribute\u2460"},{"id":"ref-for-enumerated-attribute\u2461"}],"title":"4. The permission Element"}],"url":"https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute"},
@@ -3481,7 +3482,6 @@ let dfnPanelData = {
 "f210b721": {"dfnID":"f210b721","dfnText":"order","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-order"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-display-4/#propdef-order"},
 "f87501d6": {"dfnID":"f87501d6","dfnText":"font-synthesis-small-caps","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-synthesis-small-caps"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-small-caps"},
 "fb8e6438": {"dfnID":"fb8e6438","dfnText":"scroll-margin-top","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-margin-top"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-top"},
-"fdd2dd4e": {"dfnID":"fdd2dd4e","dfnText":"DOMRectReadOnly","external":true,"refSections":[{"refs":[{"id":"ref-for-domrectreadonly"}],"title":"2.1. Mixin internal state"}],"url":"https://drafts.fxtf.org/geometry-1/#domrectreadonly"},
 "fffe4623": {"dfnID":"fffe4623","dfnText":"counter-set","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-counter-set"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-lists-3/#propdef-counter-set"},
 "htmlgeolocationelement": {"dfnID":"htmlgeolocationelement","dfnText":"HTMLGeolocationElement","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlgeolocationelement"},{"id":"ref-for-htmlgeolocationelement\u2460"},{"id":"ref-for-htmlgeolocationelement\u2461"}],"title":"5. The geolocation Element"},{"refs":[{"id":"ref-for-htmlgeolocationelement\u2462"},{"id":"ref-for-htmlgeolocationelement\u2463"},{"id":"ref-for-htmlgeolocationelement\u2464"},{"id":"ref-for-htmlgeolocationelement\u2465"}],"title":"5.2. geolocation element algorithms"}],"url":"#htmlgeolocationelement"},
 "htmlgeolocationelement-fetch-location": {"dfnID":"htmlgeolocationelement-fetch-location","dfnText":"fetch location","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlgeolocationelement-fetch-location"},{"id":"ref-for-htmlgeolocationelement-fetch-location\u2460"}],"title":"5.2. geolocation element algorithms"}],"url":"#htmlgeolocationelement-fetch-location"},
@@ -3987,6 +3987,7 @@ let refsData = {
 "https://dom.spec.whatwg.org/#dom-event-type": {"displayText":"type","export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"type","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-type"},
 "https://dom.spec.whatwg.org/#event": {"displayText":"Event","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Event","type":"interface","url":"https://dom.spec.whatwg.org/#event"},
 "https://dom.spec.whatwg.org/#eventtarget-activation-behavior": {"displayText":"activation behavior","export":true,"for_":["EventTarget"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"activation behavior","type":"dfn","url":"https://dom.spec.whatwg.org/#eventtarget-activation-behavior"},
+"https://drafts.csswg.org/compositing-2/#propdef-isolation": {"displayText":"isolation","export":true,"for_":[],"level":"2","normative":true,"shortname":"compositing","spec":"compositing-2","status":"current","text":"isolation","type":"property","url":"https://drafts.csswg.org/compositing-2/#propdef-isolation"},
 "https://drafts.csswg.org/css-align-3/#propdef-align-self": {"displayText":"align-self","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"align-self","type":"property","url":"https://drafts.csswg.org/css-align-3/#propdef-align-self"},
 "https://drafts.csswg.org/css-align-3/#propdef-justify-self": {"displayText":"justify-self","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"justify-self","type":"property","url":"https://drafts.csswg.org/css-align-3/#propdef-justify-self"},
 "https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name": {"displayText":"anchor-name","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"anchor-name","type":"property","url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name"},
@@ -4063,9 +4064,8 @@ let refsData = {
 "https://drafts.csswg.org/css2/#valdef-font-size-xx-large": {"displayText":"xx-large","export":true,"for_":["font-size"],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"xx-large","type":"value","url":"https://drafts.csswg.org/css2/#valdef-font-size-xx-large"},
 "https://drafts.csswg.org/css2/#value-def-relative-size": {"displayText":"<relative-size>","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"<relative-size>","type":"type","url":"https://drafts.csswg.org/css2/#value-def-relative-size"},
 "https://drafts.csswg.org/css2/#viewport%E2%91%A0": {"displayText":"viewport","export":false,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"viewport","type":"dfn","url":"https://drafts.csswg.org/css2/#viewport%E2%91%A0"},
+"https://drafts.csswg.org/geometry-1/#domrectreadonly": {"displayText":"DOMRectReadOnly","export":true,"for_":[],"level":"1","normative":true,"shortname":"geometry","spec":"geometry-1","status":"current","text":"DOMRectReadOnly","type":"interface","url":"https://drafts.csswg.org/geometry-1/#domrectreadonly"},
 "https://drafts.csswg.org/mediaqueries-5/#contrast-ratio": {"displayText":"contrast ratio","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"current","text":"contrast ratio","type":"dfn","url":"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio"},
-"https://drafts.fxtf.org/compositing-2/#propdef-isolation": {"displayText":"isolation","export":true,"for_":[],"level":"2","normative":true,"shortname":"compositing","spec":"compositing-2","status":"current","text":"isolation","type":"property","url":"https://drafts.fxtf.org/compositing-2/#propdef-isolation"},
-"https://drafts.fxtf.org/geometry-1/#domrectreadonly": {"displayText":"DOMRectReadOnly","export":true,"for_":[],"level":"1","normative":true,"shortname":"geometry","spec":"geometry-1","status":"current","text":"DOMRectReadOnly","type":"interface","url":"https://drafts.fxtf.org/geometry-1/#domrectreadonly"},
 "https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect": {"displayText":"reflect","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"reflect","type":"dfn","url":"https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect"},
 "https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#xattr-reflect": {"displayText":"Reflect","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"Reflect","type":"extended-attribute","url":"https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#xattr-reflect"},
 "https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute": {"displayText":"enumerated attribute","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"enumerated attribute","type":"dfn","url":"https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute"},
