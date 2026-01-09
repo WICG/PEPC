@@ -1,0 +1,27 @@
+{
+  "name": "geolocation-element-polyfill",
+  "version": "1.0.0",
+  "description": "A polyfill for the <geolocation> element",
+  "keywords": [
+    "geolocation"
+  ],
+  "homepage": "https://github.com/WICG/PEPC#readme",
+  "bugs": {
+    "url": "https://github.com/WICG/PEPC/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/WICG/PEPC.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Thomas Steiner (tomac@google.com)",
+  "type": "module",
+  "main": "index.js",
+  "files": ["index.js"],
+  "scripts": {
+    "start": "npx http-server"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
