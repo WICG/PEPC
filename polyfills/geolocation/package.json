@@ -1,6 +1,6 @@
 {
   "name": "geolocation-element-polyfill",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A polyfill for the <geolocation> element",
   "keywords": [
     "geolocation"
