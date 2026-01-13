@@ -1,0 +1,7 @@
+<pre class="metadata">
+Title: The HTML Geolocation Element
+Status: DREAM
+Shortname: geolocation-element
+Abstract:
+</pre>
+
