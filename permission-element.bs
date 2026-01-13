@@ -37,6 +37,7 @@ spec:css2; type:property; text:padding-bottom
 spec:css2; type:property; text:padding-top
 spec:css2; type:property; text:padding-left
 spec:css2; type:property; text:padding-right
+spec:css-borders-4; type:property; text:border
 spec:css-borders-4; type:property; text:border-right
 spec:css-borders-4; type:property; text:border-left
 spec:css-borders-4; type:property; text:border-top
