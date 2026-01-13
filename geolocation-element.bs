@@ -1,7 +1,1208 @@
 <pre class="metadata">
 Title: The HTML Geolocation Element
-Status: DREAM
+Status: CG-DRAFT
+Group: WICG
+URL: https://wicg.github.io/PEPC/geolocation-element.html
+Repository: WICG/PEPC
 Shortname: geolocation-element
-Abstract:
+Level: 0
+Boilerplate: omit conformance
+Markup Shorthands: markdown on
+Editor: Daniel Vogelheim, Google LLC, vogelheim@google.com, https://www.google.com/
+Abstract: An HTML element to let a user trigger access to geolocation.
+
+  This specifies a new HTML element, `<geolocation>`, that provides
+  users with a way to grant apage access to geolocation and the associated
+  capabilities from within the page.
+
+  Suitable styling and UI constraints on this new element ensure that the user
+  understands what a click on it means, and thus gives the browser a high level
+  of confidence of user intent to make a permission decision.
+  The geolocation elements aim to be more accessible, more secure, and more
+  user friendly than the current, script-triggered permission flows.
+</pre>
+<pre class=link-defaults>
+# Disambiguation between multiple definitions with the same text:
+spec:infra; type:dfn; text:user agent
+spec:css2; type:dfn; text:viewport
+spec:css2; type:dfn; text:specified value
+spec:css2; type:dfn; text:computed value
+spec:css2; type:dfn; text:inherited value
+spec:css2; type:dfn; text:inherit
+spec:css2; type:property; text:color
+spec:css2; type:property; text:background-color
+spec:css2; type:property; text:font-size
+spec:css2; type:property; text:font-style
+spec:css2; type:property; text:display
+spec:css2; type:property; text:margin
+spec:css2; type:property; text:min-width
+spec:css2; type:property; text:max-width
+spec:css2; type:property; text:padding-bottom
+spec:css2; type:property; text:padding-top
+spec:css2; type:property; text:padding-left
+spec:css2; type:property; text:padding-right
+spec:css-borders-4; type:property; text:border
+spec:css-borders-4; type:property; text:border-right
+spec:css-borders-4; type:property; text:border-left
+spec:css-borders-4; type:property; text:border-top
+spec:css-borders-4; type:property; text:border-bottom
+
+# Non-exported definitions, which we should be free to use when -- some day --
+# this will be integrated into the HTML spec.
+spec:html; type:dfn; text:missing value default
+spec:html; type:dfn; text:invalid value default
+spec:html; type:dfn; text:represent
+spec:html; type:dfn; text:fallback content
+
+# The big element box:
+spec:html; type:dfn; text:contexts in which this element can be used
+spec:html; type:dfn; text:content model
+spec:html; type:dfn; text:nothing
+spec:html; type:dfn; text:content attributes
+spec:html; type:dfn; text:global attributes
+spec:html; type:dfn; text:accessibility considerations
+spec:html; type:dfn; text:dom interface
+
+# Non-exported definitions from other specs:
+spec:geolocation; type:dfn; text:request a position
 </pre>
 
+<style>
+/* Imitate some styles that W3C specs use:*/
+
+/* WHATWG-style element definition class */
+.element { background: #EEFFEE; }
+dt { margin-top: 12px; color: black; }
+dl, dd { padding-left: .5em; }
+
+/* Boxes around algorithms. */
+[data-algorithm]:not(.heading) {
+  padding: .5em;
+  border: thin solid #ddd; border-radius: .5em;
+  margin: .5em calc(-0.5em - 1px);
+}
+[data-algorithm]:not(.heading) > :first-child { margin-top: 0; }
+[data-algorithm]:not(.heading) > :last-child { margin-bottom: 0; }
+[data-algorithm] [data-algorithm] { margin: 1em 0; }
+
+/* vars in italics */
+dfn var { font-style: italic; }
+</style>
+
+
+# Introduction and Background # {#intro}
+
+[=User agents=] expose [=powerful features=] to web sites, like geolocation
+or camera access. These features are important to some use cases, but can be
+easily abused.To handle this, user agents use [=permissions=] to ask the user
+whether they wish for a particular access to be allowed or not.
+
+These permission requests began as a fairly direct passthrough: A site would
+ask for some capability and the user agent immediately prompts the user to make
+a decision for the request. Meanwhile, spam and abuse have forced user agents
+to take a more opinionated approach to protect users' security, privacy, and
+attention. The status quo is that users get a multitude of permission requests,
+where it's oftentimes unclear to users what the consequences of these requests
+might be.
+
+This spec introduces a new mechanism that requests and initiates access to
+{{Geolocation}} capabilities through in-page elements, with built-in protections
+against abuse. Giving access to the location through in in-page lement wants
+to tie capability activation to the actual context in which it will be used
+, thus reducing "permission spam" and at the same time providing implementations
+with a better signal of user intent.
+
+The later chapters of this specification are careful to build up the required
+spec infrastructure to that it can be re-used on other, similarly spirited
+elements providing access to other [=powerful features=] and their associated
+capabilities.
+
+
+# The <dfn element export>geolocation</dfn> Element # {#geolocation-element}
+
+The HTML <{geolocation}> element can moderate access to the
+<a permission>"geolocation"</a> permission and the associated {{Geolocation}}
+capabilities.
+
+<dl class=element>
+ <dt>[=Categories=]:</dt>
+  <dd>[=Flow content=].</dd>
+  <dd>[=Phrasing content=].</dd>
+  <dd>[=Interactive content=].</dd>
+  <dd>[=Palpable content=].</dd>
+ <dt>[=Contexts in which this element can be used=]:</dt>
+  <dd>Where [=phrasing content=] is expected.</dd>
+ <dt>[=Content model=]:</dt>
+  <dd>[=Flow content=].</dd>
+ <dt>[=Content attributes=]:</dt>
+  <dd>[=Global attributes=].</dd>
+  <dd>[=ActivationBlockersMixin attributes=].</dd>
+  <dd>[=PermissionsMixin attributes=].</dd>
+  <dd><{geolocation/autolocate}> — Whether to locate right away (if permission has already been granted).</dd>
+  <dd><{geolocation/watch}> — Wether to read the position once, or watch it continously.</dd>
+ <dt>[=Accessibility considerations=]:</dt>
+  <dd>See issues below.</dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>{{HTMLGeolocationElement}}</dd>
+</dl>
+
+ISSUE: [[WAI-ARIA]] specifies [=/roles=] for in-page content.
+    It is yet  unclear whether or how the <{geolocation}> element fits into
+    the existing set of roles.
+    Given that this element triggers [=permission=] requests, one could argue
+    that whatever accessibility concerns apply there should cover this element
+    as well. On the other hand, more specialized treatment may lead to better
+    support for users.
+
+ISSUE: In [[#rendering]], this specification defines elaborate restrictions on
+    how <{geolocation}> elements can be rendered. It's unclear whether there
+    need to be similarly spirited restrictions on which ARIA attributes can
+    be applied.
+
+The {{ActivationBlockersMixin/isValid}} and
+{{ActivationBlockersMixin/invalidReason}}, as well as the global
+<a attribute spec=html for=HTMLElement>lang</a> and
+<{htmlsvg-global/tabindex}> content attributes, and the
+{{PermissionsMixin/onpromptaction}},
+{{PermissionsMixin/onpromptdismiss}}, and
+{{ActivationBlockersMixin/onvalidationstatuschange}} event handlers follow the
+description in [[#all-the-mixins]].
+
+The <dfn element-attr for=geolocation>autolocate</dfn> attribute determines
+whether the <{geolocation}> element should start locating immediately (if
+permission has already been granted).
+
+The <dfn element-attr for=geolocation>watch</dfn> attribute determine whether
+the <{geolocation}> element report the location once or continously.
+
+<pre class=idl>
+[Exposed=Window]
+interface HTMLGeolocationElement : HTMLElement {
+  [HTMLConstructor] constructor();
+
+  readonly attribute GeolocationPosition? position;
+  readonly attribute GeolocationPositionError? error;
+  [CEReactions, Reflect] attribute boolean autolocate;
+  [CEReactions, Reflect] attribute boolean watch;
+
+  attribute EventHandler onlocation;
+};
+HTMLGeolocationElement includes ActivationBlockersMixin;
+HTMLGeolocationElement includes PermissionsMixin;
+</pre>
+
+If the user has decided to allow access to geolocation information, the
+readonly attributes {{HTMLGeolocationElement/position}} and
+{{HTMLGeolocationElement/error}} reflect the current
+{{GeolocationPosition}} and {{GeolocationPositionError}} values, just like
+the {{PositionCallback}} and
+{{PositionErrorCallback}} callbacks (respectively) would have returned
+
+If the [=boolean=] attribute {{HTMLGeolocationElement/autolocate}} is true,
+and if the <a permission>"geolocation"</a> permission has already been granted by
+the user, then the location should be retrieved immediately when the
+<{geolocation}> element is attached to the document. If the permission has
+not already been granted at insertion time, then this attribute has no effect.
+
+If the [=boolean=] attribute {{HTMLGeolocationElement/watch}}
+is set to true, the {{HTMLGeolocationElement/onlocation}} event is called
+every time the position changes, matching the behaviour of {{Geolocation/watchPosition}}.
+
+When a location is available, an {{Event}} is [=/dispatched=] on the
+{{HTMLGeolocationElement/onlocation}} event handler.
+When the event is
+dispatched, the location, or information about a failure to retrieve the
+location, are available in the {{HTMLGeolocationElement/position}} or the
+{{HTMLGeolocationElement/error}} attributes. Depending on the
+{{HTMLGeolocationElement/watch}} element this happens once (if absent or false),
+or continously (if true).
+
+{{HTMLGeolocationElement}} wants to mirror the {{Geolocation}} interface.
+There is a direct correspondance:
+
+<pre class=simpledef>
+position: Result of {{PositionCallback}}.
+error: Result of {{PositionErrorCallback}}.
+watch: Use {{Geolocation/watchPosition()}}.
+&not;&nbsp;watch: Use {{Geolocation/getCurrentPosition()}}.
+</pre>
+
+The global <a attribute spec=html for=HTMLElement>lang</a> attribute is
+observed by the element to select localized text.
+
+The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
+for the global <{htmlsvg-global/tabindex}> content attribute on the
+element is 0.
+
+
+## <{geolocation}> element internal state ## {#geolocation-element-internal-state}
+
+The <{geolocation}> element uses all the internal slots from {{ActivationBlockersMixin}} and {{PermissionsMixin}}. Additionally,
+<{geolocation}> has the following internal slots:
+
+* A constant <dfn attribute for=HTMLGeolocationElement>\[[watchIDs]]</dfn>,
+    which is used with the [=request a position=] algorithm.
+* <dfn attribute for=HTMLGeolocationElement>\[[position]]</dfn>,
+    which contains the most recent {{GeolocationPosition}}.
+* <dfn attribute for=HTMLGeolocationElement>\[[positionError]]</dfn>,
+    which contains the most recent {{GeolocationPositionError}}.
+
+
+### Mixin-supporting state at the [=/navigable=] ### {#mixin-navigable-state}
+
+In order to support the {{HTMLGeolocationElement}}, the [=/navigable=] maintains
+an [=ordered set=] of elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{ActivationBlockersMixinBlockerReason/unsuccesful_registration}}.
+
+
+
+## <{geolocation}> element algorithms ## {#geolocation-algorithms}
+
+<div algorithm>
+The {{HTMLGeolocationElement}} <dfn constructor for=HTMLGeolocationElement>constructor()</dfn> steps are:
+
+1. Initialize the internal {{[[Features]]}} to
+    &laquo; <a permission>"geolocation"</a> &raquo;.
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
+1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
+1. Initialize the internal {{[[LastNotifiedInvalidReason]]}} with the empty
+    string.
+1. Initialize the internal {{[[watchIDs]]}} to &laquo; |watchID| &raquo;, where
+    |watchID| is an [=implementation-defined=] {{unsigned long}} that is
+    greater than zero.
+1. Initialize the internal {{[[position]]}} to null.
+1. Initialize the internal {{[[positionError]]}} to null.
+1. Run {{PermissionsMixin}}'s [=PermissionsMixin/initialization steps=].
+
+</div>
+
+<div algorithm>
+The {{HTMLGeolocationElement}}'s <dfn for="HTMLGeolocationElement" export>insertion steps</dfn> are:
+
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
+1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[PermissionElements]]}}.
+1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
+1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
+    constructing a new {{IntersectionObserver}} with
+    [=ActivationBlockersMixin/IntersectionObserver callback=] and
+    &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
+1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
+1. Run {{PermissionsMixin}}'s [=PermissionsMixin/insertion steps=].
+1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
+    with {{ActivationBlockersMixinBlockerReason/unsuccesful_registration}}.
+1. [=Add an expiring blocker=] with reason
+    {{ActivationBlockersMixinBlockerReason/recently_attached}}.
+1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
+    [=this=]
+    is a [=fenced navigable=], then [=add a permanent blocker=]
+    with {{ActivationBlockersMixinBlockerReason/illegal_subframe}}.
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
+1. [=Maybe autolocate=].
+
+</div>
+
+<div algorithm="HTMLGeolocationElement/removing steps">
+The {{HTMLGeolocationElement}} [=removing steps=] are:
+
+1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[PermissionElements]]}}.
+1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
+
+</div>
+
+<div algorithm="HTMLGeolocationElement/activation">
+The {{HTMLGeolocationElement}} |element|'s [=EventTarget/activation behavior=] given |event| is:
+
+1. [=Assert=]: |element|'s {{[[Features]]}} is not null.
+1. If |element|'s {{[[Features]]}} [=list/is empty=], then return.
+1. If |event|.{{Event/isTrusted}} is false, then return.
+1. If |element|.{{ActivationBlockersMixin/isValid}} is false, then return.
+1. Let |descriptor| be the result of [=build a permission descriptor=] for
+    |element|.
+1. [=Request permission to use=] the [=powerful features=] described by
+    |descriptor|.
+1. If the previous step was cancelled or dismissed by the user, then
+    [=dispatch onpromptdismiss=] on [=this=] and return.
+
+    Issue: The [[Permissions]] spec assumes that [=request permission to use=]
+    will always succeed. That is, it assumes that the user will always make a
+    choice and that the algorithm will always deliver a `grant`/`deny`
+    answer corresponding to that choice. But you can't force a user to do that.
+    Some [=user agents=] may have different UI affordances for an explicit
+    denial (e.g. a "deny" button) on one hand, and cancelling or dismissing the
+    request dialog (e.g. an "X" button in the top right corner). Here, we
+    distinguish between these two actions, despite no clear hook for this
+    in the underlying specification.
+
+1. [=Dispatch onpromptaction=] on [=this=].
+1. [=Fetch location=].
+
+</div>
+
+<div algorithm="HTMLGeolocationElement/position">
+The {{HTMLGeolocationElement/position}} getter steps are to return the value
+of {{[[position]]}}.
+</div>
+
+<div algorithm="HTMLGeolocationElement/error">
+The {{HTMLGeolocationElement/error}} getter steps are to return the value of
+{{[[positionError]]}}.
+</div>
+
+<div algorithm>
+To <dfn for=HTMLGeolocationElement>maybe autolocate</dfn>:
+
+1. If [=PermissionsMixin/get the current permission state=] is not
+    {{PermissionState/granted}}, then return.
+1. If {{HTMLGeolocationElement/autolocate}} is not true, then return.
+1. [=Fetch location=].
+
+</div>
+
+<div algorithm>
+To <dfn for=HTMLGeolocationElement>fetch location</dfn>:
+
+1. Let |positionCallback| be a {{PositionCallback}} that performs the following steps:
+    1. Set [=this=]'s {{[[positionError]]}} to undefined.
+    1. Set [=this=]'s {{[[position]]}} to {{PositionCallback}}'s position
+        argument.
+    1. [=Dispatch onlocation=] to [=this=].
+1. Let |errorCallback| be a {{PositionErrorCallback}} that performs the following steps:
+    1. Set [=this=]'s {{[[position]]}} to undefined.
+    1. Set [=this=]'s {{[[positionError]]}} to {{PositionCallback}}'s
+        positionError argument.
+    1. [=Dispatch onlocation=] to [=this=].
+1. Let |positionOptions| be &laquo;[]&raquo;
+1. Let |geolocation| be the [=relevant global object=]'s {{Geolocation}}.
+1. If [=this=]'s {{HTMLGeolocationElement/watch}} is true:
+    1. [=Request a position=] with |geolocation|, |positionCallback|,
+        |errorCallback|, |positionOptions|, and [=this=]'s {{[[watchIDs]]}}.
+1. Otherwise:
+    1. [=Request a position=] with |geolocation|, |positionCallback|,
+        |errorCallback|, |positionOptions|.
+
+</div>
+
+
+<div algorithm>
+To determine whether an |element| is <dfn for="HTMLGeolocationElement">type permissible</dfn>:
+
+1. [=Assert=]: |element|'s [=node navigable=]'s {{[[PermissionElements]]}}
+    [=set/contains=] |element|.
+1. Let |count| be 0.
+1. [=list/iterate|For each=] |current| in
+    |element|'s [=node navigable=]'s {{[[PermissionElements]]}}:
+    1. If |current| is |element|, then [=iteration/break=].
+    1. If |element|.{{[[Features]]}} [=set/equals=] |current|.{{[[Features]]}}
+
+        then increment |count| by 1.
+1. Return whether |count| is less than 3.
+
+</div>
+
+<div algorithm>
+To <dfn for="HTMLGeolocationElement">recheck type permissibility</dfn> for a
+|document|:
+
+1. [=list/iterate|For each=] |current| in |document|'s
+    {{[[PermissionElements]]}}:
+    1. If |current| is [=type permissible=], then [=remove blockers=] with
+        {{ActivationBlockersMixinBlockerReason/unsuccesful_registration}} from
+        |current|.
+
+</div>
+
+<div algorithm>
+To <dfn>dispatch onlocation</dfn> for |element|:
+    1. Let |event| be a new {{Event}}.
+    1. [=Event/Initialize=] |event| with {{Event/type}}
+        "{{HTMLGeolocationElement/onlocation}}".
+    1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+
+## <{geolocation}> element rendering ## {#geolocation-rendering}
+
+
+The <{geolocation}> element is a [=non-devolvable widget=] and is chiefly
+rendered like a <{button}>. The button label is largely expected to be
+determined by the browser, rather than the page, and reflects its function of given
+access to {{Geolocation}} functionality. The element may also convey information about
+the current permission state of the  <a permission>"geolocation"</a> [=powerful feature=].
+
+The page can influence the permission elements' styling, but with
+constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
+the label itself). These are described in [[#rendering]].
+The page can also select a locale for the text via the <{html-global/lang}> attribute.
+
+The permission elements support [=fallback content=], which will be
+displayed by any browser not yet supporting that element. Note that
+there are also conditions under which a browser that supports
+a respective permission element falls back to its [=fallback content=].
+
+
+# Mixins and Infrastructure # {#all-the-mixins}
+
+This section defines several mixins and supporting algorithms.
+
+## Activation Blockers ## {#mixin-blockers}
+
+To support a meaningful user intent signal and to conditionally block element
+activation, you can use the {{ActivationBlockersMixin}}
+
+<dl class="element">
+ <dt>[=Content attributes=]:</dt>
+  <dd>{{ActivationBlockersMixin/isValid}} — query whether the element can currently be activated.</dd>
+  <dd>{{ActivationBlockersMixin/invalidReason}} — return a string representation of why the element currently cannot be activated.</dd>
+  <dd>{{ActivationBlockersMixin/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    interface mixin ActivationBlockersMixin {
+      readonly attribute boolean isValid;
+      readonly attribute ActivationBlockersMixinBlockerReason invalidReason;
+      attribute EventHandler onvalidationstatuschange;
+    };
+   </pre>
+  </dd>
+</dl>
+
+
+The {{ActivationBlockersMixin/isValid}} attribute reflects whether the
+element is currently blocked.
+
+The {{ActivationBlockersMixin/invalidReason}} attribute is an
+[=enumerated attribute=] that informs the caller of the reason why activation
+is currently blocked. If there are multiple reasons, it picks one.
+Its value set is {{ActivationBlockersMixinBlockerReason}}.
+
+The following are the [=event handler=] (and their corresponding [=event handler event type=]) that
+must be supported on elements that include the {{ActivationBlockersMixin}}:
+<pre class=simpledef>
+onvalidationstatuschange: Event
+</pre>
+
+The <dfn for=ActivationBlockersMixin>ActivationBlockersMixin attributes</dfn>
+are:
+
+* {{ActivationBlockersMixin/isValid}}
+* {{ActivationBlockersMixin/invalidReason}}
+* {{ActivationBlockersMixin/onvalidationstatuschange}}
+
+### Internal state ### {#mixin-blocker-internal-state}
+
+{{ActivationBlockersMixin}} elements have the following internal slots:
+
+
+* The <dfn attribute for="ActivationBlockersMixin">\[[BlockerList]]</dfn> is a
+    list of records, containing a
+    <dfn for="ActivationBlockersMixin">blocker timestamp</dfn> and a
+    <dfn for="ActivationBlockersMixin">blocker reason</dfn>. The [=blocker
+    reason=] is a {{ActivationBlockersMixinBlockerReason}}, but not the empty string.
+
+* <dfn attribute for="ActivationBlockersMixin">\[[LastNotifiedValidState]]</dfn>
+    is a [=boolean=] that stores the most recently notified state of
+    {{ActivationBlockersMixin/isValid}}.
+
+* <dfn attribute for="ActivationBlockersMixin">\[[LastNotifiedInvalidReason]]</dfn>
+    is a [=string=] that stores the most recently notified state of
+    {{ActivationBlockersMixin/invalidReason}}.
+    {{ActivationBlockersMixin/[[LastNotifiedValidState]]}} and {{ActivationBlockersMixin/[[LastNotifiedInvalidReason]]}} are
+    used to determine whether an
+    {{ActivationBlockersMixin/onvalidationstatuschange}} event needs to be
+    dispatches.
+
+* <dfn attribute for="ActivationBlockersMixin">\[[IntersectionObserver]]</dfn>
+    is a reference to an {{IntersectionObserver}}.
+
+* <dfn attribute for="ActivationBlockersMixin">\[[IntersectionRect]]</dfn> is a
+    {{DOMRectReadOnly}} that stores the most recently seen intersection, i.e.
+    the position of the element relative to the [=viewport=].
+
+
+### Action Blockers, Blocker Reasons, and Blocker Lifetimes ### {#mixin-blockers-reason}
+
+The key goal of the elements in this specification is to reflect a user's
+conscious choice, and we need to make sure the user cannot easily be tricked
+into activating it. To do so, we maintain a list of blocker reasons, which may -
+permanently or temporarily - prevent the element from being activated.
+
+Conceptually, a blocker reason is just an arbitrary string identifier. We
+provide an enumeration of its value set. It's expected that not all users
+of the {{ActivationBlockersMixin}} will support all reasons.
+
+<pre class=idl>
+enum ActivationBlockersMixinBlockerReason {
+  "",   // No blocker reason.
+  "illegal_subframe", "unsuccesful_registration",
+  "recently_attached", "intersection_changed",
+  "intersection_out_of_viewport_or_clipped",
+  "intersection_occluded_or_distorted", "style_invalid",
+  "type_invalid",
+};
+</pre>
+
+These blockers come with three lifetimes: Permanent, temporary, and expiring.
+
+: <dfn>Permanent blocker</dfn>
+:: Once an element has a permanent blocker, it will be disabled permanently.
+    There are used for issues that the website owner is expected to fix.
+    An example is an element inside a <{fencedframe}>.
+: <dfn>Temporary blocker</dfn>
+:: This is a blocker that will only be valid until the blocking condition no
+    no longer occurs. An example is an element that is not
+    currently in view. All [=temporary blockers=] turn into
+    [=expiring blockers=] once the condition no longer applies.
+: <dfn>Expiring blocker</dfn>
+:: This is a blocker that is only valid for a fixed period of time. This is
+    used to block abuse scenarios like "click jacking". An example is
+    an element that has recently been moved.
+
+<div>
+<dfn dfn lt="blocker reason table"></dfn>
+<table class="def">
+<thead>
+<tr><th>Blocker name
+<th>Blocker type
+<th>Example condition
+<th>Order hint
+</thead>
+<tbody>
+<tr><th>{{ActivationBlockersMixinBlockerReason/type_invalid}}
+<td>[=permanent blocker|permanent=]
+<td>When an unsupported permission type has been
+    set.
+<td>1
+<tr><th>{{ActivationBlockersMixinBlockerReason/illegal_subframe}}
+<td>[=permanent blocker|permanent=]
+<td>When the element is used inside a <{fencedframe}>.
+<td>2
+<tr><th>{{ActivationBlockersMixinBlockerReason/unsuccesful_registration}}
+<td>[=temporary blocker|temporary=]
+<td>When too many other elements for the same
+    [=powerful feature=] have been inserted into the same document.
+<td>3
+<tr><th>{{ActivationBlockersMixinBlockerReason/recently_attached}}
+<td>[=expiring blocker|expiring=]
+<td>When the element has just been attached to the
+  DOM.
+<td>4
+<tr><th>{{ActivationBlockersMixinBlockerReason/intersection_changed}}
+<td>[=expiring blocker|expiring=]
+<td>When the element is being moved.
+<td>6
+<tr><th>{{ActivationBlockersMixinBlockerReason/intersection_out_of_viewport_or_clipped}}
+<td>[=temporary blocker|temporary=]
+<td>When the element is not or not fully in the [=viewport=].
+<td>7
+<tr><th>{{ActivationBlockersMixinBlockerReason/intersection_occluded_or_distorted}}
+<td>[=temporary blocker|temporary=]
+<td>When the element is fully in the [=viewport=],
+    but still not fully visible (e.g. because it's partly behind other content).
+<td>8
+<tr><th>{{ActivationBlockersMixinBlockerReason/style_invalid}}
+<td>[=temporary blocker|temporary=]
+<td>
+<td>9
+</tbody>
+</table>
+</div>
+
+
+
+### Algorithms ### {#mixin-blockers-algoreithms}
+
+<div algorithm>
+To <dfn for="ActivationBlockersMixin">add a blocker</dfn> with a
+{{ActivationBlockersMixinBlockerReason}} |reason| and an optional flag |expires|:
+
+1. [=Assert=]: |reason| is not `""`.
+    (The empty string in {{ActivationBlockersMixinBlockerReason}} signals no blocker
+    is present. Why would you add a non-blocking empty string blocker?)
+1. Let |timestamp| be None.
+1. If |expires|, then let |timestamp| be [=current high resolution time=]
+    plus the [=ActivationBlockersMixin/blocker delay=].
+1. [=list/Append=] an entry to the internal {{ActivationBlockersMixin/[[BlockerList]]}}
+    with |reason| and |timestamp|.
+
+</div>
+
+<div>
+The <dfn for="ActivationBlockersMixin">blocker delay</dfn> is 500ms.
+</div>
+
+<div algorithm>
+To <dfn for="ActivationBlockersMixin">add an expiring blocker</dfn> with a
+{{ActivationBlockersMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "expiring" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and true.
+
+</div>
+
+<div algorithm>
+To <dfn for="ActivationBlockersMixin">add a temporary blocker</dfn> with a
+{{ActivationBlockersMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "temporary" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and false.
+
+</div>
+
+<div algorithm>
+To <dfn for="ActivationBlockersMixin">add a permanent blocker</dfn> with a
+{{ActivationBlockersMixinBlockerReason}} |reason|:
+
+1. [=Assert=]: |reason| is listed as "permanent" in the [=blocker reason table=].
+1. [=Add a blocker=] with |reason| and false.
+
+</div>
+
+<div algorithm>
+To <dfn for="ActivationBlockersMixin">remove blockers</dfn> with
+{{ActivationBlockersMixinBlockerReason}} |reason| from an |element|:
+
+1. [=Assert=]: |reason| is listed as "temporary" in the
+    [=blocker reason table=].
+1. [=list/iterate|For each=] |entry| in |element|'s {{[[BlockerList]]}}:
+    1. If |entry|'s reason [=string/is|equals=] |reason|, then [=list/remove=]
+        |entry| from |element|'s {{[[BlockerList]]}}.
+1. [=Add a blocker=] with |reason| and true.
+
+</div>
+
+<div algorithm>
+To determine a {{ActivationBlockersMixin}} |element|'s
+<dfn for="ActivationBlockersMixin">blocker</dfn>:
+
+1. Let |blockers| be the result of [=list/sorting=] |element|'s {{[[BlockerList]]}}
+    with the [=blocker ordering=] algorithm.
+1. If |blockers| is not [=list/empty=] and |blockers|[0] is [=ActivationBlockersMixin/blocking=], then return |blockers|[0].
+1. Return nothing.
+
+</div>
+
+<div algorithm>
+To determine <dfn for="ActivationBlockersMixin">blocker ordering</dfn> for
+two blockers |a| and |b|:
+
+1. Let |really large number| be 99.
+1. [=Assert=]: No order hint in the [=blocker reason table=] is equal to or
+    greater than |really large number|.
+1. If |a| is [=ActivationBlockersMixin/blocking=], then let |a hint| be the
+    order hint of |a|'s [=blocker reason|reason=] in the
+    [=blocker reason table=], otherwise let |a hint| be |really large number|.
+1. If |b| is [=ActivationBlockersMixin/blocking=], then let |b hint| be the
+    order hint of |b|'s [=blocker reason|reason=] in the
+    [=blocker reason table=], otherwise let |b hint| be |really large number|.
+1. Return whether |a hint| is less than or equal to |b hint|.
+
+</div>
+
+<div algorithm>
+An {{ActivationBlockersMixin}}'s [=blocker=] list's |entry| is
+<dfn for="ActivationBlockersMixin">blocking</dfn> if:
+
+1. |entry| has no [=blocker timestamp=],
+1. or |entry| has a [=blocker timestamp=], and the [=blocker timestamp=] is
+    greater or equal to the [=current high resolution time=].
+
+</div>
+
+NOTE: The spec maintains blockers as a list {{[[BlockerList]]}}, which may
+    potentially grow indefinitely (since some blocker types simply expire,
+    but are not removed).
+    This structure is chosen for the simplicity of explanation, rather than for
+    efficiency. The details of this blocker structure are not observable except
+    for a handful of algorithms defined here, which should open plenty of
+    opportunities for implementations to handle this more efficiently.
+
+
+<div algorithm>
+An {{ActivationBlockersMixin}} |element|'s <dfn attribute for="ActivationBlockersMixin">isValid</dfn> getter steps are:
+
+1. Return whether |element|'s [=ActivationBlockersMixin/blocker=] is Nothing.
+
+</div>
+
+<div algorithm>
+An {{ActivationBlockersMixin}} |element|'s <dfn attribute for="ActivationBlockersMixin">invalidReason</dfn> getter steps are:
+
+1. If |element|'s [=ActivationBlockersMixin/blocker=] is Nothing, return `""`.
+1. Otherwise, |element|'s [=ActivationBlockersMixin/blocker=]'s reason string.
+
+</div>
+
+<div algorithm>
+To <dfn for=ActivationBlockersMixin>maybe dispatch onvalidstatechange</dfn> for |element|:
+
+1. Let |oldState| be {{[[LastNotifiedValidState]]}}.
+1. Let |newState| be whether |element|’s [=blocker=] is Nothing.
+1. Set {{[[LastNotifiedValidState]]}} to |newState|.
+1. Let |oldReason| be {{[[LastNotifiedInvalidReason]]}}.
+1. Let |newReason| be whether |element|’s
+    {{ActivationBlockersMixin/invalidReason}}.
+1. Set {{[[LastNotifiedInvalidReason]]}} to |newReason|.
+1. If |oldState| != |newState| or |oldReason| != |newReason|, then:
+    1. Let |event| be a new {{Event}}.
+    1. [=Event/Initialize=] |event| with
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+        "{{ActivationBlockersMixin/onvalidationstatuschange}}",
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+        true, and
+        <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+        true.
+    1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+<div algorithm="ActivationBlockersMixin/IntersectionObserver callback">
+An {{ActivationBlockersMixin}}'s <dfn for="ActivationBlockersMixin">IntersectionObserver callback</dfn> implements {{IntersectionObserverCallback}} and runs the following steps:
+
+1. [=Assert=]: The {{IntersectionObserver}}'s {{IntersectionObserver/root}}
+    is the [=/document=]
+1. Let |entries| be the value of the first callback parameter, the
+    [=/list=] of {{IntersectionObserverEntry|intersection observer entries}}.
+1. [=Assert=]: |entries| is not [=list/is empty|empty=].
+1. Let |entry| be |entries|'s last [=list/item=].
+1. If |entry|.{{IntersectionObserverEntry/isVisible}}, then:
+    1. [=Remove blockers=] with {{ActivationBlockersMixinBlockerReason/intersection_occluded_or_distorted}}.
+    1. [=Remove blockers=] with {{ActivationBlockersMixinBlockerReason/intersection_out_of_viewport_or_clipped}}.
+1. Otherwise:
+    1. If |entry|.{{IntersectionObserverEntry/intersectionRatio}} >= 1, then:
+        1. Let |reason| be {{ActivationBlockersMixinBlockerReason/intersection_occluded_or_distorted}}.
+    1. Otherwise:
+        1. Let |reason| be {{ActivationBlockersMixinBlockerReason/intersection_out_of_viewport_or_clipped}}.
+    1. [=Add a temporary blocker=] with |reason|.
+1. If {{[[IntersectionRect]]}} does not equal
+    |entry|.{{IntersectionObserverEntry/intersectionRect}} then
+    [=add an expiring blocker=] with
+    {{ActivationBlockersMixinBlockerReason/intersection_changed}}.
+1. Set {{[[IntersectionRect]]}} to
+    |entry|.{{IntersectionObserverEntry/intersectionRect}}
+1. [=Maybe dispatch onvalidstatechange=] on [=this=].
+
+ISSUE: Do I need to define dictionary equality?
+</div>
+
+
+## Powerful Features, aka Permissions ## {#mixin-permissions}
+
+To support elements that gate access to [=powerful features=], you can use the
+{{PermissionsMixin}}.
+
+<dl class="element">
+ <dt>[=DOM interface=]:</dt>
+  <dd>
+   <pre class=idl>
+    interface mixin PermissionsMixin {
+      readonly attribute PermissionState initialPermissionStatus;
+      readonly attribute PermissionState permissionStatus;
+      attribute EventHandler onpromptaction;
+      attribute EventHandler onpromptdismiss;
+    };
+   </pre>
+  </dd>
+</dl>
+
+The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on elements that include the {{PermissionsMixin}}:
+<pre class=simpledef>
+onpromptaction: Event
+onpromptdismiss: Event
+</pre>
+
+The <dfn for=PermissionsMixin>PermissionsMixin attributes</dfn> are:
+
+* {{PermissionsMixin/initialPermissionStatus}}
+* {{PermissionsMixin/permissionStatus}}
+* {{PermissionsMixin/onpromptaction}}
+* {{PermissionsMixin/onpromptdismiss}}
+
+### Internal state ### {#mixin-permissions-internal-state}
+
+The {{PermissionsMixin}} [=represents=] capabilities gated by user-requestable
+[=permissions=], which the user can activate to allow the site to start accessing them.
+It is core to the these elements that such requests are
+triggered by the user, and not by the page's script. To enforce
+this, the element checks whether the activation event is {{Event/isTrusted|trusted}}. Additionally it watches a number of conditions, like whether the element is
+(partially) occluded, or if it has recently been moved. The element maintains
+an internal {{[[BlockerList]]}} to keep track of this.
+
+{{PermissionsMixin}} elements have the following internal slots:
+
+* <dfn attribute for="PermissionsMixin">\[[Features]]</dfn> is null
+    or an [=ordered set=] of [=powerful features=]. For most permission
+    elements this is likely a fixed set, while for some this may be variable.
+    Making it an internal slot allows us to write algorithms that work for all
+    of them.
+
+* <dfn attribute for="PermissionsMixin">\[[InitialPermissionStatus]]</dfn>
+    is a {{PermissionState}} that stores the initial {{PermissionState}} for
+    {{[[Features]]}}.
+
+### Algorithms ### {#mixin-permissions-algorithms}
+
+<div algorithm>
+A {{PermissionsMixin}}'s <dfn for="PermissionsMixin">initialization steps</dfn> are:
+
+1. [=Assert=]: The internal {{PermissionsMixin/[[Features]]}} slot has been
+    initialized. The including element must define and initialize this.
+1. Initialize the internal {{PermissionsMixin/[[InitialPermissionStatus]]}} to
+    the result of [=PermissionsMixin/get the current permission state=].
+
+</div>
+
+<div algorithm>
+A {{PermissionsMixin}}'s <dfn for="PermissionsMixin">insertion steps</dfn> are:
+
+1. If {{PermissionsMixin/[[Features]]}} [=list/is empty=] or is null,
+    then [=add a permanent blocker=]
+    with reason {{ActivationBlockersMixinBlockerReason/type_invalid}}.
+
+</div>
+
+<div algorithm>
+An {{PermissionsMixin}} |element|'s
+<dfn attribute for="PermissionsMixin">initialPermissionStatus</dfn>
+getter steps are:
+
+1. Return |element|'s internal {{PermissionsMixin/[[InitialPermissionStatus]]}}.
+
+</div>
+
+<div algorithm>
+An {{PermissionsMixin}} |element|'s
+<dfn attribute for="PermissionsMixin">permissionStatus</dfn>
+getter steps are:
+
+1. Return [=PermissionsMixin/get the current permission state=] for
+    |element|.
+
+</div>
+
+<div algorithm>
+To <dfn for="PermissionsMixin">get the current permission state</dfn> for
+an {{PermissionsMixin}} |element|:
+
+1. Let |features| be |element|'s internal {{PermissionsMixin/[[Features]]}}.
+1. If |features| is null or |features| is [=list/empty=],
+    return "{{PermissionState/prompt}}".
+1. Let |current| be "{{PermissionState/granted}}".
+1. [=list/iterate|For each=] |feature| of |features|:
+    1. Let |state| be the result of [=/get the current permission state=] for
+        |feature|.
+    1. Let |current| be the smaller of |current| and |state|, assuming the
+        following ordering:<br>
+        "{{PermissionState/granted}}" >
+        "{{PermissionState/prompt}}" >
+        "{{PermissionState/denied}}".
+1. Return |current|.
+
+ISSUE: It's not clear what the PermissionState for 'no valid permission type'
+    should be. Here I pick "prompt" based on Chrome's implementation; but that
+    choice is arbitrary.
+
+</div>
+
+<div algorithm>
+To <dfn for=PermissionsMixin>dispatch onpromptaction</dfn> for |element|:
+
+1. Let |event| be a new {{Event}}.
+1. [=Event/Initialize=] |event| with
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+    "{{PermissionsMixin/onpromptaction}}",
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+    true, and
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+    true.
+1. [=/Dispatch=] |event| to |element|.
+
+ </div>
+
+<div algorithm>
+To <dfn for=PermissionsMixin>dispatch onpromptdismiss</dfn> for |element|:
+
+1. Let |event| be a new {{Event}}.
+1. [=Event/Initialize=] |event| with
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
+    "{{PermissionsMixin/onpromptdismiss}}",
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
+    true, and
+    <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
+    true.
+1. [=/Dispatch=] |event| to |element|.
+
+</div>
+
+<div algorithm>
+To <dfn for="PermissionsMixin">build a permission descriptor</dfn> for an
+|element|:
+
+ISSUE: The [[Permissions]] specification assumes a descriptor describes a
+single permission without parameters (like an equivalent of
+{{PositionOptions/enableHighAccuracy}}). Here, we assume a permissions model
+that is more expressive. This needs to be resolved -- likely upstream,
+in [[Permissions]], plus adaptions here.
+
+1. Let |result| be a new {{PermissionDescriptor}}.
+1. Fill in |result|, by including the [=powerful feature=] names contained in
+    |element|'s {{[[Features]]}}.
+1. Return |result|.
+
+</div>
+
+
+### Presentation ### {#mixin-permissions-presentation}
+
+ISSUE: There isn't much precedence for describing the user agent UI in detail.
+    It may be better to leave more freedom to user agents.
+
+An element using the {{PermissionsMixin}} contains browser-chosen content, text and maybe an
+icon. Activating them will often [=prompt the user to choose=].
+This provides two bits of user interface that a user can interact with.
+The [=user agent=] is largely free to determine these &mdash; rendering of the
+element and the subsequent [=prompt the user to choose|permission
+prompt=] &mdash; in whichever way it thinks best convey's the element's intent.
+
+UI options for the elements' presentation include:
+
+* Name the [=powerful features=] listed in {{[[Features]]}}, in the language
+    indicated by the [=language=] of the element. Note that this would
+    always be the language indicated by the <{html-global/lang}> attribute,
+    if present.
+* An icon indicating the [=powerful feature=] type or types.
+* The current [=permission state=] of the [=powerful feature=] in questions.
+    For example, if the [=powerful feature|permission=] is already
+    {{PermissionState/granted}}, the element might be labeled
+    as "geolocation already in use".
+* A modal [=prompt the user to choose|prompt=] with a "scrim".
+    (I.e., darkening out the page behind the prompt.)
+    This would normally quite disruptive. But here our goal is to ensure a
+    user means to make this choice.
+
+[=User agents=] are encouraged to name or describe the [=powerful features=]
+in a way that's consistent with similar usage in program or the platform it
+is running on.
+
+Very non-normative examples might be:
+
+* `<geolocation lang=de>`: "Standort verwenden".
+* `<geolocation watch=true>` (in an English language page): "&#8982; Track location.".
+* Upon activiating `<geolocation>`, when the corresponding
+    [=permission state=] is {{PermissionState/denied}}, modify the text to
+    "Continue blocking".
+
+
+## Falling Back ## {#fallback}
+
+A [=user agent=] that does not support a particular element would
+recognize them as {{HTMLUnknownElement}} and render their children as
+regular HTML.
+[=User agents=] that support such an element should usually
+render the element as described in [[#rendering]], but are still
+required to render the [=fallback content=] under one condition:
+
+If the internal {{[[BlockerList]]}} [=list/contains=] a record whose
+[=blocker reason=] is {{ActivationBlockersMixinBlockerReason/type_invalid}},
+then the element should render the [=fallback content=]
+instead of its usual rendering.
+
+
+## Styling, and Styling Restrictions ## {#rendering}
+
+Permission elements constrain the styling that can be applied to them.
+These constraints come in three flavours:
+
+1. If the condition isn't met, the element is deactivated.
+1. A user-agent defined stylesheet enforces certain styling.
+1. The user-agent enforces bounds on additional styles, where the bounds
+    cannot be easily expressed in CSS. For example, if the style bounds are
+    expressed relative to the computed style of the element.
+
+### Conditions that Deactivate the Element ### {#style-blockers}
+
+If one of these conditions is not met, then a
+[=add a temporary blocker|temporary blocker is added=] with type
+{{ActivationBlockersMixinBlockerReason/style_invalid}}.
+
+<pre class="simpledef">
+'color', 'background-color':
+  Set by default to the user agent's default `button` colors.
+  The [=contrast ratio=] between the 2 colors needs to be at least 3.
+  Alpha has to be 1.
+
+'font-size':
+  If [=specified value=] is expressed as <a>&lt;relative-size&gt;</a>&#x3a;
+  <ul>
+  <li>Then ''font-size'' must be between ''font-size/small'' and
+  ''font-size/xx-large''.
+  <li>Otherwise, the [=computed value=] must be larger than or equal to the
+  [=computed value=] for ''font-size/small'' and less than or equal to the
+  [=computed value=] of ''font-size/xx-large''.
+  </ul>
+
+</pre>
+
+ISSUE: Define "alpha".
+
+### User-Agent Defined Stylesheet ### {#style-stylesheet}
+
+A permission element is expected to render with the following styles:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+geolocation {
+  opacity: 1.0;
+  line-height: normal !important;
+  whitespace: nowrap !important;
+  user-select: none !important;
+  appearance: auto !important;
+  box-sizing: content-box !important;
+  vertical-align: middle !important;
+  text-emphasis: initial !important;
+  text-shadow: initial !important;
+}
+</pre>
+
+### Additional User-Agent Defined Style Bounds ### {#style-style-bounds}
+Permission elements define several bounds on styles. For example, we want
+the font size are constraints on the  The style bounds are explained below.
+
+For notational convenience, we imagine that the [=computed value=] of an element
+could be accessed in CSS rules with <code>computed</code>, just like the
+inherited value of an element can via the <code>[=inherit=]</code> keyword.
+Then the following sheet expresses the style bounds:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+geolocation {
+  outline-offset: clamp(0, computed, none); /* No negative outline-offsets. */
+  font-weight: clamp(200, computed, none);  /* No font-weights below 200. */
+  word-spacing: clamp(0, computed, 0.5em);  /* Word-spacing between 0..0.5em */
+  letter-spacing: clamp(-0.05em, commputed, 0.2em);  /* Letter spacing between -0.05..0.2em */
+
+  min-height: clamp(1em, computed, none);
+  max-height: clamp(none, computed, 3em);
+  min-width: clamp(none, computed, calc(fit-content));
+
+  border-width: clamp(none, computed, 1em);
+
+  font-style: if(computed = "normal" or computed = "italic", computed, "normal");
+  display: if (computed = "inline-block" or computed = "none", computed, "inline-block");
+  cursor: if (computed = "pointer" or computed = "not-allowed", computed, "pointer")
+}
+</pre>
+
+Additionally, some rules apply based on conditions not easily expressible as
+CSS.
+
+If 'height' is `auto`, then apply:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+geolocation {
+  padding-top: clamp(1em, computed, none);
+  padding-bottom: calc(padding-top);
+}
+</pre>
+
+If 'width' is `auto`, then apply:
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+geolocation {
+  padding-left: clamp(none, computed, 5em);
+  padding-right: calc(padding-left);
+}
+</pre>
+
+Apply the following sheet, if the element does not have all of the following:
+
+- A border width of at least `1px`,
+- a color to background-color contrast ratio of at least 3,
+- and alpha of 1.
+
+<pre class="highlight lang-css">
+@namespace "http://www.w3.org/1999/xhtml";
+geolocation {
+  max-width: clamp(none, computed, calc(3 * fit-content));
+}
+</pre>
+
+The following CSS properties can be used normally:
+
+* 'font-kerning'
+* 'font-optical-sizing'
+* 'font-stretch'
+* 'font-synthesis-weight'
+* 'font-synthesis-style'
+* 'font-synthesis-small-caps'
+* 'font-feature-settings'
+* 'forced-color-adjust'
+* 'text-rendering'
+* 'align-self'
+* 'anchor-name'
+* 'aspect-ratio'
+* 'border' and all
+    [[css-backgrounds-3#border-shorthands|border shorthand properties]],
+    'border-top', 'border-right', 'border-bottom', 'border-left'
+* 'clear'
+* 'color-scheme'
+* 'contain-intrinsic-width'
+* 'contain-intrinsic-height'
+* 'container-name'
+* 'container-type'
+* 'counter-reset', 'counter-increment', 'counter-set'
+* 'flex' and its longhands, 'flex-grow', 'flex-shrink', 'flex-basis'
+* 'float'
+* 'height'
+* 'isolation'
+* 'justify-self'
+* 'left'
+* 'order'
+* 'orphans'
+* 'outline' and mostly its [[css-ui-4#outline|longhands]],
+    'outline-color' and 'outline-style'.
+    <br>Note that 'outline-offset' is clamped by the rules above.
+* 'overflow-anchor'
+* 'overscroll-behavior' and its
+    [[css-overscroll-1#overscroll-behavior-longhands-physical|longhands]],
+    'overscroll-behavior-inline', 'overscroll-behavior-block',
+    'overscroll-behavior-x', 'overscroll-behavior-y'
+* 'page'
+* 'position'
+* 'position-anchor'
+* 'right'
+* 'scroll-margin' and its [[css-scroll-snap-1#longhands|longhands]],
+    'scroll-margin-top', 'scroll-margin-right', 'scroll-margin'bottom',
+    'scroll-margin-left'
+* 'scroll-padding' and its [[css-scroll-snap-1#longhands|longhands]],
+    'scroll-padding-top', 'scroll-padding-right', 'scroll-padding-bottom',
+    'scroll-padding-left', 'scroll-padding-inline-start',
+    'scroll-padding-block-start', 'scroll-padding-block-start',
+    'scroll-padding-inline-end', 'scroll-padding-block-end'
+* 'text-spacing-trim'
+* 'text-transform'
+* 'top'
+* 'visibility'
+* 'x'
+* 'y'
+* 'ruby-position'
+* 'user-select'
+* 'width'
+* 'will-change'
+* 'z-index'
+
+Properties that are not listed above, or in the rules in this section,
+and aren't logically equivalent to one of the properties mentioned here,
+will be ignored.
+
+
+# Security & Privacy Considerations # {#secpriv}
+
+Note: Security & Privacy Considerations can be found
+[here](https://github.com/WICG/PEPC/blob/main/explainer.md#security) &
+[there](https://github.com/WICG/PEPC/blob/main/explainer.md#privacy),
+in the [Explainer](https://github.com/WICG/PEPC/blob/main/explainer.md).
+This section will eventually contain a specification-worthy transcription
+of those Explainer sections.
