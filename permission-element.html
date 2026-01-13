@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-UD" rel="stylesheet">
   <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-element.html" rel="canonical">
-  <meta content="e1ed4fc6bf491a1543483bd051f19c19448538cb" name="revision">
+  <meta content="a24df2e45eb5bb26dbcd3910d9a671a6db2e9ef6" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -758,7 +758,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="no-ref p-name" id="title">The HTML &lt;permission> Element</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#UD">Unofficial Proposal Draft</a>,
-    <time class="dt-updated" datetime="2026-01-12">12 January 2026</time></p>
+    <time class="dt-updated" datetime="2026-01-13">13 January 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1968,7 +1968,7 @@ permission <c- p>{</c->
     <li data-md>
      <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border" id="ref-for-propdef-border">border</a> and all
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border" id="ref-for-propdef-border">border</a> and all
 <a href="https://drafts.csswg.org/css-backgrounds-3/#border-shorthands">border shorthand properties</a>,
 <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-top" id="ref-for-propdef-border-top">border-top</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-right" id="ref-for-propdef-border-right">border-right</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-bottom" id="ref-for-propdef-border-bottom">border-bottom</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-left" id="ref-for-propdef-border-left">border-left</a></p>
     <li data-md>
@@ -2161,13 +2161,9 @@ of those Explainer sections.</p>
      <li><span class="dfn-paneled" id="0f50e922">position-anchor</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-BACKGROUNDS-3]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="a9734ee4">border</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[CSS-BORDERS-4]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="3fcbecdc">border</span>
      <li><span class="dfn-paneled" id="e697420b">border-bottom</span>
      <li><span class="dfn-paneled" id="6daf8b2a">border-left</span>
      <li><span class="dfn-paneled" id="7d1d6278">border-right</span>
@@ -2854,6 +2850,7 @@ let dfnPanelData = {
 "3c915747": {"dfnID":"3c915747","dfnText":"contexts in which this element can be used","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-contexts"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-contexts"},
 "3dca8953": {"dfnID":"3dca8953","dfnText":"type","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-type"},{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-type\u2460"},{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-type\u2461"}],"title":"2.5. permission element event algorithms"}],"url":"https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type"},
 "3f5a365a": {"dfnID":"3f5a365a","dfnText":"permission","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-permission"}],"title":"1. Introduction"},{"refs":[{"id":"ref-for-dfn-permission\u2460"}],"title":"2.1. permission element internal state"}],"url":"https://w3c.github.io/permissions/#dfn-permission"},
+"3fcbecdc": {"dfnID":"3fcbecdc","dfnText":"border","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-borders-4/#propdef-border"},
 "4013a022": {"dfnID":"4013a022","dfnText":"this","external":true,"refSections":[{"refs":[{"id":"ref-for-this"},{"id":"ref-for-this\u2460"},{"id":"ref-for-this\u2461"},{"id":"ref-for-this\u2462"},{"id":"ref-for-this\u2463"},{"id":"ref-for-this\u2464"},{"id":"ref-for-this\u2465"},{"id":"ref-for-this\u2466"},{"id":"ref-for-this\u2467"},{"id":"ref-for-this\u2468"},{"id":"ref-for-this\u2460\u24ea"}],"title":"2.4. permission element algorithms"}],"url":"https://webidl.spec.whatwg.org/#this"},
 "402ed79d": {"dfnID":"402ed79d","dfnText":"CEReactions","external":true,"refSections":[{"refs":[{"id":"ref-for-cereactions"},{"id":"ref-for-cereactions\u2460"}],"title":"2. The permission element."}],"url":"https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions"},
 "420a43d6": {"dfnID":"420a43d6","dfnText":"intersectionRatio","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserverentry-intersectionratio"}],"title":"2.4. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionratio"},
@@ -2931,7 +2928,6 @@ let dfnPanelData = {
 "a3b18719": {"dfnID":"a3b18719","dfnText":"append (for set)","external":true,"refSections":[{"refs":[{"id":"ref-for-set-append"}],"title":"2.4. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#set-append"},
 "a505250c": {"dfnID":"a505250c","dfnText":"insertion steps","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-node-insert-ext"}],"title":"2.4. permission element algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-node-insert-ext"},
 "a7bd8ceb": {"dfnID":"a7bd8ceb","dfnText":"specified value","external":true,"refSections":[{"refs":[{"id":"ref-for-specified-value"}],"title":"3.2.1. Conditions that Deactivate the Element"}],"url":"https://www.w3.org/TR/CSS2/cascade.html#specified-value"},
-"a9734ee4": {"dfnID":"a9734ee4","dfnText":"border","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border"},
 "a973e0fe": {"dfnID":"a973e0fe","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document"}],"title":"2.4. permission element algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-document"},
 "aa7ec909": {"dfnID":"aa7ec909","dfnText":"scroll-padding-left","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding-left"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left"},
 "aa9d496e": {"dfnID":"aa9d496e","dfnText":"scroll-padding","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding"},
@@ -3504,7 +3500,7 @@ let refsData = {
 "https://drafts.csswg.org/css-align-3/#propdef-justify-self": {"displayText":"justify-self","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-align","spec":"css-align-3","status":"current","text":"justify-self","type":"property","url":"https://drafts.csswg.org/css-align-3/#propdef-justify-self"},
 "https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name": {"displayText":"anchor-name","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"anchor-name","type":"property","url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name"},
 "https://drafts.csswg.org/css-anchor-position-1/#propdef-position-anchor": {"displayText":"position-anchor","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-anchor-position","spec":"css-anchor-position-1","status":"current","text":"position-anchor","type":"property","url":"https://drafts.csswg.org/css-anchor-position-1/#propdef-position-anchor"},
-"https://drafts.csswg.org/css-backgrounds-3/#propdef-border": {"displayText":"border","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-backgrounds","spec":"css-backgrounds-3","status":"current","text":"border","type":"property","url":"https://drafts.csswg.org/css-backgrounds-3/#propdef-border"},
+"https://drafts.csswg.org/css-borders-4/#propdef-border": {"displayText":"border","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"current","text":"border","type":"property","url":"https://drafts.csswg.org/css-borders-4/#propdef-border"},
 "https://drafts.csswg.org/css-borders-4/#propdef-border-bottom": {"displayText":"border-bottom","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"current","text":"border-bottom","type":"property","url":"https://drafts.csswg.org/css-borders-4/#propdef-border-bottom"},
 "https://drafts.csswg.org/css-borders-4/#propdef-border-left": {"displayText":"border-left","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"current","text":"border-left","type":"property","url":"https://drafts.csswg.org/css-borders-4/#propdef-border-left"},
 "https://drafts.csswg.org/css-borders-4/#propdef-border-right": {"displayText":"border-right","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-borders","spec":"css-borders-4","status":"current","text":"border-right","type":"property","url":"https://drafts.csswg.org/css-borders-4/#propdef-border-right"},
