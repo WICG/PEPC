@@ -11,7 +11,7 @@ An HTML permission element for the
 [geolocation](https://www.w3.org/TR/geolocation/) feature:
 
 * [Explainer](geolocation_explainer.md)
-* [Joined Permission Elements specification draft](https://wicg.github.io/PEPC/permission-elements.html)
+* [Geolocation Element Specification Draft](https://wicg.github.io/PEPC/geolocation-element.html)
 
 # Page Embedded Permission Control (PEPC)
 
@@ -19,5 +19,5 @@ The originally proposed permission element, for any
 [permission](https://www.w3.org/TR/permissions/)
 
 * [Explainer for PEPC](explainer.md)
-* [Specification draft](https://wicg.github.io/PEPC/permission-element.html)
+* [Permission Element Specification draft](https://wicg.github.io/PEPC/permission-element.html)
    (as of Sept 22, 2025)
