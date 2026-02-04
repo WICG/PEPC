@@ -371,7 +371,7 @@ To <dfn for=HTMLGeolocationElement>fetch location</dfn>:
     1. Set [=this=]'s {{[[positionError]]}} to {{PositionCallback}}'s
         positionError argument.
     1. [=Dispatch onlocation=] to [=this=].
-1. Let |positionOptions| be &laquo;[]&raquo;
+1. Let |positionOptions| be &laquo;[ "{{PositionOptions/enableHighAccuracy}}" &rarr; true ]&raquo;.
 1. Let |geolocation| be the [=relevant global object=]'s {{Geolocation}}.
 1. If [=this=]'s {{HTMLGeolocationElement/watch}} is true:
     1. [=Request a position=] with |geolocation|, |positionCallback|,

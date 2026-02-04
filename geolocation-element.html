@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://wicg.github.io/PEPC/geolocation-element.html" rel="canonical">
-  <meta content="2b7f2ac079e41f2c45e6e12c859c14de6d77227a" name="revision">
+  <meta content="3fb54b71ca48a37ac285153adb7ef368557597a5" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -758,7 +758,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="p-name no-ref" id="title">The HTML Geolocation Element</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-01-13">13 January 2026</time></p>
+    <time class="dt-updated" datetime="2026-02-04">4 February 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1181,7 +1181,7 @@ positionError argument.</p>
         <p><a data-link-type="dfn" href="#dispatch-onlocation" id="ref-for-dispatch-onlocation①">Dispatch onlocation</a> to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑤">this</a>.</p>
       </ol>
      <li data-md>
-      <p>Let <var>positionOptions</var> be «[]»</p>
+      <p>Let <var>positionOptions</var> be «[ "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy">enableHighAccuracy</a></code>" → true ]».</p>
      <li data-md>
       <p>Let <var>geolocation</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-geolocation" id="ref-for-dom-geolocation③">Geolocation</a></code>.</p>
      <li data-md>
@@ -1921,7 +1921,7 @@ To <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" 
 
     <p class="issue" id="issue-f681da45"><a class="self-link" href="#issue-f681da45"></a> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a> specification assumes a descriptor describes a
 single permission without parameters (like an equivalent of
-<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy">enableHighAccuracy</a></code>). Here, we assume a permissions model
+<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy①">enableHighAccuracy</a></code>). Here, we assume a permissions model
 that is more expressive. This needs to be resolved -- likely upstream,
 in <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a>, plus adaptions here.</p>
     <ol>
@@ -2018,7 +2018,7 @@ Alpha has to be 1.
       <th>'font-size'
       <td>
        
-If <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#specified-value" id="ref-for-specified-value">specified value</a> is expressed as <a class="css" data-link-type="type" href="https://drafts.csswg.org/css2/#value-def-relative-size" id="ref-for-value-def-relative-size">&lt;relative-size></a>:
+If <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#specified-value" id="ref-for-specified-value">specified value</a> is expressed as <a class="css" data-link-type="type" href="https://drafts.csswg.org/css-fonts-4/#typedef-relative-size" id="ref-for-typedef-relative-size">&lt;relative-size></a>:
 
        <ul>
         <li>Then <span class="css">font-size</span> must be between <a class="css" data-link-type="maybe" href="https://drafts.csswg.org/css2/#valdef-font-size-small" id="ref-for-valdef-font-size-small">small</a> and
@@ -2378,6 +2378,7 @@ of those Explainer sections.</p>
    <li>
     <a data-link-type="biblio">[CSS-FONTS-4]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="55ca59ee">&lt;relative-size></span>
      <li><span class="dfn-paneled" id="00d808eb">font-feature-settings</span>
      <li><span class="dfn-paneled" id="1bebb82c">font-kerning</span>
      <li><span class="dfn-paneled" id="37bdfca9">font-optical-sizing</span>
@@ -2479,7 +2480,6 @@ of those Explainer sections.</p>
    <li>
     <a data-link-type="biblio">[CSS2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="d686638a">&lt;relative-size></span>
      <li><span class="dfn-paneled" id="9436e460">clear</span>
      <li><span class="dfn-paneled" id="eff1f6e9">computed value</span>
      <li><span class="dfn-paneled" id="0570259e">float</span>
@@ -2654,7 +2654,7 @@ of those Explainer sections.</p>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-compositing-2">[COMPOSITING-2]
-   <dd><a href="https://drafts.fxtf.org/compositing-2/"><cite>Compositing and Blending Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.fxtf.org/compositing-2/">https://drafts.fxtf.org/compositing-2/</a>
+   <dd><a href="https://drafts.csswg.org/compositing-2/"><cite>Compositing and Blending Module Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/compositing-2/">https://drafts.csswg.org/compositing-2/</a>
    <dt id="biblio-css-align-3">[CSS-ALIGN-3]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-align/"><cite>CSS Box Alignment Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-align/">https://drafts.csswg.org/css-align/</a>
    <dt id="biblio-css-anchor-position-1">[CSS-ANCHOR-POSITION-1]
@@ -2696,7 +2696,7 @@ of those Explainer sections.</p>
    <dt id="biblio-css-text-4">[CSS-TEXT-4]
    <dd>Elika Etemad; et al. <a href="https://drafts.csswg.org/css-text-4/"><cite>CSS Text Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-text-4/">https://drafts.csswg.org/css-text-4/</a>
    <dt id="biblio-css-ui-4">[CSS-UI-4]
-   <dd>Florian Rivoal. <a href="https://drafts.csswg.org/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-ui-4/">https://drafts.csswg.org/css-ui-4/</a>
+   <dd>Tab Atkins Jr.; Florian Rivoal. <a href="https://drafts.csswg.org/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-ui-4/">https://drafts.csswg.org/css-ui-4/</a>
    <dt id="biblio-css-will-change-1">[CSS-WILL-CHANGE-1]
    <dd>Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-will-change/"><cite>CSS Will Change Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-will-change/">https://drafts.csswg.org/css-will-change/</a>
    <dt id="biblio-css2">[CSS2]
@@ -3068,7 +3068,8 @@ let dfnPanelData = {
 "50348b93": {"dfnID":"50348b93","dfnText":"inherit","external":true,"refSections":[{"refs":[{"id":"ref-for-value-def-inherit"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://www.w3.org/TR/CSS2/cascade.html#value-def-inherit"},
 "53275e46": {"dfnID":"53275e46","dfnText":"append (for list)","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"3.1.3. Algorithms"}],"url":"https://infra.spec.whatwg.org/#list-append"},
 "5372cca8": {"dfnID":"5372cca8","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-boolean"},{"id":"ref-for-idl-boolean\u2460"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-idl-boolean\u2461"}],"title":"3.1. Activation Blockers"}],"url":"https://webidl.spec.whatwg.org/#idl-boolean"},
-"54f0976d": {"dfnID":"54f0976d","dfnText":"enableHighAccuracy","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-positionoptions-enablehighaccuracy"}],"title":"3.2.2. Algorithms"}],"url":"https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy"},
+"54f0976d": {"dfnID":"54f0976d","dfnText":"enableHighAccuracy","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-positionoptions-enablehighaccuracy"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-dom-positionoptions-enablehighaccuracy\u2460"}],"title":"3.2.2. Algorithms"}],"url":"https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy"},
+"55ca59ee": {"dfnID":"55ca59ee","dfnText":"<relative-size>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-relative-size"}],"title":"3.4.1. Conditions that Deactivate the Element"}],"url":"https://drafts.csswg.org/css-fonts-4/#typedef-relative-size"},
 "583af179": {"dfnID":"583af179","dfnText":"Geolocation","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-geolocation"}],"title":"1. Introduction and Background"},{"refs":[{"id":"ref-for-dom-geolocation\u2460"},{"id":"ref-for-dom-geolocation\u2461"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-dom-geolocation\u2462"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-dom-geolocation\u2463"}],"title":"2.3. geolocation element rendering"}],"url":"https://w3c.github.io/geolocation/#dom-geolocation"},
 "5a37bda5": {"dfnID":"5a37bda5","dfnText":"IntersectionObserverCallback","external":true,"refSections":[{"refs":[{"id":"ref-for-callbackdef-intersectionobservercallback"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#callbackdef-intersectionobservercallback"},
 "5afbefcd": {"dfnID":"5afbefcd","dfnText":"item","external":true,"refSections":[{"refs":[{"id":"ref-for-list-item"}],"title":"3.1.3. Algorithms"}],"url":"https://infra.spec.whatwg.org/#list-item"},
@@ -3177,7 +3178,6 @@ let dfnPanelData = {
 "d124397f": {"dfnID":"d124397f","dfnText":"permission state","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-permission-state"},{"id":"ref-for-dfn-permission-state\u2460"}],"title":"3.2.3. Presentation"}],"url":"https://w3c.github.io/permissions/#dfn-permission-state"},
 "d4dbbbf0": {"dfnID":"d4dbbbf0","dfnText":"language","external":true,"refSections":[{"refs":[{"id":"ref-for-language"}],"title":"3.2.3. Presentation"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#language"},
 "d54eeea2": {"dfnID":"d54eeea2","dfnText":"palpable content","external":true,"refSections":[{"refs":[{"id":"ref-for-palpable-content-2"}],"title":"2. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#palpable-content-2"},
-"d686638a": {"dfnID":"d686638a","dfnText":"<relative-size>","external":true,"refSections":[{"refs":[{"id":"ref-for-value-def-relative-size"}],"title":"3.4.1. Conditions that Deactivate the Element"}],"url":"https://drafts.csswg.org/css2/#value-def-relative-size"},
 "d84118c0": {"dfnID":"d84118c0","dfnText":"outline-offset","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-outline-offset"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-ui-4/#propdef-outline-offset"},
 "d893440d": {"dfnID":"d893440d","dfnText":"flex-shrink","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex-shrink"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink"},
 "d996d257": {"dfnID":"d996d257","dfnText":"cancelable","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable"}],"title":"3.1.3. Algorithms"},{"refs":[{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable\u2460"},{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable\u2461"}],"title":"3.2.2. Algorithms"}],"url":"https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable"},
@@ -3758,6 +3758,7 @@ let refsData = {
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-small-caps": {"displayText":"font-synthesis-small-caps","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-synthesis-small-caps","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-small-caps"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-style": {"displayText":"font-synthesis-style","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-synthesis-style","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-style"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight": {"displayText":"font-synthesis-weight","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-synthesis-weight","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight"},
+"https://drafts.csswg.org/css-fonts-4/#typedef-relative-size": {"displayText":"<relative-size>","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"<relative-size>","type":"type","url":"https://drafts.csswg.org/css-fonts-4/#typedef-relative-size"},
 "https://drafts.csswg.org/css-lists-3/#propdef-counter-increment": {"displayText":"counter-increment","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-lists","spec":"css-lists-3","status":"current","text":"counter-increment","type":"property","url":"https://drafts.csswg.org/css-lists-3/#propdef-counter-increment"},
 "https://drafts.csswg.org/css-lists-3/#propdef-counter-reset": {"displayText":"counter-reset","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-lists","spec":"css-lists-3","status":"current","text":"counter-reset","type":"property","url":"https://drafts.csswg.org/css-lists-3/#propdef-counter-reset"},
 "https://drafts.csswg.org/css-lists-3/#propdef-counter-set": {"displayText":"counter-set","export":true,"for_":[],"level":"3","normative":true,"shortname":"css-lists","spec":"css-lists-3","status":"current","text":"counter-set","type":"property","url":"https://drafts.csswg.org/css-lists-3/#propdef-counter-set"},
@@ -3805,7 +3806,6 @@ let refsData = {
 "https://drafts.csswg.org/css2/#propdef-z-index": {"displayText":"z-index","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"z-index","type":"property","url":"https://drafts.csswg.org/css2/#propdef-z-index"},
 "https://drafts.csswg.org/css2/#valdef-font-size-small": {"displayText":"small","export":true,"for_":["font-size"],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"small","type":"value","url":"https://drafts.csswg.org/css2/#valdef-font-size-small"},
 "https://drafts.csswg.org/css2/#valdef-font-size-xx-large": {"displayText":"xx-large","export":true,"for_":["font-size"],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"xx-large","type":"value","url":"https://drafts.csswg.org/css2/#valdef-font-size-xx-large"},
-"https://drafts.csswg.org/css2/#value-def-relative-size": {"displayText":"<relative-size>","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"<relative-size>","type":"type","url":"https://drafts.csswg.org/css2/#value-def-relative-size"},
 "https://drafts.csswg.org/css2/#viewport%E2%91%A0": {"displayText":"viewport","export":false,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"current","text":"viewport","type":"dfn","url":"https://drafts.csswg.org/css2/#viewport%E2%91%A0"},
 "https://drafts.csswg.org/geometry-1/#domrectreadonly": {"displayText":"DOMRectReadOnly","export":true,"for_":[],"level":"1","normative":true,"shortname":"geometry","spec":"geometry-1","status":"current","text":"DOMRectReadOnly","type":"interface","url":"https://drafts.csswg.org/geometry-1/#domrectreadonly"},
 "https://drafts.csswg.org/mediaqueries-5/#contrast-ratio": {"displayText":"contrast ratio","export":true,"for_":[],"level":"5","normative":true,"shortname":"mediaqueries","spec":"mediaqueries-5","status":"current","text":"contrast ratio","type":"dfn","url":"https://drafts.csswg.org/mediaqueries-5/#contrast-ratio"},
