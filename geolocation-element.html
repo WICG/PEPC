@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://wicg.github.io/PEPC/geolocation-element.html" rel="canonical">
-  <meta content="76a035e70a142ffe73c39c66765acaf6bb15929d" name="revision">
+  <meta content="4e2f8a6a72ea5729397b5b6f341d5c998e1c5673" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -758,7 +758,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="no-ref p-name" id="title">The HTML Geolocation Element</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-01-14">14 January 2026</time></p>
+    <time class="dt-updated" datetime="2026-02-04">4 February 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1181,7 +1181,7 @@ positionError argument.</p>
         <p><a data-link-type="dfn" href="#dispatch-onlocation" id="ref-for-dispatch-onlocation①">Dispatch onlocation</a> to <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑤">this</a>.</p>
       </ol>
      <li data-md>
-      <p>Let <var>positionOptions</var> be «[]»</p>
+      <p>Let <var>positionOptions</var> be «[ "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy">enableHighAccuracy</a></code>" → true ]».</p>
      <li data-md>
       <p>Let <var>geolocation</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-geolocation" id="ref-for-dom-geolocation③">Geolocation</a></code>.</p>
      <li data-md>
@@ -1921,7 +1921,7 @@ To <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" 
 
     <p class="issue" id="issue-f681da45"><a class="self-link" href="#issue-f681da45"></a> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a> specification assumes a descriptor describes a
 single permission without parameters (like an equivalent of
-<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy">enableHighAccuracy</a></code>). Here, we assume a permissions model
+<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy" id="ref-for-dom-positionoptions-enablehighaccuracy①">enableHighAccuracy</a></code>). Here, we assume a permissions model
 that is more expressive. This needs to be resolved -- likely upstream,
 in <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a>, plus adaptions here.</p>
     <ol>
@@ -2654,7 +2654,7 @@ of those Explainer sections.</p>
   <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-compositing-2">[COMPOSITING-2]
-   <dd><a href="https://drafts.fxtf.org/compositing-2/"><cite>Compositing and Blending Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.fxtf.org/compositing-2/">https://drafts.fxtf.org/compositing-2/</a>
+   <dd><a href="https://drafts.csswg.org/compositing-2/"><cite>Compositing and Blending Module Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/compositing-2/">https://drafts.csswg.org/compositing-2/</a>
    <dt id="biblio-css-align-3">[CSS-ALIGN-3]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-align/"><cite>CSS Box Alignment Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-align/">https://drafts.csswg.org/css-align/</a>
    <dt id="biblio-css-anchor-position-1">[CSS-ANCHOR-POSITION-1]
@@ -2696,7 +2696,7 @@ of those Explainer sections.</p>
    <dt id="biblio-css-text-4">[CSS-TEXT-4]
    <dd>Elika Etemad; et al. <a href="https://drafts.csswg.org/css-text-4/"><cite>CSS Text Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-text-4/">https://drafts.csswg.org/css-text-4/</a>
    <dt id="biblio-css-ui-4">[CSS-UI-4]
-   <dd>Florian Rivoal. <a href="https://drafts.csswg.org/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-ui-4/">https://drafts.csswg.org/css-ui-4/</a>
+   <dd>Tab Atkins Jr.; Florian Rivoal. <a href="https://drafts.csswg.org/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-ui-4/">https://drafts.csswg.org/css-ui-4/</a>
    <dt id="biblio-css-will-change-1">[CSS-WILL-CHANGE-1]
    <dd>Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-will-change/"><cite>CSS Will Change Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-will-change/">https://drafts.csswg.org/css-will-change/</a>
    <dt id="biblio-css2">[CSS2]
@@ -3068,7 +3068,7 @@ let dfnPanelData = {
 "50348b93": {"dfnID":"50348b93","dfnText":"inherit","external":true,"refSections":[{"refs":[{"id":"ref-for-value-def-inherit"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://www.w3.org/TR/CSS2/cascade.html#value-def-inherit"},
 "53275e46": {"dfnID":"53275e46","dfnText":"append (for list)","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"3.1.3. Algorithms"}],"url":"https://infra.spec.whatwg.org/#list-append"},
 "5372cca8": {"dfnID":"5372cca8","dfnText":"boolean","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-boolean"},{"id":"ref-for-idl-boolean\u2460"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-idl-boolean\u2461"}],"title":"3.1. Activation Blockers"}],"url":"https://webidl.spec.whatwg.org/#idl-boolean"},
-"54f0976d": {"dfnID":"54f0976d","dfnText":"enableHighAccuracy","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-positionoptions-enablehighaccuracy"}],"title":"3.2.2. Algorithms"}],"url":"https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy"},
+"54f0976d": {"dfnID":"54f0976d","dfnText":"enableHighAccuracy","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-positionoptions-enablehighaccuracy"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-dom-positionoptions-enablehighaccuracy\u2460"}],"title":"3.2.2. Algorithms"}],"url":"https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy"},
 "55ca59ee": {"dfnID":"55ca59ee","dfnText":"<relative-size>","external":true,"refSections":[{"refs":[{"id":"ref-for-typedef-relative-size"}],"title":"3.4.1. Conditions that Deactivate the Element"}],"url":"https://drafts.csswg.org/css-fonts-4/#typedef-relative-size"},
 "583af179": {"dfnID":"583af179","dfnText":"Geolocation","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-geolocation"}],"title":"1. Introduction and Background"},{"refs":[{"id":"ref-for-dom-geolocation\u2460"},{"id":"ref-for-dom-geolocation\u2461"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-dom-geolocation\u2462"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-dom-geolocation\u2463"}],"title":"2.3. geolocation element rendering"}],"url":"https://w3c.github.io/geolocation/#dom-geolocation"},
 "5a37bda5": {"dfnID":"5a37bda5","dfnText":"IntersectionObserverCallback","external":true,"refSections":[{"refs":[{"id":"ref-for-callbackdef-intersectionobservercallback"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#callbackdef-intersectionobservercallback"},
