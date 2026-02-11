@@ -862,7 +862,7 @@ A {{PermissionsMixin}}'s <dfn for="PermissionsMixin">insertion steps</dfn> are:
 </div>
 
 <div algorithm>
-An {{PermissionsMixin}} |element|'s
+A {{PermissionsMixin}} |element|'s
 <dfn attribute for="PermissionsMixin">initialPermissionStatus</dfn>
 getter steps are:
 
@@ -871,7 +871,7 @@ getter steps are:
 </div>
 
 <div algorithm>
-An {{PermissionsMixin}} |element|'s
+A {{PermissionsMixin}} |element|'s
 <dfn attribute for="PermissionsMixin">permissionStatus</dfn>
 getter steps are:
 
@@ -882,7 +882,7 @@ getter steps are:
 
 <div algorithm>
 To <dfn for="PermissionsMixin">get the current permission state</dfn> for
-an {{PermissionsMixin}} |element|:
+a {{PermissionsMixin}} |element|:
 
 1. Let |features| be |element|'s internal {{PermissionsMixin/[[Features]]}}.
 1. If |features| is null or |features| is [=list/empty=],
