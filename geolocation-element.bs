@@ -251,7 +251,7 @@ The <{geolocation}> element uses all the internal slots from {{ActivationBlocker
 ### Mixin-supporting state at the [=/navigable=] ### {#mixin-navigable-state}
 
 In order to support the {{HTMLGeolocationElement}}, the [=/navigable=] maintains
-an [=ordered set=] of elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{ActivationBlockersMixinBlockerReason/unsuccesful_registration}}.
+an [=ordered set=] of elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{ActivationBlockersMixinBlockerReason/unsuccessful_registration}}.
 
 
 
@@ -288,7 +288,7 @@ The {{HTMLGeolocationElement}}'s <dfn for="HTMLGeolocationElement" export>insert
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
 1. Run {{PermissionsMixin}}'s [=PermissionsMixin/insertion steps=].
 1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
-    with {{ActivationBlockersMixinBlockerReason/unsuccesful_registration}}.
+    with {{ActivationBlockersMixinBlockerReason/unsuccessful_registration}}.
 1. [=Add an expiring blocker=] with reason
     {{ActivationBlockersMixinBlockerReason/recently_attached}}.
 1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
@@ -406,7 +406,7 @@ To <dfn for="HTMLGeolocationElement">recheck type permissibility</dfn> for a
 1. [=list/iterate|For each=] |current| in |document|'s
     {{[[PermissionElements]]}}:
     1. If |current| is [=type permissible=], then [=remove blockers=] with
-        {{ActivationBlockersMixinBlockerReason/unsuccesful_registration}} from
+        {{ActivationBlockersMixinBlockerReason/unsuccessful_registration}} from
         |current|.
 
 </div>
@@ -534,7 +534,7 @@ of the {{ActivationBlockersMixin}} will support all reasons.
 <pre class=idl>
 enum ActivationBlockersMixinBlockerReason {
   "",   // No blocker reason.
-  "illegal_subframe", "unsuccesful_registration",
+  "illegal_subframe", "unsuccessful_registration",
   "recently_attached", "intersection_changed",
   "intersection_out_of_viewport_or_clipped",
   "intersection_occluded_or_distorted", "style_invalid",
@@ -577,7 +577,7 @@ These blockers come with three lifetimes: Permanent, temporary, and expiring.
 <td>[=permanent blocker|permanent=]
 <td>When the element is used inside a <{fencedframe}>.
 <td>2
-<tr><th>{{ActivationBlockersMixinBlockerReason/unsuccesful_registration}}
+<tr><th>{{ActivationBlockersMixinBlockerReason/unsuccessful_registration}}
 <td>[=temporary blocker|temporary=]
 <td>When too many other elements for the same
     [=powerful feature=] have been inserted into the same document.
