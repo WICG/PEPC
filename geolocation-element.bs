@@ -137,7 +137,7 @@ capabilities.
  <dt>[=Content attributes=]:</dt>
   <dd>[=Global attributes=].</dd>
   <dd>[=ActivationBlockersMixin attributes=].</dd>
-  <dd>[=PermissionsMixin attributes=].</dd>
+  <dd>[=PowerfulFeatureObserver attributes=].</dd>
   <dd><{geolocation/autolocate}> — Whether to locate right away (if permission has already been granted).</dd>
   <dd><{geolocation/watch}> — Wether to read the position once, or watch it continously.</dd>
  <dt>[=Accessibility considerations=]:</dt>
@@ -163,8 +163,8 @@ The {{ActivationBlockersMixin/isValid}} and
 {{ActivationBlockersMixin/invalidReason}}, as well as the global
 <a attribute spec=html for=HTMLElement>lang</a> and
 <{htmlsvg-global/tabindex}> content attributes, and the
-{{PermissionsMixin/onpromptaction}},
-{{PermissionsMixin/onpromptdismiss}}, and
+{{PowerfulFeatureObserver/onpromptaction}},
+{{PowerfulFeatureObserver/onpromptdismiss}}, and
 {{ActivationBlockersMixin/onvalidationstatuschange}} event handlers follow the
 description in [[#all-the-mixins]].
 
@@ -188,7 +188,7 @@ interface HTMLGeolocationElement : HTMLElement {
   attribute EventHandler onlocation;
 };
 HTMLGeolocationElement includes ActivationBlockersMixin;
-HTMLGeolocationElement includes PermissionsMixin;
+HTMLGeolocationElement includes PowerfulFeatureObserver;
 </pre>
 
 If the user has decided to allow access to geolocation information, the
@@ -237,7 +237,7 @@ element is 0.
 
 ## <{geolocation}> element internal state ## {#geolocation-element-internal-state}
 
-The <{geolocation}> element uses all the internal slots from {{ActivationBlockersMixin}} and {{PermissionsMixin}}. Additionally,
+The <{geolocation}> element uses all the internal slots from {{ActivationBlockersMixin}} and {{PowerfulFeatureObserver}}. Additionally,
 <{geolocation}> has the following internal slots:
 
 * A constant <dfn attribute for=HTMLGeolocationElement>\[[watchIDs]]</dfn>,
@@ -251,7 +251,7 @@ The <{geolocation}> element uses all the internal slots from {{ActivationBlocker
 ### Mixin-supporting state at the [=/navigable=] ### {#mixin-navigable-state}
 
 In order to support the {{HTMLGeolocationElement}}, the [=/navigable=] maintains
-an [=ordered set=] of elements, <dfn attribute for="navigable">\[[PermissionElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{ActivationBlockersMixinBlockerReason/unsuccessful_registration}}.
+an [=ordered set=] of elements, <dfn attribute for="navigable">\[[ActivationBlockableElements]]</dfn>. This [=ordered set=] is used to evaluate the [=blockers=] of type {{ActivationBlockersMixinBlockerReason/unsuccessful_registration}}.
 
 
 
@@ -271,7 +271,7 @@ The {{HTMLGeolocationElement}} <dfn constructor for=HTMLGeolocationElement>const
     greater than zero.
 1. Initialize the internal {{[[position]]}} to null.
 1. Initialize the internal {{[[positionError]]}} to null.
-1. Run {{PermissionsMixin}}'s [=PermissionsMixin/initialization steps=].
+1. Run {{PowerfulFeatureObserver}}'s [=PowerfulFeatureObserver/initialization steps=].
 
 </div>
 
@@ -279,14 +279,14 @@ The {{HTMLGeolocationElement}} <dfn constructor for=HTMLGeolocationElement>const
 The {{HTMLGeolocationElement}}'s <dfn for="HTMLGeolocationElement" export>insertion steps</dfn> are:
 
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
-1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[PermissionElements]]}}.
+1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[ActivationBlockableElements]]}}.
 1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
 1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
     constructing a new {{IntersectionObserver}} with
     [=ActivationBlockersMixin/IntersectionObserver callback=] and
     &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
 1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
-1. Run {{PermissionsMixin}}'s [=PermissionsMixin/insertion steps=].
+1. Run {{PowerfulFeatureObserver}}'s [=PowerfulFeatureObserver/insertion steps=].
 1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
     with {{ActivationBlockersMixinBlockerReason/unsuccessful_registration}}.
 1. [=Add an expiring blocker=] with reason
@@ -303,7 +303,7 @@ The {{HTMLGeolocationElement}}'s <dfn for="HTMLGeolocationElement" export>insert
 <div algorithm="HTMLGeolocationElement/removing steps">
 The {{HTMLGeolocationElement}} [=removing steps=] are:
 
-1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[PermissionElements]]}}.
+1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[ActivationBlockableElements]]}}.
 1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
 1. [=Maybe dispatch onvalidstatechange=] on [=this=].
 
@@ -351,7 +351,7 @@ The {{HTMLGeolocationElement/error}} getter steps are to return the value of
 <div algorithm>
 To <dfn for=HTMLGeolocationElement>maybe autolocate</dfn>:
 
-1. If [=PermissionsMixin/get the current permission state=] is not
+1. If [=PowerfulFeatureObserver/get the current permission state=] is not
     {{PermissionState/granted}}, then return.
 1. If {{HTMLGeolocationElement/autolocate}} is not true, then return.
 1. [=Fetch location=].
@@ -386,14 +386,13 @@ To <dfn for=HTMLGeolocationElement>fetch location</dfn>:
 <div algorithm>
 To determine whether an |element| is <dfn for="HTMLGeolocationElement">type permissible</dfn>:
 
-1. [=Assert=]: |element|'s [=node navigable=]'s {{[[PermissionElements]]}}
+1. [=Assert=]: |element|'s [=node navigable=]'s {{[[ActivationBlockableElements]]}}
     [=set/contains=] |element|.
 1. Let |count| be 0.
 1. [=list/iterate|For each=] |current| in
-    |element|'s [=node navigable=]'s {{[[PermissionElements]]}}:
+    |element|'s [=node navigable=]'s {{[[ActivationBlockableElements]]}}:
     1. If |current| is |element|, then [=iteration/break=].
     1. If |element|.{{[[Features]]}} [=set/equals=] |current|.{{[[Features]]}}
-
         then increment |count| by 1.
 1. Return whether |count| is less than 3.
 
@@ -404,7 +403,7 @@ To <dfn for="HTMLGeolocationElement">recheck type permissibility</dfn> for a
 |document|:
 
 1. [=list/iterate|For each=] |current| in |document|'s
-    {{[[PermissionElements]]}}:
+    {{[[ActivationBlockableElements]]}}:
     1. If |current| is [=type permissible=], then [=remove blockers=] with
         {{ActivationBlockersMixinBlockerReason/unsuccessful_registration}} from
         |current|.
@@ -430,15 +429,15 @@ determined by the browser, rather than the page, and reflects its function of gi
 access to {{Geolocation}} functionality. The element may also convey information about
 the current permission state of the  <a permission>"geolocation"</a> [=powerful feature=].
 
-The page can influence the permission elements' styling, but with
+The page can influence the element's styling, but with
 constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
 the label itself). These are described in [[#rendering]].
 The page can also select a locale for the text via the <{html-global/lang}> attribute.
 
-The permission elements support [=fallback content=], which will be
+<{geolocation}> supports [=fallback content=], which will be
 displayed by any browser not yet supporting that element. Note that
 there are also conditions under which a browser that supports
-a respective permission element falls back to its [=fallback content=].
+<{geolocation}> will fall back to its [=fallback content=], as described in [[#fallback]].
 
 
 # Mixins and Infrastructure # {#all-the-mixins}
@@ -789,13 +788,13 @@ ISSUE: Do I need to define dictionary equality?
 ## Powerful Features, aka Permissions ## {#mixin-permissions}
 
 To support elements that gate access to [=powerful features=], you can use the
-{{PermissionsMixin}}.
+{{PowerfulFeatureObserver}}.
 
 <dl class="element">
  <dt>[=DOM interface=]:</dt>
   <dd>
    <pre class=idl>
-    interface mixin PermissionsMixin {
+    interface mixin PowerfulFeatureObserver {
       readonly attribute PermissionState initialPermissionStatus;
       readonly attribute PermissionState permissionStatus;
       attribute EventHandler onpromptaction;
@@ -805,22 +804,22 @@ To support elements that gate access to [=powerful features=], you can use the
   </dd>
 </dl>
 
-The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on elements that include the {{PermissionsMixin}}:
+The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on elements that include the {{PowerfulFeatureObserver}}:
 <pre class=simpledef>
 onpromptaction: Event
 onpromptdismiss: Event
 </pre>
 
-The <dfn for=PermissionsMixin>PermissionsMixin attributes</dfn> are:
+The <dfn for=PowerfulFeatureObserver>PowerfulFeatureObserver attributes</dfn> are:
 
-* {{PermissionsMixin/initialPermissionStatus}}
-* {{PermissionsMixin/permissionStatus}}
-* {{PermissionsMixin/onpromptaction}}
-* {{PermissionsMixin/onpromptdismiss}}
+* {{PowerfulFeatureObserver/initialPermissionStatus}}
+* {{PowerfulFeatureObserver/permissionStatus}}
+* {{PowerfulFeatureObserver/onpromptaction}}
+* {{PowerfulFeatureObserver/onpromptdismiss}}
 
 ### Internal state ### {#mixin-permissions-internal-state}
 
-The {{PermissionsMixin}} [=represents=] capabilities gated by user-requestable
+The {{PowerfulFeatureObserver}} [=represents=] capabilities gated by user-requestable
 [=permissions=], which the user can activate to allow the site to start accessing them.
 It is core to the these elements that such requests are
 triggered by the user, and not by the page's script. To enforce
@@ -828,63 +827,63 @@ this, the element checks whether the activation event is {{Event/isTrusted|trust
 (partially) occluded, or if it has recently been moved. The element maintains
 an internal {{[[BlockerList]]}} to keep track of this.
 
-{{PermissionsMixin}} elements have the following internal slots:
+{{PowerfulFeatureObserver}} elements have the following internal slots:
 
-* <dfn attribute for="PermissionsMixin">\[[Features]]</dfn> is null
+* <dfn attribute for="PowerfulFeatureObserver">\[[Features]]</dfn> is null
     or an [=ordered set=] of [=powerful features=]. For most permission
     elements this is likely a fixed set, while for some this may be variable.
     Making it an internal slot allows us to write algorithms that work for all
     of them.
 
-* <dfn attribute for="PermissionsMixin">\[[InitialPermissionStatus]]</dfn>
+* <dfn attribute for="PowerfulFeatureObserver">\[[InitialPermissionStatus]]</dfn>
     is a {{PermissionState}} that stores the initial {{PermissionState}} for
     {{[[Features]]}}.
 
 ### Algorithms ### {#mixin-permissions-algorithms}
 
 <div algorithm>
-A {{PermissionsMixin}}'s <dfn for="PermissionsMixin">initialization steps</dfn> are:
+A {{PowerfulFeatureObserver}}'s <dfn for="PowerfulFeatureObserver">initialization steps</dfn> are:
 
-1. [=Assert=]: The internal {{PermissionsMixin/[[Features]]}} slot has been
+1. [=Assert=]: The internal {{PowerfulFeatureObserver/[[Features]]}} slot has been
     initialized. The including element must define and initialize this.
-1. Initialize the internal {{PermissionsMixin/[[InitialPermissionStatus]]}} to
-    the result of [=PermissionsMixin/get the current permission state=].
+1. Initialize the internal {{PowerfulFeatureObserver/[[InitialPermissionStatus]]}} to
+    the result of [=PowerfulFeatureObserver/get the current permission state=].
 
 </div>
 
 <div algorithm>
-A {{PermissionsMixin}}'s <dfn for="PermissionsMixin">insertion steps</dfn> are:
+A {{PowerfulFeatureObserver}}'s <dfn for="PowerfulFeatureObserver">insertion steps</dfn> are:
 
-1. If {{PermissionsMixin/[[Features]]}} [=list/is empty=] or is null,
+1. If {{PowerfulFeatureObserver/[[Features]]}} [=list/is empty=] or is null,
     then [=add a permanent blocker=]
     with reason {{ActivationBlockersMixinBlockerReason/type_invalid}}.
 
 </div>
 
 <div algorithm>
-A {{PermissionsMixin}} |element|'s
-<dfn attribute for="PermissionsMixin">initialPermissionStatus</dfn>
+A {{PowerfulFeatureObserver}} |element|'s
+<dfn attribute for="PowerfulFeatureObserver">initialPermissionStatus</dfn>
 getter steps are:
 
-1. Return |element|'s internal {{PermissionsMixin/[[InitialPermissionStatus]]}}.
+1. Return |element|'s internal {{PowerfulFeatureObserver/[[InitialPermissionStatus]]}}.
 
 </div>
 
 <div algorithm>
-A {{PermissionsMixin}} |element|'s
-<dfn attribute for="PermissionsMixin">permissionStatus</dfn>
+A {{PowerfulFeatureObserver}} |element|'s
+<dfn attribute for="PowerfulFeatureObserver">permissionStatus</dfn>
 getter steps are:
 
-1. Return [=PermissionsMixin/get the current permission state=] for
+1. Return [=PowerfulFeatureObserver/get the current permission state=] for
     |element|.
 
 </div>
 
 <div algorithm>
-To <dfn for="PermissionsMixin">get the current permission state</dfn> for
-a {{PermissionsMixin}} |element|:
+To <dfn for="PowerfulFeatureObserver">get the current permission state</dfn> for
+a {{PowerfulFeatureObserver}} |element|:
 
-1. Let |features| be |element|'s internal {{PermissionsMixin/[[Features]]}}.
+1. Let |features| be |element|'s internal {{PowerfulFeatureObserver/[[Features]]}}.
 1. If |features| is null or |features| is [=list/empty=],
     return "{{PermissionState/prompt}}".
 1. Let |current| be "{{PermissionState/granted}}".
@@ -905,12 +904,12 @@ ISSUE: It's not clear what the PermissionState for 'no valid permission type'
 </div>
 
 <div algorithm>
-To <dfn for=PermissionsMixin>dispatch onpromptaction</dfn> for |element|:
+To <dfn for=PowerfulFeatureObserver>dispatch onpromptaction</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
 1. [=Event/Initialize=] |event| with
     <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{PermissionsMixin/onpromptaction}}",
+    "{{PowerfulFeatureObserver/onpromptaction}}",
     <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
     true, and
     <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
@@ -920,12 +919,12 @@ To <dfn for=PermissionsMixin>dispatch onpromptaction</dfn> for |element|:
  </div>
 
 <div algorithm>
-To <dfn for=PermissionsMixin>dispatch onpromptdismiss</dfn> for |element|:
+To <dfn for=PowerfulFeatureObserver>dispatch onpromptdismiss</dfn> for |element|:
 
 1. Let |event| be a new {{Event}}.
 1. [=Event/Initialize=] |event| with
     <a argument for="Event/initEvent(type, bubbles, cancelable)">type</a>
-    "{{PermissionsMixin/onpromptdismiss}}",
+    "{{PowerfulFeatureObserver/onpromptdismiss}}",
     <a argument for="Event/initEvent(type, bubbles, cancelable)">bubbles</a>
     true, and
     <a argument for="Event/initEvent(type, bubbles, cancelable)">cancelable</a>
@@ -935,7 +934,7 @@ To <dfn for=PermissionsMixin>dispatch onpromptdismiss</dfn> for |element|:
 </div>
 
 <div algorithm>
-To <dfn for="PermissionsMixin">build a permission descriptor</dfn> for an
+To <dfn for="PowerfulFeatureObserver">build a permission descriptor</dfn> for an
 |element|:
 
 ISSUE: The [[Permissions]] specification assumes a descriptor describes a
@@ -957,7 +956,7 @@ in [[Permissions]], plus adaptions here.
 ISSUE: There isn't much precedence for describing the user agent UI in detail.
     It may be better to leave more freedom to user agents.
 
-An element using the {{PermissionsMixin}} contains browser-chosen content, text and maybe an
+An element using the {{PowerfulFeatureObserver}} contains browser-chosen content, text and maybe an
 icon. Activating them will often [=prompt the user to choose=].
 This provides two bits of user interface that a user can interact with.
 The [=user agent=] is largely free to determine these &mdash; rendering of the
@@ -1010,7 +1009,7 @@ instead of its usual rendering.
 
 ## Styling, and Styling Restrictions ## {#rendering}
 
-Permission elements constrain the styling that can be applied to them.
+<{geolocation}> elements constrain the styling that can be applied to them.
 These constraints come in three flavours:
 
 1. If the condition isn't met, the element is deactivated.
@@ -1047,7 +1046,7 @@ ISSUE: Define "alpha".
 
 ### User-Agent Defined Stylesheet ### {#style-stylesheet}
 
-A permission element is expected to render with the following styles:
+A <{geolocation}> element is expected to render with the following styles:
 
 <pre class="highlight lang-css">
 @namespace "http://www.w3.org/1999/xhtml";
@@ -1065,7 +1064,7 @@ geolocation {
 </pre>
 
 ### Additional User-Agent Defined Style Bounds ### {#style-style-bounds}
-Permission elements define several bounds on styles. For example, we want
+<{geolocation}> elements define several bounds on styles. For example, we want
 the font size are constraints on the  The style bounds are explained below.
 
 For notational convenience, we imagine that the [=computed value=] of an element
