@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://wicg.github.io/PEPC/geolocation-element.html" rel="canonical">
-  <meta content="8e98d2a9fdea575a7a72122428959a937cfa7309" name="revision">
+  <meta content="ecaf711eba7254953068fa2c53fc14376feab2e9" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -758,7 +758,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="no-ref p-name" id="title">The HTML Geolocation Element</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-02-16">16 February 2026</time></p>
+    <time class="dt-updated" datetime="2026-02-17">17 February 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -903,7 +903,7 @@ capabilities.</p>
     <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes">Content attributes</a>:
     <dd><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#global-attributes" id="ref-for-global-attributes">Global attributes</a>.
     <dd><a data-link-type="dfn" href="#activationblockersmixin-activationblockersmixin-attributes" id="ref-for-activationblockersmixin-activationblockersmixin-attributes">ActivationBlockersMixin attributes</a>.
-    <dd><a data-link-type="dfn" href="#permissionsmixin-permissionsmixin-attributes" id="ref-for-permissionsmixin-permissionsmixin-attributes">PermissionsMixin attributes</a>.
+    <dd><a data-link-type="dfn" href="#powerfulfeatureobserver-powerfulfeatureobserver-attributes" id="ref-for-powerfulfeatureobserver-powerfulfeatureobserver-attributes">PowerfulFeatureObserver attributes</a>.
     <dd><code><a data-link-type="element-sub" href="#element-attrdef-geolocation-autolocate" id="ref-for-element-attrdef-geolocation-autolocate">autolocate</a></code> — Whether to locate right away (if permission has already been granted).
     <dd><code><a data-link-type="element-sub" href="#element-attrdef-geolocation-watch" id="ref-for-element-attrdef-geolocation-watch">watch</a></code> — Wether to read the position once, or watch it continously.
     <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations" id="ref-for-concept-element-accessibility-considerations">Accessibility considerations</a>:
@@ -926,8 +926,8 @@ capabilities.</p>
 <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-invalidreason" id="ref-for-dom-activationblockersmixin-invalidreason">invalidReason</a></code>, as well as the global
 <a class="idl-code" data-link-type="attribute" href="https://html.spec.whatwg.org/multipage/dom.html#dom-lang" id="ref-for-dom-lang">lang</a> and
 <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex" id="ref-for-attr-tabindex">tabindex</a></code> content attributes, and the
-<code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-onpromptaction" id="ref-for-dom-permissionsmixin-onpromptaction">onpromptaction</a></code>,
-<code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-onpromptdismiss" id="ref-for-dom-permissionsmixin-onpromptdismiss">onpromptdismiss</a></code>, and
+<code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-onpromptaction" id="ref-for-dom-powerfulfeatureobserver-onpromptaction">onpromptaction</a></code>,
+<code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-onpromptdismiss" id="ref-for-dom-powerfulfeatureobserver-onpromptdismiss">onpromptdismiss</a></code>, and
 <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-onvalidationstatuschange" id="ref-for-dom-activationblockersmixin-onvalidationstatuschange">onvalidationstatuschange</a></code> event handlers follow the
 description in <a href="#all-the-mixins">§ 3 Mixins and Infrastructure</a>.</p>
    <p>The <dfn class="dfn-paneled" data-dfn-for="geolocation" data-dfn-type="element-attr" data-export id="element-attrdef-geolocation-autolocate"><code>autolocate</code></dfn> attribute determines
@@ -947,7 +947,7 @@ the <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler"><c- n>EventHandler</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLGeolocationElement" data-dfn-type="attribute" data-export data-type="EventHandler" id="dom-htmlgeolocationelement-onlocation"><code><c- g>onlocation</c-></code></dfn>;
 };
 <a data-link-type="idl-name" href="#htmlgeolocationelement" id="ref-for-htmlgeolocationelement①"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#activationblockersmixin" id="ref-for-activationblockersmixin"><c- n>ActivationBlockersMixin</c-></a>;
-<a data-link-type="idl-name" href="#htmlgeolocationelement" id="ref-for-htmlgeolocationelement②"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#permissionsmixin" id="ref-for-permissionsmixin"><c- n>PermissionsMixin</c-></a>;
+<a data-link-type="idl-name" href="#htmlgeolocationelement" id="ref-for-htmlgeolocationelement②"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver"><c- n>PowerfulFeatureObserver</c-></a>;
 </pre>
    <p>If the user has decided to allow access to geolocation information, the
 readonly attributes <code class="idl"><a data-link-type="idl" href="#dom-htmlgeolocationelement-position" id="ref-for-dom-htmlgeolocationelement-position">position</a></code> and
@@ -994,7 +994,7 @@ observed by the element to select localized text.</p>
 for the global <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex" id="ref-for-attr-tabindex①">tabindex</a></code> content attribute on the
 element is 0.</p>
    <h3 class="heading settled" data-level="2.1" id="geolocation-element-internal-state"><span class="secno">2.1. </span><span class="content"><code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation⑥">geolocation</a></code> element internal state</span><a class="self-link" href="#geolocation-element-internal-state"></a></h3>
-   <p>The <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation⑦">geolocation</a></code> element uses all the internal slots from <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin①">ActivationBlockersMixin</a></code> and <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin①">PermissionsMixin</a></code>. Additionally,
+   <p>The <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation⑦">geolocation</a></code> element uses all the internal slots from <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin①">ActivationBlockersMixin</a></code> and <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver①">PowerfulFeatureObserver</a></code>. Additionally,
 <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation⑧">geolocation</a></code> has the following internal slots:</p>
    <ul>
     <li data-md>
@@ -1009,7 +1009,7 @@ which contains the most recent <code class="idl"><a data-link-type="idl" href="h
    </ul>
    <h4 class="heading settled" data-level="2.1.1" id="mixin-navigable-state"><span class="secno">2.1.1. </span><span class="content">Mixin-supporting state at the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable">navigable</a></span><a class="self-link" href="#mixin-navigable-state"></a></h4>
    <p>In order to support the <code class="idl"><a data-link-type="idl" href="#htmlgeolocationelement" id="ref-for-htmlgeolocationelement④">HTMLGeolocationElement</a></code>, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable①">navigable</a> maintains
-an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of elements, <dfn class="dfn-paneled idl-code" data-dfn-for="navigable" data-dfn-type="attribute" data-export id="dom-navigable-permissionelements-slot"><code>[[PermissionElements]]</code></dfn>. This <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> is used to evaluate the <a data-link-type="dfn" href="#activationblockersmixin-blocker" id="ref-for-activationblockersmixin-blocker">blockers</a> of type <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixinblockerreason-unsuccessful_registration" id="ref-for-dom-activationblockersmixinblockerreason-unsuccessful_registration">unsuccessful_registration</a></code>.</p>
+an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set">ordered set</a> of elements, <dfn class="dfn-paneled idl-code" data-dfn-for="navigable" data-dfn-type="attribute" data-export id="dom-navigable-activationblockableelements-slot"><code>[[ActivationBlockableElements]]</code></dfn>. This <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> is used to evaluate the <a data-link-type="dfn" href="#activationblockersmixin-blocker" id="ref-for-activationblockersmixin-blocker">blockers</a> of type <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixinblockerreason-unsuccessful_registration" id="ref-for-dom-activationblockersmixinblockerreason-unsuccessful_registration">unsuccessful_registration</a></code>.</p>
    <h3 class="heading settled" data-level="2.2" id="geolocation-algorithms"><span class="secno">2.2. </span><span class="content"><code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation⑨">geolocation</a></code> element algorithms</span><a class="self-link" href="#geolocation-algorithms"></a></h3>
    <div class="algorithm" data-algorithm="constructor()" data-algorithm-for="HTMLGeolocationElement">
     
@@ -1018,7 +1018,7 @@ The <code class="idl"><a data-link-type="idl" href="#htmlgeolocationelement" id=
 
     <ol>
      <li data-md>
-      <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot">[[Features]]</a></code> to
+      <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot">[[Features]]</a></code> to
 « <a class="idl-code" data-link-type="permission" href="https://w3c.github.io/geolocation/#dfn-geolocation" id="ref-for-dfn-geolocation②">"geolocation"</a> ».</p>
      <li data-md>
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-blockerlist-slot" id="ref-for-dom-activationblockersmixin-blockerlist-slot">[[BlockerList]]</a></code> to «».</p>
@@ -1036,7 +1036,7 @@ greater than zero.</p>
      <li data-md>
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-htmlgeolocationelement-positionerror-slot" id="ref-for-dom-htmlgeolocationelement-positionerror-slot">[[positionError]]</a></code> to null.</p>
      <li data-md>
-      <p>Run <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin②">PermissionsMixin</a></code>’s <a data-link-type="dfn" href="#permissionsmixin-initialization-steps" id="ref-for-permissionsmixin-initialization-steps">initialization steps</a>.</p>
+      <p>Run <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver②">PowerfulFeatureObserver</a></code>’s <a data-link-type="dfn" href="#powerfulfeatureobserver-initialization-steps" id="ref-for-powerfulfeatureobserver-initialization-steps">initialization steps</a>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="insertion steps" data-algorithm-for="HTMLGeolocationElement">
@@ -1048,7 +1048,7 @@ The <code class="idl"><a data-link-type="idl" href="#htmlgeolocationelement" id=
      <li data-md>
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-blockerlist-slot" id="ref-for-dom-activationblockersmixin-blockerlist-slot①">[[BlockerList]]</a></code> to «».</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append">Append</a> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a> to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot">[[PermissionElements]]</a></code>.</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-append" id="ref-for-set-append">Append</a> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a> to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-activationblockableelements-slot" id="ref-for-dom-navigable-activationblockableelements-slot">[[ActivationBlockableElements]]</a></code>.</p>
      <li data-md>
       <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-intersectionrect-slot" id="ref-for-dom-activationblockersmixin-intersectionrect-slot">[[IntersectionRect]]</a></code> with undefined.</p>
      <li data-md>
@@ -1059,7 +1059,7 @@ constructing a new <code class="idl"><a data-link-type="idl" href="https://w3c.g
      <li data-md>
       <p>Call <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-intersectionobserver-slot" id="ref-for-dom-activationblockersmixin-intersectionobserver-slot①">[[IntersectionObserver]]</a></code>.observe(<a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>).</p>
      <li data-md>
-      <p>Run <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin③">PermissionsMixin</a></code>’s <a data-link-type="dfn" href="#permissionsmixin-insertion-steps" id="ref-for-permissionsmixin-insertion-steps">insertion steps</a>.</p>
+      <p>Run <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver③">PowerfulFeatureObserver</a></code>’s <a data-link-type="dfn" href="#powerfulfeatureobserver-insertion-steps" id="ref-for-powerfulfeatureobserver-insertion-steps">insertion steps</a>.</p>
      <li data-md>
       <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a> is not <a data-link-type="dfn" href="#htmlgeolocationelement-type-permissible" id="ref-for-htmlgeolocationelement-type-permissible">type permissible</a>, then <a data-link-type="dfn" href="#activationblockersmixin-add-a-temporary-blocker" id="ref-for-activationblockersmixin-add-a-temporary-blocker">add a temporary blocker</a>
 with <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixinblockerreason-unsuccessful_registration" id="ref-for-dom-activationblockersmixinblockerreason-unsuccessful_registration①">unsuccessful_registration</a></code>.</p>
@@ -1084,7 +1084,7 @@ The <code class="idl"><a data-link-type="idl" href="#htmlgeolocationelement" id=
 
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-remove" id="ref-for-list-remove">Remove</a> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a> from <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable②">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot①">[[PermissionElements]]</a></code>.</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-remove" id="ref-for-list-remove">Remove</a> <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a> from <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable②">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-activationblockableelements-slot" id="ref-for-dom-navigable-activationblockableelements-slot①">[[ActivationBlockableElements]]</a></code>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="#htmlgeolocationelement-recheck-type-permissibility" id="ref-for-htmlgeolocationelement-recheck-type-permissibility">Recheck type permissibility</a> for <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable③">node navigable</a>.</p>
      <li data-md>
@@ -1098,22 +1098,22 @@ The <code class="idl"><a data-link-type="idl" href="#htmlgeolocationelement" id=
 
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert">Assert</a>: <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot①">[[Features]]</a></code> is not null.</p>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert">Assert</a>: <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot①">[[Features]]</a></code> is not null.</p>
      <li data-md>
-      <p>If <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot②">[[Features]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-is-empty" id="ref-for-list-is-empty">is empty</a>, then return.</p>
+      <p>If <var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot②">[[Features]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-is-empty" id="ref-for-list-is-empty">is empty</a>, then return.</p>
      <li data-md>
       <p>If <var>event</var>.<code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-istrusted" id="ref-for-dom-event-istrusted">isTrusted</a></code> is false, then return.</p>
      <li data-md>
       <p>If <var>element</var>.<code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-isvalid" id="ref-for-dom-activationblockersmixin-isvalid①">isValid</a></code> is false, then return.</p>
      <li data-md>
-      <p>Let <var>descriptor</var> be the result of <a data-link-type="dfn" href="#permissionsmixin-build-a-permission-descriptor" id="ref-for-permissionsmixin-build-a-permission-descriptor">build a permission descriptor</a> for
+      <p>Let <var>descriptor</var> be the result of <a data-link-type="dfn" href="#powerfulfeatureobserver-build-a-permission-descriptor" id="ref-for-powerfulfeatureobserver-build-a-permission-descriptor">build a permission descriptor</a> for
 <var>element</var>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use">Request permission to use</a> the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature②">powerful features</a> described by
 <var>descriptor</var>.</p>
      <li data-md>
       <p>If the previous step was cancelled or dismissed by the user, then
-<a data-link-type="dfn" href="#permissionsmixin-dispatch-onpromptdismiss" id="ref-for-permissionsmixin-dispatch-onpromptdismiss">dispatch onpromptdismiss</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a> and return.</p>
+<a data-link-type="dfn" href="#powerfulfeatureobserver-dispatch-onpromptdismiss" id="ref-for-powerfulfeatureobserver-dispatch-onpromptdismiss">dispatch onpromptdismiss</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a> and return.</p>
       <p class="issue" id="issue-5dfff302"><a class="self-link" href="#issue-5dfff302"></a> The <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Permissions]</a> spec assumes that <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-request-permission-to-use" id="ref-for-dfn-request-permission-to-use①">request permission to use</a>
 will always succeed. That is, it assumes that the user will always make a
 choice and that the algorithm will always deliver a <code>grant</code>/<code>deny</code>
@@ -1124,7 +1124,7 @@ request dialog (e.g. an "X" button in the top right corner). Here, we
 distinguish between these two actions, despite no clear hook for this
 in the underlying specification.</p>
      <li data-md>
-      <p><a data-link-type="dfn" href="#permissionsmixin-dispatch-onpromptaction" id="ref-for-permissionsmixin-dispatch-onpromptaction">Dispatch onpromptaction</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this</a>.</p>
+      <p><a data-link-type="dfn" href="#powerfulfeatureobserver-dispatch-onpromptaction" id="ref-for-powerfulfeatureobserver-dispatch-onpromptaction">Dispatch onpromptaction</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this</a>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="#htmlgeolocationelement-fetch-location" id="ref-for-htmlgeolocationelement-fetch-location">Fetch location</a>.</p>
     </ol>
@@ -1144,7 +1144,7 @@ To <dfn class="dfn-paneled" data-dfn-for="HTMLGeolocationElement" data-dfn-type=
 
     <ol>
      <li data-md>
-      <p>If <a data-link-type="dfn" href="#permissionsmixin-get-the-current-permission-state" id="ref-for-permissionsmixin-get-the-current-permission-state">get the current permission state</a> is not
+      <p>If <a data-link-type="dfn" href="#powerfulfeatureobserver-get-the-current-permission-state" id="ref-for-powerfulfeatureobserver-get-the-current-permission-state">get the current permission state</a> is not
 <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-granted" id="ref-for-dom-permissionstate-granted">granted</a></code>, then return.</p>
      <li data-md>
       <p>If <code class="idl"><a data-link-type="idl" href="#dom-htmlgeolocationelement-autolocate" id="ref-for-dom-htmlgeolocationelement-autolocate①">autolocate</a></code> is not true, then return.</p>
@@ -1207,19 +1207,19 @@ To determine whether an <var>element</var> is <dfn class="dfn-paneled" data-dfn-
 
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert①">Assert</a>: <var>element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable④">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot②">[[PermissionElements]]</a></code>
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert①">Assert</a>: <var>element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable④">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-activationblockableelements-slot" id="ref-for-dom-navigable-activationblockableelements-slot②">[[ActivationBlockableElements]]</a></code>
 <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> <var>element</var>.</p>
      <li data-md>
       <p>Let <var>count</var> be 0.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate">For each</a> <var>current</var> in
-<var>element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable⑤">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot③">[[PermissionElements]]</a></code>:</p>
+<var>element</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable⑤">node navigable</a>’s <code class="idl"><a data-link-type="idl" href="#dom-navigable-activationblockableelements-slot" id="ref-for-dom-navigable-activationblockableelements-slot③">[[ActivationBlockableElements]]</a></code>:</p>
       <ol>
        <li data-md>
         <p>If <var>current</var> is <var>element</var>, then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#iteration-break" id="ref-for-iteration-break">break</a>.</p>
        <li data-md>
-        <p>If <var>element</var>.<code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot③">[[Features]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-equal" id="ref-for-set-equal">equals</a> <var>current</var>.<code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot④">[[Features]]</a></code></p>
-        <p>then increment <var>count</var> by 1.</p>
+        <p>If <var>element</var>.<code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot③">[[Features]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#set-equal" id="ref-for-set-equal">equals</a> <var>current</var>.<code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot④">[[Features]]</a></code>
+then increment <var>count</var> by 1.</p>
       </ol>
      <li data-md>
       <p>Return whether <var>count</var> is less than 3.</p>
@@ -1234,7 +1234,7 @@ To <dfn class="dfn-paneled" data-dfn-for="HTMLGeolocationElement" data-dfn-type=
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>current</var> in <var>document</var>’s
-<code class="idl"><a data-link-type="idl" href="#dom-navigable-permissionelements-slot" id="ref-for-dom-navigable-permissionelements-slot④">[[PermissionElements]]</a></code>:</p>
+<code class="idl"><a data-link-type="idl" href="#dom-navigable-activationblockableelements-slot" id="ref-for-dom-navigable-activationblockableelements-slot④">[[ActivationBlockableElements]]</a></code>:</p>
       <ol>
        <li data-md>
         <p>If <var>current</var> is <a data-link-type="dfn" href="#htmlgeolocationelement-type-permissible" id="ref-for-htmlgeolocationelement-type-permissible①">type permissible</a>, then <a data-link-type="dfn" href="#activationblockersmixin-remove-blockers" id="ref-for-activationblockersmixin-remove-blockers">remove blockers</a> with
@@ -1263,14 +1263,14 @@ rendered like a <code><a data-link-type="element" href="https://html.spec.whatwg
 determined by the browser, rather than the page, and reflects its function of given
 access to <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-geolocation" id="ref-for-dom-geolocation④">Geolocation</a></code> functionality. The element may also convey information about
 the current permission state of the  <a class="idl-code" data-link-type="permission" href="https://w3c.github.io/geolocation/#dfn-geolocation" id="ref-for-dfn-geolocation③">"geolocation"</a> <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature③">powerful feature</a>.</p>
-   <p>The page can influence the permission elements' styling, but with
+   <p>The page can influence the element’s styling, but with
 constraints to prevent abuse (e.g. minimum and maximum sizes for fonts and
 the label itself). These are described in <a href="#rendering">§ 3.4 Styling, and Styling Restrictions</a>.
 The page can also select a locale for the text via the <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/dom.html#attr-lang" id="ref-for-attr-lang">lang</a></code> attribute.</p>
-   <p>The permission elements support <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content">fallback content</a>, which will be
+   <p><code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation①②">geolocation</a></code> supports <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content">fallback content</a>, which will be
 displayed by any browser not yet supporting that element. Note that
 there are also conditions under which a browser that supports
-a respective permission element falls back to its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content①">fallback content</a>.</p>
+<code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation①③">geolocation</a></code> will fall back to its <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content①">fallback content</a>, as described in <a href="#fallback">§ 3.3 Falling Back</a>.</p>
    <h2 class="heading settled" data-level="3" id="all-the-mixins"><span class="secno">3. </span><span class="content">Mixins and Infrastructure</span><a class="self-link" href="#all-the-mixins"></a></h2>
    <p>This section defines several mixins and supporting algorithms.</p>
    <h3 class="heading settled" data-level="3.1" id="mixin-blockers"><span class="secno">3.1. </span><span class="content">Activation Blockers</span><a class="self-link" href="#mixin-blockers"></a></h3>
@@ -1733,19 +1733,19 @@ is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-docume
    </div>
    <h3 class="heading settled" data-level="3.2" id="mixin-permissions"><span class="secno">3.2. </span><span class="content">Powerful Features, aka Permissions</span><a class="self-link" href="#mixin-permissions"></a></h3>
    <p>To support elements that gate access to <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑤">powerful features</a>, you can use the
-<code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin④">PermissionsMixin</a></code>.</p>
+<code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver④">PowerfulFeatureObserver</a></code>.</p>
    <dl class="element">
     <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom②">DOM interface</a>:
     <dd>
-<pre class="def highlight idl"><c- b>interface</c-> <c- b>mixin</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="permissionsmixin"><code><c- g>PermissionsMixin</c-></code></dfn> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-permissionsmixin-initialpermissionstatus" id="ref-for-dom-permissionsmixin-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate①"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-permissionsmixin-permissionstatus" id="ref-for-dom-permissionsmixin-permissionstatus"><c- g>permissionStatus</c-></a>;
-  <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler②"><c- n>EventHandler</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PermissionsMixin" data-dfn-type="attribute" data-export data-type="EventHandler" id="dom-permissionsmixin-onpromptaction"><code><c- g>onpromptaction</c-></code></dfn>;
-  <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler③"><c- n>EventHandler</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PermissionsMixin" data-dfn-type="attribute" data-export data-type="EventHandler" id="dom-permissionsmixin-onpromptdismiss"><code><c- g>onpromptdismiss</c-></code></dfn>;
+<pre class="def highlight idl"><c- b>interface</c-> <c- b>mixin</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="powerfulfeatureobserver"><code><c- g>PowerfulFeatureObserver</c-></code></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-powerfulfeatureobserver-initialpermissionstatus" id="ref-for-dom-powerfulfeatureobserver-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate①"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-powerfulfeatureobserver-permissionstatus" id="ref-for-dom-powerfulfeatureobserver-permissionstatus"><c- g>permissionStatus</c-></a>;
+  <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler②"><c- n>EventHandler</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="attribute" data-export data-type="EventHandler" id="dom-powerfulfeatureobserver-onpromptaction"><code><c- g>onpromptaction</c-></code></dfn>;
+  <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler③"><c- n>EventHandler</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="attribute" data-export data-type="EventHandler" id="dom-powerfulfeatureobserver-onpromptdismiss"><code><c- g>onpromptdismiss</c-></code></dfn>;
 };
 </pre>
    </dl>
-   <p>The following are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers" id="ref-for-event-handlers①">event handlers</a> (and their corresponding <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event types</a>) that must be supported on elements that include the <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin⑤">PermissionsMixin</a></code>:</p>
+   <p>The following are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers" id="ref-for-event-handlers①">event handlers</a> (and their corresponding <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event types</a>) that must be supported on elements that include the <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver⑤">PowerfulFeatureObserver</a></code>:</p>
    <table class="def">
     <tbody>
      <tr>
@@ -1755,99 +1755,99 @@ is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-docume
       <th>onpromptdismiss
       <td>Event
    </table>
-   <p>The <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" data-noexport id="permissionsmixin-permissionsmixin-attributes">PermissionsMixin attributes</dfn> are:</p>
+   <p>The <dfn class="dfn-paneled" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="dfn" data-noexport id="powerfulfeatureobserver-powerfulfeatureobserver-attributes">PowerfulFeatureObserver attributes</dfn> are:</p>
    <ul>
     <li data-md>
-     <p><code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-initialpermissionstatus" id="ref-for-dom-permissionsmixin-initialpermissionstatus①">initialPermissionStatus</a></code></p>
+     <p><code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-initialpermissionstatus" id="ref-for-dom-powerfulfeatureobserver-initialpermissionstatus①">initialPermissionStatus</a></code></p>
     <li data-md>
-     <p><code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-permissionstatus" id="ref-for-dom-permissionsmixin-permissionstatus①">permissionStatus</a></code></p>
+     <p><code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-permissionstatus" id="ref-for-dom-powerfulfeatureobserver-permissionstatus①">permissionStatus</a></code></p>
     <li data-md>
-     <p><code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-onpromptaction" id="ref-for-dom-permissionsmixin-onpromptaction①">onpromptaction</a></code></p>
+     <p><code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-onpromptaction" id="ref-for-dom-powerfulfeatureobserver-onpromptaction①">onpromptaction</a></code></p>
     <li data-md>
-     <p><code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-onpromptdismiss" id="ref-for-dom-permissionsmixin-onpromptdismiss①">onpromptdismiss</a></code></p>
+     <p><code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-onpromptdismiss" id="ref-for-dom-powerfulfeatureobserver-onpromptdismiss①">onpromptdismiss</a></code></p>
    </ul>
    <h4 class="heading settled" data-level="3.2.1" id="mixin-permissions-internal-state"><span class="secno">3.2.1. </span><span class="content">Internal state</span><a class="self-link" href="#mixin-permissions-internal-state"></a></h4>
-   <p>The <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin⑥">PermissionsMixin</a></code> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#represents" id="ref-for-represents">represents</a> capabilities gated by user-requestable
+   <p>The <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver⑥">PowerfulFeatureObserver</a></code> <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#represents" id="ref-for-represents">represents</a> capabilities gated by user-requestable
 <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission" id="ref-for-dfn-permission②">permissions</a>, which the user can activate to allow the site to start accessing them.
 It is core to the these elements that such requests are
 triggered by the user, and not by the page’s script. To enforce
 this, the element checks whether the activation event is <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-istrusted" id="ref-for-dom-event-istrusted①">trusted</a></code>. Additionally it watches a number of conditions, like whether the element is
 (partially) occluded, or if it has recently been moved. The element maintains
 an internal <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-blockerlist-slot" id="ref-for-dom-activationblockersmixin-blockerlist-slot⑦">[[BlockerList]]</a></code> to keep track of this.</p>
-   <p><code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin⑦">PermissionsMixin</a></code> elements have the following internal slots:</p>
+   <p><code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver⑦">PowerfulFeatureObserver</a></code> elements have the following internal slots:</p>
    <ul>
     <li data-md>
-     <p><dfn class="dfn-paneled idl-code" data-dfn-for="PermissionsMixin" data-dfn-type="attribute" data-export id="dom-permissionsmixin-features-slot"><code>[[Features]]</code></dfn> is null
+     <p><dfn class="dfn-paneled idl-code" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="attribute" data-export id="dom-powerfulfeatureobserver-features-slot"><code>[[Features]]</code></dfn> is null
 or an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set②">ordered set</a> of <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑥">powerful features</a>. For most permission
 elements this is likely a fixed set, while for some this may be variable.
 Making it an internal slot allows us to write algorithms that work for all
 of them.</p>
     <li data-md>
-     <p><dfn class="dfn-paneled idl-code" data-dfn-for="PermissionsMixin" data-dfn-type="attribute" data-export id="dom-permissionsmixin-initialpermissionstatus-slot"><code>[[InitialPermissionStatus]]</code></dfn>
+     <p><dfn class="dfn-paneled idl-code" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="attribute" data-export id="dom-powerfulfeatureobserver-initialpermissionstatus-slot"><code>[[InitialPermissionStatus]]</code></dfn>
 is a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate②">PermissionState</a></code> that stores the initial <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate③">PermissionState</a></code> for
-<code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot⑤">[[Features]]</a></code>.</p>
+<code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot⑤">[[Features]]</a></code>.</p>
    </ul>
    <h4 class="heading settled" data-level="3.2.2" id="mixin-permissions-algorithms"><span class="secno">3.2.2. </span><span class="content">Algorithms</span><a class="self-link" href="#mixin-permissions-algorithms"></a></h4>
-   <div class="algorithm" data-algorithm="initialization steps" data-algorithm-for="PermissionsMixin">
+   <div class="algorithm" data-algorithm="initialization steps" data-algorithm-for="PowerfulFeatureObserver">
     
-A <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin⑧">PermissionsMixin</a></code>’s <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" data-noexport id="permissionsmixin-initialization-steps">initialization steps</dfn> are:
+A <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver⑧">PowerfulFeatureObserver</a></code>’s <dfn class="dfn-paneled" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="dfn" data-noexport id="powerfulfeatureobserver-initialization-steps">initialization steps</dfn> are:
 
 
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert①⓪">Assert</a>: The internal <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot⑥">[[Features]]</a></code> slot has been
+      <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#assert" id="ref-for-assert①⓪">Assert</a>: The internal <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot⑥">[[Features]]</a></code> slot has been
 initialized. The including element must define and initialize this.</p>
      <li data-md>
-      <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-initialpermissionstatus-slot" id="ref-for-dom-permissionsmixin-initialpermissionstatus-slot">[[InitialPermissionStatus]]</a></code> to
-the result of <a data-link-type="dfn" href="#permissionsmixin-get-the-current-permission-state" id="ref-for-permissionsmixin-get-the-current-permission-state①">get the current permission state</a>.</p>
+      <p>Initialize the internal <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-initialpermissionstatus-slot" id="ref-for-dom-powerfulfeatureobserver-initialpermissionstatus-slot">[[InitialPermissionStatus]]</a></code> to
+the result of <a data-link-type="dfn" href="#powerfulfeatureobserver-get-the-current-permission-state" id="ref-for-powerfulfeatureobserver-get-the-current-permission-state①">get the current permission state</a>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="insertion steps" data-algorithm-for="PermissionsMixin">
+   <div class="algorithm" data-algorithm="insertion steps" data-algorithm-for="PowerfulFeatureObserver">
     
-A <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin⑨">PermissionsMixin</a></code>’s <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" data-noexport id="permissionsmixin-insertion-steps">insertion steps</dfn> are:
+A <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver⑨">PowerfulFeatureObserver</a></code>’s <dfn class="dfn-paneled" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="dfn" data-noexport id="powerfulfeatureobserver-insertion-steps">insertion steps</dfn> are:
 
 
     <ol>
      <li data-md>
-      <p>If <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot⑦">[[Features]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-is-empty" id="ref-for-list-is-empty②">is empty</a> or is null,
+      <p>If <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot⑦">[[Features]]</a></code> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-is-empty" id="ref-for-list-is-empty②">is empty</a> or is null,
 then <a data-link-type="dfn" href="#activationblockersmixin-add-a-permanent-blocker" id="ref-for-activationblockersmixin-add-a-permanent-blocker①">add a permanent blocker</a>
 with reason <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixinblockerreason-type_invalid" id="ref-for-dom-activationblockersmixinblockerreason-type_invalid①">type_invalid</a></code>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="initialPermissionStatus" data-algorithm-for="PermissionsMixin">
+   <div class="algorithm" data-algorithm="initialPermissionStatus" data-algorithm-for="PowerfulFeatureObserver">
     
-A <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin①⓪">PermissionsMixin</a></code> <var>element</var>’s
-<dfn class="dfn-paneled idl-code" data-dfn-for="PermissionsMixin" data-dfn-type="attribute" data-export id="dom-permissionsmixin-initialpermissionstatus"><code>initialPermissionStatus</code></dfn>
+A <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver①⓪">PowerfulFeatureObserver</a></code> <var>element</var>’s
+<dfn class="dfn-paneled idl-code" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="attribute" data-export id="dom-powerfulfeatureobserver-initialpermissionstatus"><code>initialPermissionStatus</code></dfn>
 getter steps are:
 
 
     <ol>
      <li data-md>
-      <p>Return <var>element</var>’s internal <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-initialpermissionstatus-slot" id="ref-for-dom-permissionsmixin-initialpermissionstatus-slot①">[[InitialPermissionStatus]]</a></code>.</p>
+      <p>Return <var>element</var>’s internal <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-initialpermissionstatus-slot" id="ref-for-dom-powerfulfeatureobserver-initialpermissionstatus-slot①">[[InitialPermissionStatus]]</a></code>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="permissionStatus" data-algorithm-for="PermissionsMixin">
+   <div class="algorithm" data-algorithm="permissionStatus" data-algorithm-for="PowerfulFeatureObserver">
     
-A <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin①①">PermissionsMixin</a></code> <var>element</var>’s
-<dfn class="dfn-paneled idl-code" data-dfn-for="PermissionsMixin" data-dfn-type="attribute" data-export id="dom-permissionsmixin-permissionstatus"><code>permissionStatus</code></dfn>
+A <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver①①">PowerfulFeatureObserver</a></code> <var>element</var>’s
+<dfn class="dfn-paneled idl-code" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="attribute" data-export id="dom-powerfulfeatureobserver-permissionstatus"><code>permissionStatus</code></dfn>
 getter steps are:
 
 
     <ol>
      <li data-md>
-      <p>Return <a data-link-type="dfn" href="#permissionsmixin-get-the-current-permission-state" id="ref-for-permissionsmixin-get-the-current-permission-state②">get the current permission state</a> for
+      <p>Return <a data-link-type="dfn" href="#powerfulfeatureobserver-get-the-current-permission-state" id="ref-for-powerfulfeatureobserver-get-the-current-permission-state②">get the current permission state</a> for
 <var>element</var>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="get the current permission state" data-algorithm-for="PermissionsMixin">
+   <div class="algorithm" data-algorithm="get the current permission state" data-algorithm-for="PowerfulFeatureObserver">
     
-To <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" data-noexport id="permissionsmixin-get-the-current-permission-state">get the current permission state</dfn> for
-a <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin①②">PermissionsMixin</a></code> <var>element</var>:
+To <dfn class="dfn-paneled" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="dfn" data-noexport id="powerfulfeatureobserver-get-the-current-permission-state">get the current permission state</dfn> for
+a <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver①②">PowerfulFeatureObserver</a></code> <var>element</var>:
 
 
     <ol>
      <li data-md>
-      <p>Let <var>features</var> be <var>element</var>’s internal <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot⑧">[[Features]]</a></code>.</p>
+      <p>Let <var>features</var> be <var>element</var>’s internal <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot⑧">[[Features]]</a></code>.</p>
      <li data-md>
       <p>If <var>features</var> is null or <var>features</var> is <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-empty" id="ref-for-list-empty①">empty</a>,
 return "<code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissionstate-prompt" id="ref-for-dom-permissionstate-prompt">prompt</a></code>".</p>
@@ -1873,9 +1873,9 @@ following ordering:<br>
     should be. Here I pick "prompt" based on Chrome’s implementation; but that
     choice is arbitrary.</p>
    </div>
-   <div class="algorithm" data-algorithm="dispatch onpromptaction" data-algorithm-for="PermissionsMixin">
+   <div class="algorithm" data-algorithm="dispatch onpromptaction" data-algorithm-for="PowerfulFeatureObserver">
     
-To <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" data-noexport id="permissionsmixin-dispatch-onpromptaction">dispatch onpromptaction</dfn> for <var>element</var>:
+To <dfn class="dfn-paneled" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="dfn" data-noexport id="powerfulfeatureobserver-dispatch-onpromptaction">dispatch onpromptaction</dfn> for <var>element</var>:
 
 
     <ol>
@@ -1884,7 +1884,7 @@ To <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" 
      <li data-md>
       <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-initialize" id="ref-for-concept-event-initialize②">Initialize</a> <var>event</var> with
 <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type" id="ref-for-dom-event-initevent-type-bubbles-cancelable-type①">type</a>
-"<code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-onpromptaction" id="ref-for-dom-permissionsmixin-onpromptaction②">onpromptaction</a></code>",
+"<code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-onpromptaction" id="ref-for-dom-powerfulfeatureobserver-onpromptaction②">onpromptaction</a></code>",
 <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles" id="ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles①">bubbles</a>
 true, and
 <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable" id="ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable①">cancelable</a>
@@ -1893,9 +1893,9 @@ true.</p>
       <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-dispatch" id="ref-for-concept-event-dispatch③">Dispatch</a> <var>event</var> to <var>element</var>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="dispatch onpromptdismiss" data-algorithm-for="PermissionsMixin">
+   <div class="algorithm" data-algorithm="dispatch onpromptdismiss" data-algorithm-for="PowerfulFeatureObserver">
     
-To <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" data-noexport id="permissionsmixin-dispatch-onpromptdismiss">dispatch onpromptdismiss</dfn> for <var>element</var>:
+To <dfn class="dfn-paneled" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="dfn" data-noexport id="powerfulfeatureobserver-dispatch-onpromptdismiss">dispatch onpromptdismiss</dfn> for <var>element</var>:
 
 
     <ol>
@@ -1904,7 +1904,7 @@ To <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" 
      <li data-md>
       <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-initialize" id="ref-for-concept-event-initialize③">Initialize</a> <var>event</var> with
 <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-type" id="ref-for-dom-event-initevent-type-bubbles-cancelable-type②">type</a>
-"<code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-onpromptdismiss" id="ref-for-dom-permissionsmixin-onpromptdismiss②">onpromptdismiss</a></code>",
+"<code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-onpromptdismiss" id="ref-for-dom-powerfulfeatureobserver-onpromptdismiss②">onpromptdismiss</a></code>",
 <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-bubbles" id="ref-for-dom-event-initevent-type-bubbles-cancelable-bubbles②">bubbles</a>
 true, and
 <a class="idl-code" data-link-type="argument" href="https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable" id="ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable②">cancelable</a>
@@ -1913,9 +1913,9 @@ true.</p>
       <p><a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-dispatch" id="ref-for-concept-event-dispatch④">Dispatch</a> <var>event</var> to <var>element</var>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="build a permission descriptor" data-algorithm-for="PermissionsMixin">
+   <div class="algorithm" data-algorithm="build a permission descriptor" data-algorithm-for="PowerfulFeatureObserver">
     
-To <dfn class="dfn-paneled" data-dfn-for="PermissionsMixin" data-dfn-type="dfn" data-noexport id="permissionsmixin-build-a-permission-descriptor">build a permission descriptor</dfn> for an
+To <dfn class="dfn-paneled" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="dfn" data-noexport id="powerfulfeatureobserver-build-a-permission-descriptor">build a permission descriptor</dfn> for an
 <var>element</var>:
 
 
@@ -1929,7 +1929,7 @@ in <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Pe
       <p>Let <var>result</var> be a new <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/permissions/#dom-permissiondescriptor" id="ref-for-dom-permissiondescriptor">PermissionDescriptor</a></code>.</p>
      <li data-md>
       <p>Fill in <var>result</var>, by including the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑦">powerful feature</a> names contained in
-<var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot⑨">[[Features]]</a></code>.</p>
+<var>element</var>’s <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot⑨">[[Features]]</a></code>.</p>
      <li data-md>
       <p>Return <var>result</var>.</p>
     </ol>
@@ -1937,7 +1937,7 @@ in <a data-link-type="biblio" href="#biblio-permissions" title="Permissions">[Pe
    <h4 class="heading settled" data-level="3.2.3" id="mixin-permissions-presentation"><span class="secno">3.2.3. </span><span class="content">Presentation</span><a class="self-link" href="#mixin-permissions-presentation"></a></h4>
    <p class="issue" id="issue-59f2ad87"><a class="self-link" href="#issue-59f2ad87"></a> There isn’t much precedence for describing the user agent UI in detail.
     It may be better to leave more freedom to user agents.</p>
-   <p>An element using the <code class="idl"><a data-link-type="idl" href="#permissionsmixin" id="ref-for-permissionsmixin①③">PermissionsMixin</a></code> contains browser-chosen content, text and maybe an
+   <p>An element using the <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver①③">PowerfulFeatureObserver</a></code> contains browser-chosen content, text and maybe an
 icon. Activating them will often <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-prompt-the-user-to-choose" id="ref-for-dfn-prompt-the-user-to-choose">prompt the user to choose</a>.
 This provides two bits of user interface that a user can interact with.
 The <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#user-agent" id="ref-for-user-agent②">user agent</a> is largely free to determine these — rendering of the
@@ -1946,7 +1946,7 @@ prompt</a> — in whichever way it thinks best convey’s the element’s intent
    <p>UI options for the elements' presentation include:</p>
    <ul>
     <li data-md>
-     <p>Name the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑧">powerful features</a> listed in <code class="idl"><a data-link-type="idl" href="#dom-permissionsmixin-features-slot" id="ref-for-dom-permissionsmixin-features-slot①⓪">[[Features]]</a></code>, in the language
+     <p>Name the <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑧">powerful features</a> listed in <code class="idl"><a data-link-type="idl" href="#dom-powerfulfeatureobserver-features-slot" id="ref-for-dom-powerfulfeatureobserver-features-slot①⓪">[[Features]]</a></code>, in the language
 indicated by the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#language" id="ref-for-language">language</a> of the element. Note that this would
 always be the language indicated by the <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/dom.html#attr-lang" id="ref-for-attr-lang①">lang</a></code> attribute,
 if present.</p>
@@ -1989,7 +1989,7 @@ required to render the <a data-link-type="dfn" href="https://html.spec.whatwg.or
 then the element should render the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content" id="ref-for-fallback-content③">fallback content</a>
 instead of its usual rendering.</p>
    <h3 class="heading settled" data-level="3.4" id="rendering"><span class="secno">3.4. </span><span class="content">Styling, and Styling Restrictions</span><a class="self-link" href="#rendering"></a></h3>
-   <p>Permission elements constrain the styling that can be applied to them.
+   <p><code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation①④">geolocation</a></code> elements constrain the styling that can be applied to them.
 These constraints come in three flavours:</p>
    <ol>
     <li data-md>
@@ -2032,7 +2032,7 @@ If <a data-link-type="dfn" href="https://www.w3.org/TR/CSS2/cascade.html#specifi
    </table>
    <p class="issue" id="issue-76cb758c"><a class="self-link" href="#issue-76cb758c"></a> Define "alpha".</p>
    <h4 class="heading settled" data-level="3.4.2" id="style-stylesheet"><span class="secno">3.4.2. </span><span class="content">User-Agent Defined Stylesheet</span><a class="self-link" href="#style-stylesheet"></a></h4>
-   <p>A permission element is expected to render with the following styles:</p>
+   <p>A <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation①⑤">geolocation</a></code> element is expected to render with the following styles:</p>
 <pre class="highlight lang-css"><c- n>@namespace</c-> <c- s>"http://www.w3.org/1999/xhtml"</c-><c- p>;</c->
 geolocation <c- p>{</c->
   <c- k>opacity</c-><c- p>:</c-> <c- m>1.0</c-><c- p>;</c->
@@ -2048,7 +2048,7 @@ geolocation <c- p>{</c->
 </pre>
    <h4 class="heading settled" data-level="3.4.3" id="style-style-bounds"><span class="secno">3.4.3. </span><span class="content">Additional User-Agent Defined Style Bounds</span><a class="self-link" href="#style-style-bounds"></a></h4>
    
-Permission elements define several bounds on styles. For example, we want
+<code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation①⑥">geolocation</a></code> elements define several bounds on styles. For example, we want
 the font size are constraints on the  The style bounds are explained below.
 
 
@@ -2232,6 +2232,7 @@ of those Explainer sections.</p>
   <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#dom-activationblockersmixinblockerreason">""</a><span>, in § 3.1.2</span>
+   <li><a href="#dom-navigable-activationblockableelements-slot">[[ActivationBlockableElements]]</a><span>, in § 2.1.1</span>
    <li><a href="#activationblockersmixin">ActivationBlockersMixin</a><span>, in § 3.1</span>
    <li><a href="#activationblockersmixin-activationblockersmixin-attributes">ActivationBlockersMixin attributes</a><span>, in § 3.1</span>
    <li><a href="#enumdef-activationblockersmixinblockerreason">ActivationBlockersMixinBlockerReason</a><span>, in § 3.1.2</span>
@@ -2253,28 +2254,28 @@ of those Explainer sections.</p>
    <li><a href="#blocker-reason-table">blocker reason table</a><span>, in § 3.1.2</span>
    <li><a href="#activationblockersmixin-blocker-timestamp">blocker timestamp</a><span>, in § 3.1.1</span>
    <li><a href="#activationblockersmixin-blocking">blocking</a><span>, in § 3.1.3</span>
-   <li><a href="#permissionsmixin-build-a-permission-descriptor">build a permission descriptor</a><span>, in § 3.2.2</span>
+   <li><a href="#powerfulfeatureobserver-build-a-permission-descriptor">build a permission descriptor</a><span>, in § 3.2.2</span>
    <li><a href="#dom-htmlgeolocationelement-constructor">constructor()</a><span>, in § 2.2</span>
    <li><a href="#dispatch-onlocation">dispatch onlocation</a><span>, in § 2.2</span>
-   <li><a href="#permissionsmixin-dispatch-onpromptaction">dispatch onpromptaction</a><span>, in § 3.2.2</span>
-   <li><a href="#permissionsmixin-dispatch-onpromptdismiss">dispatch onpromptdismiss</a><span>, in § 3.2.2</span>
+   <li><a href="#powerfulfeatureobserver-dispatch-onpromptaction">dispatch onpromptaction</a><span>, in § 3.2.2</span>
+   <li><a href="#powerfulfeatureobserver-dispatch-onpromptdismiss">dispatch onpromptdismiss</a><span>, in § 3.2.2</span>
    <li><a href="#dom-htmlgeolocationelement-error">error</a><span>, in § 2</span>
    <li><a href="#expiring-blocker">Expiring blocker</a><span>, in § 3.1.2</span>
-   <li><a href="#dom-permissionsmixin-features-slot">[[Features]]</a><span>, in § 3.2.1</span>
+   <li><a href="#dom-powerfulfeatureobserver-features-slot">[[Features]]</a><span>, in § 3.2.1</span>
    <li><a href="#htmlgeolocationelement-fetch-location">fetch location</a><span>, in § 2.2</span>
    <li><a href="#elementdef-geolocation">geolocation</a><span>, in § 2</span>
-   <li><a href="#permissionsmixin-get-the-current-permission-state">get the current permission state</a><span>, in § 3.2.2</span>
+   <li><a href="#powerfulfeatureobserver-get-the-current-permission-state">get the current permission state</a><span>, in § 3.2.2</span>
    <li><a href="#htmlgeolocationelement">HTMLGeolocationElement</a><span>, in § 2</span>
    <li><a href="#dom-htmlgeolocationelement-constructor">HTMLGeolocationElement()</a><span>, in § 2.2</span>
    <li><a href="#dom-activationblockersmixinblockerreason-illegal_subframe">"illegal_subframe"</a><span>, in § 3.1.2</span>
-   <li><a href="#permissionsmixin-initialization-steps">initialization steps</a><span>, in § 3.2.2</span>
-   <li><a href="#dom-permissionsmixin-initialpermissionstatus-slot">[[InitialPermissionStatus]]</a><span>, in § 3.2.1</span>
-   <li><a href="#dom-permissionsmixin-initialpermissionstatus">initialPermissionStatus</a><span>, in § 3.2.2</span>
+   <li><a href="#powerfulfeatureobserver-initialization-steps">initialization steps</a><span>, in § 3.2.2</span>
+   <li><a href="#dom-powerfulfeatureobserver-initialpermissionstatus-slot">[[InitialPermissionStatus]]</a><span>, in § 3.2.1</span>
+   <li><a href="#dom-powerfulfeatureobserver-initialpermissionstatus">initialPermissionStatus</a><span>, in § 3.2.2</span>
    <li>
     insertion steps
     <ul>
      <li><a href="#htmlgeolocationelement-insertion-steps">dfn for HTMLGeolocationElement</a><span>, in § 2.2</span>
-     <li><a href="#permissionsmixin-insertion-steps">dfn for PermissionsMixin</a><span>, in § 3.2.2</span>
+     <li><a href="#powerfulfeatureobserver-insertion-steps">dfn for PowerfulFeatureObserver</a><span>, in § 3.2.2</span>
     </ul>
    <li><a href="#dom-activationblockersmixinblockerreason-intersection_changed">"intersection_changed"</a><span>, in § 3.1.2</span>
    <li><a href="#dom-activationblockersmixin-intersectionobserver-slot">[[IntersectionObserver]]</a><span>, in § 3.1.1</span>
@@ -2289,17 +2290,16 @@ of those Explainer sections.</p>
    <li><a href="#htmlgeolocationelement-maybe-autolocate">maybe autolocate</a><span>, in § 2.2</span>
    <li><a href="#activationblockersmixin-maybe-dispatch-onvalidstatechange">maybe dispatch onvalidstatechange</a><span>, in § 3.1.3</span>
    <li><a href="#dom-htmlgeolocationelement-onlocation">onlocation</a><span>, in § 2</span>
-   <li><a href="#dom-permissionsmixin-onpromptaction">onpromptaction</a><span>, in § 3.2</span>
-   <li><a href="#dom-permissionsmixin-onpromptdismiss">onpromptdismiss</a><span>, in § 3.2</span>
+   <li><a href="#dom-powerfulfeatureobserver-onpromptaction">onpromptaction</a><span>, in § 3.2</span>
+   <li><a href="#dom-powerfulfeatureobserver-onpromptdismiss">onpromptdismiss</a><span>, in § 3.2</span>
    <li><a href="#dom-activationblockersmixin-onvalidationstatuschange">onvalidationstatuschange</a><span>, in § 3.1</span>
    <li><a href="#permanent-blocker">Permanent blocker</a><span>, in § 3.1.2</span>
-   <li><a href="#dom-navigable-permissionelements-slot">[[PermissionElements]]</a><span>, in § 2.1.1</span>
-   <li><a href="#permissionsmixin">PermissionsMixin</a><span>, in § 3.2</span>
-   <li><a href="#permissionsmixin-permissionsmixin-attributes">PermissionsMixin attributes</a><span>, in § 3.2</span>
-   <li><a href="#dom-permissionsmixin-permissionstatus">permissionStatus</a><span>, in § 3.2.2</span>
+   <li><a href="#dom-powerfulfeatureobserver-permissionstatus">permissionStatus</a><span>, in § 3.2.2</span>
    <li><a href="#dom-htmlgeolocationelement-position-slot">[[position]]</a><span>, in § 2.1</span>
    <li><a href="#dom-htmlgeolocationelement-position">position</a><span>, in § 2</span>
    <li><a href="#dom-htmlgeolocationelement-positionerror-slot">[[positionError]]</a><span>, in § 2.1</span>
+   <li><a href="#powerfulfeatureobserver">PowerfulFeatureObserver</a><span>, in § 3.2</span>
+   <li><a href="#powerfulfeatureobserver-powerfulfeatureobserver-attributes">PowerfulFeatureObserver attributes</a><span>, in § 3.2</span>
    <li><a href="#dom-activationblockersmixinblockerreason-recently_attached">"recently_attached"</a><span>, in § 3.1.2</span>
    <li><a href="#htmlgeolocationelement-recheck-type-permissibility">recheck type permissibility</a><span>, in § 2.2</span>
    <li><a href="#activationblockersmixin-remove-blockers">remove blockers</a><span>, in § 3.1.3</span>
@@ -2748,7 +2748,7 @@ of those Explainer sections.</p>
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><c- n>EventHandler</c-></a> <a data-type="EventHandler" href="#dom-htmlgeolocationelement-onlocation"><code><c- g>onlocation</c-></code></a>;
 };
 <a data-link-type="idl-name" href="#htmlgeolocationelement"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#activationblockersmixin"><c- n>ActivationBlockersMixin</c-></a>;
-<a data-link-type="idl-name" href="#htmlgeolocationelement"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#permissionsmixin"><c- n>PermissionsMixin</c-></a>;
+<a data-link-type="idl-name" href="#htmlgeolocationelement"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#powerfulfeatureobserver"><c- n>PowerfulFeatureObserver</c-></a>;
 
 <c- b>interface</c-> <c- b>mixin</c-> <a href="#activationblockersmixin"><code><c- g>ActivationBlockersMixin</c-></code></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-activationblockersmixin-isvalid"><c- g>isValid</c-></a>;
@@ -2765,11 +2765,11 @@ of those Explainer sections.</p>
   <a href="#dom-activationblockersmixinblockerreason-type_invalid"><code><c- s>"type_invalid"</c-></code></a>,
 };
 
-<c- b>interface</c-> <c- b>mixin</c-> <a href="#permissionsmixin"><code><c- g>PermissionsMixin</c-></code></a> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-permissionsmixin-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-permissionsmixin-permissionstatus"><c- g>permissionStatus</c-></a>;
-  <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><c- n>EventHandler</c-></a> <a data-type="EventHandler" href="#dom-permissionsmixin-onpromptaction"><code><c- g>onpromptaction</c-></code></a>;
-  <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><c- n>EventHandler</c-></a> <a data-type="EventHandler" href="#dom-permissionsmixin-onpromptdismiss"><code><c- g>onpromptdismiss</c-></code></a>;
+<c- b>interface</c-> <c- b>mixin</c-> <a href="#powerfulfeatureobserver"><code><c- g>PowerfulFeatureObserver</c-></code></a> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-powerfulfeatureobserver-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-powerfulfeatureobserver-permissionstatus"><c- g>permissionStatus</c-></a>;
+  <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><c- n>EventHandler</c-></a> <a data-type="EventHandler" href="#dom-powerfulfeatureobserver-onpromptaction"><code><c- g>onpromptaction</c-></code></a>;
+  <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler"><c- n>EventHandler</c-></a> <a data-type="EventHandler" href="#dom-powerfulfeatureobserver-onpromptdismiss"><code><c- g>onpromptdismiss</c-></code></a>;
 };
 
 </pre>
@@ -3212,13 +3212,13 @@ let dfnPanelData = {
 "dom-htmlgeolocationelement-positionerror-slot": {"dfnID":"dom-htmlgeolocationelement-positionerror-slot","dfnText":"[[positionError]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlgeolocationelement-positionerror-slot"},{"id":"ref-for-dom-htmlgeolocationelement-positionerror-slot\u2460"},{"id":"ref-for-dom-htmlgeolocationelement-positionerror-slot\u2461"},{"id":"ref-for-dom-htmlgeolocationelement-positionerror-slot\u2462"}],"title":"2.2. geolocation element algorithms"}],"url":"#dom-htmlgeolocationelement-positionerror-slot"},
 "dom-htmlgeolocationelement-watch": {"dfnID":"dom-htmlgeolocationelement-watch","dfnText":"watch","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlgeolocationelement-watch"},{"id":"ref-for-dom-htmlgeolocationelement-watch\u2460"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-dom-htmlgeolocationelement-watch\u2461"}],"title":"2.2. geolocation element algorithms"}],"url":"#dom-htmlgeolocationelement-watch"},
 "dom-htmlgeolocationelement-watchids-slot": {"dfnID":"dom-htmlgeolocationelement-watchids-slot","dfnText":"[[watchIDs]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-htmlgeolocationelement-watchids-slot"},{"id":"ref-for-dom-htmlgeolocationelement-watchids-slot\u2460"}],"title":"2.2. geolocation element algorithms"}],"url":"#dom-htmlgeolocationelement-watchids-slot"},
-"dom-navigable-permissionelements-slot": {"dfnID":"dom-navigable-permissionelements-slot","dfnText":"[[PermissionElements]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-navigable-permissionelements-slot"},{"id":"ref-for-dom-navigable-permissionelements-slot\u2460"},{"id":"ref-for-dom-navigable-permissionelements-slot\u2461"},{"id":"ref-for-dom-navigable-permissionelements-slot\u2462"},{"id":"ref-for-dom-navigable-permissionelements-slot\u2463"}],"title":"2.2. geolocation element algorithms"}],"url":"#dom-navigable-permissionelements-slot"},
-"dom-permissionsmixin-features-slot": {"dfnID":"dom-permissionsmixin-features-slot","dfnText":"[[Features]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionsmixin-features-slot"},{"id":"ref-for-dom-permissionsmixin-features-slot\u2460"},{"id":"ref-for-dom-permissionsmixin-features-slot\u2461"},{"id":"ref-for-dom-permissionsmixin-features-slot\u2462"},{"id":"ref-for-dom-permissionsmixin-features-slot\u2463"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-dom-permissionsmixin-features-slot\u2464"}],"title":"3.2.1. Internal state"},{"refs":[{"id":"ref-for-dom-permissionsmixin-features-slot\u2465"},{"id":"ref-for-dom-permissionsmixin-features-slot\u2466"},{"id":"ref-for-dom-permissionsmixin-features-slot\u2467"},{"id":"ref-for-dom-permissionsmixin-features-slot\u2468"}],"title":"3.2.2. Algorithms"},{"refs":[{"id":"ref-for-dom-permissionsmixin-features-slot\u2460\u24ea"}],"title":"3.2.3. Presentation"}],"url":"#dom-permissionsmixin-features-slot"},
-"dom-permissionsmixin-initialpermissionstatus": {"dfnID":"dom-permissionsmixin-initialpermissionstatus","dfnText":"initialPermissionStatus","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionsmixin-initialpermissionstatus"},{"id":"ref-for-dom-permissionsmixin-initialpermissionstatus\u2460"}],"title":"3.2. Powerful Features, aka Permissions"}],"url":"#dom-permissionsmixin-initialpermissionstatus"},
-"dom-permissionsmixin-initialpermissionstatus-slot": {"dfnID":"dom-permissionsmixin-initialpermissionstatus-slot","dfnText":"[[InitialPermissionStatus]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionsmixin-initialpermissionstatus-slot"},{"id":"ref-for-dom-permissionsmixin-initialpermissionstatus-slot\u2460"}],"title":"3.2.2. Algorithms"}],"url":"#dom-permissionsmixin-initialpermissionstatus-slot"},
-"dom-permissionsmixin-onpromptaction": {"dfnID":"dom-permissionsmixin-onpromptaction","dfnText":"onpromptaction","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionsmixin-onpromptaction"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-dom-permissionsmixin-onpromptaction\u2460"}],"title":"3.2. Powerful Features, aka Permissions"},{"refs":[{"id":"ref-for-dom-permissionsmixin-onpromptaction\u2461"}],"title":"3.2.2. Algorithms"}],"url":"#dom-permissionsmixin-onpromptaction"},
-"dom-permissionsmixin-onpromptdismiss": {"dfnID":"dom-permissionsmixin-onpromptdismiss","dfnText":"onpromptdismiss","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionsmixin-onpromptdismiss"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-dom-permissionsmixin-onpromptdismiss\u2460"}],"title":"3.2. Powerful Features, aka Permissions"},{"refs":[{"id":"ref-for-dom-permissionsmixin-onpromptdismiss\u2461"}],"title":"3.2.2. Algorithms"}],"url":"#dom-permissionsmixin-onpromptdismiss"},
-"dom-permissionsmixin-permissionstatus": {"dfnID":"dom-permissionsmixin-permissionstatus","dfnText":"permissionStatus","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-permissionsmixin-permissionstatus"},{"id":"ref-for-dom-permissionsmixin-permissionstatus\u2460"}],"title":"3.2. Powerful Features, aka Permissions"}],"url":"#dom-permissionsmixin-permissionstatus"},
+"dom-navigable-activationblockableelements-slot": {"dfnID":"dom-navigable-activationblockableelements-slot","dfnText":"[[ActivationBlockableElements]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-navigable-activationblockableelements-slot"},{"id":"ref-for-dom-navigable-activationblockableelements-slot\u2460"},{"id":"ref-for-dom-navigable-activationblockableelements-slot\u2461"},{"id":"ref-for-dom-navigable-activationblockableelements-slot\u2462"},{"id":"ref-for-dom-navigable-activationblockableelements-slot\u2463"}],"title":"2.2. geolocation element algorithms"}],"url":"#dom-navigable-activationblockableelements-slot"},
+"dom-powerfulfeatureobserver-features-slot": {"dfnID":"dom-powerfulfeatureobserver-features-slot","dfnText":"[[Features]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-features-slot"},{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2460"},{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2461"},{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2462"},{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2463"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2464"}],"title":"3.2.1. Internal state"},{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2465"},{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2466"},{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2467"},{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2468"}],"title":"3.2.2. Algorithms"},{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-features-slot\u2460\u24ea"}],"title":"3.2.3. Presentation"}],"url":"#dom-powerfulfeatureobserver-features-slot"},
+"dom-powerfulfeatureobserver-initialpermissionstatus": {"dfnID":"dom-powerfulfeatureobserver-initialpermissionstatus","dfnText":"initialPermissionStatus","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-initialpermissionstatus"},{"id":"ref-for-dom-powerfulfeatureobserver-initialpermissionstatus\u2460"}],"title":"3.2. Powerful Features, aka Permissions"}],"url":"#dom-powerfulfeatureobserver-initialpermissionstatus"},
+"dom-powerfulfeatureobserver-initialpermissionstatus-slot": {"dfnID":"dom-powerfulfeatureobserver-initialpermissionstatus-slot","dfnText":"[[InitialPermissionStatus]]","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-initialpermissionstatus-slot"},{"id":"ref-for-dom-powerfulfeatureobserver-initialpermissionstatus-slot\u2460"}],"title":"3.2.2. Algorithms"}],"url":"#dom-powerfulfeatureobserver-initialpermissionstatus-slot"},
+"dom-powerfulfeatureobserver-onpromptaction": {"dfnID":"dom-powerfulfeatureobserver-onpromptaction","dfnText":"onpromptaction","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-onpromptaction"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-onpromptaction\u2460"}],"title":"3.2. Powerful Features, aka Permissions"},{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-onpromptaction\u2461"}],"title":"3.2.2. Algorithms"}],"url":"#dom-powerfulfeatureobserver-onpromptaction"},
+"dom-powerfulfeatureobserver-onpromptdismiss": {"dfnID":"dom-powerfulfeatureobserver-onpromptdismiss","dfnText":"onpromptdismiss","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-onpromptdismiss"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-onpromptdismiss\u2460"}],"title":"3.2. Powerful Features, aka Permissions"},{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-onpromptdismiss\u2461"}],"title":"3.2.2. Algorithms"}],"url":"#dom-powerfulfeatureobserver-onpromptdismiss"},
+"dom-powerfulfeatureobserver-permissionstatus": {"dfnID":"dom-powerfulfeatureobserver-permissionstatus","dfnText":"permissionStatus","external":false,"refSections":[{"refs":[{"id":"ref-for-dom-powerfulfeatureobserver-permissionstatus"},{"id":"ref-for-dom-powerfulfeatureobserver-permissionstatus\u2460"}],"title":"3.2. Powerful Features, aka Permissions"}],"url":"#dom-powerfulfeatureobserver-permissionstatus"},
 "e1483d91": {"dfnID":"e1483d91","dfnText":"top","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-top"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-position-3/#propdef-top"},
 "e22643f2": {"dfnID":"e22643f2","dfnText":"isVisible","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserverentry-isvisible"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-isvisible"},
 "e30e7b38": {"dfnID":"e30e7b38","dfnText":"lang (for html-global)","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-lang"}],"title":"2.3. geolocation element rendering"},{"refs":[{"id":"ref-for-attr-lang\u2460"}],"title":"3.2.3. Presentation"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#attr-lang"},
@@ -3237,7 +3237,7 @@ let dfnPanelData = {
 "eff1f6e9": {"dfnID":"eff1f6e9","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"},{"id":"ref-for-computed-value\u2460"},{"id":"ref-for-computed-value\u2461"}],"title":"3.4.1. Conditions that Deactivate the Element"},{"refs":[{"id":"ref-for-computed-value\u2462"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://www.w3.org/TR/CSS2/cascade.html#computed-value"},
 "element-attrdef-geolocation-autolocate": {"dfnID":"element-attrdef-geolocation-autolocate","dfnText":"autolocate","external":false,"refSections":[{"refs":[{"id":"ref-for-element-attrdef-geolocation-autolocate"}],"title":"2. The geolocation Element"}],"url":"#element-attrdef-geolocation-autolocate"},
 "element-attrdef-geolocation-watch": {"dfnID":"element-attrdef-geolocation-watch","dfnText":"watch","external":false,"refSections":[{"refs":[{"id":"ref-for-element-attrdef-geolocation-watch"}],"title":"2. The geolocation Element"}],"url":"#element-attrdef-geolocation-watch"},
-"elementdef-geolocation": {"dfnID":"elementdef-geolocation","dfnText":"geolocation","external":false,"refSections":[{"refs":[{"id":"ref-for-elementdef-geolocation"},{"id":"ref-for-elementdef-geolocation\u2460"},{"id":"ref-for-elementdef-geolocation\u2461"},{"id":"ref-for-elementdef-geolocation\u2462"},{"id":"ref-for-elementdef-geolocation\u2463"},{"id":"ref-for-elementdef-geolocation\u2464"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2465"},{"id":"ref-for-elementdef-geolocation\u2466"},{"id":"ref-for-elementdef-geolocation\u2467"}],"title":"2.1. geolocation element internal state"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2468"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2460\u24ea"},{"id":"ref-for-elementdef-geolocation\u2460\u2460"}],"title":"2.3. geolocation element rendering"}],"url":"#elementdef-geolocation"},
+"elementdef-geolocation": {"dfnID":"elementdef-geolocation","dfnText":"geolocation","external":false,"refSections":[{"refs":[{"id":"ref-for-elementdef-geolocation"},{"id":"ref-for-elementdef-geolocation\u2460"},{"id":"ref-for-elementdef-geolocation\u2461"},{"id":"ref-for-elementdef-geolocation\u2462"},{"id":"ref-for-elementdef-geolocation\u2463"},{"id":"ref-for-elementdef-geolocation\u2464"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2465"},{"id":"ref-for-elementdef-geolocation\u2466"},{"id":"ref-for-elementdef-geolocation\u2467"}],"title":"2.1. geolocation element internal state"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2468"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2460\u24ea"},{"id":"ref-for-elementdef-geolocation\u2460\u2460"},{"id":"ref-for-elementdef-geolocation\u2460\u2461"},{"id":"ref-for-elementdef-geolocation\u2460\u2462"}],"title":"2.3. geolocation element rendering"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2460\u2463"}],"title":"3.4. Styling, and Styling Restrictions"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2460\u2464"}],"title":"3.4.2. User-Agent Defined Stylesheet"},{"refs":[{"id":"ref-for-elementdef-geolocation\u2460\u2465"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"#elementdef-geolocation"},
 "enumdef-activationblockersmixinblockerreason": {"dfnID":"enumdef-activationblockersmixinblockerreason","dfnText":"ActivationBlockersMixinBlockerReason","external":false,"refSections":[{"refs":[{"id":"ref-for-enumdef-activationblockersmixinblockerreason"},{"id":"ref-for-enumdef-activationblockersmixinblockerreason\u2460"}],"title":"3.1. Activation Blockers"},{"refs":[{"id":"ref-for-enumdef-activationblockersmixinblockerreason\u2461"}],"title":"3.1.1. Internal state"},{"refs":[{"id":"ref-for-enumdef-activationblockersmixinblockerreason\u2462"},{"id":"ref-for-enumdef-activationblockersmixinblockerreason\u2463"},{"id":"ref-for-enumdef-activationblockersmixinblockerreason\u2464"},{"id":"ref-for-enumdef-activationblockersmixinblockerreason\u2465"},{"id":"ref-for-enumdef-activationblockersmixinblockerreason\u2466"},{"id":"ref-for-enumdef-activationblockersmixinblockerreason\u2467"}],"title":"3.1.3. Algorithms"}],"url":"#enumdef-activationblockersmixinblockerreason"},
 "expiring-blocker": {"dfnID":"expiring-blocker","dfnText":"Expiring blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-expiring-blocker"},{"id":"ref-for-expiring-blocker\u2460"},{"id":"ref-for-expiring-blocker\u2461"}],"title":"3.1.2. Action Blockers, Blocker Reasons, and Blocker Lifetimes"}],"url":"#expiring-blocker"},
 "f02cd417": {"dfnID":"f02cd417","dfnText":"iterate","external":true,"refSections":[{"refs":[{"id":"ref-for-list-iterate"},{"id":"ref-for-list-iterate\u2460"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-list-iterate\u2461"}],"title":"3.1.3. Algorithms"},{"refs":[{"id":"ref-for-list-iterate\u2462"}],"title":"3.2.2. Algorithms"}],"url":"https://infra.spec.whatwg.org/#list-iterate"},
@@ -3253,14 +3253,14 @@ let dfnPanelData = {
 "htmlgeolocationelement-recheck-type-permissibility": {"dfnID":"htmlgeolocationelement-recheck-type-permissibility","dfnText":"recheck type permissibility","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlgeolocationelement-recheck-type-permissibility"}],"title":"2.2. geolocation element algorithms"}],"url":"#htmlgeolocationelement-recheck-type-permissibility"},
 "htmlgeolocationelement-type-permissible": {"dfnID":"htmlgeolocationelement-type-permissible","dfnText":"type permissible","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlgeolocationelement-type-permissible"},{"id":"ref-for-htmlgeolocationelement-type-permissible\u2460"}],"title":"2.2. geolocation element algorithms"}],"url":"#htmlgeolocationelement-type-permissible"},
 "permanent-blocker": {"dfnID":"permanent-blocker","dfnText":"Permanent blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-permanent-blocker"},{"id":"ref-for-permanent-blocker\u2460"}],"title":"3.1.2. Action Blockers, Blocker Reasons, and Blocker Lifetimes"}],"url":"#permanent-blocker"},
-"permissionsmixin": {"dfnID":"permissionsmixin","dfnText":"PermissionsMixin","external":false,"refSections":[{"refs":[{"id":"ref-for-permissionsmixin"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-permissionsmixin\u2460"}],"title":"2.1. geolocation element internal state"},{"refs":[{"id":"ref-for-permissionsmixin\u2461"},{"id":"ref-for-permissionsmixin\u2462"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-permissionsmixin\u2463"},{"id":"ref-for-permissionsmixin\u2464"}],"title":"3.2. Powerful Features, aka Permissions"},{"refs":[{"id":"ref-for-permissionsmixin\u2465"},{"id":"ref-for-permissionsmixin\u2466"}],"title":"3.2.1. Internal state"},{"refs":[{"id":"ref-for-permissionsmixin\u2467"},{"id":"ref-for-permissionsmixin\u2468"},{"id":"ref-for-permissionsmixin\u2460\u24ea"},{"id":"ref-for-permissionsmixin\u2460\u2460"},{"id":"ref-for-permissionsmixin\u2460\u2461"}],"title":"3.2.2. Algorithms"},{"refs":[{"id":"ref-for-permissionsmixin\u2460\u2462"}],"title":"3.2.3. Presentation"}],"url":"#permissionsmixin"},
-"permissionsmixin-build-a-permission-descriptor": {"dfnID":"permissionsmixin-build-a-permission-descriptor","dfnText":"build a permission descriptor","external":false,"refSections":[{"refs":[{"id":"ref-for-permissionsmixin-build-a-permission-descriptor"}],"title":"2.2. geolocation element algorithms"}],"url":"#permissionsmixin-build-a-permission-descriptor"},
-"permissionsmixin-dispatch-onpromptaction": {"dfnID":"permissionsmixin-dispatch-onpromptaction","dfnText":"dispatch onpromptaction","external":false,"refSections":[{"refs":[{"id":"ref-for-permissionsmixin-dispatch-onpromptaction"}],"title":"2.2. geolocation element algorithms"}],"url":"#permissionsmixin-dispatch-onpromptaction"},
-"permissionsmixin-dispatch-onpromptdismiss": {"dfnID":"permissionsmixin-dispatch-onpromptdismiss","dfnText":"dispatch onpromptdismiss","external":false,"refSections":[{"refs":[{"id":"ref-for-permissionsmixin-dispatch-onpromptdismiss"}],"title":"2.2. geolocation element algorithms"}],"url":"#permissionsmixin-dispatch-onpromptdismiss"},
-"permissionsmixin-get-the-current-permission-state": {"dfnID":"permissionsmixin-get-the-current-permission-state","dfnText":"get the current permission state","external":false,"refSections":[{"refs":[{"id":"ref-for-permissionsmixin-get-the-current-permission-state"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-permissionsmixin-get-the-current-permission-state\u2460"},{"id":"ref-for-permissionsmixin-get-the-current-permission-state\u2461"}],"title":"3.2.2. Algorithms"}],"url":"#permissionsmixin-get-the-current-permission-state"},
-"permissionsmixin-initialization-steps": {"dfnID":"permissionsmixin-initialization-steps","dfnText":"initialization steps","external":false,"refSections":[{"refs":[{"id":"ref-for-permissionsmixin-initialization-steps"}],"title":"2.2. geolocation element algorithms"}],"url":"#permissionsmixin-initialization-steps"},
-"permissionsmixin-insertion-steps": {"dfnID":"permissionsmixin-insertion-steps","dfnText":"insertion steps","external":false,"refSections":[{"refs":[{"id":"ref-for-permissionsmixin-insertion-steps"}],"title":"2.2. geolocation element algorithms"}],"url":"#permissionsmixin-insertion-steps"},
-"permissionsmixin-permissionsmixin-attributes": {"dfnID":"permissionsmixin-permissionsmixin-attributes","dfnText":"PermissionsMixin attributes","external":false,"refSections":[{"refs":[{"id":"ref-for-permissionsmixin-permissionsmixin-attributes"}],"title":"2. The geolocation Element"}],"url":"#permissionsmixin-permissionsmixin-attributes"},
+"powerfulfeatureobserver": {"dfnID":"powerfulfeatureobserver","dfnText":"PowerfulFeatureObserver","external":false,"refSections":[{"refs":[{"id":"ref-for-powerfulfeatureobserver"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-powerfulfeatureobserver\u2460"}],"title":"2.1. geolocation element internal state"},{"refs":[{"id":"ref-for-powerfulfeatureobserver\u2461"},{"id":"ref-for-powerfulfeatureobserver\u2462"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-powerfulfeatureobserver\u2463"},{"id":"ref-for-powerfulfeatureobserver\u2464"}],"title":"3.2. Powerful Features, aka Permissions"},{"refs":[{"id":"ref-for-powerfulfeatureobserver\u2465"},{"id":"ref-for-powerfulfeatureobserver\u2466"}],"title":"3.2.1. Internal state"},{"refs":[{"id":"ref-for-powerfulfeatureobserver\u2467"},{"id":"ref-for-powerfulfeatureobserver\u2468"},{"id":"ref-for-powerfulfeatureobserver\u2460\u24ea"},{"id":"ref-for-powerfulfeatureobserver\u2460\u2460"},{"id":"ref-for-powerfulfeatureobserver\u2460\u2461"}],"title":"3.2.2. Algorithms"},{"refs":[{"id":"ref-for-powerfulfeatureobserver\u2460\u2462"}],"title":"3.2.3. Presentation"}],"url":"#powerfulfeatureobserver"},
+"powerfulfeatureobserver-build-a-permission-descriptor": {"dfnID":"powerfulfeatureobserver-build-a-permission-descriptor","dfnText":"build a permission descriptor","external":false,"refSections":[{"refs":[{"id":"ref-for-powerfulfeatureobserver-build-a-permission-descriptor"}],"title":"2.2. geolocation element algorithms"}],"url":"#powerfulfeatureobserver-build-a-permission-descriptor"},
+"powerfulfeatureobserver-dispatch-onpromptaction": {"dfnID":"powerfulfeatureobserver-dispatch-onpromptaction","dfnText":"dispatch onpromptaction","external":false,"refSections":[{"refs":[{"id":"ref-for-powerfulfeatureobserver-dispatch-onpromptaction"}],"title":"2.2. geolocation element algorithms"}],"url":"#powerfulfeatureobserver-dispatch-onpromptaction"},
+"powerfulfeatureobserver-dispatch-onpromptdismiss": {"dfnID":"powerfulfeatureobserver-dispatch-onpromptdismiss","dfnText":"dispatch onpromptdismiss","external":false,"refSections":[{"refs":[{"id":"ref-for-powerfulfeatureobserver-dispatch-onpromptdismiss"}],"title":"2.2. geolocation element algorithms"}],"url":"#powerfulfeatureobserver-dispatch-onpromptdismiss"},
+"powerfulfeatureobserver-get-the-current-permission-state": {"dfnID":"powerfulfeatureobserver-get-the-current-permission-state","dfnText":"get the current permission state","external":false,"refSections":[{"refs":[{"id":"ref-for-powerfulfeatureobserver-get-the-current-permission-state"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-powerfulfeatureobserver-get-the-current-permission-state\u2460"},{"id":"ref-for-powerfulfeatureobserver-get-the-current-permission-state\u2461"}],"title":"3.2.2. Algorithms"}],"url":"#powerfulfeatureobserver-get-the-current-permission-state"},
+"powerfulfeatureobserver-initialization-steps": {"dfnID":"powerfulfeatureobserver-initialization-steps","dfnText":"initialization steps","external":false,"refSections":[{"refs":[{"id":"ref-for-powerfulfeatureobserver-initialization-steps"}],"title":"2.2. geolocation element algorithms"}],"url":"#powerfulfeatureobserver-initialization-steps"},
+"powerfulfeatureobserver-insertion-steps": {"dfnID":"powerfulfeatureobserver-insertion-steps","dfnText":"insertion steps","external":false,"refSections":[{"refs":[{"id":"ref-for-powerfulfeatureobserver-insertion-steps"}],"title":"2.2. geolocation element algorithms"}],"url":"#powerfulfeatureobserver-insertion-steps"},
+"powerfulfeatureobserver-powerfulfeatureobserver-attributes": {"dfnID":"powerfulfeatureobserver-powerfulfeatureobserver-attributes","dfnText":"PowerfulFeatureObserver attributes","external":false,"refSections":[{"refs":[{"id":"ref-for-powerfulfeatureobserver-powerfulfeatureobserver-attributes"}],"title":"2. The geolocation Element"}],"url":"#powerfulfeatureobserver-powerfulfeatureobserver-attributes"},
 "temporary-blocker": {"dfnID":"temporary-blocker","dfnText":"Temporary blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-temporary-blocker"},{"id":"ref-for-temporary-blocker\u2460"},{"id":"ref-for-temporary-blocker\u2461"},{"id":"ref-for-temporary-blocker\u2462"},{"id":"ref-for-temporary-blocker\u2463"}],"title":"3.1.2. Action Blockers, Blocker Reasons, and Blocker Lifetimes"}],"url":"#temporary-blocker"},
 };
 
@@ -3692,13 +3692,13 @@ let refsData = {
 "#dom-htmlgeolocationelement-positionerror-slot": {"displayText":"[[positionError]]","export":true,"for_":["HTMLGeolocationElement"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"[[positionError]]","type":"attribute","url":"#dom-htmlgeolocationelement-positionerror-slot"},
 "#dom-htmlgeolocationelement-watch": {"displayText":"watch","export":true,"for_":["HTMLGeolocationElement"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"watch","type":"attribute","url":"#dom-htmlgeolocationelement-watch"},
 "#dom-htmlgeolocationelement-watchids-slot": {"displayText":"[[watchIDs]]","export":true,"for_":["HTMLGeolocationElement"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"[[watchIDs]]","type":"attribute","url":"#dom-htmlgeolocationelement-watchids-slot"},
-"#dom-navigable-permissionelements-slot": {"displayText":"[[PermissionElements]]","export":true,"for_":["navigable"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"[[PermissionElements]]","type":"attribute","url":"#dom-navigable-permissionelements-slot"},
-"#dom-permissionsmixin-features-slot": {"displayText":"[[Features]]","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"[[Features]]","type":"attribute","url":"#dom-permissionsmixin-features-slot"},
-"#dom-permissionsmixin-initialpermissionstatus": {"displayText":"initialPermissionStatus","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"initialPermissionStatus","type":"attribute","url":"#dom-permissionsmixin-initialpermissionstatus"},
-"#dom-permissionsmixin-initialpermissionstatus-slot": {"displayText":"[[InitialPermissionStatus]]","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"[[InitialPermissionStatus]]","type":"attribute","url":"#dom-permissionsmixin-initialpermissionstatus-slot"},
-"#dom-permissionsmixin-onpromptaction": {"displayText":"onpromptaction","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"onpromptaction","type":"attribute","url":"#dom-permissionsmixin-onpromptaction"},
-"#dom-permissionsmixin-onpromptdismiss": {"displayText":"onpromptdismiss","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"onpromptdismiss","type":"attribute","url":"#dom-permissionsmixin-onpromptdismiss"},
-"#dom-permissionsmixin-permissionstatus": {"displayText":"permissionStatus","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"permissionStatus","type":"attribute","url":"#dom-permissionsmixin-permissionstatus"},
+"#dom-navigable-activationblockableelements-slot": {"displayText":"[[ActivationBlockableElements]]","export":true,"for_":["navigable"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"[[ActivationBlockableElements]]","type":"attribute","url":"#dom-navigable-activationblockableelements-slot"},
+"#dom-powerfulfeatureobserver-features-slot": {"displayText":"[[Features]]","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"[[Features]]","type":"attribute","url":"#dom-powerfulfeatureobserver-features-slot"},
+"#dom-powerfulfeatureobserver-initialpermissionstatus": {"displayText":"initialPermissionStatus","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"initialPermissionStatus","type":"attribute","url":"#dom-powerfulfeatureobserver-initialpermissionstatus"},
+"#dom-powerfulfeatureobserver-initialpermissionstatus-slot": {"displayText":"[[InitialPermissionStatus]]","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"[[InitialPermissionStatus]]","type":"attribute","url":"#dom-powerfulfeatureobserver-initialpermissionstatus-slot"},
+"#dom-powerfulfeatureobserver-onpromptaction": {"displayText":"onpromptaction","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"onpromptaction","type":"attribute","url":"#dom-powerfulfeatureobserver-onpromptaction"},
+"#dom-powerfulfeatureobserver-onpromptdismiss": {"displayText":"onpromptdismiss","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"onpromptdismiss","type":"attribute","url":"#dom-powerfulfeatureobserver-onpromptdismiss"},
+"#dom-powerfulfeatureobserver-permissionstatus": {"displayText":"permissionStatus","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"permissionStatus","type":"attribute","url":"#dom-powerfulfeatureobserver-permissionstatus"},
 "#element-attrdef-geolocation-autolocate": {"displayText":"autolocate","export":true,"for_":["geolocation"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"autolocate","type":"element-attr","url":"#element-attrdef-geolocation-autolocate"},
 "#element-attrdef-geolocation-watch": {"displayText":"watch","export":true,"for_":["geolocation"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"watch","type":"element-attr","url":"#element-attrdef-geolocation-watch"},
 "#elementdef-geolocation": {"displayText":"geolocation","export":true,"for_":[],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"geolocation","type":"element","url":"#elementdef-geolocation"},
@@ -3710,14 +3710,14 @@ let refsData = {
 "#htmlgeolocationelement-recheck-type-permissibility": {"displayText":"recheck type permissibility","export":true,"for_":["HTMLGeolocationElement"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"recheck type permissibility","type":"dfn","url":"#htmlgeolocationelement-recheck-type-permissibility"},
 "#htmlgeolocationelement-type-permissible": {"displayText":"type permissible","export":true,"for_":["HTMLGeolocationElement"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"type permissible","type":"dfn","url":"#htmlgeolocationelement-type-permissible"},
 "#permanent-blocker": {"displayText":"permanent blocker","export":true,"for_":[],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"permanent blocker","type":"dfn","url":"#permanent-blocker"},
-"#permissionsmixin": {"displayText":"PermissionsMixin","export":true,"for_":[],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"PermissionsMixin","type":"interface","url":"#permissionsmixin"},
-"#permissionsmixin-build-a-permission-descriptor": {"displayText":"build a permission descriptor","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"build a permission descriptor","type":"dfn","url":"#permissionsmixin-build-a-permission-descriptor"},
-"#permissionsmixin-dispatch-onpromptaction": {"displayText":"dispatch onpromptaction","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"dispatch onpromptaction","type":"dfn","url":"#permissionsmixin-dispatch-onpromptaction"},
-"#permissionsmixin-dispatch-onpromptdismiss": {"displayText":"dispatch onpromptdismiss","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"dispatch onpromptdismiss","type":"dfn","url":"#permissionsmixin-dispatch-onpromptdismiss"},
-"#permissionsmixin-get-the-current-permission-state": {"displayText":"get the current permission state","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"get the current permission state","type":"dfn","url":"#permissionsmixin-get-the-current-permission-state"},
-"#permissionsmixin-initialization-steps": {"displayText":"initialization steps","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"initialization steps","type":"dfn","url":"#permissionsmixin-initialization-steps"},
-"#permissionsmixin-insertion-steps": {"displayText":"insertion steps","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"insertion steps","type":"dfn","url":"#permissionsmixin-insertion-steps"},
-"#permissionsmixin-permissionsmixin-attributes": {"displayText":"permissionsmixin attributes","export":true,"for_":["PermissionsMixin"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"permissionsmixin attributes","type":"dfn","url":"#permissionsmixin-permissionsmixin-attributes"},
+"#powerfulfeatureobserver": {"displayText":"PowerfulFeatureObserver","export":true,"for_":[],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"PowerfulFeatureObserver","type":"interface","url":"#powerfulfeatureobserver"},
+"#powerfulfeatureobserver-build-a-permission-descriptor": {"displayText":"build a permission descriptor","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"build a permission descriptor","type":"dfn","url":"#powerfulfeatureobserver-build-a-permission-descriptor"},
+"#powerfulfeatureobserver-dispatch-onpromptaction": {"displayText":"dispatch onpromptaction","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"dispatch onpromptaction","type":"dfn","url":"#powerfulfeatureobserver-dispatch-onpromptaction"},
+"#powerfulfeatureobserver-dispatch-onpromptdismiss": {"displayText":"dispatch onpromptdismiss","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"dispatch onpromptdismiss","type":"dfn","url":"#powerfulfeatureobserver-dispatch-onpromptdismiss"},
+"#powerfulfeatureobserver-get-the-current-permission-state": {"displayText":"get the current permission state","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"get the current permission state","type":"dfn","url":"#powerfulfeatureobserver-get-the-current-permission-state"},
+"#powerfulfeatureobserver-initialization-steps": {"displayText":"initialization steps","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"initialization steps","type":"dfn","url":"#powerfulfeatureobserver-initialization-steps"},
+"#powerfulfeatureobserver-insertion-steps": {"displayText":"insertion steps","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"insertion steps","type":"dfn","url":"#powerfulfeatureobserver-insertion-steps"},
+"#powerfulfeatureobserver-powerfulfeatureobserver-attributes": {"displayText":"powerfulfeatureobserver attributes","export":true,"for_":["PowerfulFeatureObserver"],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"powerfulfeatureobserver attributes","type":"dfn","url":"#powerfulfeatureobserver-powerfulfeatureobserver-attributes"},
 "#temporary-blocker": {"displayText":"temporary blocker","export":true,"for_":[],"level":"0","normative":true,"shortname":"geolocation-element","spec":"geolocation-element-0","status":"local","text":"temporary blocker","type":"dfn","url":"#temporary-blocker"},
 "https://dom.spec.whatwg.org/#concept-document": {"displayText":"document","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"document","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-document"},
 "https://dom.spec.whatwg.org/#concept-event-dispatch": {"displayText":"dispatch","export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"dispatch","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-event-dispatch"},
