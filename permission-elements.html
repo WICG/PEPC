@@ -4,9 +4,9 @@
   <title>The HTML Permission Elements</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
+  <meta content="Bikeshed version 3f621ba99, updated Mon Jul 28 15:38:36 2025 -0700" name="generator">
   <link href="https://wicg.github.io/PEPC/permission-elements.html" rel="canonical">
-  <meta content="735aa06f0239a1c8801e546c7ab1699edc3a86ba" name="revision">
+  <meta content="774477b2661c25d15b938604c65eaf7a29273c6b" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -340,7 +340,7 @@ body {
 }
 .invalid.example:not(.no-marker)::before,
 .illegal.example:not(.no-marker)::before {
-    content: "Invalid Example " counter(example);
+    content: "Invalid Example" counter(example);
 }
 
 figcaption {
@@ -756,9 +756,9 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
 </style>
  <body class="h-entry">
   <div class="head">
-   <h1 class="no-ref p-name" id="title">The HTML Permission Elements</h1>
+   <h1 class="p-name no-ref" id="title">The HTML Permission Elements</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-01-13">13 January 2026</time></p>
+    <time class="dt-updated" datetime="2026-02-26">26 February 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -767,7 +767,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
      <dd><a href="https://github.com/WICG/PEPC/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
      <dt class="editor">Editor:
-     <dd class="editor h-card p-author vcard"><a class="fn p-name u-url url" href="https://www.google.com/">Daniel Vogelheim</a> (<span class="org p-org">Google LLC</span>) <a class="email u-email" href="mailto:vogelheim@google.com">vogelheim@google.com</a>
+     <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="https://www.google.com/">Daniel Vogelheim</a> (<span class="p-org org">Google LLC</span>) <a class="u-email email" href="mailto:vogelheim@google.com">vogelheim@google.com</a>
     </dl>
    </div>
    <div data-fill-with="warning"></div>
@@ -777,7 +777,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
-   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>HTML elements to request browser permissions in-page.</p>
    <p>This specifies a set of new HTML elements, whose common goal is to provide
 users with a way to control browser permissions and the associated
@@ -789,7 +789,7 @@ These permission elements aim to be more accessible, more secure, and more
 user friendly than the current, script-triggered permission flows.</p>
   </div>
   <div data-fill-with="at-risk"></div>
-  <h2 class="heading no-num no-ref no-toc settled" id="status"><span class="content">Status of this document</span></h2>
+  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
    <p>
   This specification was published by the <a href="https://www.w3.org/community/wicg/">Web Platform Incubator Community Group</a>.
@@ -806,8 +806,8 @@ user friendly than the current, script-triggered permission flows.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
-   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
-   <ol class="toc">
+   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
+   <ol class="toc" role="directory">
     <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
     <li>
      <a href="#permission-mixin"><span class="secno">2</span> <span class="content">Common Behaviours Of The HTML Permission Elements: <code class="idl"><span>InPagePermissionMixin</span></code></span></a>
@@ -890,20 +890,10 @@ time providing implementations with a better signal of user intent.</p>
    <p>The elements in this specification exhibit a number of common behaviours, which
 are captured by the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①">InPagePermissionMixin</a></code> and its associated state,
 algorithms, and rendering rules.</p>
-   <dl class="element">
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes">Content attributes</a>:
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-isvalid" id="ref-for-dom-inpagepermissionmixin-isvalid">isValid</a></code> — query whether the element can currently be activated.
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-invalidreason" id="ref-for-dom-inpagepermissionmixin-invalidreason">invalidReason</a></code> — return a string representation of why the element currently cannot be activated.
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-onpromptdismiss" id="ref-for-dom-inpagepermissionmixin-onpromptdismiss">onpromptdismiss</a></code> — notifies when the user has dismissed a permission prompt that resulted from an interaction with the element
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-onpromptaction" id="ref-for-dom-inpagepermissionmixin-onpromptaction">onpromptaction</a></code> — notifies when a permission prompt that resulted from an interaction with the element has been answered by the user (positively or negatively).
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-onvalidationstatuschange" id="ref-for-dom-inpagepermissionmixin-onvalidationstatuschange">onvalidationstatuschange</a></code> — notifies when the validation status changes.
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations" id="ref-for-concept-element-accessibility-considerations">Accessibility considerations</a>:
-    <dd>TODO
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom">DOM interface</a>:
-    <dd>
-<pre class="def highlight idl"><c- b>interface</c-> <c- b>mixin</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="inpagepermissionmixin"><code><c- g>InPagePermissionMixin</c-></code></dfn> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-inpagepermissionmixin-isvalid" id="ref-for-dom-inpagepermissionmixin-isvalid①"><c- g>isValid</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-inpagepermissionmixinblockerreason" id="ref-for-enumdef-inpagepermissionmixinblockerreason"><c- n>InPagePermissionMixinBlockerReason</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="InPagePermissionMixinBlockerReason" href="#dom-inpagepermissionmixin-invalidreason" id="ref-for-dom-inpagepermissionmixin-invalidreason①"><c- g>invalidReason</c-></a>;
+   <p>The <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin②">InPagePermissionMixin</a></code> interface mixin is defined as follows:</p>
+<pre class="idl highlight def"><c- b>interface</c-> <c- b>mixin</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="inpagepermissionmixin"><code><c- g>InPagePermissionMixin</c-></code></dfn> {
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-inpagepermissionmixin-isvalid" id="ref-for-dom-inpagepermissionmixin-isvalid"><c- g>isValid</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-inpagepermissionmixinblockerreason" id="ref-for-enumdef-inpagepermissionmixinblockerreason"><c- n>InPagePermissionMixinBlockerReason</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="InPagePermissionMixinBlockerReason" href="#dom-inpagepermissionmixin-invalidreason" id="ref-for-dom-inpagepermissionmixin-invalidreason"><c- g>invalidReason</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-inpagepermissionmixin-initialpermissionstatus" id="ref-for-dom-inpagepermissionmixin-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate①"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-inpagepermissionmixin-permissionstatus" id="ref-for-dom-inpagepermissionmixin-permissionstatus"><c- g>permissionStatus</c-></a>;
 
@@ -912,6 +902,19 @@ algorithms, and rendering rules.</p>
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler②"><c- n>EventHandler</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export data-type="EventHandler" id="dom-inpagepermissionmixin-onvalidationstatuschange"><code><c- g>onvalidationstatuschange</c-></code></dfn>;
 };
 </pre>
+   <p>Elements using this mixin are expected to support the following
+<a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes">Content attributes</a>:</p>
+   <dl>
+    <dt><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-isvalid" id="ref-for-dom-inpagepermissionmixin-isvalid①">isValid</a></code>
+    <dd>query whether the element can currently be activated.
+    <dt><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-invalidreason" id="ref-for-dom-inpagepermissionmixin-invalidreason①">invalidReason</a></code>
+    <dd>return a string representation of why the element currently cannot be activated.
+    <dt><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-onpromptdismiss" id="ref-for-dom-inpagepermissionmixin-onpromptdismiss">onpromptdismiss</a></code>
+    <dd>notifies when the user has dismissed a permission prompt that resulted from an interaction with the element
+    <dt><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-onpromptaction" id="ref-for-dom-inpagepermissionmixin-onpromptaction">onpromptaction</a></code>
+    <dd>notifies when a permission prompt that resulted from an interaction with the element has been answered by the user (positively or negatively).
+    <dt><code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-onvalidationstatuschange" id="ref-for-dom-inpagepermissionmixin-onvalidationstatuschange">onvalidationstatuschange</a></code>
+    <dd>notifies when the validation status changes.
    </dl>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-isvalid" id="ref-for-dom-inpagepermissionmixin-isvalid②">isValid</a></code> attribute reflects whether a the
 permission element is not currently blocked.</p>
@@ -923,7 +926,7 @@ observed by the element to select localized text.</p>
    <p>The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
 for the global <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex" id="ref-for-attr-tabindex">tabindex</a></code> content attribute on the
 element is 0.</p>
-   <p>The following are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers" id="ref-for-event-handlers">event handlers</a> (and their corresponding <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type">event handler event types</a>) that must be supported on elements that include the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin②">InPagePermissionMixin</a></code>:
+   <p>The following are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers" id="ref-for-event-handlers">event handlers</a> (and their corresponding <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type">event handler event types</a>) that must be supported on elements that include the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin③">InPagePermissionMixin</a></code>:
 <dfn class="dfn-paneled" data-dfn-type="dfn" data-lt="permission elements attributes" data-noexport id="permission-elements-attributes"></dfn></p>
    <table class="def">
     <tbody>
@@ -938,7 +941,7 @@ element is 0.</p>
       <td>Event
    </table>
    <p></p>
-   <h3 class="heading settled" data-level="2.1" id="mixin-internal-state"><span class="secno">2.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin③">Mixin</a></code> internal state</span><a class="self-link" href="#mixin-internal-state"></a></h3>
+   <h3 class="heading settled" data-level="2.1" id="mixin-internal-state"><span class="secno">2.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin④">Mixin</a></code> internal state</span><a class="self-link" href="#mixin-internal-state"></a></h3>
    <p>The HTML permission elements <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#represents" id="ref-for-represents">represent</a> capabilities gated by user-requestable <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission" id="ref-for-dfn-permission①">permissions</a>,
 which the user can activate to allow the site to start accessing them.
 It is core to the these elements that such requests are
@@ -946,7 +949,7 @@ triggered by the user, and not by the page’s script. To enforce
 this, the element checks whether the activation event is <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-istrusted" id="ref-for-dom-event-istrusted">trusted</a></code>. Additionally it watches a number of conditions, like whether the element is
 (partially) occluded, or if it has recently been moved. The element maintains
 an internal <code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-blockerlist-slot" id="ref-for-dom-inpagepermissionmixin-blockerlist-slot">[[BlockerList]]</a></code> to keep track of this.</p>
-   <p><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin④">InPagePermissionMixin</a></code> elements have the following internal slots:</p>
+   <p><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑤">InPagePermissionMixin</a></code> elements have the following internal slots:</p>
    <ul>
     <li data-md>
      <p><dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-features-slot"><code>[[Features]]</code></dfn> is null
@@ -983,10 +986,10 @@ used to determine whether an
 <code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-onvalidationstatuschange" id="ref-for-dom-inpagepermissionmixin-onvalidationstatuschange①">onvalidationstatuschange</a></code> event needs to be
 dispatches.</p>
    </ul>
-   <h3 class="heading settled" data-level="2.2" id="mixin-navigable-state"><span class="secno">2.2. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑤">Mixin</a></code>-supporting state at the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable">navigable</a></span><a class="self-link" href="#mixin-navigable-state"></a></h3>
-   <p>In order to support the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑥">InPagePermissionMixin</a></code>, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable①">navigable</a> maintains
+   <h3 class="heading settled" data-level="2.2" id="mixin-navigable-state"><span class="secno">2.2. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑥">Mixin</a></code>-supporting state at the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable">navigable</a></span><a class="self-link" href="#mixin-navigable-state"></a></h3>
+   <p>In order to support the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑦">InPagePermissionMixin</a></code>, the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#navigable" id="ref-for-navigable①">navigable</a> maintains
 an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set①">ordered set</a> of elements, <dfn class="dfn-paneled idl-code" data-dfn-for="navigable" data-dfn-type="attribute" data-export id="dom-navigable-permissionelements-slot"><code>[[PermissionElements]]</code></dfn>. This <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#ordered-set" id="ref-for-ordered-set②">ordered set</a> is used to evaluate the <a data-link-type="dfn" href="#inpagepermissionmixin-blocker" id="ref-for-inpagepermissionmixin-blocker">blockers</a> of type <code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixinblockerreason-unsuccesful_registration" id="ref-for-dom-inpagepermissionmixinblockerreason-unsuccesful_registration">unsuccesful_registration</a></code>.</p>
-   <h3 class="heading settled" data-level="2.3" id="mixin-activation"><span class="secno">2.3. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑦">Mixin</a></code> activation and activation blockers</span><a class="self-link" href="#mixin-activation"></a></h3>
+   <h3 class="heading settled" data-level="2.3" id="mixin-activation"><span class="secno">2.3. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑧">Mixin</a></code> activation and activation blockers</span><a class="self-link" href="#mixin-activation"></a></h3>
    <p>The key goal of the family of permission elements is to reflect a user’s
 conscious choice, and we need to make sure the user cannot easily be tricked
 into activating it. To do so, the permission elements maintain a list of
@@ -995,7 +998,7 @@ from being activated.</p>
    <p>The majority of these behaviours should be identical to all permission elements.
 For simplicity, we’ll also include blockers that only apply to one or a subset
 of elements.</p>
-<pre class="def highlight idl"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-inpagepermissionmixinblockerreason"><code><c- g>InPagePermissionMixinBlockerReason</c-></code></dfn> {
+<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-inpagepermissionmixinblockerreason"><code><c- g>InPagePermissionMixinBlockerReason</c-></code></dfn> {
   // No blocker reason.
   <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixinBlockerReason" data-dfn-type="enum-value" data-export id="dom-inpagepermissionmixinblockerreason"><code><c- s>""</c-></code></dfn>,
 
@@ -1207,7 +1210,7 @@ To <dfn class="dfn-paneled" data-dfn-for="InPagePermissionMixin" data-dfn-type="
    </div>
    <div class="algorithm" data-algorithm="blocker" data-algorithm-for="InPagePermissionMixin">
     
-To determine a <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑧">InPagePermissionMixin</a></code> <var>element</var>’s
+To determine a <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑨">InPagePermissionMixin</a></code> <var>element</var>’s
 <dfn class="dfn-paneled" data-dfn-for="InPagePermissionMixin" data-dfn-type="dfn" data-noexport id="inpagepermissionmixin-blocker">blocker</dfn>:
 
 
@@ -1247,7 +1250,7 @@ order hint of <var>b</var>’s <a data-link-type="dfn" href="#inpagepermissionmi
    </div>
    <div class="algorithm" data-algorithm="blocking" data-algorithm-for="InPagePermissionMixin">
     
-An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin⑨">InPagePermissionMixin</a></code>’s <a data-link-type="dfn" href="#inpagepermissionmixin-blocker" id="ref-for-inpagepermissionmixin-blocker①">blocker</a> list’s <var>entry</var> is
+An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⓪">InPagePermissionMixin</a></code>’s <a data-link-type="dfn" href="#inpagepermissionmixin-blocker" id="ref-for-inpagepermissionmixin-blocker①">blocker</a> list’s <var>entry</var> is
 <dfn class="dfn-paneled" data-dfn-for="InPagePermissionMixin" data-dfn-type="dfn" data-noexport id="inpagepermissionmixin-blocking">blocking</dfn> if:
 
 
@@ -1266,10 +1269,10 @@ greater or equal to the <a data-link-type="dfn" href="https://w3c.github.io/hr-t
     efficiency. The details of this blocker structure are not observable except
     for a handful of algorithms defined here, which should open plenty of
     opportunities for implementations to handle this more efficiently.</p>
-   <h3 class="heading settled" data-level="2.4" id="mixin-algorithms"><span class="secno">2.4. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⓪">Mixin</a></code> algorithms</span><a class="self-link" href="#mixin-algorithms"></a></h3>
+   <h3 class="heading settled" data-level="2.4" id="mixin-algorithms"><span class="secno">2.4. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①①">Mixin</a></code> algorithms</span><a class="self-link" href="#mixin-algorithms"></a></h3>
    <div class="algorithm" data-algorithm="isValid" data-algorithm-for="InPagePermissionMixin">
     
-An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①①">InPagePermissionMixin</a></code> <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-isvalid"><code>isValid</code></dfn> getter steps are:
+An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①②">InPagePermissionMixin</a></code> <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-isvalid"><code>isValid</code></dfn> getter steps are:
 
 
     <ol>
@@ -1279,7 +1282,7 @@ An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="r
    </div>
    <div class="algorithm" data-algorithm="invalidReason" data-algorithm-for="InPagePermissionMixin">
     
-An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①②">InPagePermissionMixin</a></code> <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-invalidreason"><code>invalidReason</code></dfn> getter steps are:
+An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①③">InPagePermissionMixin</a></code> <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-invalidreason"><code>invalidReason</code></dfn> getter steps are:
 
 
     <ol>
@@ -1291,7 +1294,7 @@ An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="r
    </div>
    <div class="algorithm" data-algorithm="initialPermissionStatus" data-algorithm-for="InPagePermissionMixin">
     
-An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①③">InPagePermissionMixin</a></code> <var>element</var>’s
+An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①④">InPagePermissionMixin</a></code> <var>element</var>’s
 <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-initialpermissionstatus"><code>initialPermissionStatus</code></dfn>
 getter steps are:
 
@@ -1303,7 +1306,7 @@ getter steps are:
    </div>
    <div class="algorithm" data-algorithm="permissionStatus" data-algorithm-for="InPagePermissionMixin">
     
-An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①④">InPagePermissionMixin</a></code> <var>element</var>’s
+An <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑤">InPagePermissionMixin</a></code> <var>element</var>’s
 <dfn class="dfn-paneled idl-code" data-dfn-for="InPagePermissionMixin" data-dfn-type="attribute" data-export id="dom-inpagepermissionmixin-permissionstatus"><code>permissionStatus</code></dfn>
 getter steps are:
 
@@ -1316,11 +1319,11 @@ getter steps are:
    </div>
    <div class="algorithm" data-algorithm="get the current permission state" data-algorithm-for="InPagePermissionMixin">
 How to <dfn class="dfn-paneled" data-dfn-for="InPagePermissionMixin" data-dfn-type="dfn" data-noexport id="inpagepermissionmixin-get-the-current-permission-state">get the current permission state</dfn>
-for an <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑤">InPagePermissionMixin</a></code> <var>element</var> depends on the
+for an <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑥">InPagePermissionMixin</a></code> <var>element</var> depends on the
 particular element that includes the mixin.
 So each element must define its own algorithm.
 </div>
-   <h3 class="heading settled" data-level="2.5" id="mixin-event-algorithms"><span class="secno">2.5. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑥">Mixin</a></code> event algorithms</span><a class="self-link" href="#mixin-event-algorithms"></a></h3>
+   <h3 class="heading settled" data-level="2.5" id="mixin-event-algorithms"><span class="secno">2.5. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑦">Mixin</a></code> event algorithms</span><a class="self-link" href="#mixin-event-algorithms"></a></h3>
    <div class="algorithm" data-algorithm="maybe dispatch onvalidstatechange" data-algorithm-for="InPagePermissionMixin">
     
 To <dfn class="dfn-paneled" data-dfn-for="InPagePermissionMixin" data-dfn-type="dfn" data-noexport id="inpagepermissionmixin-maybe-dispatch-onvalidstatechange">maybe dispatch onvalidstatechange</dfn> for <var>element</var>:
@@ -1545,14 +1548,14 @@ permission <c- p>{</c->
 </pre>
    <p>Additionally, some rules apply based on conditions not easily expressible as
 CSS.</p>
-   <p>If <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> is <code>auto</code>, then apply:</p>
+   <p>If <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height">height</a> is <code>auto</code>, then apply:</p>
 <pre class="highlight lang-css"><c- n>@namespace</c-> <c- s>"http://www.w3.org/1999/xhtml"</c-><c- p>;</c->
 permission <c- p>{</c->
   <c- k>padding-top</c-><c- p>:</c-> <c- nf>clamp</c-><c- p>(</c-><c- m>1</c-><c- k>em</c-><c- p>,</c-> computed<c- p>,</c-> none<c- p>);</c->
   <c- k>padding-bottom</c-><c- p>:</c-> <c- nf>calc</c-><c- p>(</c->padding-top<c- p>);</c->
 <c- p>}</c->
 </pre>
-   <p>If <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a> is <code>auto</code>, then apply:</p>
+   <p>If <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width">width</a> is <code>auto</code>, then apply:</p>
 <pre class="highlight lang-css"><c- n>@namespace</c-> <c- s>"http://www.w3.org/1999/xhtml"</c-><c- p>;</c->
 permission <c- p>{</c->
   <c- k>padding-left</c-><c- p>:</c-> <c- nf>clamp</c-><c- p>(</c->none<c- p>,</c-> computed<c- p>,</c-> <c- m>5</c-><c- k>em</c-><c- p>);</c->
@@ -1576,114 +1579,114 @@ permission <c- p>{</c->
    <p>The following CSS properties can be used normally:</p>
    <ul>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-kerning" id="ref-for-propdef-font-kerning">font-kerning</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-kerning" id="ref-for-propdef-font-kerning">font-kerning</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-optical-sizing" id="ref-for-propdef-font-optical-sizing">font-optical-sizing</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-optical-sizing" id="ref-for-propdef-font-optical-sizing">font-optical-sizing</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-stretch" id="ref-for-propdef-font-stretch">font-stretch</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-stretch" id="ref-for-propdef-font-stretch">font-stretch</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight" id="ref-for-propdef-font-synthesis-weight">font-synthesis-weight</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight" id="ref-for-propdef-font-synthesis-weight">font-synthesis-weight</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-style" id="ref-for-propdef-font-synthesis-style">font-synthesis-style</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-style" id="ref-for-propdef-font-synthesis-style">font-synthesis-style</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-small-caps" id="ref-for-propdef-font-synthesis-small-caps">font-synthesis-small-caps</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-small-caps" id="ref-for-propdef-font-synthesis-small-caps">font-synthesis-small-caps</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-feature-settings" id="ref-for-propdef-font-feature-settings">font-feature-settings</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-fonts-4/#propdef-font-feature-settings" id="ref-for-propdef-font-feature-settings">font-feature-settings</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-color-adjust-1/#propdef-forced-color-adjust" id="ref-for-propdef-forced-color-adjust">forced-color-adjust</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-color-adjust-1/#propdef-forced-color-adjust" id="ref-for-propdef-forced-color-adjust">forced-color-adjust</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://svgwg.org/svg2-draft/painting.html#TextRenderingProperty" id="ref-for-TextRenderingProperty">text-rendering</a></p>
+     <p><a class="property css" data-link-type="property" href="https://svgwg.org/svg2-draft/painting.html#TextRenderingProperty" id="ref-for-TextRenderingProperty">text-rendering</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-align-self" id="ref-for-propdef-align-self">align-self</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-align-self" id="ref-for-propdef-align-self">align-self</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name" id="ref-for-propdef-anchor-name">anchor-name</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-anchor-name" id="ref-for-propdef-anchor-name">anchor-name</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-aspect-ratio" id="ref-for-propdef-aspect-ratio">aspect-ratio</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border" id="ref-for-propdef-border">border</a> and all
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-backgrounds-3/#propdef-border" id="ref-for-propdef-border">border</a> and all
 <a href="https://drafts.csswg.org/css-backgrounds-3/#border-shorthands">border shorthand properties</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-top" id="ref-for-propdef-border-top">border-top</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-right" id="ref-for-propdef-border-right">border-right</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-bottom" id="ref-for-propdef-border-bottom">border-bottom</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-left" id="ref-for-propdef-border-left">border-left</a></p>
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-top" id="ref-for-propdef-border-top">border-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-right" id="ref-for-propdef-border-right">border-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-bottom" id="ref-for-propdef-border-bottom">border-bottom</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-borders-4/#propdef-border-left" id="ref-for-propdef-border-left">border-left</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-clear" id="ref-for-propdef-clear">clear</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-clear" id="ref-for-propdef-clear">clear</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-color-adjust-1/#propdef-color-scheme" id="ref-for-propdef-color-scheme">color-scheme</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-color-adjust-1/#propdef-color-scheme" id="ref-for-propdef-color-scheme">color-scheme</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-width" id="ref-for-propdef-contain-intrinsic-width">contain-intrinsic-width</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-width" id="ref-for-propdef-contain-intrinsic-width">contain-intrinsic-width</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-height" id="ref-for-propdef-contain-intrinsic-height">contain-intrinsic-height</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-4/#propdef-contain-intrinsic-height" id="ref-for-propdef-contain-intrinsic-height">contain-intrinsic-height</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-name" id="ref-for-propdef-container-name">container-name</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-name" id="ref-for-propdef-container-name">container-name</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-type" id="ref-for-propdef-container-type">container-type</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-conditional-5/#propdef-container-type" id="ref-for-propdef-container-type">container-type</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-reset" id="ref-for-propdef-counter-reset">counter-reset</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-increment" id="ref-for-propdef-counter-increment">counter-increment</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-set" id="ref-for-propdef-counter-set">counter-set</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-reset" id="ref-for-propdef-counter-reset">counter-reset</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-increment" id="ref-for-propdef-counter-increment">counter-increment</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-set" id="ref-for-propdef-counter-set">counter-set</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex" id="ref-for-propdef-flex">flex</a> and its longhands, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow" id="ref-for-propdef-flex-grow">flex-grow</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink" id="ref-for-propdef-flex-shrink">flex-shrink</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis" id="ref-for-propdef-flex-basis">flex-basis</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex" id="ref-for-propdef-flex">flex</a> and its longhands, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow" id="ref-for-propdef-flex-grow">flex-grow</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink" id="ref-for-propdef-flex-shrink">flex-shrink</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis" id="ref-for-propdef-flex-basis">flex-basis</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-float" id="ref-for-propdef-float">float</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-float" id="ref-for-propdef-float">float</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-height" id="ref-for-propdef-height①">height</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/compositing-2/#propdef-isolation" id="ref-for-propdef-isolation">isolation</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-self" id="ref-for-propdef-justify-self">justify-self</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-align-3/#propdef-justify-self" id="ref-for-propdef-justify-self">justify-self</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-left" id="ref-for-propdef-left">left</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-left" id="ref-for-propdef-left">left</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-order" id="ref-for-propdef-order">order</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-order" id="ref-for-propdef-order">order</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-break-3/#propdef-orphans" id="ref-for-propdef-orphans">orphans</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-break-3/#propdef-orphans" id="ref-for-propdef-orphans">orphans</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a> and mostly its <a href="https://drafts.csswg.org/css-ui-4/#outline">longhands</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-color" id="ref-for-propdef-outline-color">outline-color</a> and <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-style" id="ref-for-propdef-outline-style">outline-style</a>.
-<br>Note that <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-offset" id="ref-for-propdef-outline-offset">outline-offset</a> is clamped by the rules above.</p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline" id="ref-for-propdef-outline">outline</a> and mostly its <a href="https://drafts.csswg.org/css-ui-4/#outline">longhands</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-color" id="ref-for-propdef-outline-color">outline-color</a> and <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-style" id="ref-for-propdef-outline-style">outline-style</a>.
+<br>Note that <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-outline-offset" id="ref-for-propdef-outline-offset">outline-offset</a> is clamped by the rules above.</p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor" id="ref-for-propdef-overflow-anchor">overflow-anchor</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor" id="ref-for-propdef-overflow-anchor">overflow-anchor</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior" id="ref-for-propdef-overscroll-behavior">overscroll-behavior</a> and its
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior" id="ref-for-propdef-overscroll-behavior">overscroll-behavior</a> and its
 <a href="https://drafts.csswg.org/css-overscroll-1/#overscroll-behavior-longhands-physical">longhands</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-inline" id="ref-for-propdef-overscroll-behavior-inline">overscroll-behavior-inline</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-block" id="ref-for-propdef-overscroll-behavior-block">overscroll-behavior-block</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x" id="ref-for-propdef-overscroll-behavior-x">overscroll-behavior-x</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y" id="ref-for-propdef-overscroll-behavior-y">overscroll-behavior-y</a></p>
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-inline" id="ref-for-propdef-overscroll-behavior-inline">overscroll-behavior-inline</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-block" id="ref-for-propdef-overscroll-behavior-block">overscroll-behavior-block</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x" id="ref-for-propdef-overscroll-behavior-x">overscroll-behavior-x</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y" id="ref-for-propdef-overscroll-behavior-y">overscroll-behavior-y</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-page-3/#propdef-page" id="ref-for-propdef-page">page</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-page-3/#propdef-page" id="ref-for-propdef-page">page</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position">position</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-position" id="ref-for-propdef-position">position</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-anchor" id="ref-for-propdef-position-anchor">position-anchor</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-anchor-position-1/#propdef-position-anchor" id="ref-for-propdef-position-anchor">position-anchor</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-right" id="ref-for-propdef-right">right</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-right" id="ref-for-propdef-right">right</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin">scroll-margin</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-top" id="ref-for-propdef-scroll-margin-top">scroll-margin-top</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-right" id="ref-for-propdef-scroll-margin-right">scroll-margin-right</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin①">scroll-margin</a>bottom',
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-left" id="ref-for-propdef-scroll-margin-left">scroll-margin-left</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin">scroll-margin</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-top" id="ref-for-propdef-scroll-margin-top">scroll-margin-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-right" id="ref-for-propdef-scroll-margin-right">scroll-margin-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin" id="ref-for-propdef-scroll-margin①">scroll-margin</a>bottom',
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-left" id="ref-for-propdef-scroll-margin-left">scroll-margin-left</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding" id="ref-for-propdef-scroll-padding">scroll-padding</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-top" id="ref-for-propdef-scroll-padding-top">scroll-padding-top</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right" id="ref-for-propdef-scroll-padding-right">scroll-padding-right</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-bottom" id="ref-for-propdef-scroll-padding-bottom">scroll-padding-bottom</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left" id="ref-for-propdef-scroll-padding-left">scroll-padding-left</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-start" id="ref-for-propdef-scroll-padding-inline-start">scroll-padding-inline-start</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start">scroll-padding-block-start</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start①">scroll-padding-block-start</a>,
-<a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-end" id="ref-for-propdef-scroll-padding-inline-end">scroll-padding-inline-end</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-end" id="ref-for-propdef-scroll-padding-block-end">scroll-padding-block-end</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding" id="ref-for-propdef-scroll-padding">scroll-padding</a> and its <a href="https://drafts.csswg.org/css-scroll-snap-1/#longhands">longhands</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-top" id="ref-for-propdef-scroll-padding-top">scroll-padding-top</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right" id="ref-for-propdef-scroll-padding-right">scroll-padding-right</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-bottom" id="ref-for-propdef-scroll-padding-bottom">scroll-padding-bottom</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left" id="ref-for-propdef-scroll-padding-left">scroll-padding-left</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-start" id="ref-for-propdef-scroll-padding-inline-start">scroll-padding-inline-start</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start">scroll-padding-block-start</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start" id="ref-for-propdef-scroll-padding-block-start①">scroll-padding-block-start</a>,
+<a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-inline-end" id="ref-for-propdef-scroll-padding-inline-end">scroll-padding-inline-end</a>, <a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-end" id="ref-for-propdef-scroll-padding-block-end">scroll-padding-block-end</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim" id="ref-for-propdef-text-spacing-trim">text-spacing-trim</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim" id="ref-for-propdef-text-spacing-trim">text-spacing-trim</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-transform" id="ref-for-propdef-text-transform">text-transform</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-text-4/#propdef-text-transform" id="ref-for-propdef-text-transform">text-transform</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-top" id="ref-for-propdef-top">top</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-position-3/#propdef-top" id="ref-for-propdef-top">top</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-visibility" id="ref-for-propdef-visibility">visibility</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-display-4/#propdef-visibility" id="ref-for-propdef-visibility">visibility</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://svgwg.org/svg2-draft/geometry.html#XProperty" id="ref-for-XProperty">x</a></p>
+     <p><a class="property css" data-link-type="property" href="https://svgwg.org/svg2-draft/geometry.html#XProperty" id="ref-for-XProperty">x</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://svgwg.org/svg2-draft/geometry.html#YProperty" id="ref-for-YProperty">y</a></p>
+     <p><a class="property css" data-link-type="property" href="https://svgwg.org/svg2-draft/geometry.html#YProperty" id="ref-for-YProperty">y</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ruby-1/#propdef-ruby-position" id="ref-for-propdef-ruby-position">ruby-position</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ruby-1/#propdef-ruby-position" id="ref-for-propdef-ruby-position">ruby-position</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-user-select" id="ref-for-propdef-user-select">user-select</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-ui-4/#propdef-user-select" id="ref-for-propdef-user-select">user-select</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width①">width</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-sizing-3/#propdef-width" id="ref-for-propdef-width①">width</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-will-change-1/#propdef-will-change" id="ref-for-propdef-will-change">will-change</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css-will-change-1/#propdef-will-change" id="ref-for-propdef-will-change">will-change</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-z-index" id="ref-for-propdef-z-index">z-index</a></p>
+     <p><a class="property css" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-z-index" id="ref-for-propdef-z-index">z-index</a></p>
    </ul>
    <p>Properties that are not listed above, or in the rules in this section,
 and aren’t logically equivalent to one of the properties mentioned here,
@@ -1723,9 +1726,9 @@ instead of the <code><a data-link-type="element" href="#elementdef-permission" i
     <dd><code><a data-link-type="element-sub" href="#element-attrdef-permission-type" id="ref-for-element-attrdef-permission-type">type</a></code> — Type of permission this element applies to.
     <dd><code><a data-link-type="element-sub" href="#element-attrdef-permission-lang" id="ref-for-element-attrdef-permission-lang">lang</a></code> — Like the global <a data-link-type="element-attr" href="https://html.spec.whatwg.org/multipage/dom.html#attr-lang" id="ref-for-attr-lang②">lang</a> attribute.
  
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations" id="ref-for-concept-element-accessibility-considerations①">Accessibility considerations</a>:
+    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations" id="ref-for-concept-element-accessibility-considerations">Accessibility considerations</a>:
     <dd>
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom①">DOM interface</a>:
+    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom">DOM interface</a>:
     <dd><code class="idl"><a data-link-type="idl" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement">HTMLPermissionElement</a></code>
    </dl>
    <p class="issue" id="issue-730fe291"><a class="self-link" href="#issue-730fe291"></a> Add accessibility considerations.</p>
@@ -1744,13 +1747,13 @@ observed by the <code><a data-link-type="element" href="#elementdef-permission" 
    <p>The <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#default-value">default value</a>
 for the global <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex" id="ref-for-attr-tabindex①">tabindex</a></code> content attribute on the
 <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①②">permission</a></code> element is 0.</p>
-<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="htmlpermissionelement"><code><c- g>HTMLPermissionElement</c-></code></dfn> : <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement" id="ref-for-htmlelement"><c- n>HTMLElement</c-></a> {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/dom.html#htmlconstructor" id="ref-for-htmlconstructor"><c- g>HTMLConstructor</c-></a>] <a class="idl-code" data-link-type="constructor" href="#dom-htmlpermissionelement-constructor" id="ref-for-dom-htmlpermissionelement-constructor"><c- g>constructor</c-></a>();
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/custom-elements.html#cereactions" id="ref-for-cereactions"><c- g>CEReactions</c-></a>, <a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#xattr-reflect" id="ref-for-xattr-reflect"><c- g>Reflect</c-></a>] <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="attribute" data-export data-type="DOMString" id="dom-htmlpermissionelement-type"><code><c- g>type</c-></code></dfn>;
   <c- b>static</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement" data-dfn-type="method" data-export data-lt="isTypeSupported(type)" id="dom-htmlpermissionelement-istypesupported"><code><c- g>isTypeSupported</c-></code></dfn>(<a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-DOMString" id="ref-for-idl-DOMString①"><c- b>DOMString</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLPermissionElement/isTypeSupported(type)" data-dfn-type="argument" data-export id="dom-htmlpermissionelement-istypesupported-type-type"><code><c- g>type</c-></code></dfn>);
 };
-<a data-link-type="idl-name" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement①"><c- n>HTMLPermissionElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑦"><c- n>InPagePermissionMixin</c-></a>;
+<a data-link-type="idl-name" href="#htmlpermissionelement" id="ref-for-htmlpermissionelement①"><c- n>HTMLPermissionElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑧"><c- n>InPagePermissionMixin</c-></a>;
 </pre>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-type" id="ref-for-dom-htmlpermissionelement-type①">type</a></code> attribute <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#reflect" id="ref-for-reflect">reflects</a> the <code><a data-link-type="element-sub" href="#element-attrdef-permission-type" id="ref-for-element-attrdef-permission-type①">type</a></code> element attribute.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-htmlpermissionelement-istypesupported" id="ref-for-dom-htmlpermissionelement-istypesupported">isTypeSupported(type)</a></code>
@@ -1763,7 +1766,7 @@ It predicts whether creating a <code><a data-link-type="element" href="#elementd
 an element blocked by a <code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixinblockerreason-type_invalid" id="ref-for-dom-inpagepermissionmixinblockerreason-type_invalid②">type_invalid</a></code>
 <a data-link-type="dfn" href="#permanent-blocker" id="ref-for-permanent-blocker②">permanent blocker</a>.</p>
    <h3 class="heading settled" data-level="4.1" id="permission-element-internal-state"><span class="secno">4.1. </span><span class="content"><code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①④">permission</a></code> element internal state</span><a class="self-link" href="#permission-element-internal-state"></a></h3>
-   <p>The <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①⑤">permission</a></code> element has the same internal slots as the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑧">InPagePermissionMixin</a></code>, described in <a href="#mixin-internal-state">§ 2.1 Mixin internal state</a>.</p>
+   <p>The <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①⑤">permission</a></code> element has the same internal slots as the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑨">InPagePermissionMixin</a></code>, described in <a href="#mixin-internal-state">§ 2.1 Mixin internal state</a>.</p>
    <h3 class="heading settled" data-level="4.2" id="permission-element-very-interesting"><span class="secno">4.2. </span><span class="content"><code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①⑥">permission</a></code> element interesting behaviours</span><a class="self-link" href="#permission-element-very-interesting"></a></h3>
    <p>The <code><a data-link-type="element" href="#elementdef-permission" id="ref-for-elementdef-permission①⑦">permission</a></code> element has a few surprising behaviours, to support its
 security properties:</p>
@@ -1775,7 +1778,7 @@ an API to modify it. To do do, we distinguish between a freshly initialized and
 an empty or invalid (no permission) state, where the former allows setting the
 type and the latter does not.</p>
    <p>Example:</p>
-<pre class="highlight language-js"><c- c1>// Changing a valid type:</c->
+<pre class="language-js highlight"><c- c1>// Changing a valid type:</c->
 <c- a>var</c-> pepc <c- o>=</c-> document<c- p>.</c->createElement<c- p>(</c-><c- u>"permission"</c-><c- p>);</c->
 pepc<c- p>.</c->type <c- o>=</c-> <c- u>"camera"</c-><c- p>;</c->  <c- c1>// Okay.</c->
 pepc<c- p>.</c->type<c- p>;</c->  <c- c1>// "camera".</c->
@@ -2144,9 +2147,9 @@ following ordering:
     <dd><a data-link-type="dfn" href="#permission-elements-attributes" id="ref-for-permission-elements-attributes①">Permission elements attributes</a>.
     <dd><code><a data-link-type="element-sub" href="#element-attrdef-geolocation-autolocate" id="ref-for-element-attrdef-geolocation-autolocate">autolocate</a></code> — Whether to locate right away (if permission has already been granted).
     <dd><code><a data-link-type="element-sub" href="#element-attrdef-geolocation-watch" id="ref-for-element-attrdef-geolocation-watch">watch</a></code> — Wether to read the position once, or watch it continously.
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations" id="ref-for-concept-element-accessibility-considerations②">Accessibility considerations</a>:
+    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations" id="ref-for-concept-element-accessibility-considerations①">Accessibility considerations</a>:
     <dd>
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom②">DOM interface</a>:
+    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom①">DOM interface</a>:
     <dd><code class="idl"><a data-link-type="idl" href="#htmlgeolocationelement" id="ref-for-htmlgeolocationelement">HTMLGeolocationElement</a></code>
    </dl>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-inpagepermissionmixin-isvalid" id="ref-for-dom-inpagepermissionmixin-isvalid⑤">isValid</a></code> and
@@ -2162,7 +2165,7 @@ whether the <code><a data-link-type="element" href="#elementdef-geolocation" id=
 permission has already been granted).</p>
    <p>The <dfn class="dfn-paneled" data-dfn-for="geolocation" data-dfn-type="element-attr" data-export id="element-attrdef-geolocation-watch"><code>watch</code></dfn> attribute determine whether
 the <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation②">geolocation</a></code> element report the location once or continously.</p>
-<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed①"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="htmlgeolocationelement"><code><c- g>HTMLGeolocationElement</c-></code></dfn> : <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/dom.html#htmlelement" id="ref-for-htmlelement①"><c- n>HTMLElement</c-></a> {
   [<a class="idl-code" data-link-type="extended-attribute" href="https://html.spec.whatwg.org/multipage/dom.html#htmlconstructor" id="ref-for-htmlconstructor①"><c- g>HTMLConstructor</c-></a>] <a class="idl-code" data-link-type="constructor" href="#dom-htmlgeolocationelement-constructor" id="ref-for-dom-htmlgeolocationelement-constructor"><c- g>constructor</c-></a>();
 
@@ -2173,7 +2176,7 @@ the <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for
 
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler③"><c- n>EventHandler</c-></a> <a class="idl-code" data-link-type="attribute" data-type="EventHandler" href="#dom-htmlgeolocationelement-onlocation" id="ref-for-dom-htmlgeolocationelement-onlocation"><c- g>onlocation</c-></a>;
 };
-<a data-link-type="idl-name" href="#htmlgeolocationelement" id="ref-for-htmlgeolocationelement①"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin①⑨"><c- n>InPagePermissionMixin</c-></a>;
+<a data-link-type="idl-name" href="#htmlgeolocationelement" id="ref-for-htmlgeolocationelement①"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin②⓪"><c- n>InPagePermissionMixin</c-></a>;
 </pre>
    <p>If the user has decided to allow access to geolocation information, the
 readonly attributes <dfn class="dfn-paneled idl-code" data-dfn-for="HTMLGeolocationElement" data-dfn-type="attribute" data-export id="dom-htmlgeolocationelement-position"><code>position</code></dfn> and
@@ -2215,7 +2218,7 @@ There is a direct correspondance:</p>
       <td>Use <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/geolocation/#dom-geolocation-getcurrentposition" id="ref-for-dom-geolocation-getcurrentposition">getCurrentPosition()</a></code>.
    </table>
    <h3 class="heading settled" data-level="5.1" id="geolocation-element-internal-state"><span class="secno">5.1. </span><span class="content"><code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation④">geolocation</a></code> element internal state</span><a class="self-link" href="#geolocation-element-internal-state"></a></h3>
-   <p>The <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation⑤">geolocation</a></code> element uses all the internal slots from the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin②⓪">InPagePermissionMixin</a></code>, described in <a href="#mixin-internal-state">§ 2.1 Mixin internal state</a>. Additionally,
+   <p>The <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation⑤">geolocation</a></code> element uses all the internal slots from the <code class="idl"><a data-link-type="idl" href="#inpagepermissionmixin" id="ref-for-inpagepermissionmixin②①">InPagePermissionMixin</a></code>, described in <a href="#mixin-internal-state">§ 2.1 Mixin internal state</a>. Additionally,
 <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation⑥">geolocation</a></code> has the following internal slots:</p>
    <ul>
     <li data-md>
@@ -2443,8 +2446,8 @@ This section will eventually contain a specification-worthy transcription
 of those Explainer sections.</p>
   </main>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#dom-inpagepermissionmixinblockerreason">""</a><span>, in § 2.3</span>
    <li><a href="#inpagepermissionmixin-add-a-blocker">add a blocker</a><span>, in § 2.3</span>
@@ -2544,7 +2547,7 @@ of those Explainer sections.</p>
     </ul>
    <li><a href="#dom-htmlgeolocationelement-watchids-slot">[[watchIDs]]</a><span>, in § 5.1</span>
   </ul>
-  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[COMPOSITING-2]</a> defines the following terms:
@@ -2884,11 +2887,11 @@ of those Explainer sections.</p>
      <li><span class="dfn-paneled" id="e97a9688">unsigned long</span>
     </ul>
   </ul>
-  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-compositing-2">[COMPOSITING-2]
-   <dd><a href="https://drafts.fxtf.org/compositing-2/"><cite>Compositing and Blending Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.fxtf.org/compositing-2/">https://drafts.fxtf.org/compositing-2/</a>
+   <dd><a href="https://drafts.csswg.org/compositing-2/"><cite>Compositing and Blending Module Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/compositing-2/">https://drafts.csswg.org/compositing-2/</a>
    <dt id="biblio-css-align-3">[CSS-ALIGN-3]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-align/"><cite>CSS Box Alignment Module Level 3</cite></a>. URL: <a href="https://drafts.csswg.org/css-align/">https://drafts.csswg.org/css-align/</a>
    <dt id="biblio-css-anchor-position-1">[CSS-ANCHOR-POSITION-1]
@@ -2930,7 +2933,7 @@ of those Explainer sections.</p>
    <dt id="biblio-css-text-4">[CSS-TEXT-4]
    <dd>Elika Etemad; et al. <a href="https://drafts.csswg.org/css-text-4/"><cite>CSS Text Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-text-4/">https://drafts.csswg.org/css-text-4/</a>
    <dt id="biblio-css-ui-4">[CSS-UI-4]
-   <dd>Florian Rivoal. <a href="https://drafts.csswg.org/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-ui-4/">https://drafts.csswg.org/css-ui-4/</a>
+   <dd>Tab Atkins Jr.; Florian Rivoal. <a href="https://drafts.csswg.org/css-ui-4/"><cite>CSS Basic User Interface Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-ui-4/">https://drafts.csswg.org/css-ui-4/</a>
    <dt id="biblio-css-will-change-1">[CSS-WILL-CHANGE-1]
    <dd>Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-will-change/"><cite>CSS Will Change Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-will-change/">https://drafts.csswg.org/css-will-change/</a>
    <dt id="biblio-css2">[CSS2]
@@ -2954,7 +2957,7 @@ of those Explainer sections.</p>
    <dt id="biblio-manifest-app-info">[MANIFEST-APP-INFO]
    <dd>Aaron Gustafson. <a href="https://w3c.github.io/manifest-app-info/"><cite>Web App Manifest - Application Information</cite></a>. URL: <a href="https://w3c.github.io/manifest-app-info/">https://w3c.github.io/manifest-app-info/</a>
    <dt id="biblio-mediaqueries-5">[MEDIAQUERIES-5]
-   <dd>Dean Jackson; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
+   <dd>Tab Atkins Jr.; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
    <dt id="biblio-permissions">[Permissions]
    <dd>Marcos Caceres; Mike Taylor. <a href="https://w3c.github.io/permissions/"><cite>Permissions</cite></a>. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
    <dt id="biblio-svg2">[SVG2]
@@ -2962,8 +2965,8 @@ of those Explainer sections.</p>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
-  <h2 class="heading no-num no-ref settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="def highlight idl"><c- b>interface</c-> <c- b>mixin</c-> <a href="#inpagepermissionmixin"><code><c- g>InPagePermissionMixin</c-></code></a> {
+  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="idl highlight def"><c- b>interface</c-> <c- b>mixin</c-> <a href="#inpagepermissionmixin"><code><c- g>InPagePermissionMixin</c-></code></a> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-inpagepermissionmixin-isvalid"><c- g>isValid</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-inpagepermissionmixinblockerreason"><c- n>InPagePermissionMixinBlockerReason</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="InPagePermissionMixinBlockerReason" href="#dom-inpagepermissionmixin-invalidreason"><c- g>invalidReason</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-inpagepermissionmixin-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
@@ -3010,7 +3013,7 @@ of those Explainer sections.</p>
 <a data-link-type="idl-name" href="#htmlgeolocationelement"><c- n>HTMLGeolocationElement</c-></a> <c- b>includes</c-> <a data-link-type="idl-name" href="#inpagepermissionmixin"><c- n>InPagePermissionMixin</c-></a>;
 
 </pre>
-  <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> There isn’t much precedence for describing the user agent UI in detail.
     It may be better to leave more freedom to user agents. <a class="issue-return" href="#issue-59f2ad87" title="Jump to section">↵</a></div>
@@ -3277,7 +3280,7 @@ let dfnPanelData = {
 "2cb28cb0": {"dfnID":"2cb28cb0","dfnText":"denied","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissionstate-denied"}],"title":"3.1. Presentation"},{"refs":[{"id":"ref-for-dom-permissionstate-denied\u2460"}],"title":"4.3. permission element algorithms"}],"url":"https://w3c.github.io/permissions/#dom-permissionstate-denied"},
 "2d5b9b69": {"dfnID":"2d5b9b69","dfnText":"overflow-anchor","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-anchor"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor"},
 "2e4a74cb": {"dfnID":"2e4a74cb","dfnText":"scroll-padding-right","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding-right"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right"},
-"317acf49": {"dfnID":"317acf49","dfnText":"DOM interface","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-dom"}],"title":"2. Common Behaviours Of The HTML Permission Elements: InPagePermissionMixin"},{"refs":[{"id":"ref-for-concept-element-dom\u2460"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-concept-element-dom\u2461"}],"title":"5. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom"},
+"317acf49": {"dfnID":"317acf49","dfnText":"DOM interface","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-dom"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-concept-element-dom\u2460"}],"title":"5. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom"},
 "31d1bef8": {"dfnID":"31d1bef8","dfnText":"font-synthesis-weight","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-synthesis-weight"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight"},
 "325da0f2": {"dfnID":"325da0f2","dfnText":"prompt","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissionstate-prompt"},{"id":"ref-for-dom-permissionstate-prompt\u2460"}],"title":"4.3. permission element algorithms"}],"url":"https://w3c.github.io/permissions/#dom-permissionstate-prompt"},
 "329db82b": {"dfnID":"329db82b","dfnText":"overscroll-behavior-y","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overscroll-behavior-y"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y"},
@@ -3314,7 +3317,7 @@ let dfnPanelData = {
 "5afbefcd": {"dfnID":"5afbefcd","dfnText":"item","external":true,"refSections":[{"refs":[{"id":"ref-for-list-item"}],"title":"4.3. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list-item"},
 "5dea8beb": {"dfnID":"5dea8beb","dfnText":"scroll-padding-block-start","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding-block-start"},{"id":"ref-for-propdef-scroll-padding-block-start\u2460"}],"title":"3.2.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-start"},
 "5efd52e0": {"dfnID":"5efd52e0","dfnText":"intersectionRect","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserverentry-intersectionrect"},{"id":"ref-for-dom-intersectionobserverentry-intersectionrect\u2460"}],"title":"4.3. permission element algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-intersectionrect"},
-"5fd912e7": {"dfnID":"5fd912e7","dfnText":"accessibility considerations","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-accessibility-considerations"}],"title":"2. Common Behaviours Of The HTML Permission Elements: InPagePermissionMixin"},{"refs":[{"id":"ref-for-concept-element-accessibility-considerations\u2460"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-concept-element-accessibility-considerations\u2461"}],"title":"5. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations"},
+"5fd912e7": {"dfnID":"5fd912e7","dfnText":"accessibility considerations","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-accessibility-considerations"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-concept-element-accessibility-considerations\u2460"}],"title":"5. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations"},
 "5fe22d95": {"dfnID":"5fe22d95","dfnText":"viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-viewport%E2%91%A0"}],"title":"2.1. Mixin internal state"},{"refs":[{"id":"ref-for-viewport%E2%91%A0\u2460"},{"id":"ref-for-viewport%E2%91%A0\u2461"}],"title":"2.3. Mixin activation and activation blockers"}],"url":"https://drafts.csswg.org/css2/#viewport%E2%91%A0"},
 "62e9a98d": {"dfnID":"62e9a98d","dfnText":"removing steps","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-node-remove-ext"}],"title":"4.3. permission element algorithms"},{"refs":[{"id":"ref-for-concept-node-remove-ext\u2460"}],"title":"5.2. geolocation element algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-node-remove-ext"},
 "649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"4.3. permission element algorithms"}],"url":"https://infra.spec.whatwg.org/#list"},
@@ -3492,7 +3495,7 @@ let dfnPanelData = {
 "htmlpermissionelement-intersectionobserver-callback": {"dfnID":"htmlpermissionelement-intersectionobserver-callback","dfnText":"IntersectionObserver callback","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-intersectionobserver-callback"}],"title":"4.3. permission element algorithms"},{"refs":[{"id":"ref-for-htmlpermissionelement-intersectionobserver-callback\u2460"}],"title":"5.2. geolocation element algorithms"}],"url":"#htmlpermissionelement-intersectionobserver-callback"},
 "htmlpermissionelement-recheck-type-permissibility": {"dfnID":"htmlpermissionelement-recheck-type-permissibility","dfnText":"recheck type permissibility","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-recheck-type-permissibility"}],"title":"4.3. permission element algorithms"},{"refs":[{"id":"ref-for-htmlpermissionelement-recheck-type-permissibility\u2460"}],"title":"5.2. geolocation element algorithms"}],"url":"#htmlpermissionelement-recheck-type-permissibility"},
 "htmlpermissionelement-type-permissible": {"dfnID":"htmlpermissionelement-type-permissible","dfnText":"type permissible","external":false,"refSections":[{"refs":[{"id":"ref-for-htmlpermissionelement-type-permissible"},{"id":"ref-for-htmlpermissionelement-type-permissible\u2460"}],"title":"4.3. permission element algorithms"},{"refs":[{"id":"ref-for-htmlpermissionelement-type-permissible\u2461"}],"title":"5.2. geolocation element algorithms"}],"url":"#htmlpermissionelement-type-permissible"},
-"inpagepermissionmixin": {"dfnID":"inpagepermissionmixin","dfnText":"InPagePermissionMixin","external":false,"refSections":[{"refs":[{"id":"ref-for-inpagepermissionmixin"},{"id":"ref-for-inpagepermissionmixin\u2460"},{"id":"ref-for-inpagepermissionmixin\u2461"}],"title":"2. Common Behaviours Of The HTML Permission Elements: InPagePermissionMixin"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2462"},{"id":"ref-for-inpagepermissionmixin\u2463"}],"title":"2.1. Mixin internal state"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2464"},{"id":"ref-for-inpagepermissionmixin\u2465"}],"title":"2.2. Mixin-supporting state at the navigable"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2466"},{"id":"ref-for-inpagepermissionmixin\u2467"},{"id":"ref-for-inpagepermissionmixin\u2468"}],"title":"2.3. Mixin activation and activation blockers"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u24ea"},{"id":"ref-for-inpagepermissionmixin\u2460\u2460"},{"id":"ref-for-inpagepermissionmixin\u2460\u2461"},{"id":"ref-for-inpagepermissionmixin\u2460\u2462"},{"id":"ref-for-inpagepermissionmixin\u2460\u2463"},{"id":"ref-for-inpagepermissionmixin\u2460\u2464"}],"title":"2.4. Mixin algorithms"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u2465"}],"title":"2.5. Mixin event algorithms"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u2466"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u2467"}],"title":"4.1. permission element internal state"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u2468"}],"title":"5. The geolocation Element"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2461\u24ea"}],"title":"5.1. geolocation element internal state"}],"url":"#inpagepermissionmixin"},
+"inpagepermissionmixin": {"dfnID":"inpagepermissionmixin","dfnText":"InPagePermissionMixin","external":false,"refSections":[{"refs":[{"id":"ref-for-inpagepermissionmixin"},{"id":"ref-for-inpagepermissionmixin\u2460"},{"id":"ref-for-inpagepermissionmixin\u2461"},{"id":"ref-for-inpagepermissionmixin\u2462"}],"title":"2. Common Behaviours Of The HTML Permission Elements: InPagePermissionMixin"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2463"},{"id":"ref-for-inpagepermissionmixin\u2464"}],"title":"2.1. Mixin internal state"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2465"},{"id":"ref-for-inpagepermissionmixin\u2466"}],"title":"2.2. Mixin-supporting state at the navigable"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2467"},{"id":"ref-for-inpagepermissionmixin\u2468"},{"id":"ref-for-inpagepermissionmixin\u2460\u24ea"}],"title":"2.3. Mixin activation and activation blockers"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u2460"},{"id":"ref-for-inpagepermissionmixin\u2460\u2461"},{"id":"ref-for-inpagepermissionmixin\u2460\u2462"},{"id":"ref-for-inpagepermissionmixin\u2460\u2463"},{"id":"ref-for-inpagepermissionmixin\u2460\u2464"},{"id":"ref-for-inpagepermissionmixin\u2460\u2465"}],"title":"2.4. Mixin algorithms"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u2466"}],"title":"2.5. Mixin event algorithms"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u2467"}],"title":"4. The permission Element"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2460\u2468"}],"title":"4.1. permission element internal state"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2461\u24ea"}],"title":"5. The geolocation Element"},{"refs":[{"id":"ref-for-inpagepermissionmixin\u2461\u2460"}],"title":"5.1. geolocation element internal state"}],"url":"#inpagepermissionmixin"},
 "inpagepermissionmixin-add-a-blocker": {"dfnID":"inpagepermissionmixin-add-a-blocker","dfnText":"add a blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-inpagepermissionmixin-add-a-blocker"},{"id":"ref-for-inpagepermissionmixin-add-a-blocker\u2460"},{"id":"ref-for-inpagepermissionmixin-add-a-blocker\u2461"},{"id":"ref-for-inpagepermissionmixin-add-a-blocker\u2462"}],"title":"2.3. Mixin activation and activation blockers"}],"url":"#inpagepermissionmixin-add-a-blocker"},
 "inpagepermissionmixin-add-a-permanent-blocker": {"dfnID":"inpagepermissionmixin-add-a-permanent-blocker","dfnText":"add a permanent blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-inpagepermissionmixin-add-a-permanent-blocker"},{"id":"ref-for-inpagepermissionmixin-add-a-permanent-blocker\u2460"}],"title":"4.3. permission element algorithms"},{"refs":[{"id":"ref-for-inpagepermissionmixin-add-a-permanent-blocker\u2461"},{"id":"ref-for-inpagepermissionmixin-add-a-permanent-blocker\u2462"}],"title":"5.2. geolocation element algorithms"}],"url":"#inpagepermissionmixin-add-a-permanent-blocker"},
 "inpagepermissionmixin-add-a-temporary-blocker": {"dfnID":"inpagepermissionmixin-add-a-temporary-blocker","dfnText":"add a temporary blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-inpagepermissionmixin-add-a-temporary-blocker"}],"title":"3.2.1. Conditions that Deactivate the Element"},{"refs":[{"id":"ref-for-inpagepermissionmixin-add-a-temporary-blocker\u2460"},{"id":"ref-for-inpagepermissionmixin-add-a-temporary-blocker\u2461"}],"title":"4.3. permission element algorithms"},{"refs":[{"id":"ref-for-inpagepermissionmixin-add-a-temporary-blocker\u2462"}],"title":"5.2. geolocation element algorithms"}],"url":"#inpagepermissionmixin-add-a-temporary-blocker"},
