@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
   <meta content="Bikeshed version 3c53a5b02, updated Thu Nov 27 17:03:30 2025 +0000" name="generator">
   <link href="https://wicg.github.io/PEPC/geolocation-element.html" rel="canonical">
-  <meta content="ecaf711eba7254953068fa2c53fc14376feab2e9" name="revision">
+  <meta content="774477b2661c25d15b938604c65eaf7a29273c6b" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -758,7 +758,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="no-ref p-name" id="title">The HTML Geolocation Element</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-02-17">17 February 2026</time></p>
+    <time class="dt-updated" datetime="2026-02-26">26 February 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -828,7 +828,7 @@ user friendly than the current, script-triggered permission flows.</p>
        <ol class="toc">
         <li><a href="#mixin-blocker-internal-state"><span class="secno">3.1.1</span> <span class="content">Internal state</span></a>
         <li><a href="#mixin-blockers-reason"><span class="secno">3.1.2</span> <span class="content">Action Blockers, Blocker Reasons, and Blocker Lifetimes</span></a>
-        <li><a href="#mixin-blockers-algoreithms"><span class="secno">3.1.3</span> <span class="content">Algorithms</span></a>
+        <li><a href="#mixin-blockers-algorithms"><span class="secno">3.1.3</span> <span class="content">Algorithms</span></a>
        </ol>
       <li>
        <a href="#mixin-permissions"><span class="secno">3.2</span> <span class="content">Powerful Features, aka Permissions</span></a>
@@ -1275,20 +1275,23 @@ there are also conditions under which a browser that supports
    <p>This section defines several mixins and supporting algorithms.</p>
    <h3 class="heading settled" data-level="3.1" id="mixin-blockers"><span class="secno">3.1. </span><span class="content">Activation Blockers</span><a class="self-link" href="#mixin-blockers"></a></h3>
    <p>To support a meaningful user intent signal and to conditionally block element
-activation, you can use the <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin②">ActivationBlockersMixin</a></code></p>
-   <dl class="element">
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes①">Content attributes</a>:
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-isvalid" id="ref-for-dom-activationblockersmixin-isvalid②">isValid</a></code> — query whether the element can currently be activated.
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-invalidreason" id="ref-for-dom-activationblockersmixin-invalidreason①">invalidReason</a></code> — return a string representation of why the element currently cannot be activated.
-    <dd><code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-onvalidationstatuschange" id="ref-for-dom-activationblockersmixin-onvalidationstatuschange①">onvalidationstatuschange</a></code> — notifies when the validation status changes.
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom①">DOM interface</a>:
-    <dd>
+activation, you can use the <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin②">ActivationBlockersMixin</a></code>. It is defined as
+follows:</p>
 <pre class="def highlight idl"><c- b>interface</c-> <c- b>mixin</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="activationblockersmixin"><code><c- g>ActivationBlockersMixin</c-></code></dfn> {
-  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-activationblockersmixin-isvalid" id="ref-for-dom-activationblockersmixin-isvalid③"><c- g>isValid</c-></a>;
-  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-activationblockersmixinblockerreason" id="ref-for-enumdef-activationblockersmixinblockerreason"><c- n>ActivationBlockersMixinBlockerReason</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="ActivationBlockersMixinBlockerReason" href="#dom-activationblockersmixin-invalidreason" id="ref-for-dom-activationblockersmixin-invalidreason②"><c- g>invalidReason</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a class="idl-code" data-link-type="interface" href="https://webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②"><c- b>boolean</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="boolean" href="#dom-activationblockersmixin-isvalid" id="ref-for-dom-activationblockersmixin-isvalid②"><c- g>isValid</c-></a>;
+  <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="#enumdef-activationblockersmixinblockerreason" id="ref-for-enumdef-activationblockersmixinblockerreason"><c- n>ActivationBlockersMixinBlockerReason</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="ActivationBlockersMixinBlockerReason" href="#dom-activationblockersmixin-invalidreason" id="ref-for-dom-activationblockersmixin-invalidreason①"><c- g>invalidReason</c-></a>;
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler①"><c- n>EventHandler</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixin" data-dfn-type="attribute" data-export data-type="EventHandler" id="dom-activationblockersmixin-onvalidationstatuschange"><code><c- g>onvalidationstatuschange</c-></code></dfn>;
 };
 </pre>
+   <p>Elements using the <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin③">ActivationBlockersMixin</a></code> are expected to support the
+following <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes" id="ref-for-concept-element-attributes①">content attributes</a>:</p>
+   <dl>
+    <dt><code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-isvalid" id="ref-for-dom-activationblockersmixin-isvalid③">isValid</a></code>
+    <dd>query whether the element can currently be activated.
+    <dt><code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-invalidreason" id="ref-for-dom-activationblockersmixin-invalidreason②">invalidReason</a></code>
+    <dd>return a string representation of why the element currently cannot be activated.
+    <dt><code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-onvalidationstatuschange" id="ref-for-dom-activationblockersmixin-onvalidationstatuschange①">onvalidationstatuschange</a></code>
+    <dd>notifies when the validation status changes.
    </dl>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-isvalid" id="ref-for-dom-activationblockersmixin-isvalid④">isValid</a></code> attribute reflects whether the
 element is currently blocked.</p>
@@ -1297,7 +1300,7 @@ element is currently blocked.</p>
 is currently blocked. If there are multiple reasons, it picks one.
 Its value set is <code class="idl"><a data-link-type="idl" href="#enumdef-activationblockersmixinblockerreason" id="ref-for-enumdef-activationblockersmixinblockerreason①">ActivationBlockersMixinBlockerReason</a></code>.</p>
    <p>The following are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers" id="ref-for-event-handlers">event handler</a> (and their corresponding <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type">event handler event type</a>) that
-must be supported on elements that include the <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin③">ActivationBlockersMixin</a></code>:</p>
+must be supported on elements that include the <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin④">ActivationBlockersMixin</a></code>:</p>
    <table class="def">
     <tbody>
      <tr>
@@ -1315,7 +1318,7 @@ are:</p>
      <p><code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-onvalidationstatuschange" id="ref-for-dom-activationblockersmixin-onvalidationstatuschange②">onvalidationstatuschange</a></code></p>
    </ul>
    <h4 class="heading settled" data-level="3.1.1" id="mixin-blocker-internal-state"><span class="secno">3.1.1. </span><span class="content">Internal state</span><a class="self-link" href="#mixin-blocker-internal-state"></a></h4>
-   <p><code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin④">ActivationBlockersMixin</a></code> elements have the following internal slots:</p>
+   <p><code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑤">ActivationBlockersMixin</a></code> elements have the following internal slots:</p>
    <ul>
     <li data-md>
      <p>The <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixin" data-dfn-type="attribute" data-export id="dom-activationblockersmixin-blockerlist-slot"><code>[[BlockerList]]</code></dfn> is a
@@ -1349,7 +1352,7 @@ into activating it. To do so, we maintain a list of blocker reasons, which may -
 permanently or temporarily - prevent the element from being activated.</p>
    <p>Conceptually, a blocker reason is just an arbitrary string identifier. We
 provide an enumeration of its value set. It’s expected that not all users
-of the <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑤">ActivationBlockersMixin</a></code> will support all reasons.</p>
+of the <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑥">ActivationBlockersMixin</a></code> will support all reasons.</p>
 <pre class="def highlight idl"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-activationblockersmixinblockerreason"><code><c- g>ActivationBlockersMixinBlockerReason</c-></code></dfn> {
   <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixinBlockerReason" data-dfn-type="enum-value" data-export id="dom-activationblockersmixinblockerreason"><code><c- s>""</c-></code></dfn>,   // No blocker reason.
   <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixinBlockerReason" data-dfn-type="enum-value" data-export id="dom-activationblockersmixinblockerreason-illegal_subframe"><code><c- s>"illegal_subframe"</c-></code></dfn>, <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixinBlockerReason" data-dfn-type="enum-value" data-export id="dom-activationblockersmixinblockerreason-unsuccessful_registration"><code><c- s>"unsuccessful_registration"</c-></code></dfn>,
@@ -1471,7 +1474,7 @@ an element that has recently been moved.</p>
 
     </table>
    </div>
-   <h4 class="heading settled" data-level="3.1.3" id="mixin-blockers-algoreithms"><span class="secno">3.1.3. </span><span class="content">Algorithms</span><a class="self-link" href="#mixin-blockers-algoreithms"></a></h4>
+   <h4 class="heading settled" data-level="3.1.3" id="mixin-blockers-algorithms"><span class="secno">3.1.3. </span><span class="content">Algorithms</span><a class="self-link" href="#mixin-blockers-algorithms"></a></h4>
    <div class="algorithm" data-algorithm="add a blocker" data-algorithm-for="ActivationBlockersMixin">
     
 To <dfn class="dfn-paneled" data-dfn-for="ActivationBlockersMixin" data-dfn-type="dfn" data-noexport id="activationblockersmixin-add-a-blocker">add a blocker</dfn> with a
@@ -1486,7 +1489,7 @@ is present. Why would you add a non-blocking empty string blocker?)</p>
      <li data-md>
       <p>Let <var>timestamp</var> be None.</p>
      <li data-md>
-      <p>If <var>expires</var>, then let <var>timestamp</var> be <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time">current high resolution time</a>
+      <p>If <var>expires</var>, then let <var>timestamp</var> be <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#current-high-resolution-time" id="ref-for-current-high-resolution-time">current high resolution time</a>
 plus the <a data-link-type="dfn" href="#activationblockersmixin-blocker-delay" id="ref-for-activationblockersmixin-blocker-delay">blocker delay</a>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append">Append</a> an entry to the internal <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-blockerlist-slot" id="ref-for-dom-activationblockersmixin-blockerlist-slot②">[[BlockerList]]</a></code>
@@ -1558,7 +1561,7 @@ To <dfn class="dfn-paneled" data-dfn-for="ActivationBlockersMixin" data-dfn-type
    </div>
    <div class="algorithm" data-algorithm="blocker" data-algorithm-for="ActivationBlockersMixin">
     
-To determine a <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑥">ActivationBlockersMixin</a></code> <var>element</var>’s
+To determine a <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑦">ActivationBlockersMixin</a></code> <var>element</var>’s
 <dfn class="dfn-paneled" data-dfn-for="ActivationBlockersMixin" data-dfn-type="dfn" data-noexport id="activationblockersmixin-blocker">blocker</dfn>:
 
 
@@ -1598,7 +1601,7 @@ order hint of <var>b</var>’s <a data-link-type="dfn" href="#activationblockers
    </div>
    <div class="algorithm" data-algorithm="blocking" data-algorithm-for="ActivationBlockersMixin">
     
-An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑦">ActivationBlockersMixin</a></code>’s <a data-link-type="dfn" href="#activationblockersmixin-blocker" id="ref-for-activationblockersmixin-blocker①">blocker</a> list’s <var>entry</var> is
+An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑧">ActivationBlockersMixin</a></code>’s <a data-link-type="dfn" href="#activationblockersmixin-blocker" id="ref-for-activationblockersmixin-blocker①">blocker</a> list’s <var>entry</var> is
 <dfn class="dfn-paneled" data-dfn-for="ActivationBlockersMixin" data-dfn-type="dfn" data-noexport id="activationblockersmixin-blocking">blocking</dfn> if:
 
 
@@ -1607,7 +1610,7 @@ An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id=
       <p><var>entry</var> has no <a data-link-type="dfn" href="#activationblockersmixin-blocker-timestamp" id="ref-for-activationblockersmixin-blocker-timestamp">blocker timestamp</a>,</p>
      <li data-md>
       <p>or <var>entry</var> has a <a data-link-type="dfn" href="#activationblockersmixin-blocker-timestamp" id="ref-for-activationblockersmixin-blocker-timestamp①">blocker timestamp</a>, and the <a data-link-type="dfn" href="#activationblockersmixin-blocker-timestamp" id="ref-for-activationblockersmixin-blocker-timestamp②">blocker timestamp</a> is
-greater or equal to the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time①">current high resolution time</a>.</p>
+greater or equal to the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#current-high-resolution-time" id="ref-for-current-high-resolution-time①">current high resolution time</a>.</p>
     </ol>
    </div>
    <p class="note" role="note"><span class="marker">NOTE:</span> The spec maintains blockers as a list <code class="idl"><a data-link-type="idl" href="#dom-activationblockersmixin-blockerlist-slot" id="ref-for-dom-activationblockersmixin-blockerlist-slot⑥">[[BlockerList]]</a></code>, which may
@@ -1619,7 +1622,7 @@ greater or equal to the <a data-link-type="dfn" href="https://w3c.github.io/hr-t
     opportunities for implementations to handle this more efficiently.</p>
    <div class="algorithm" data-algorithm="isValid" data-algorithm-for="ActivationBlockersMixin">
     
-An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑧">ActivationBlockersMixin</a></code> <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixin" data-dfn-type="attribute" data-export id="dom-activationblockersmixin-isvalid"><code>isValid</code></dfn> getter steps are:
+An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑨">ActivationBlockersMixin</a></code> <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixin" data-dfn-type="attribute" data-export id="dom-activationblockersmixin-isvalid"><code>isValid</code></dfn> getter steps are:
 
 
     <ol>
@@ -1629,7 +1632,7 @@ An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id=
    </div>
    <div class="algorithm" data-algorithm="invalidReason" data-algorithm-for="ActivationBlockersMixin">
     
-An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin⑨">ActivationBlockersMixin</a></code> <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixin" data-dfn-type="attribute" data-export id="dom-activationblockersmixin-invalidreason"><code>invalidReason</code></dfn> getter steps are:
+An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin①⓪">ActivationBlockersMixin</a></code> <var>element</var>’s <dfn class="dfn-paneled idl-code" data-dfn-for="ActivationBlockersMixin" data-dfn-type="attribute" data-export id="dom-activationblockersmixin-invalidreason"><code>invalidReason</code></dfn> getter steps are:
 
 
     <ol>
@@ -1678,7 +1681,7 @@ true.</p>
    </div>
    <div class="algorithm" data-algorithm="ActivationBlockersMixin/IntersectionObserver callback">
     
-An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin①⓪">ActivationBlockersMixin</a></code>’s <dfn class="dfn-paneled" data-dfn-for="ActivationBlockersMixin" data-dfn-type="dfn" data-noexport id="activationblockersmixin-intersectionobserver-callback">IntersectionObserver callback</dfn> implements <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#callbackdef-intersectionobservercallback" id="ref-for-callbackdef-intersectionobservercallback">IntersectionObserverCallback</a></code> and runs the following steps:
+An <code class="idl"><a data-link-type="idl" href="#activationblockersmixin" id="ref-for-activationblockersmixin①①">ActivationBlockersMixin</a></code>’s <dfn class="dfn-paneled" data-dfn-for="ActivationBlockersMixin" data-dfn-type="dfn" data-noexport id="activationblockersmixin-intersectionobserver-callback">IntersectionObserver callback</dfn> implements <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/IntersectionObserver/#callbackdef-intersectionobservercallback" id="ref-for-callbackdef-intersectionobservercallback">IntersectionObserverCallback</a></code> and runs the following steps:
 
 
     <ol>
@@ -1733,10 +1736,7 @@ is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-docume
    </div>
    <h3 class="heading settled" data-level="3.2" id="mixin-permissions"><span class="secno">3.2. </span><span class="content">Powerful Features, aka Permissions</span><a class="self-link" href="#mixin-permissions"></a></h3>
    <p>To support elements that gate access to <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-powerful-feature" id="ref-for-dfn-powerful-feature⑤">powerful features</a>, you can use the
-<code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver④">PowerfulFeatureObserver</a></code>.</p>
-   <dl class="element">
-    <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom②">DOM interface</a>:
-    <dd>
+<code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver④">PowerfulFeatureObserver</a></code>. It is defined as follows:</p>
 <pre class="def highlight idl"><c- b>interface</c-> <c- b>mixin</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="powerfulfeatureobserver"><code><c- g>PowerfulFeatureObserver</c-></code></dfn> {
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-powerfulfeatureobserver-initialpermissionstatus" id="ref-for-dom-powerfulfeatureobserver-initialpermissionstatus"><c- g>initialPermissionStatus</c-></a>;
   <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/permissions/#dom-permissionstate" id="ref-for-dom-permissionstate①"><c- n>PermissionState</c-></a> <a class="idl-code" data-link-type="attribute" data-readonly data-type="PermissionState" href="#dom-powerfulfeatureobserver-permissionstatus" id="ref-for-dom-powerfulfeatureobserver-permissionstatus"><c- g>permissionStatus</c-></a>;
@@ -1744,7 +1744,6 @@ is the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-docume
   <c- b>attribute</c-> <a data-link-type="idl-name" href="https://html.spec.whatwg.org/multipage/webappapis.html#eventhandler" id="ref-for-eventhandler③"><c- n>EventHandler</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PowerfulFeatureObserver" data-dfn-type="attribute" data-export data-type="EventHandler" id="dom-powerfulfeatureobserver-onpromptdismiss"><code><c- g>onpromptdismiss</c-></code></dfn>;
 };
 </pre>
-   </dl>
    <p>The following are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handlers" id="ref-for-event-handlers①">event handlers</a> (and their corresponding <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-event-type" id="ref-for-event-handler-event-type①">event handler event types</a>) that must be supported on elements that include the <code class="idl"><a data-link-type="idl" href="#powerfulfeatureobserver" id="ref-for-powerfulfeatureobserver⑤">PowerfulFeatureObserver</a></code>:</p>
    <table class="def">
     <tbody>
@@ -2533,7 +2532,7 @@ of those Explainer sections.</p>
    <li>
     <a data-link-type="biblio">[HR-TIME-3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="7e7cc1d8">current high resolution time</span>
+     <li><span class="dfn-paneled" id="20b5722b">current high resolution time</span>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -2720,7 +2719,7 @@ of those Explainer sections.</p>
    <dt id="biblio-manifest-app-info">[MANIFEST-APP-INFO]
    <dd>Aaron Gustafson. <a href="https://w3c.github.io/manifest-app-info/"><cite>Web App Manifest - Application Information</cite></a>. URL: <a href="https://w3c.github.io/manifest-app-info/">https://w3c.github.io/manifest-app-info/</a>
    <dt id="biblio-mediaqueries-5">[MEDIAQUERIES-5]
-   <dd>Dean Jackson; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
+   <dd>Tab Atkins Jr.; et al. <a href="https://drafts.csswg.org/mediaqueries-5/"><cite>Media Queries Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/mediaqueries-5/">https://drafts.csswg.org/mediaqueries-5/</a>
    <dt id="biblio-permissions">[Permissions]
    <dd>Marcos Caceres; Mike Taylor. <a href="https://w3c.github.io/permissions/"><cite>Permissions</cite></a>. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
    <dt id="biblio-svg2">[SVG2]
@@ -3033,12 +3032,13 @@ let dfnPanelData = {
 "1a55f38d": {"dfnID":"1a55f38d","dfnText":"outline-style","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-outline-style"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-ui-4/#propdef-outline-style"},
 "1bebb82c": {"dfnID":"1bebb82c","dfnText":"font-kerning","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-kerning"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-kerning"},
 "1ee7f091": {"dfnID":"1ee7f091","dfnText":"outline-color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-outline-color"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-ui-4/#propdef-outline-color"},
+"20b5722b": {"dfnID":"20b5722b","dfnText":"current high resolution time","external":true,"refSections":[{"refs":[{"id":"ref-for-current-high-resolution-time"},{"id":"ref-for-current-high-resolution-time\u2460"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/hr-time/#current-high-resolution-time"},
 "2589df91": {"dfnID":"2589df91","dfnText":"orphans","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-orphans"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-break-3/#propdef-orphans"},
 "259a4df0": {"dfnID":"259a4df0","dfnText":"forced-color-adjust","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-forced-color-adjust"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-color-adjust-1/#propdef-forced-color-adjust"},
 "2cb28cb0": {"dfnID":"2cb28cb0","dfnText":"denied","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissionstate-denied"}],"title":"3.2.2. Algorithms"},{"refs":[{"id":"ref-for-dom-permissionstate-denied\u2460"}],"title":"3.2.3. Presentation"}],"url":"https://w3c.github.io/permissions/#dom-permissionstate-denied"},
 "2d5b9b69": {"dfnID":"2d5b9b69","dfnText":"overflow-anchor","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overflow-anchor"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-anchoring-1/#propdef-overflow-anchor"},
 "2e4a74cb": {"dfnID":"2e4a74cb","dfnText":"scroll-padding-right","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding-right"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-right"},
-"317acf49": {"dfnID":"317acf49","dfnText":"DOM interface","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-dom"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-concept-element-dom\u2460"}],"title":"3.1. Activation Blockers"},{"refs":[{"id":"ref-for-concept-element-dom\u2461"}],"title":"3.2. Powerful Features, aka Permissions"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom"},
+"317acf49": {"dfnID":"317acf49","dfnText":"DOM interface","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-dom"}],"title":"2. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom"},
 "31d1bef8": {"dfnID":"31d1bef8","dfnText":"font-synthesis-weight","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-font-synthesis-weight"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-synthesis-weight"},
 "325da0f2": {"dfnID":"325da0f2","dfnText":"prompt","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissionstate-prompt"},{"id":"ref-for-dom-permissionstate-prompt\u2460"}],"title":"3.2.2. Algorithms"}],"url":"https://w3c.github.io/permissions/#dom-permissionstate-prompt"},
 "329db82b": {"dfnID":"329db82b","dfnText":"overscroll-behavior-y","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overscroll-behavior-y"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-y"},
@@ -3099,7 +3099,6 @@ let dfnPanelData = {
 "7b0d918d": {"dfnID":"7b0d918d","dfnText":"break","external":true,"refSections":[{"refs":[{"id":"ref-for-iteration-break"}],"title":"2.2. geolocation element algorithms"}],"url":"https://infra.spec.whatwg.org/#iteration-break"},
 "7d1d6278": {"dfnID":"7d1d6278","dfnText":"border-right","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-right"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-borders-4/#propdef-border-right"},
 "7de09c13": {"dfnID":"7de09c13","dfnText":"flex-basis","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex-basis"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis"},
-"7e7cc1d8": {"dfnID":"7e7cc1d8","dfnText":"current high resolution time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-current-high-resolution-time"},{"id":"ref-for-dfn-current-high-resolution-time\u2460"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time"},
 "801118f1": {"dfnID":"801118f1","dfnText":"x","external":true,"refSections":[{"refs":[{"id":"ref-for-XProperty"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://svgwg.org/svg2-draft/geometry.html#XProperty"},
 "838900a7": {"dfnID":"838900a7","dfnText":"isTrusted","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-istrusted"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-dom-event-istrusted\u2460"}],"title":"3.2.1. Internal state"}],"url":"https://dom.spec.whatwg.org/#dom-event-istrusted"},
 "860300d4": {"dfnID":"860300d4","dfnText":"implementation-defined","external":true,"refSections":[{"refs":[{"id":"ref-for-implementation-defined"}],"title":"2.2. geolocation element algorithms"}],"url":"https://infra.spec.whatwg.org/#implementation-defined"},
@@ -3136,7 +3135,7 @@ let dfnPanelData = {
 "a973e0fe": {"dfnID":"a973e0fe","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document"}],"title":"3.1.3. Algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-document"},
 "aa7ec909": {"dfnID":"aa7ec909","dfnText":"scroll-padding-left","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding-left"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-left"},
 "aa9d496e": {"dfnID":"aa9d496e","dfnText":"scroll-padding","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding"},
-"activationblockersmixin": {"dfnID":"activationblockersmixin","dfnText":"ActivationBlockersMixin","external":false,"refSections":[{"refs":[{"id":"ref-for-activationblockersmixin"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-activationblockersmixin\u2460"}],"title":"2.1. geolocation element internal state"},{"refs":[{"id":"ref-for-activationblockersmixin\u2461"},{"id":"ref-for-activationblockersmixin\u2462"}],"title":"3.1. Activation Blockers"},{"refs":[{"id":"ref-for-activationblockersmixin\u2463"}],"title":"3.1.1. Internal state"},{"refs":[{"id":"ref-for-activationblockersmixin\u2464"}],"title":"3.1.2. Action Blockers, Blocker Reasons, and Blocker Lifetimes"},{"refs":[{"id":"ref-for-activationblockersmixin\u2465"},{"id":"ref-for-activationblockersmixin\u2466"},{"id":"ref-for-activationblockersmixin\u2467"},{"id":"ref-for-activationblockersmixin\u2468"},{"id":"ref-for-activationblockersmixin\u2460\u24ea"}],"title":"3.1.3. Algorithms"}],"url":"#activationblockersmixin"},
+"activationblockersmixin": {"dfnID":"activationblockersmixin","dfnText":"ActivationBlockersMixin","external":false,"refSections":[{"refs":[{"id":"ref-for-activationblockersmixin"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-activationblockersmixin\u2460"}],"title":"2.1. geolocation element internal state"},{"refs":[{"id":"ref-for-activationblockersmixin\u2461"},{"id":"ref-for-activationblockersmixin\u2462"},{"id":"ref-for-activationblockersmixin\u2463"}],"title":"3.1. Activation Blockers"},{"refs":[{"id":"ref-for-activationblockersmixin\u2464"}],"title":"3.1.1. Internal state"},{"refs":[{"id":"ref-for-activationblockersmixin\u2465"}],"title":"3.1.2. Action Blockers, Blocker Reasons, and Blocker Lifetimes"},{"refs":[{"id":"ref-for-activationblockersmixin\u2466"},{"id":"ref-for-activationblockersmixin\u2467"},{"id":"ref-for-activationblockersmixin\u2468"},{"id":"ref-for-activationblockersmixin\u2460\u24ea"},{"id":"ref-for-activationblockersmixin\u2460\u2460"}],"title":"3.1.3. Algorithms"}],"url":"#activationblockersmixin"},
 "activationblockersmixin-activationblockersmixin-attributes": {"dfnID":"activationblockersmixin-activationblockersmixin-attributes","dfnText":"ActivationBlockersMixin attributes","external":false,"refSections":[{"refs":[{"id":"ref-for-activationblockersmixin-activationblockersmixin-attributes"}],"title":"2. The geolocation Element"}],"url":"#activationblockersmixin-activationblockersmixin-attributes"},
 "activationblockersmixin-add-a-blocker": {"dfnID":"activationblockersmixin-add-a-blocker","dfnText":"add a blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-activationblockersmixin-add-a-blocker"},{"id":"ref-for-activationblockersmixin-add-a-blocker\u2460"},{"id":"ref-for-activationblockersmixin-add-a-blocker\u2461"},{"id":"ref-for-activationblockersmixin-add-a-blocker\u2462"}],"title":"3.1.3. Algorithms"}],"url":"#activationblockersmixin-add-a-blocker"},
 "activationblockersmixin-add-a-permanent-blocker": {"dfnID":"activationblockersmixin-add-a-permanent-blocker","dfnText":"add a permanent blocker","external":false,"refSections":[{"refs":[{"id":"ref-for-activationblockersmixin-add-a-permanent-blocker"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-activationblockersmixin-add-a-permanent-blocker\u2460"}],"title":"3.2.2. Algorithms"}],"url":"#activationblockersmixin-add-a-permanent-blocker"},
@@ -3880,7 +3879,7 @@ let refsData = {
 "https://w3c.github.io/geolocation/#dom-positioncallback": {"displayText":"PositionCallback","export":true,"for_":[],"level":"1","normative":true,"shortname":"geolocation","spec":"geolocation","status":"current","text":"PositionCallback","type":"callback","url":"https://w3c.github.io/geolocation/#dom-positioncallback"},
 "https://w3c.github.io/geolocation/#dom-positionerrorcallback": {"displayText":"PositionErrorCallback","export":true,"for_":[],"level":"1","normative":true,"shortname":"geolocation","spec":"geolocation","status":"current","text":"PositionErrorCallback","type":"callback","url":"https://w3c.github.io/geolocation/#dom-positionerrorcallback"},
 "https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy": {"displayText":"enableHighAccuracy","export":true,"for_":["PositionOptions"],"level":"1","normative":true,"shortname":"geolocation","spec":"geolocation","status":"current","text":"enableHighAccuracy","type":"dict-member","url":"https://w3c.github.io/geolocation/#dom-positionoptions-enablehighaccuracy"},
-"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time": {"displayText":"current high resolution time","export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"current high resolution time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time"},
+"https://w3c.github.io/hr-time/#current-high-resolution-time": {"displayText":"current high resolution time","export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"current high resolution time","type":"dfn","url":"https://w3c.github.io/hr-time/#current-high-resolution-time"},
 "https://w3c.github.io/manifest-app-info/#dfn-categories": {"displayText":"categories","export":true,"for_":["manifest"],"level":"1","normative":false,"shortname":"manifest-app-info","spec":"manifest-app-info","status":"current","text":"categories","type":"dfn","url":"https://w3c.github.io/manifest-app-info/#dfn-categories"},
 "https://w3c.github.io/permissions/#dfn-getting-the-current-permission-state": {"displayText":"get the current permission state","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"get the current permission state","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-getting-the-current-permission-state"},
 "https://w3c.github.io/permissions/#dfn-permission": {"displayText":"permission","export":true,"for_":[],"level":"1","normative":true,"shortname":"permissions","spec":"permissions","status":"current","text":"permission","type":"dfn","url":"https://w3c.github.io/permissions/#dfn-permission"},
