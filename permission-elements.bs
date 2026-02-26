@@ -120,30 +120,35 @@ The elements in this specification exhibit a number of common behaviours, which
 are captured by the {{InPagePermissionMixin}} and its associated state,
 algorithms, and rendering rules.
 
-<dl class="element">
- <dt>[=Content attributes=]:</dt>
-  <dd>{{InPagePermissionMixin/isValid}} — query whether the element can currently be activated.</dd>
-  <dd>{{InPagePermissionMixin/invalidReason}} — return a string representation of why the element currently cannot be activated.</dd>
-  <dd>{{InPagePermissionMixin/onpromptdismiss}} — notifies when the user has dismissed a permission prompt that resulted from an interaction with the element</dd>
-  <dd>{{InPagePermissionMixin/onpromptaction}} — notifies when a permission prompt that resulted from an interaction with the element has been answered by the user (positively or negatively).</dd>
-  <dd>{{InPagePermissionMixin/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
- <dt>[=Accessibility considerations=]:</dt>
-  <dd>TODO</dd>
- <dt>[=DOM interface=]:</dt>
-  <dd>
-   <pre class=idl>
-    interface mixin InPagePermissionMixin {
-      readonly attribute boolean isValid;
-      readonly attribute InPagePermissionMixinBlockerReason invalidReason;
-      readonly attribute PermissionState initialPermissionStatus;
-      readonly attribute PermissionState permissionStatus;
+The {{InPagePermissionMixin}} interface mixin is defined as follows:
 
-      attribute EventHandler onpromptaction;
-      attribute EventHandler onpromptdismiss;
-      attribute EventHandler onvalidationstatuschange;
-    };
-   </pre>
-  </dd>
+<pre class=idl>
+interface mixin InPagePermissionMixin {
+  readonly attribute boolean isValid;
+  readonly attribute InPagePermissionMixinBlockerReason invalidReason;
+  readonly attribute PermissionState initialPermissionStatus;
+  readonly attribute PermissionState permissionStatus;
+
+  attribute EventHandler onpromptaction;
+  attribute EventHandler onpromptdismiss;
+  attribute EventHandler onvalidationstatuschange;
+};
+</pre>
+
+Elements using this mixin are expected to support the following
+[=Content attributes=]:
+
+<dl>
+  <dt>{{InPagePermissionMixin/isValid}}</dt>
+  <dd>query whether the element can currently be activated.</dd>
+  <dt>{{InPagePermissionMixin/invalidReason}}</dt>
+  <dd>return a string representation of why the element currently cannot be activated.</dd>
+  <dt>{{InPagePermissionMixin/onpromptdismiss}}</dt>
+  <dd>notifies when the user has dismissed a permission prompt that resulted from an interaction with the element</dd>
+  <dt>{{InPagePermissionMixin/onpromptaction}}</dt>
+  <dd>notifies when a permission prompt that resulted from an interaction with the element has been answered by the user (positively or negatively).</dd>
+  <dt>{{InPagePermissionMixin/onvalidationstatuschange}}</dt>
+  <dd>notifies when the validation status changes.</dd>
 </dl>
 
 The {{InPagePermissionMixin/isValid}} attribute reflects whether a the
@@ -800,7 +805,7 @@ Note: The <{permission}> element is the original proposed in-page permission
 
 The <{permission}> element can request arbitrary [=powerful features=].
 
-<dl class="element">
+<dl class=element>
  <dt>[=Categories=]:</dt>
   <dd>[=Flow content=].</dd>
   <dd>[=Phrasing content=].</dd>
