@@ -447,23 +447,27 @@ This section defines several mixins and supporting algorithms.
 ## Activation Blockers ## {#mixin-blockers}
 
 To support a meaningful user intent signal and to conditionally block element
-activation, you can use the {{ActivationBlockersMixin}}
+activation, you can use the {{ActivationBlockersMixin}}. It is defined as
+follows:
 
-<dl class="element">
- <dt>[=Content attributes=]:</dt>
-  <dd>{{ActivationBlockersMixin/isValid}} — query whether the element can currently be activated.</dd>
-  <dd>{{ActivationBlockersMixin/invalidReason}} — return a string representation of why the element currently cannot be activated.</dd>
-  <dd>{{ActivationBlockersMixin/onvalidationstatuschange}} — notifies when the validation status changes.</dd>
- <dt>[=DOM interface=]:</dt>
-  <dd>
-   <pre class=idl>
-    interface mixin ActivationBlockersMixin {
-      readonly attribute boolean isValid;
-      readonly attribute ActivationBlockersMixinBlockerReason invalidReason;
-      attribute EventHandler onvalidationstatuschange;
-    };
-   </pre>
-  </dd>
+<pre class=idl>
+interface mixin ActivationBlockersMixin {
+  readonly attribute boolean isValid;
+  readonly attribute ActivationBlockersMixinBlockerReason invalidReason;
+  attribute EventHandler onvalidationstatuschange;
+};
+</pre>
+
+Elements using the {{ActivationBlockersMixin}} are expected to support the
+following [=content attributes=]:
+
+<dl>
+  <dt>{{ActivationBlockersMixin/isValid}}</dt>
+  <dd>query whether the element can currently be activated.</dd>
+  <dt>{{ActivationBlockersMixin/invalidReason}}</dt>
+  <dd>return a string representation of why the element currently cannot be activated.</dd>
+  <dt>{{ActivationBlockersMixin/onvalidationstatuschange}}</dt>
+  <dd>notifies when the validation status changes.</dd>
 </dl>
 
 
@@ -609,7 +613,7 @@ These blockers come with three lifetimes: Permanent, temporary, and expiring.
 
 
 
-### Algorithms ### {#mixin-blockers-algoreithms}
+### Algorithms ### {#mixin-blockers-algorithms}
 
 <div algorithm>
 To <dfn for="ActivationBlockersMixin">add a blocker</dfn> with a
@@ -788,21 +792,16 @@ ISSUE: Do I need to define dictionary equality?
 ## Powerful Features, aka Permissions ## {#mixin-permissions}
 
 To support elements that gate access to [=powerful features=], you can use the
-{{PowerfulFeatureObserver}}.
+{{PowerfulFeatureObserver}}. It is defined as follows:
 
-<dl class="element">
- <dt>[=DOM interface=]:</dt>
-  <dd>
-   <pre class=idl>
-    interface mixin PowerfulFeatureObserver {
-      readonly attribute PermissionState initialPermissionStatus;
-      readonly attribute PermissionState permissionStatus;
-      attribute EventHandler onpromptaction;
-      attribute EventHandler onpromptdismiss;
-    };
-   </pre>
-  </dd>
-</dl>
+<pre class=idl>
+interface mixin PowerfulFeatureObserver {
+  readonly attribute PermissionState initialPermissionStatus;
+  readonly attribute PermissionState permissionStatus;
+  attribute EventHandler onpromptaction;
+  attribute EventHandler onpromptdismiss;
+};
+</pre>
 
 The following are the [=event handlers=] (and their corresponding [=event handler event types=]) that must be supported on elements that include the {{PowerfulFeatureObserver}}:
 <pre class=simpledef>
