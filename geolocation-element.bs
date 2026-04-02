@@ -260,51 +260,32 @@ an [=ordered set=] of elements, <dfn attribute for="navigable">\[[ActivationBloc
 <div algorithm>
 The {{HTMLGeolocationElement}} <dfn constructor for=HTMLGeolocationElement>constructor()</dfn> steps are:
 
+1. Run the [=ActivationBlockersMixin/initialization steps=].
 1. Initialize the internal {{[[Features]]}} to
     &laquo; <a permission>"geolocation"</a> &raquo;.
-1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
-1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
-1. Initialize the internal {{[[LastNotifiedInvalidReason]]}} with the empty
-    string.
-1. Initialize the internal {{[[watchIDs]]}} to &laquo; |watchID| &raquo;, where
-    |watchID| is an [=implementation-defined=] {{unsigned long}} that is
-    greater than zero.
+1. Run the [=PowerfulFeatureObserver/initialization steps=].
 1. Initialize the internal {{[[position]]}} to null.
 1. Initialize the internal {{[[positionError]]}} to null.
-1. Run {{PowerfulFeatureObserver}}'s [=PowerfulFeatureObserver/initialization steps=].
 
 </div>
 
 <div algorithm>
 The {{HTMLGeolocationElement}}'s <dfn for="HTMLGeolocationElement" export>insertion steps</dfn> are:
 
-1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
-1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[ActivationBlockableElements]]}}.
-1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
-1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
-    constructing a new {{IntersectionObserver}} with
-    [=ActivationBlockersMixin/IntersectionObserver callback=] and
-    &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
-1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
+1. Run {{ActivationBlockersMixin}}'s  [=ActivationBlockersMixin/insertion steps=].
 1. Run {{PowerfulFeatureObserver}}'s [=PowerfulFeatureObserver/insertion steps=].
 1. If [=this=] is not [=type permissible=], then [=add a temporary blocker=]
     with {{ActivationBlockersMixinBlockerReason/unsuccessful_registration}}.
-1. [=Add an expiring blocker=] with reason
-    {{ActivationBlockersMixinBlockerReason/recently_attached}}.
-1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
-    [=this=]
-    is a [=fenced navigable=], then [=add a permanent blocker=]
-    with {{ActivationBlockersMixinBlockerReason/illegal_subframe}}.
 1. [=Maybe dispatch onvalidstatechange=] on [=this=].
 1. [=Maybe autolocate=].
 
 </div>
 
-<div algorithm="HTMLGeolocationElement/removing steps">
-The {{HTMLGeolocationElement}} [=removing steps=] are:
+<div algorithm>
+The {{HTMLGeolocationElement}} <dfn for=HTMLGeolocationElement export>removing steps</dfn> are:
 
-1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[ActivationBlockableElements]]}}.
-1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
+1. Run [=ActivationBlockersMixin/removing steps=].
+1. Run [=PowerfulFeatureObserver/removing steps=].
 1. [=Maybe dispatch onvalidstatechange=] on [=this=].
 
 </div>
@@ -788,6 +769,45 @@ An {{ActivationBlockersMixin}}'s <dfn for="ActivationBlockersMixin">Intersection
 ISSUE: Do I need to define dictionary equality?
 </div>
 
+<div algorithm>
+The <dfn for=ActivationBlockersMixin>initialization steps</dfn> are:
+
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
+1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
+1. Initialize the internal {{[[LastNotifiedInvalidReason]]}} with the empty
+    string.
+1. Initialize the internal {{[[watchIDs]]}} to &laquo; |watchID| &raquo;, where
+    |watchID| is an [=implementation-defined=] {{unsigned long}} that is
+    greater than zero.
+
+</div>
+
+<div algorithm>
+The <dfn for=ActivationBlockersMixin>insertion steps</dfn> are:
+
+1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
+1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[ActivationBlockableElements]]}}.
+1. Initialize the internal {{[[IntersectionRect]]}} with undefined.
+1. Initialize the internal {{[[IntersectionObserver]]}} with the result of
+    constructing a new {{IntersectionObserver}} with
+    [=ActivationBlockersMixin/IntersectionObserver callback=] and
+    &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.
+1. Call {{[[IntersectionObserver]]}}.observe([=this=]).
+1. [=Add an expiring blocker=] with reason
+    {{ActivationBlockersMixinBlockerReason/recently_attached}}.
+1. If the [=navigable/traversable navigable=] of the [=node navigable=] of
+    [=this=]
+    is a [=fenced navigable=], then [=add a permanent blocker=]
+    with {{ActivationBlockersMixinBlockerReason/illegal_subframe}}.
+
+</div>
+
+<div algorithm>
+The <dfn for=ActivationBlockersMixin>removing steps</dfn> are:
+
+1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[ActivationBlockableElements]]}}.
+
+</div>
 
 ## Powerful Features, aka Permissions ## {#mixin-permissions}
 
@@ -841,7 +861,7 @@ an internal {{[[BlockerList]]}} to keep track of this.
 ### Algorithms ### {#mixin-permissions-algorithms}
 
 <div algorithm>
-A {{PowerfulFeatureObserver}}'s <dfn for="PowerfulFeatureObserver">initialization steps</dfn> are:
+The <dfn for=PowerfulFeatureObserver>initialization steps</dfn> are:
 
 1. [=Assert=]: The internal {{PowerfulFeatureObserver/[[Features]]}} slot has been
     initialized. The including element must define and initialize this.
@@ -856,6 +876,13 @@ A {{PowerfulFeatureObserver}}'s <dfn for="PowerfulFeatureObserver">insertion ste
 1. If {{PowerfulFeatureObserver/[[Features]]}} [=list/is empty=] or is null,
     then [=add a permanent blocker=]
     with reason {{ActivationBlockersMixinBlockerReason/type_invalid}}.
+
+</div>
+
+<div algorithm>
+The <dfn for=PowerfulFeatureObserver>removing steps</dfn> are:
+
+1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
 
 </div>
 
