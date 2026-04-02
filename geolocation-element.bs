@@ -260,10 +260,12 @@ an [=ordered set=] of elements, <dfn attribute for="navigable">\[[ActivationBloc
 <div algorithm>
 The {{HTMLGeolocationElement}} <dfn constructor for=HTMLGeolocationElement>constructor()</dfn> steps are:
 
-1. Run the [=ActivationBlockersMixin/initialization steps=].
+1. Run {{ActivationBlockersMixin}}'s
+    [=ActivationBlockersMixin/initialization steps=].
 1. Initialize the internal {{[[Features]]}} to
     &laquo; <a permission>"geolocation"</a> &raquo;.
-1. Run the [=PowerfulFeatureObserver/initialization steps=].
+1. Run {{PowerfulFeatureObserver}}'s
+    [=PowerfulFeatureObserver/initialization steps=].
 1. Initialize the internal {{[[position]]}} to null.
 1. Initialize the internal {{[[positionError]]}} to null.
 
@@ -284,8 +286,8 @@ The {{HTMLGeolocationElement}}'s <dfn for="HTMLGeolocationElement" export>insert
 <div algorithm>
 The {{HTMLGeolocationElement}} <dfn for=HTMLGeolocationElement export>removing steps</dfn> are:
 
-1. Run [=ActivationBlockersMixin/removing steps=].
-1. Run [=PowerfulFeatureObserver/removing steps=].
+1. Run {{ActivationBlockersMixin}}'s [=ActivationBlockersMixin/removing steps=].
+1. Run {{PowerfulFeatureObserver}}'s [=PowerfulFeatureObserver/removing steps=].
 1. [=Maybe dispatch onvalidstatechange=] on [=this=].
 
 </div>
@@ -770,7 +772,8 @@ ISSUE: Do I need to define dictionary equality?
 </div>
 
 <div algorithm>
-The <dfn for=ActivationBlockersMixin>initialization steps</dfn> are:
+The {{ActivationBlockersMixin}}'s
+<dfn for=ActivationBlockersMixin>initialization steps</dfn> are:
 
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
 1. Initialize the internal {{[[LastNotifiedValidState]]}} with false.
@@ -783,7 +786,8 @@ The <dfn for=ActivationBlockersMixin>initialization steps</dfn> are:
 </div>
 
 <div algorithm>
-The <dfn for=ActivationBlockersMixin>insertion steps</dfn> are:
+The {{ActivationBlockersMixin}}'s
+<dfn for=ActivationBlockersMixin>insertion steps</dfn> are:
 
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;&raquo;.
 1. [=set/Append=] [=this=] to [=node navigable=]'s {{[[ActivationBlockableElements]]}}.
@@ -803,7 +807,8 @@ The <dfn for=ActivationBlockersMixin>insertion steps</dfn> are:
 </div>
 
 <div algorithm>
-The <dfn for=ActivationBlockersMixin>removing steps</dfn> are:
+The {{ActivationBlockersMixin}}'s
+<dfn for=ActivationBlockersMixin>removing steps</dfn> are:
 
 1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[ActivationBlockableElements]]}}.
 
@@ -861,7 +866,8 @@ an internal {{[[BlockerList]]}} to keep track of this.
 ### Algorithms ### {#mixin-permissions-algorithms}
 
 <div algorithm>
-The <dfn for=PowerfulFeatureObserver>initialization steps</dfn> are:
+The {{PowerfulFeatureObserver}}'s
+<dfn for=PowerfulFeatureObserver>initialization steps</dfn> are:
 
 1. [=Assert=]: The internal {{PowerfulFeatureObserver/[[Features]]}} slot has been
     initialized. The including element must define and initialize this.
@@ -871,7 +877,7 @@ The <dfn for=PowerfulFeatureObserver>initialization steps</dfn> are:
 </div>
 
 <div algorithm>
-A {{PowerfulFeatureObserver}}'s <dfn for="PowerfulFeatureObserver">insertion steps</dfn> are:
+The {{PowerfulFeatureObserver}}'s <dfn for="PowerfulFeatureObserver">insertion steps</dfn> are:
 
 1. If {{PowerfulFeatureObserver/[[Features]]}} [=list/is empty=] or is null,
     then [=add a permanent blocker=]
@@ -880,7 +886,7 @@ A {{PowerfulFeatureObserver}}'s <dfn for="PowerfulFeatureObserver">insertion ste
 </div>
 
 <div algorithm>
-The <dfn for=PowerfulFeatureObserver>removing steps</dfn> are:
+The {{PowerfulFeatureObserver}}'s <dfn for=PowerfulFeatureObserver>removing steps</dfn> are:
 
 1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
 
