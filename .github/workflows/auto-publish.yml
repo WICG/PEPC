@@ -19,6 +19,11 @@ jobs:
           SOURCE: geolocation-element.bs
           TOOLCHAIN: bikeshed
           GH_PAGES_BRANCH: gh-pages
+      - uses: planetoftheweb/copy-to-branches@v1.3
+        env:
+          key: main
+          branches: gh-pages
+          files: usermedia-element-delta.html
   copy_demo:
     name: Copy demo page to gh-pages
     runs-on: ubuntu-latest
