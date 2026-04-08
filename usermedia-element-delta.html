@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <title>Proposed &lt;usermedia&gt;, &lt;camera&gt;, and &lt;microphone&gt;
+    media capture HTML elements,
+    as a delta specification to Media Capture and Streams Extensions</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+  <script class='remove'>
+  "use strict";
+  // See https://github.com/w3c/respec/wiki/ for how to configure ReSpec
+  var respecConfig = {
+    xref: ["geometry-1", "html", "infra", "permissions", "dom", "hr-time", "image-capture", "mediacapture-streams", "screen-capture", "webaudio", "webcodecs", "webidl", "ECMAScript", "geolocation-element"],
+    editors:  [{name: "Daniel Vogelheim", company: "Google LLC"}],
+    specStatus: "UD",
+    shortName: "proposed-usermedia-html-elements",
+    edDraftURI: "https://wicg.github.io/PEPC/usermedia-elements.html",
+    canonicalURI: "edDraft",
+    noRecTrack: true,
+    localBiblio: {
+      "mediacapture-extensions": {
+        title: "Media Capture and Streams Extensions",
+        href: "https://w3c.github.io/mediacapture-extensions/",
+      },
+    },
+  };
+  </script>
+</head>
+<body>
+  <section id="abstract">
+    <p>This document proposes a set of HTML elements, &lt;<a>usermedia</a>&gt;,
+    &lt;<a>camera</a>&gt;, and &lt;<a>microphone</a>&gt;,
+    that mean to provide user-friendly and secure access
+    to a {{MediaStream}}, handling the required premissions in the process.</p>
+    <p>This is a delta specification, meant to eventually be included in
+    [[mediacapture-streams]] or [[mediacapture-extensions]].</p>
+  </section>
+  <section id="sotd">
+    <p>This is a delta specification, meant to eventually be included in [[mediacapture-streams]] or [[mediacapture-extensions]]. It currently contains only the differences from this spec. </p>
+  </section>
+  <section>
+    <h2>The &lt;<a>usermedia</a>&gt;, &lt;<a>camera</a>&gt;, and
+      &lt;<a>microphone</a>&gt; media capture HTML elements</h2>
+
+    <p>The &lt;<dfn element>usermedia</dfn>&gt;,
+    &lt;<dfn element>camera</dfn>&gt;, and &lt;<dfn element>microphone</dfn>&gt;
+    HTML elements are [[HTML]] elements that can mediate access to a
+    {{MediaStream}}, including handling the required [=permission/prompts=]
+    for [=powerful features=].</p>
+
+    <p>These three elements cover three different use cases and allow for use
+      case specific user interfaces in the [=user agent=]. Their 
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes">content attributes</a>
+      and IDL are mostly the same.</p>
+
+    <p>The &lt;<a>usermedia</a>&gt; element uses the following
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom">DOM interface</a>:</p>
+
+    <pre class=idl>
+      [Exposed=Window]
+      interface HTMLUserMediaElement : HTMLElement {
+        [HTMLConstructor] constructor();
+
+        readonly attribute MediaStream? stream;
+        undefined setConstraints(MediaStreamConstraints constraints);
+        readonly attribute DOMException? error;
+      };
+      HTMLUserMediaElement includes ActivationBlockersMixin;
+    </pre>
+
+    <p>The &lt;<a>camera</a>&gt; and &lt;<a>microphone</a>&gt;
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom">DOM interfaces</a> are almost the same.
+      The &lt;<a>camera</a>&gt; element uses the following
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom">DOM interface</a>:</p>
+
+    <pre class=idl>
+      [Exposed=Window]
+      interface HTMLCameraElement : HTMLElement {
+        [HTMLConstructor] constructor();
+
+        readonly attribute MediaStream? stream;
+        undefined setConstraints(MediaStreamConstraints constraints);
+        readonly attribute DOMException? error;
+      };
+      HTMLCameraElement includes ActivationBlockersMixin;
+    </pre>
+
+    <p>The &lt;<a>microphone</a>&gt; element uses the following
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom">DOM interface</a>:</p>
+
+    <pre class=idl>
+      [Exposed=Window]
+      interface HTMLMicrophoneElement : HTMLElement {
+        [HTMLConstructor] constructor();
+
+        readonly attribute MediaStream? stream;
+        undefined setConstraints(MediaStreamConstraints constraints);
+        readonly attribute DOMException? error;
+      };
+      HTMLMicrophoneElement includes ActivationBlockersMixin;
+    </pre>
+
+
+    <p>The &lt;<a element>usermedia</a>&gt;,
+      &lt;<a element>camera</a>&gt;, and &lt;<a element>microphone</a>&gt;
+      elements all use the following internal slot:</p>
+    <ul>
+      <li><dfn data-dfn-for=HTMLUserMediaElement>[[\stream]]</dfn>
+        &mdash; Holds null or a {{MediaStream}}.</li>
+      <li><dfn data-dfn-for=HTMLUserMediaElement>[[\constraints]]</dfn>
+        &mdash; Holds a {{MediaStreamConstraints}}.</li>
+      <li><dfn data-dfn-for=HTMLUserMediaElement>[[\error]]</dfn>
+        &mdash; Holds an {{DOMException}} instance or null.</li>
+    </ul>
+
+   <p>The &lt;<a element>usermedia</a>&gt;,
+      &lt;<a element>camera</a>&gt;, and &lt;<a element>microphone</a>&gt;
+      elements belong to the [=flow content=],
+      [=phrasing content=], [=interactive content=], and [=palpable content=]
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-categories">categories</a>.
+      They can be used in contexts where [=phrasing content=] is expected.
+      Their content, if any, are their
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#fallback-content">fallback content</a>.
+      They use the {{ActivationBlockersMixin}} from [[geolocation-element]], to
+      provide protection against programmatic activation.</p>
+
+    <p>The &lt;<a element>usermedia</a>&gt;,
+      &lt;<a element>camera</a>&gt;, and &lt;<a element>microphone</a>&gt;
+      elements all support the following
+      <a href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes">content attributes</a>:</p>
+
+    <dl>
+      <dt><a href="https://html.spec.whatwg.org/multipage/dom.html#global-attributes">global attributes</a></dt>
+      <dd>&mdash; all global content attributes.</dd>
+      <dt><a href="https://wicg.github.io/PEPC/geolocation-element.html#dom-activationblockersmixin-isvalid">isValid</a></dt>
+      <dt><a href="https://wicg.github.io/PEPC/geolocation-element.html#dom-activationblockersmixin-invalidreason">invalidReason</a></dt>
+      <dt><a href="https://wicg.github.io/PEPC/geolocation-element.html#dom-activationblockersmixin-onvalidationstatuschange">onvalidationstatuschange</a></dt>
+      <dd>&mdash; content attributes from {{ActivationBlockersMixin}}</dd>
+    </dl>
+
+
+    <section>
+      <h3>Algorithms</h3>
+
+      <p>The {{HTMLUserMediaElement}}, {{HTMLCameraElement}}, and
+        {{HTMLMicrophoneElement}} all use the same constructor steps. Their
+        {{HTMLUserMediaElement/constructor()}} steps are:</p>
+      <ol class=algorithm>
+        <li>Run {{ActivationBlockersMixin}}'s
+          [=ActivationBlockersMixin/initialization steps=].</li>
+        <li>Initialize {{HTMLUserMediaElement/[[stream]]}} to null.</li>
+        <li>Initialize {{HTMLUserMediaElement/[[error]]}} to null.</li>
+        <li>Initialize {{HTMLUserMediaElement/[[constraints]]}} to [=this=]'s
+          [=HTMLUserMediaElement/default constraints=].</li>
+      </ol>
+
+      <p>The &lt;<a>usermedia</a>&gt; element's [=insertion steps=] are:</p>
+      <ol class=algorithm>
+        <li>Run {{ActivationBlockersMixin}}'s
+          [=ActivationBlockersMixin/insertion steps=].</li>
+      </ol>
+
+      <p>The &lt;<a>usermedia</a>&gt; element's [=removing steps=] are:</p>
+      <ol class=algorithm>
+        <li>Run {{ActivationBlockersMixin}}'s
+          [=ActivationBlockersMixin/removing steps=].</li>
+      </ol>
+
+      <p>The {{HTMLUserMediaElement/stream}} <a>getter</a> steps are:</p>
+      <ol class=algorithm>
+        <li>Return {{HTMLUserMediaElement/[[stream]]}}.</li>
+      </ol>
+
+      <p>The {{HTMLUserMediaElement/setConstraints()}} steps for an |element| and
+      a parameter |constraints| steps:</p>
+      <ol class=algorithm>
+        <li>Set {{HTMLUserMediaElement/[[constraints]]}} to the result of
+          [=HTMLUserMediaElement/constraint filter=] for |element|
+          and |constraints|.</li>
+      </ol>
+
+      <p>The {{HTMLUserMediaElement/error}} <a>getter</a> steps are:</p>
+      <ol class=algorithm>
+        <li>Return {{HTMLUserMediaElement/[[error]]}}.
+      </ol>
+
+      <p>The &lt;<a>usermedia</a>&gt;, &lt;<a>camera</a>&gt;, and
+        &lt;<a>microphone</a>&gt;
+        <dfn for=HTMLUserMediaElement>permission name</dfn> are:</p>
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>Element type</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>&lt;<a>usermedia</a>&gt;</th>
+            <td>The [=string/concatenate|concatentation=] of
+              &laquo; [=/"camera"=], " ", [=/"microphone"=] &raquo;.</td>
+          </tr>
+          <tr>
+            <th>&lt;<a>camera</a>&gt;</th>
+            <td>[=/"camera"=]</td>
+          </tr>
+          <tr>
+            <th>&lt;<a>microphone</a>&gt;</th>
+            <td>[=/"microphone"=]</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The &lt;<a>usermedia</a>&gt;, &lt;<a>camera</a>&gt;, and
+        &lt;<a>microphone</a>&gt;
+        <dfn for=HTMLUserMediaElement>default constraints</dfn> are:</p>
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>Element type</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>&lt;<a>usermedia</a>&gt;</th>
+            <td>&laquo;[
+              {{MediaStreamConstraints/video}} &rarr; true,
+              {{MediaStreamConstraints/audio}} &rarr; true
+              ]&raquo;</td>
+          </tr>
+          <tr>
+            <th>&lt;<a>camera</a>&gt;</th>
+            <td>&laquo;[
+              {{MediaStreamConstraints/video}} &rarr; true,
+              {{MediaStreamConstraints/audio}} &rarr; false
+              ]&raquo;</td>
+          </tr>
+          <tr>
+            <th>&lt;<a>microphone</a>&gt;</th>
+            <td>&laquo;[
+              {{MediaStreamConstraints/video}} &rarr; false,
+              {{MediaStreamConstraints/audio}} &rarr; true
+              ]&raquo;</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>The &lt;<a>usermedia</a>&gt; |element|'s
+        [=EventTarget/activation behavior=] is:</p>
+      <ol class=algorithm>
+        <li>If |element|.{{ActivationBlockersMixin/isValid}} is false,
+          then return.</li>
+        <li>If {{HTMLUserMediaElement/[[stream]]}} is null, run
+          [=HTMLUserMediaElement/activation initial=] steps.</li>
+        <li>Otherwise, run [=HTMLUserMediaElement/activation second=] steps.</li>
+      </ol>
+
+      <p>The <dfn for=HTMLUserMediaElement>activation initial</dfn> steps
+        are:</p>
+      <ol class=algorithm>
+        <li>[=Assert=]: |element|.{{ActivationBlockersMixin/isValid}}.</li>
+        <li>[=Assert=]: {{HTMLUserMediaElement/[[stream]]}} is null.</li>
+        <li>Let |permissionName| be |element|'s [=permission name=].</li>
+        <li>Let |descriptor| be a new {{PermissionDescriptor}} with value
+          &laquo;[ {{PermissionDescriptor/name}} &rarr; |permissionName|
+          ]&raquo;.</li>
+        <li>Let |permissionState| be the result of
+          [=request permission to use=] the [=powerful features=]
+          described by |descriptor| with allowMultiple set to false.</li>
+        <li>If |permissionState| is not {{PermissionState/"granted"}}:</li>
+          <ol>
+            <li>Set {{HTMLUserMediaElement/[[stream]]}} to null.</li>
+            <li>Set {{HTMLUserMediaElement/[[error]]}} to null.</li>
+            <li>Return.</li>
+          </ol>
+        <li>Let |contraints| be {{HTMLUserMediaElement/[[constraints]]}}.</li>
+        <li>Let |mediaPromise| be the result of calling
+          {{MediaDevices/getUserMedia()}} with |constraints| as its first
+          argument.</li>
+        <li>[=promise/React=] to |mediaPromise|:
+          <ol>
+            <li>If |mediaPromise| was fulfilled with value |v|:</li>
+              <ol>
+                <li>[=Assert=]: |v| is a {{MediaStream}}.</li>
+                <li>Set {{HTMLUserMediaElement/[[stream]]}} to |v|.</li>
+                <li>Set {{HTMLUserMediaElement/[[error]]}} to null.</li>
+              </ol>
+            <li>else:
+              <ol>
+                <li>[=Assert=]: |mediaPromise| was rejected with reason |r|.</li>
+                <li>[=Assert=]: |r| is a |DOMException|.</li>
+                <li>Set {{HTMLUserMediaElement/[[stream]]}} to null.</li>
+                <li>Set {{HTMLUserMediaElement/[[error]]}} to |r|.</li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+
+      <p>The <dfn for=HTMLUserMediaElement>activation second</dfn> steps
+        are:</p>
+      <ol class=algorithm>
+        <li>[=Assert=]: |element|.{{ActivationBlockersMixin/isValid}}.</li>
+        <li>[=Assert=]: {{HTMLUserMediaElement/[[stream]]}} is a
+          {{MediaStream}}.</li>
+        <li>TODO: We ought to do something here, too.
+      </ol>
+
+      <p>The <dfn for=HTMLUserMediaElement>constraint filter</dfn> steps
+      for an |element| and {{MediaStreamConstraints}} |constraints| are:</p>
+      <ol class=algorithm>
+        <li>Let |result| be a new [=dictionary=].
+        <li>If |element| is a {{HTMLUserMediaElement}},
+          set |result| to &laquo;[
+          {{MediaStreamConstraints/audio}} &rarr; |constraints|[{{MediaStreamConstraints/audio}}],
+          {{MediaStreamConstraints/video}} &rarr; |constraints|[{{MediaStreamConstraints/video}}]
+          ]&raquo;.</li>
+        <li>Otherwise, if |element| is a {{HTMLMicrophoneElement}},
+          set |result| to &laquo;[
+          {{MediaStreamConstraints/audio}} &rarr; |constraints|[{{MediaStreamConstraints/audio}}],
+          {{MediaStreamConstraints/video}} &rarr; false
+          ]&raquo;.</li>
+        <li>Otherwise, if |element| is a {{HTMLCameraElement}},
+          set |result| to &laquo;[
+          {{MediaStreamConstraints/audio}} &rarr; false,
+          {{MediaStreamConstraints/video}} &rarr; |constraints|[{{MediaStreamConstraints/video}}]
+          ]&raquo;.</li>
+        <li>TODO: |results| should have additional filtering to support a
+          reasonable, easy-to-use subset of all the constraints allowed for
+          the getUserMedia call.</li>
+        <li>Return |result|.
+      </ol>
+
+    </section>
+    <section>
+      <h3>&lt;usermedia&gt; legacy support.</h3>
+
+      <p>To ease transition from the current &lt;<a>usermedia</a>&gt; element in
+      Chrome, we support a limited form of the {{HTMLUserMediaElementLegacyMixin/type}}
+      attribute, with values for `audio`, `video`, or both. If this attribute is
+      set, it modifies the behaviour of the &lt;<a>usermedia</a>&gt; element to
+      match the behaviour of any of the elements discussed here. This is a
+      hold-over from the original &lt;<a href="https://wicg.github.io/PEPC/permission-element.html">permission</a>&gt; element design. It is expected
+      that this mixin will not be included in the final standard.</p>
+
+      <pre class=idl>
+      interface mixin HTMLUserMediaElementLegacyMixin {
+        attribute DOMString type;
+        boolean isTypeSupported(DOMString type);
+      };
+      HTMLUserMediaElement includes HTMLUserMediaElementLegacyMixin;
+      </pre>
+
+      <p>The {{HTMLUserMediaElementLegacyMixin/type}} IDL attribute reflects
+      the `type` content attribute.
+      Depending on {{HTMLUserMediaElementLegacyMixin/type}}, the
+        &lt;<a>usermedia</a>&gt; element changes behaviour:</p>
+      <dl>
+        <dt>`"audio video"`</dt>
+        <dt>`"video audio"`</dt>
+        <dd>&mdash; behaves like a regular &lt;<a>usermedia</a>&gt; element.</dd>
+        <dt>`"audio"`</dt>
+        <dd>&mdash; behaves like an &lt;<a>microphone</a>&gt; element.</dd>
+        <dt>`"video"`</dt>
+        <dd>&mdash; behaves like a &lt;<a>camera</a>&gt; element.</dd>
+        <dt>all other values</dt>
+        <dd>&mdash; behaves like an {{HTMLUnknownElement}}.</dd>
+      </dl>
+
+      <p>The {{HTMLUserMediaElementLegacyMixin/isTypeSupported()}} method can
+        be used to query whether a given type is supported by this element.
+        It will return true if the input string is one of `"audio video"`,
+        `"video audio"`, `"audio"`, or `"video"`, and false in all other cases.
+      </p>
+    </section>
+  </section>
+</body>
+</html>
