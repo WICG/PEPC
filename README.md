@@ -13,6 +13,15 @@ An HTML permission element for the
 * [Explainer](geolocation_explainer.md)
 * [Geolocation Element Specification Draft](https://wicg.github.io/PEPC/geolocation-element.html)
 
+# Usermedia Elements
+
+A set of HTML elements to mediate access to a [MediaStream](https://www.w3.org/TR/mediacapture-streams/#dom-mediastream):
+
+* [Explainer](usermedia_element.md)
+* [Usermedia Element Specification Draft](usermedia-element-delta.html), meant
+    for inclusion in
+    [Media Capture and Streams Extensions](https://w3c.github.io/mediacapture-extensions/)
+
 # Page Embedded Permission Control (PEPC)
 
 The originally proposed permission element, for any
