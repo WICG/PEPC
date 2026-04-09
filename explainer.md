@@ -376,7 +376,7 @@ Mitigating annoyance by ensuring user intent is more complex than ensuring safet
 - **Occlusion Detection:** The user agent verifies that the `<permission>` element has been visible for a short time (e.g., 500ms) before a click is registered. User agents implementing IntersectionObserverV2 can leverage it internally for this.
 - **Movement Detection:** The user agent ensures the `<permission>` element has not been recently moved (e.g., in the past 500ms) to prevent sites from moving it under the user's cursor to trick them into clicking.
 - **Recent DOM Insertion Detection:** Similarly, the user agent ensures the `<permission>` element has not been recently inserted into the DOM (e.g., in the past 500ms).
-- **Element Quantity Limit:** To prevent sites from "tile-covering" their content with `<permission>` elements, there is a limit of at most two `<permission>` elements per permission type, per page.
+- **Element Quantity Limit:** To prevent sites from "tile-covering" their content with `<permission>` elements, there is a limit of at most three `<permission>` elements per permission type, per page.
 - **Subframe Usage Conditions:** While usage in subframes is allowed, several security constraints are enforced to prevent clickjacking attacks where a malicious site embeds a legitimate site that uses a `<permission>` element:
   - Permission Policy must first allow the permission in the subframe.
   - The frame-ancestors Content Security Policy (CSP) directive must be explicitly declared if a document using the `<permission>` element is embedded cross-origin (to the top-level frame). This ensures permissions cannot be obtained by a bad actor via an embedded site without explicit opt-in.
