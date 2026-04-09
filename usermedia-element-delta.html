@@ -14,8 +14,8 @@
     editors:  [{name: "Daniel Vogelheim", company: "Google LLC"}],
     specStatus: "UD",
     shortName: "proposed-usermedia-html-elements",
-    edDraftURI: "https://wicg.github.io/PEPC/usermedia-elements.html",
-    canonicalURI: "edDraft",
+    edDraftURI: "https://wicg.github.io/PEPC/usermedia-element-delta.html",
+    latestVersion: null,
     noRecTrack: true,
     localBiblio: {
       "mediacapture-extensions": {
@@ -250,9 +250,14 @@
       <ol class=algorithm>
         <li>If |element|.{{ActivationBlockersMixin/isValid}} is false,
           then return.</li>
-        <li>If {{HTMLUserMediaElement/[[stream]]}} is null, run
+        <li>If {{HTMLUserMediaElement/[[stream]]}} is null, run the
           [=HTMLUserMediaElement/activation initial=] steps.</li>
-        <li>Otherwise, run [=HTMLUserMediaElement/activation second=] steps.</li>
+        <li>Otherwise, if
+          {{HTMLUserMediaElement/[[stream]]}}.{{MediaStream/active}}
+          is false, run the [=HTMLUserMediaElement/activation inactive=]
+          steps.</li>
+        <li>Otherwise, run the [=HTMLUserMediaElement/activation active=]
+          steps.</li>
       </ol>
 
       <p>The <dfn for=HTMLUserMediaElement>activation initial</dfn> steps
@@ -297,34 +302,56 @@
         </li>
       </ol>
 
-      <p>The <dfn for=HTMLUserMediaElement>activation second</dfn> steps
+      <p>The <dfn for=HTMLUserMediaElement>activation inactive</dfn> steps
         are:</p>
       <ol class=algorithm>
         <li>[=Assert=]: |element|.{{ActivationBlockersMixin/isValid}}.</li>
         <li>[=Assert=]: {{HTMLUserMediaElement/[[stream]]}} is a
           {{MediaStream}}.</li>
-        <li>TODO: We ought to do something here, too.
+        <li>[=Assert=]: {{HTMLUserMediaElement/[[stream]]}}.{{MediaStream/active}}
+          is false.</li>
+        <li>[=list/iterate|For each=] {{MediaStreamTrack}} |track| of
+          {{HTMLUserMediaElement/[[stream]]}}'s [=track set=]:
+          <ol>
+            <li>Set |track|.{{MediaStreamTrack/enabled}} to true.
+          </ol>
+        </li>
+      </ol>
+
+      <p>The <dfn for=HTMLUserMediaElement>activation active</dfn> steps
+        are:</p>
+      <ol class=algorithm>
+        <li>[=Assert=]: |element|.{{ActivationBlockersMixin/isValid}}.</li>
+        <li>[=Assert=]: {{HTMLUserMediaElement/[[stream]]}} is a
+          {{MediaStream}}.</li>
+        <li>[=Assert=]: {{HTMLUserMediaElement/[[stream]]}}.{{MediaStream/active}}
+          is true.</li>
+        <li>Let |muted| be false.</li>
+        <li>[=list/iterate|For each=] {{MediaStreamTrack}} |track| of
+          {{HTMLUserMediaElement/[[stream]]}}'s [=track set=]:
+          <ol>
+            <li>If |track|.{{MediaStreamTrack/muted}}, set |muted| to true.
+          </ol>
+        </li>
+        <li>[=list/iterate|For each=] {{MediaStreamTrack}} |track| of
+          {{HTMLUserMediaElement/[[stream]]}}'s [=track set=]:
+          <ol>
+            <li>Set |track|.{{MediaStreamTrack/muted}} to &not;|muted|.
+          </ol>
+        </li>
       </ol>
 
       <p>The <dfn for=HTMLUserMediaElement>constraint filter</dfn> steps
       for an |element| and {{MediaStreamConstraints}} |constraints| are:</p>
       <ol class=algorithm>
-        <li>Let |result| be a new [=dictionary=].
-        <li>If |element| is a {{HTMLUserMediaElement}},
-          set |result| to &laquo;[
-          {{MediaStreamConstraints/audio}} &rarr; |constraints|[{{MediaStreamConstraints/audio}}],
-          {{MediaStreamConstraints/video}} &rarr; |constraints|[{{MediaStreamConstraints/video}}]
-          ]&raquo;.</li>
-        <li>Otherwise, if |element| is a {{HTMLMicrophoneElement}},
-          set |result| to &laquo;[
-          {{MediaStreamConstraints/audio}} &rarr; |constraints|[{{MediaStreamConstraints/audio}}],
-          {{MediaStreamConstraints/video}} &rarr; false
-          ]&raquo;.</li>
-        <li>Otherwise, if |element| is a {{HTMLCameraElement}},
-          set |result| to &laquo;[
-          {{MediaStreamConstraints/audio}} &rarr; false,
-          {{MediaStreamConstraints/video}} &rarr; |constraints|[{{MediaStreamConstraints/video}}]
-          ]&raquo;.</li>
+        <li>Let |result| be a new [=dictionary=].</li>
+        <li>Let |defaults| be |element|'s [=default constraints=].</li>
+        <li>For |key| of &laquo; {{MediaStreamConstraints/audio}}, {{MediaStreamConstraints/video}} &raquo;:
+          <ol>
+            <li>If |defaults|[|key|] is true, then set |result|[|key|] to |constraints|[|key|].</li>
+            <li>Otherwise, set |result|[|key|] to false.</li>
+          </ol>
+        </li>
         <li>TODO: |results| should have additional filtering to support a
           reasonable, easy-to-use subset of all the constraints allowed for
           the getUserMedia call.</li>
@@ -360,7 +387,7 @@
         <dt>`"video audio"`</dt>
         <dd>&mdash; behaves like a regular &lt;<a>usermedia</a>&gt; element.</dd>
         <dt>`"audio"`</dt>
-        <dd>&mdash; behaves like an &lt;<a>microphone</a>&gt; element.</dd>
+        <dd>&mdash; behaves like a &lt;<a>microphone</a>&gt; element.</dd>
         <dt>`"video"`</dt>
         <dd>&mdash; behaves like a &lt;<a>camera</a>&gt; element.</dd>
         <dt>all other values</dt>

@@ -25,7 +25,8 @@ A set of HTML elements to mediate access to a [MediaStream](https://www.w3.org/T
 # Page Embedded Permission Control (PEPC)
 
 The originally proposed permission element, for any
-[permission](https://www.w3.org/TR/permissions/)
+[permission](https://www.w3.org/TR/permissions/). This proposal is no longer
+pursued.
 
 * [Explainer for PEPC](explainer.md)
 * [Permission Element Specification draft](https://wicg.github.io/PEPC/permission-element.html)
