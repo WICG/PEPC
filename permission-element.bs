@@ -548,7 +548,7 @@ The {{HTMLPermissionElement}} constructor steps are:
 </div>
 
 <div algorithm="HTMLPermissionElement/insertion steps">
-The {{HTMLPermissionElement}} [=insertion steps=] are:
+The {{HTMLPermissionElement}} [=/insertion steps=] are:
 
 1. If {{[[Types]]}} is null, set {{[[Types]]}} to &laquo;[]&raquo;.
 1. Initialize the internal {{[[BlockerList]]}} to &laquo;[]&raquo;.
@@ -574,7 +574,7 @@ The {{HTMLPermissionElement}} [=insertion steps=] are:
 </div>
 
 <div algorithm="HTMLPermissionElement/removing steps">
-The {{HTMLPermissionElement}} [=removing steps=] are:
+The {{HTMLPermissionElement}} [=/removing steps=] are:
 
 1. [=list/Remove=] [=this=] from [=node navigable=]'s {{[[PermissionElements]]}}.
 1. [=Recheck type permissibility=] for [=this=]'s [=node navigable=].
