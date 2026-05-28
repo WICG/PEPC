@@ -4,9 +4,9 @@
   <title>The HTML Geolocation Element</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
+  <meta content="Bikeshed version 0a3d88311, updated Mon May 4 18:07:03 2026 +0000" name="generator">
   <link href="https://wicg.github.io/PEPC/geolocation-element.html" rel="canonical">
-  <meta content="26ff654c9fd328d17ab106927e21a0490044a02e" name="revision">
+  <meta content="d0461d7b15437404d74b6c33c2b503607210ee85" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -323,7 +323,7 @@ pre .property::before, pre .property::after {
 </style>
 <style>/* Boilerplate: style-counters */
 body {
-    counter-reset: example figure issue;
+    counter-reset: example figure issue table;
 }
 .issue {
     counter-increment: issue;
@@ -348,6 +348,13 @@ figcaption {
 }
 figcaption:not(.no-marker)::before {
     content: "Figure " counter(figure) " ";
+}
+
+figure.table figcaption {
+    counter-increment: table;
+}
+figure.table figcaption:not(.no-marker)::before {
+    content: "Table " counter(table) " ";
 }
 </style>
 <style>/* Boilerplate: style-dfn-panel */
@@ -710,6 +717,30 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     c-[vm] { color: #cb4b16 } /* Name.Variable.Magic */
     c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
 }
+
+@media print {
+    /* Darken colors for print that would otherwise print too faintly */
+    c-[c]  { color: #555555 } /* Comment */
+    c-[d]  { color: #555555 } /* Comment.Multiline */
+    c-[cp] { color: #555555 } /* Comment.Preproc */
+    c-[c1] { color: #555555 } /* Comment.Single */
+    c-[cs] { color: #555555 } /* Comment.Special */
+    c-[o]  { color: #222222 } /* Operator */
+    c-[p]  { color: #222222 } /* Punctuation */
+    c-[ow] { color: #222222 } /* Operator.Word */
+    c-[s]  { color: #664400 } /* Literal.String */
+    c-[t]  { color: #664400 } /* Literal.String.Single */
+    c-[u]  { color: #664400 } /* Literal.String.Double */
+    c-[sb] { color: #664400 } /* Literal.String.Backtick */
+    c-[sc] { color: #664400 } /* Literal.String.Char */
+    c-[sd] { color: #664400 } /* Literal.String.Doc */
+    c-[se] { color: #664400 } /* Literal.String.Escape */
+    c-[sh] { color: #664400 } /* Literal.String.Heredoc */
+    c-[si] { color: #664400 } /* Literal.String.Interpol */
+    c-[sx] { color: #664400 } /* Literal.String.Other */
+    c-[sr] { color: #664400 } /* Literal.String.Regex */
+    c-[ss] { color: #664400 } /* Literal.String.Symbol */
+}
 </style>
 <style>/* Boilerplate: style-var-click-highlighting */
 /*
@@ -758,7 +789,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="no-ref p-name" id="title">The HTML Geolocation Element</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-04-09">9 April 2026</time></p>
+    <time class="dt-updated" datetime="2026-05-28">28 May 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -857,7 +888,7 @@ user friendly than the current, script-triggered permission flows.</p>
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
-      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Non-Normative References</span></a>
      </ol>
     <li><a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
     <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
@@ -2194,7 +2225,7 @@ geolocation <c- p>{</c->
     <li data-md>
      <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-reset" id="ref-for-propdef-counter-reset">counter-reset</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-increment" id="ref-for-propdef-counter-increment">counter-increment</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-lists-3/#propdef-counter-set" id="ref-for-propdef-counter-set">counter-set</a></p>
     <li data-md>
-     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex" id="ref-for-propdef-flex">flex</a> and its longhands, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow" id="ref-for-propdef-flex-grow">flex-grow</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink" id="ref-for-propdef-flex-shrink">flex-shrink</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis" id="ref-for-propdef-flex-basis">flex-basis</a></p>
+     <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-2/#propdef-flex" id="ref-for-propdef-flex">flex</a> and its longhands, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-2/#propdef-flex-grow" id="ref-for-propdef-flex-grow">flex-grow</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-2/#propdef-flex-shrink" id="ref-for-propdef-flex-shrink">flex-shrink</a>, <a class="css property" data-link-type="property" href="https://drafts.csswg.org/css-flexbox-2/#propdef-flex-basis" id="ref-for-propdef-flex-basis">flex-basis</a></p>
     <li data-md>
      <p><a class="css property" data-link-type="property" href="https://drafts.csswg.org/css2/#propdef-float" id="ref-for-propdef-float">float</a></p>
     <li data-md>
@@ -2426,12 +2457,12 @@ of those Explainer sections.</p>
      <li><span class="dfn-paneled" id="12f8fb07">visibility</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[CSS-FLEXBOX-1]</a> defines the following terms:
+    <a data-link-type="biblio">[CSS-FLEXBOX-2]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="73a16e8f">flex</span>
-     <li><span class="dfn-paneled" id="7de09c13">flex-basis</span>
-     <li><span class="dfn-paneled" id="edc3a18b">flex-grow</span>
-     <li><span class="dfn-paneled" id="d893440d">flex-shrink</span>
+     <li><span class="dfn-paneled" id="73a3d5bb">flex</span>
+     <li><span class="dfn-paneled" id="d9ce2113">flex-basis</span>
+     <li><span class="dfn-paneled" id="ee1b06e9">flex-grow</span>
+     <li><span class="dfn-paneled" id="98d4a4b6">flex-shrink</span>
     </ul>
    <li>
     <a data-link-type="biblio">[CSS-FONTS-4]</a> defines the following terms:
@@ -2731,8 +2762,8 @@ of those Explainer sections.</p>
    <dd>Chris Lilley; et al. <a href="https://drafts.csswg.org/css-conditional-5/"><cite>CSS Conditional Rules Module Level 5</cite></a>. URL: <a href="https://drafts.csswg.org/css-conditional-5/">https://drafts.csswg.org/css-conditional-5/</a>
    <dt id="biblio-css-display-4">[CSS-DISPLAY-4]
    <dd>Elika Etemad; Tab Atkins Jr.. <a href="https://drafts.csswg.org/css-display-4/"><cite>CSS Display Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-display-4/">https://drafts.csswg.org/css-display-4/</a>
-   <dt id="biblio-css-flexbox-1">[CSS-FLEXBOX-1]
-   <dd>Elika Etemad; Tab Atkins Jr.; Rossen Atanassov. <a href="https://drafts.csswg.org/css-flexbox/"><cite>CSS Flexible Box Layout Module Level 1</cite></a>. URL: <a href="https://drafts.csswg.org/css-flexbox/">https://drafts.csswg.org/css-flexbox/</a>
+   <dt id="biblio-css-flexbox-2">[CSS-FLEXBOX-2]
+   <dd><a href="https://drafts.csswg.org/css-flexbox-2/"><cite>CSS Flexible Box Layout Module Level 2</cite></a>. Editor's Draft. URL: <a href="https://drafts.csswg.org/css-flexbox-2/">https://drafts.csswg.org/css-flexbox-2/</a>
    <dt id="biblio-css-fonts-4">[CSS-FONTS-4]
    <dd>Chris Lilley. <a href="https://drafts.csswg.org/css-fonts-4/"><cite>CSS Fonts Module Level 4</cite></a>. URL: <a href="https://drafts.csswg.org/css-fonts-4/">https://drafts.csswg.org/css-fonts-4/</a>
    <dt id="biblio-css-lists-3">[CSS-LISTS-3]
@@ -2790,7 +2821,7 @@ of those Explainer sections.</p>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
-  <h3 class="heading no-num no-ref settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="informative"><span class="content">Non-Normative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-wai-aria">[WAI-ARIA]
    <dd>James Craig; Michael Cooper; et al. <a href="https://www.w3.org/TR/wai-aria/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.0</cite></a>. 20 March 2014. REC. URL: <a href="https://www.w3.org/TR/wai-aria/">https://www.w3.org/TR/wai-aria/</a>
@@ -3151,7 +3182,7 @@ let dfnPanelData = {
 "6daf8b2a": {"dfnID":"6daf8b2a","dfnText":"border-left","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-left"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-borders-4/#propdef-border-left"},
 "6f01662d": {"dfnID":"6f01662d","dfnText":"non-devolvable widget","external":true,"refSections":[{"refs":[{"id":"ref-for-non-devolvable"}],"title":"2.3. geolocation element rendering"}],"url":"https://drafts.csswg.org/css-ui-4/#non-devolvable"},
 "72ea3a96": {"dfnID":"72ea3a96","dfnText":"overscroll-behavior-x","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-overscroll-behavior-x"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-overscroll-1/#propdef-overscroll-behavior-x"},
-"73a16e8f": {"dfnID":"73a16e8f","dfnText":"flex","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex"},
+"73a3d5bb": {"dfnID":"73a3d5bb","dfnText":"flex","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-2/#propdef-flex"},
 "73e0120b": {"dfnID":"73e0120b","dfnText":"isolation","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-isolation"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/compositing-2/#propdef-isolation"},
 "75ee8688": {"dfnID":"75ee8688","dfnText":"request a position","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-request-a-position"}],"title":"2.1. geolocation element internal state"},{"refs":[{"id":"ref-for-dfn-request-a-position\u2460"},{"id":"ref-for-dfn-request-a-position\u2461"}],"title":"2.2. geolocation element algorithms"}],"url":"https://w3c.github.io/geolocation/#dfn-request-a-position"},
 "770d5330": {"dfnID":"770d5330","dfnText":"initialize","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-event-initialize"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-concept-event-initialize\u2460"}],"title":"3.1.3. Algorithms"},{"refs":[{"id":"ref-for-concept-event-initialize\u2461"},{"id":"ref-for-concept-event-initialize\u2462"}],"title":"3.2.2. Algorithms"}],"url":"https://dom.spec.whatwg.org/#concept-event-initialize"},
@@ -3159,7 +3190,6 @@ let dfnPanelData = {
 "7a87d819": {"dfnID":"7a87d819","dfnText":"is","external":true,"refSections":[{"refs":[{"id":"ref-for-string-is"}],"title":"3.1.3. Algorithms"}],"url":"https://infra.spec.whatwg.org/#string-is"},
 "7b0d918d": {"dfnID":"7b0d918d","dfnText":"break","external":true,"refSections":[{"refs":[{"id":"ref-for-iteration-break"}],"title":"2.2. geolocation element algorithms"}],"url":"https://infra.spec.whatwg.org/#iteration-break"},
 "7d1d6278": {"dfnID":"7d1d6278","dfnText":"border-right","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-right"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-borders-4/#propdef-border-right"},
-"7de09c13": {"dfnID":"7de09c13","dfnText":"flex-basis","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex-basis"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis"},
 "7e7cc1d8": {"dfnID":"7e7cc1d8","dfnText":"current high resolution time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-current-high-resolution-time"},{"id":"ref-for-dfn-current-high-resolution-time\u2460"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time"},
 "838900a7": {"dfnID":"838900a7","dfnText":"isTrusted","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-istrusted"}],"title":"2.2. geolocation element algorithms"},{"refs":[{"id":"ref-for-dom-event-istrusted\u2460"}],"title":"3.2.1. Internal state"}],"url":"https://dom.spec.whatwg.org/#dom-event-istrusted"},
 "860300d4": {"dfnID":"860300d4","dfnText":"implementation-defined","external":true,"refSections":[{"refs":[{"id":"ref-for-implementation-defined"}],"title":"3.1.3. Algorithms"}],"url":"https://infra.spec.whatwg.org/#implementation-defined"},
@@ -3179,6 +3209,7 @@ let dfnPanelData = {
 "96797491": {"dfnID":"96797491","dfnText":"tabindex","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-tabindex"},{"id":"ref-for-attr-tabindex\u2460"}],"title":"2. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#attr-tabindex"},
 "96e13811": {"dfnID":"96e13811","dfnText":"enumerated attribute","external":true,"refSections":[{"refs":[{"id":"ref-for-enumerated-attribute"}],"title":"3.1. Activation Blockers"}],"url":"https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#enumerated-attribute"},
 "973aaf8e": {"dfnID":"973aaf8e","dfnText":"HTMLConstructor","external":true,"refSections":[{"refs":[{"id":"ref-for-htmlconstructor"}],"title":"2. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#htmlconstructor"},
+"98d4a4b6": {"dfnID":"98d4a4b6","dfnText":"flex-shrink","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex-shrink"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-shrink"},
 "99c988d6": {"dfnID":"99c988d6","dfnText":"remove","external":true,"refSections":[{"refs":[{"id":"ref-for-list-remove"},{"id":"ref-for-list-remove\u2460"}],"title":"3.1.3. Algorithms"}],"url":"https://infra.spec.whatwg.org/#list-remove"},
 "9b166ddb": {"dfnID":"9b166ddb","dfnText":"scroll-padding-block-end","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding-block-end"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-block-end"},
 "9be179f5": {"dfnID":"9be179f5","dfnText":"IntersectionObserver","external":true,"refSections":[{"refs":[{"id":"ref-for-intersectionobserver"}],"title":"3.1.1. Internal state"},{"refs":[{"id":"ref-for-intersectionobserver\u2460"},{"id":"ref-for-intersectionobserver\u2461"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#intersectionobserver"},
@@ -3242,8 +3273,8 @@ let dfnPanelData = {
 "d4dbbbf0": {"dfnID":"d4dbbbf0","dfnText":"language","external":true,"refSections":[{"refs":[{"id":"ref-for-language"}],"title":"3.2.3. Presentation"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#language"},
 "d54eeea2": {"dfnID":"d54eeea2","dfnText":"palpable content","external":true,"refSections":[{"refs":[{"id":"ref-for-palpable-content-2"}],"title":"2. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#palpable-content-2"},
 "d84118c0": {"dfnID":"d84118c0","dfnText":"outline-offset","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-outline-offset"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-ui-4/#propdef-outline-offset"},
-"d893440d": {"dfnID":"d893440d","dfnText":"flex-shrink","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex-shrink"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink"},
 "d996d257": {"dfnID":"d996d257","dfnText":"cancelable","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable"}],"title":"3.1.3. Algorithms"},{"refs":[{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable\u2460"},{"id":"ref-for-dom-event-initevent-type-bubbles-cancelable-cancelable\u2461"}],"title":"3.2.2. Algorithms"}],"url":"https://dom.spec.whatwg.org/#dom-event-initevent-type-bubbles-cancelable-cancelable"},
+"d9ce2113": {"dfnID":"d9ce2113","dfnText":"flex-basis","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex-basis"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-basis"},
 "dba80762": {"dfnID":"dba80762","dfnText":"background-color","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-background-color"}],"title":"3.4.1. Conditions that Deactivate the Element"}],"url":"https://drafts.csswg.org/css2/#propdef-background-color"},
 "dcca73ef": {"dfnID":"dcca73ef","dfnText":"scroll-padding-bottom","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-padding-bottom"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-padding-bottom"},
 "dd21c139": {"dfnID":"dd21c139","dfnText":"ruby-position","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-ruby-position"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-ruby-1/#propdef-ruby-position"},
@@ -3297,7 +3328,7 @@ let dfnPanelData = {
 "ebb01253": {"dfnID":"ebb01253","dfnText":"PermissionDescriptor","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-permissiondescriptor"}],"title":"3.2.2. Algorithms"}],"url":"https://w3c.github.io/permissions/#dom-permissiondescriptor"},
 "ebe0fb55": {"dfnID":"ebe0fb55","dfnText":"x","external":true,"refSections":[{"refs":[{"id":"ref-for-XProperty"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://w3c.github.io/svgwg/svg2-draft/geometry.html#XProperty"},
 "ec650328": {"dfnID":"ec650328","dfnText":"IntersectionObserverEntry","external":true,"refSections":[{"refs":[{"id":"ref-for-intersectionobserverentry"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#intersectionobserverentry"},
-"edc3a18b": {"dfnID":"edc3a18b","dfnText":"flex-grow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex-grow"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow"},
+"ee1b06e9": {"dfnID":"ee1b06e9","dfnText":"flex-grow","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-flex-grow"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-grow"},
 "ef338520": {"dfnID":"ef338520","dfnText":"scroll-margin-left","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-scroll-margin-left"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-scroll-snap-1/#propdef-scroll-margin-left"},
 "eff1f6e9": {"dfnID":"eff1f6e9","dfnText":"computed value","external":true,"refSections":[{"refs":[{"id":"ref-for-computed-value"},{"id":"ref-for-computed-value\u2460"},{"id":"ref-for-computed-value\u2461"}],"title":"3.4.1. Conditions that Deactivate the Element"},{"refs":[{"id":"ref-for-computed-value\u2462"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://www.w3.org/TR/CSS2/cascade.html#computed-value"},
 "element-attrdef-geolocation-autolocate": {"dfnID":"element-attrdef-geolocation-autolocate","dfnText":"autolocate","external":false,"refSections":[{"refs":[{"id":"ref-for-element-attrdef-geolocation-autolocate"}],"title":"2. The geolocation Element"}],"url":"#element-attrdef-geolocation-autolocate"},
@@ -3817,10 +3848,10 @@ let refsData = {
 "https://drafts.csswg.org/css-conditional-5/#propdef-container-type": {"displayText":"container-type","export":true,"for_":[],"level":"5","normative":true,"shortname":"css-conditional","spec":"css-conditional-5","status":"current","text":"container-type","type":"property","url":"https://drafts.csswg.org/css-conditional-5/#propdef-container-type"},
 "https://drafts.csswg.org/css-display-4/#propdef-order": {"displayText":"order","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"order","type":"property","url":"https://drafts.csswg.org/css-display-4/#propdef-order"},
 "https://drafts.csswg.org/css-display-4/#propdef-visibility": {"displayText":"visibility","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-display","spec":"css-display-4","status":"current","text":"visibility","type":"property","url":"https://drafts.csswg.org/css-display-4/#propdef-visibility"},
-"https://drafts.csswg.org/css-flexbox-1/#propdef-flex": {"displayText":"flex","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-flexbox","spec":"css-flexbox-1","status":"current","text":"flex","type":"property","url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex"},
-"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis": {"displayText":"flex-basis","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-flexbox","spec":"css-flexbox-1","status":"current","text":"flex-basis","type":"property","url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-basis"},
-"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow": {"displayText":"flex-grow","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-flexbox","spec":"css-flexbox-1","status":"current","text":"flex-grow","type":"property","url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-grow"},
-"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink": {"displayText":"flex-shrink","export":true,"for_":[],"level":"1","normative":true,"shortname":"css-flexbox","spec":"css-flexbox-1","status":"current","text":"flex-shrink","type":"property","url":"https://drafts.csswg.org/css-flexbox-1/#propdef-flex-shrink"},
+"https://drafts.csswg.org/css-flexbox-2/#propdef-flex": {"displayText":"flex","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-flexbox","spec":"css-flexbox-2","status":"current","text":"flex","type":"property","url":"https://drafts.csswg.org/css-flexbox-2/#propdef-flex"},
+"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-basis": {"displayText":"flex-basis","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-flexbox","spec":"css-flexbox-2","status":"current","text":"flex-basis","type":"property","url":"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-basis"},
+"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-grow": {"displayText":"flex-grow","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-flexbox","spec":"css-flexbox-2","status":"current","text":"flex-grow","type":"property","url":"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-grow"},
+"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-shrink": {"displayText":"flex-shrink","export":true,"for_":[],"level":"2","normative":true,"shortname":"css-flexbox","spec":"css-flexbox-2","status":"current","text":"flex-shrink","type":"property","url":"https://drafts.csswg.org/css-flexbox-2/#propdef-flex-shrink"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-feature-settings": {"displayText":"font-feature-settings","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-feature-settings","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-feature-settings"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-kerning": {"displayText":"font-kerning","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-kerning","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-kerning"},
 "https://drafts.csswg.org/css-fonts-4/#propdef-font-optical-sizing": {"displayText":"font-optical-sizing","export":true,"for_":[],"level":"4","normative":true,"shortname":"css-fonts","spec":"css-fonts-4","status":"current","text":"font-optical-sizing","type":"property","url":"https://drafts.csswg.org/css-fonts-4/#propdef-font-optical-sizing"},
