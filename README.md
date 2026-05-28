@@ -13,14 +13,26 @@ An HTML permission element for the
 * [Explainer](geolocation_explainer.md)
 * [Geolocation Element Specification Draft](https://wicg.github.io/PEPC/geolocation-element.html)
 
-# Usermedia Elements
+# Usermedia Elements / HTML Media Capture Elements
 
-A set of HTML elements to mediate access to a [MediaStream](https://www.w3.org/TR/mediacapture-streams/#dom-mediastream):
+A set of HTML elements to mediate access to a
+[MediaStream](https://www.w3.org/TR/mediacapture-streams/#dom-mediastream).
+This proposal has been modified and integrated into the
+<a href="https://w3c.github.io/mediacapture-extensions">Media Capture and Streams
+Extension</a> specification, chapter
+<a href="https://w3c.github.io/mediacapture-extensions/#media-capture-html-elements">Media capture HTML elements</a>. All future work on these elements is
+expected to occur there.
+
+* [Explainer](https://github.com/w3c/mediacapture-extensions/blob/main/media-capture-elements-explainer.md)
+* [Media Capture HTML Elements](https://w3c.github.io/mediacapture-extensions/#media-capture-html-elements)
+
+The originally proposed usermedia element:
 
 * [Explainer](usermedia_element.md)
-* [Usermedia Element Specification Draft](https://wicg.github.io/PEPC/usermedia-element-delta.html), meant
-    for inclusion in
+* [Usermedia Element Specification Draft](https://wicg.github.io/PEPC/usermedia-element-delta.html),
+    meant for inclusion in
     [Media Capture and Streams Extensions](https://w3c.github.io/mediacapture-extensions/)
+    (as of spring 2026)
 
 # Page Embedded Permission Control (PEPC)
 
