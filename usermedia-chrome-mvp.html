@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <title>Note on Chrome &lt;usermedia&gt; MVP</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+  <script class='remove'>
+  "use strict";
+  // See https://github.com/w3c/respec/wiki/ for how to configure ReSpec
+  var respecConfig = {
+    xref: ["mediacapture-extensions", "mediacapture-streams",
+           "geolocation-element", "html", "dom", "pointerevents4"],
+    editors:  [{name: "Daniel Vogelheim", company: "Google LLC"}],
+    specStatus: "unofficial",
+    noRecTrack: true,
+    latestVersion: null,
+    shortName: "chrome-mvp-usermedia-html-elements",
+    localBiblio: {
+      "mediacapture-extensions": {
+        title: "Media Capture and Streams Extensions",
+        href: "https://w3c.github.io/mediacapture-extensions/",
+      },
+      "permission-element": {
+        title: "The HTML <permission> Element",
+        href: "https://wicg.github.io/PEPC/permission-element.html",
+      },
+      "usermedia-migration-guide": {
+        title: "Migration from <permission> to the MVP <usermedia> Capability Element",
+        href: "https://docs.google.com/document/d/1OctVFJNZHQp6G5UOxVcCYSLutUbZhtWxlo7NXv-Vu_E/view",
+      },
+      "usermedia-mvp": {
+        title: "Capability Element <usermedia> MVP",
+        href: "https://chromestatus.com/feature/4926233538330624",
+      },
+      "origin-trials": {
+        title: "Origin Trials",
+        href: "https://developer.chrome.com/docs/web-platform/origin-trials",
+      },
+      "usermedia-legacy": {
+        title: "Proposed usermedia, camera, and microphone media capture HTML elements",
+        href: "https://wicg.github.io/PEPC/usermedia-element-delta.html",
+      },
+      "pepc": {
+        title: "Page Embedded Permission Control",
+        href: "https://github.com/WICG/PEPC",
+      },
+    },
+  };
+  </script>
+</head>
+<body>
+  <section id=abstract>
+    <p>This documents the difference between Chrome's [[[usermedia-mvp]]] and
+      [[mediacapture-extensions]]'s [[[mediacapture-extensions#media-capture-html-elements]]].
+  </section>
+  <section id=sotd>
+    <p>
+      This is a purely informational note about a particular implementation and
+      how it relates to its relevant specification.
+    </p>
+  </section>
+  <section>
+    <h1>Introduction</h1>
+    <p>
+      Chrome introduced the <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>
+      element as en experimental [[origin-trials|Origin Trial]] in
+      <a href=https://chromestatus.com/feature/4926233538330624>Chrome M144</a>.
+      Later standardization in [[mediacapture-extensions]] modified the API and
+      behavior of <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>.
+      Chrome will adapt its implementation to follow
+      [[mediacapture-extensions]]. Web page authors should adapt their
+      usage accordingly. A migration guide can be found in
+      [[usermedia-migration-guide]].
+    </p>
+    <p>
+      This note documents the differences between <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>
+      elements as shipped by Chrome in origin trials and intermediate versions
+      and the final API specified in
+      [[[mediacapture-extensions#media-capture-html-elements]]].
+      This is note is only informational.
+    </p>
+  </section>
+
+  <section>
+    <h1>Differences between Chrome's [[[usermedia-mvp]]] and
+      [[[mediacapture-extensions#media-capture-html-elements]]]</h1>
+
+    <p>
+      The <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element is (or was) shipped in Chrome in
+      three phases:
+    </p>
+    <dl>
+      <dt>Standardized API &mdash; soon</dt>
+      <dd>
+        The API is described in
+        [[[mediacapture-extensions#the-usermedia-html-element]]].
+      </dd>
+      <dt>MVP &mdash; M151 &amp; later, until superseded by the standardized API</dt>
+      <dd>
+        The first publicly available version. It is based on the
+        [[mediacapture-extensions]], but only implements a subset of the
+        specification.
+        This API is described in [[[#mvp]]].
+      </dd>
+      <dt>Origin Trial &mdash; M144 - M150</dt>
+      <dd>
+        The original implementation, based on the original
+        [[[pepc#page-embedded-permission-control-pepc]]] design, described
+        in [[[#original-pepc]]].
+        This API was available originally behind an origin trial,
+        and will continue to be available for a limited time, concurrently
+        with the MVP, behind a
+        [[[origin-trials#deprecation_trials|reverse origin trial]]].
+      </dd>
+    </dl>
+  </section>
+  <section id="mvp">
+    <h1>MVP API</h1>
+
+    <p>
+      The [[usermedia-mvp|MVP]]'s
+      <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element uses the following
+      [=element interface=]. Note that it is a strict subset of the interface
+      speciefied in [[[mediacapture-extensions#the-usermedia-html-element]]].
+    </p>
+
+    <pre>
+    [Exposed=Window]
+    interface HTMLUserMediaElement : HTMLElement {
+      [HTMLConstructor] constructor();
+
+      attribute EventHandler onstream;
+      attribute EventHandler onerror;
+    };
+    </pre>
+
+    <p>
+      The [=EventTarget/activation behavior=] is as follows:
+    </p>
+
+    <ul>
+      <li>
+        Activation of <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>
+        will call directly into the [[permissions|Permissions API]], rather than
+        letting {{MediaDevices/getUserMedia()}} handle it. This should be
+        functionally identical, but may show a different prompt text.
+      </li>
+      <li>
+        "Second" activation &mdash; activation while a stream is active &mdash;
+        of <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>
+        will have no special effect, other than firing the [[DOM]]
+        <a data-dfn-type=event>click</a>
+        event. [[mediacapture-extensions]] presently leaves this aspect
+        unspecified.
+      </li>
+    </ul>
+
+    <p>
+      The <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-camera>camera</a> and
+      <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-microphone>microphone</a> are expected to follow shortly.
+    </p>
+  </section>
+  <section id="original-pepc">
+    <h1>Legacy PEPC API</h1>
+
+    <p>
+      This is the original implemenation of
+      <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>, behind the <a href=https://developer.chrome.com/origintrials/#/view_trial/3736298840857247745>Trial for UserMediaElement</a>
+      [[origin-trials|origin trial]]. This trial will temporarily in place, as a
+      [[[origin-trials#deprecation_trials|reverse origin trial]]], to give the
+      original users more time for a smooth transition.
+    </p>
+
+    <p>
+      The legacy API is largely that described by [[[usermedia-legacy]]].
+      The differences to the [[mediacapture-extensions]] version are as
+      follows:
+    </p>
+
+    <pre>
+      [Exposed=Window]
+      interface HTMLUserMediaElement : HTMLElement {
+        [HTMLConstructor] constructor();
+
+        readonly attribute MediaStream? stream;
+        undefined setConstraints(MediaStreamConstraints constraints);
+        readonly attribute DOMException? error;
+
+        [Reflect] attribute DOMString type;
+        boolean isTypeSupported(DOMString type);
+      };
+      HTMLUserMediaElement includes ActivationBlockersMixin;
+      HTMLUserMediaElement includes PowerfulFeatureObserver;
+    </pre>
+
+    <p>
+      <dfn data-dfn-for=HTMLUserMediaElement data-dfn-type=attribute>stream</dfn>,
+      <dfn data-dfn-for=HTMLUserMediaElement data-dfn-type=attribute>error</dfn>, and
+      <dfn data-dfn-for=HTMLUserMediaElement data-dfn-type=method>setConstraints()</dfn> work as in [[mediacapture-extensions]]'s <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element.
+    </p>
+
+    <p>
+      The <dfn data-dfn-for=HTMLUserMediaElement>type</dfn> IDL attribute
+      reflects the `type` content attribute.
+      Depending on {{HTMLUserMediaElement/type}}, the
+      <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>
+      element changes behaviour:
+    </p>
+    <dl>
+      <dt>`"microphone camera"`</dt>
+      <dt>`"camera microphone"`</dt>
+      <dd>&mdash; behaves like a regular <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element.</dd>
+      <dt>`"microphone"`</dt>
+      <dd>&mdash; behaves like a <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-microphone>microphone</a> element.</dd>
+      <dt>`"camera"`</dt>
+      <dd>&mdash; behaves like a <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-camera>camera</a> element.</dd>
+      <dt>all other values</dt>
+      <dd>&mdash; behaves like an {{HTMLUnknownElement}}.</dd>
+    </dl>
+
+    <p>
+      The
+      <dfn data-dfn-for=HTMLUserMediaElement data-dfn-type=method>isTypeSupported()</dfn>
+      method can be used to query whether a given type is supported by this
+      element.
+      It will return true if the input string is one of `"microphone camera"`,
+      `"camera microphone"`, `"microphone"`, or `"camera"`,
+      and false in all other cases.
+    </p>
+
+    <p>
+      The {{ActivationBlockersMixin}} formalizes several "click-jacking"
+      protections, and exposes their state in
+      {{ActivationBlockersMixin/isValid}},
+      {{ActivationBlockersMixin/invalidReason}}, and
+      {{ActivationBlockersMixin/onvalidationstatuschange}} attributes.
+      [[mediacapture-extensions]]
+      [[[mediacapture-extensions#dfn-trusted|encourages]]] similar
+      "click-jacking" protections, it does specify them in details,
+      and does not expose their inner state to developers or users.
+    </p>
+
+    <p>
+      The {{PowerfulFeatureObserver}} formalizes access into the [[permissions]]
+      API using the "camera microphone" permission descriptor (or the suitable
+      substrings, as appropriate). [[mediacapture-extensions]] eschews direct
+      calls to [[permissions]] APIs and instead relies on
+      {{MediaDevices/getUserMedia()}} to handle permission requests internally,
+      and consequently relies on [[mediacapture-streams]] to describe the
+      suitable interactions with [[permissions]].
+    </p>
+  </section>
+</body>
+</html>
