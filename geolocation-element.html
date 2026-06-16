@@ -4,9 +4,9 @@
   <title>The HTML Geolocation Element</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="https://www.w3.org/StyleSheets/TR/2021/cg-draft" rel="stylesheet">
-  <meta content="Bikeshed version 0a3d88311, updated Mon May 4 18:07:03 2026 +0000" name="generator">
+  <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://wicg.github.io/PEPC/geolocation-element.html" rel="canonical">
-  <meta content="144998c898e31c6ead63d662e52178867170dbc5" name="revision">
+  <meta content="92696ba5e97830f1ff3e0c46d9c27eea6e05caa6" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -789,7 +789,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
   <div class="head">
    <h1 class="no-ref p-name" id="title">The HTML Geolocation Element</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#CG-DRAFT">Draft Community Group Report</a>,
-    <time class="dt-updated" datetime="2026-05-28">28 May 2026</time></p>
+    <time class="dt-updated" datetime="2026-06-16">16 June 2026</time></p>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -942,7 +942,7 @@ capabilities.</p>
     <dt><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/dom.html#concept-element-dom" id="ref-for-concept-element-dom">DOM interface</a>:
     <dd><code class="idl"><a data-link-type="idl" href="#htmlgeolocationelement" id="ref-for-htmlgeolocationelement">HTMLGeolocationElement</a></code>
    </dl>
-   <p class="issue" id="issue-8e79e1dc"><a class="self-link" href="#issue-8e79e1dc"></a> <a data-link-type="biblio" href="#biblio-wai-aria" title="Accessible Rich Internet Applications (WAI-ARIA) 1.0">[WAI-ARIA]</a> specifies <a data-link-type="dfn" href="https://w3c.github.io/aria/#dfn-role" id="ref-for-dfn-role">roles</a> for in-page content.
+   <p class="issue" id="issue-8e79e1dc"><a class="self-link" href="#issue-8e79e1dc"></a> <a data-link-type="biblio" href="#biblio-wai-aria" title="Accessible Rich Internet Applications (WAI-ARIA) 1.0">[WAI-ARIA]</a> specifies <a data-link-type="dfn" href="https://www.w3.org/TR/wai-aria-1.3/#dfn-role" id="ref-for-dfn-role">roles</a> for in-page content.
     It is yet  unclear whether or how the <code><a data-link-type="element" href="#elementdef-geolocation" id="ref-for-elementdef-geolocation①">geolocation</a></code> element fits into
     the existing set of roles.
     Given that this element triggers <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission" id="ref-for-dfn-permission①">permission</a> requests, one could argue
@@ -2728,9 +2728,9 @@ of those Explainer sections.</p>
      <li><span class="dfn-paneled" id="885c3171">y</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[WAI-ARIA-1.2]</a> defines the following terms:
+    <a data-link-type="biblio">[WAI-ARIA-1.3]</a> defines the following terms:
     <ul>
-     <li><span class="dfn-paneled" id="e50bfdb1">role</span>
+     <li><span class="dfn-paneled" id="63f3c323">role</span>
     </ul>
    <li>
     <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
@@ -2816,8 +2816,8 @@ of those Explainer sections.</p>
    <dd>Marcos Caceres; Mike Taylor. <a href="https://w3c.github.io/permissions/"><cite>Permissions</cite></a>. URL: <a href="https://w3c.github.io/permissions/">https://w3c.github.io/permissions/</a>
    <dt id="biblio-svg2">[SVG2]
    <dd>Amelia Bellamy-Royds; et al. <a href="https://w3c.github.io/svgwg/svg2-draft/"><cite>Scalable Vector Graphics (SVG) 2</cite></a>. URL: <a href="https://w3c.github.io/svgwg/svg2-draft/">https://w3c.github.io/svgwg/svg2-draft/</a>
-   <dt id="biblio-wai-aria-12">[WAI-ARIA-1.2]
-   <dd>Joanmarie Diggs; et al. <a href="https://w3c.github.io/aria/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.2</cite></a>. URL: <a href="https://w3c.github.io/aria/">https://w3c.github.io/aria/</a>
+   <dt id="biblio-wai-aria-13">[WAI-ARIA-1.3]
+   <dd>James Nurthen; Peter Krautzberger. <a href="https://w3c.github.io/aria/"><cite>Accessible Rich Internet Applications (WAI-ARIA) 1.3</cite></a>. URL: <a href="https://w3c.github.io/aria/">https://w3c.github.io/aria/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
@@ -2866,7 +2866,7 @@ of those Explainer sections.</p>
 </pre>
   <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> <a data-link-type="biblio" href="#biblio-wai-aria" title="Accessible Rich Internet Applications (WAI-ARIA) 1.0">[WAI-ARIA]</a> specifies <a data-link-type="dfn" href="https://w3c.github.io/aria/#dfn-role">roles</a> for in-page content.
+   <div class="issue"> <a data-link-type="biblio" href="#biblio-wai-aria" title="Accessible Rich Internet Applications (WAI-ARIA) 1.0">[WAI-ARIA]</a> specifies <a data-link-type="dfn" href="https://www.w3.org/TR/wai-aria-1.3/#dfn-role">roles</a> for in-page content.
     It is yet  unclear whether or how the <code><a data-link-type="element" href="#elementdef-geolocation">geolocation</a></code> element fits into
     the existing set of roles.
     Given that this element triggers <a data-link-type="dfn" href="https://w3c.github.io/permissions/#dfn-permission">permission</a> requests, one could argue
@@ -3170,6 +3170,7 @@ let dfnPanelData = {
 "5f60f649": {"dfnID":"5f60f649","dfnText":"text-rendering","external":true,"refSections":[{"refs":[{"id":"ref-for-TextRenderingProperty"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://w3c.github.io/svgwg/svg2-draft/painting.html#TextRenderingProperty"},
 "5fd912e7": {"dfnID":"5fd912e7","dfnText":"accessibility considerations","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-accessibility-considerations"}],"title":"2. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-accessibility-considerations"},
 "5fe22d95": {"dfnID":"5fe22d95","dfnText":"viewport","external":true,"refSections":[{"refs":[{"id":"ref-for-viewport%E2%91%A0"}],"title":"3.1.1. Internal state"},{"refs":[{"id":"ref-for-viewport%E2%91%A0\u2460"},{"id":"ref-for-viewport%E2%91%A0\u2461"}],"title":"3.1.2. Action Blockers, Blocker Reasons, and Blocker Lifetimes"}],"url":"https://drafts.csswg.org/css2/#viewport%E2%91%A0"},
+"63f3c323": {"dfnID":"63f3c323","dfnText":"role","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-role"}],"title":"2. The geolocation Element"}],"url":"https://www.w3.org/TR/wai-aria-1.3/#dfn-role"},
 "649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"3.1.3. Algorithms"}],"url":"https://infra.spec.whatwg.org/#list"},
 "68019d7a": {"dfnID":"68019d7a","dfnText":"height","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-height"},{"id":"ref-for-propdef-height\u2460"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-sizing-3/#propdef-height"},
 "68675e70": {"dfnID":"68675e70","dfnText":"content attributes","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-element-attributes"}],"title":"2. The geolocation Element"},{"refs":[{"id":"ref-for-concept-element-attributes\u2460"}],"title":"3.1. Activation Blockers"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#concept-element-attributes"},
@@ -3317,7 +3318,6 @@ let dfnPanelData = {
 "e1483d91": {"dfnID":"e1483d91","dfnText":"top","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-top"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-position-3/#propdef-top"},
 "e22643f2": {"dfnID":"e22643f2","dfnText":"isVisible","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-intersectionobserverentry-isvisible"}],"title":"3.1.3. Algorithms"}],"url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverentry-isvisible"},
 "e30e7b38": {"dfnID":"e30e7b38","dfnText":"lang (for html-global)","external":true,"refSections":[{"refs":[{"id":"ref-for-attr-lang"}],"title":"2.3. geolocation element rendering"},{"refs":[{"id":"ref-for-attr-lang\u2460"}],"title":"3.2.3. Presentation"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#attr-lang"},
-"e50bfdb1": {"dfnID":"e50bfdb1","dfnText":"role","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-role"}],"title":"2. The geolocation Element"}],"url":"https://w3c.github.io/aria/#dfn-role"},
 "e58fed16": {"dfnID":"e58fed16","dfnText":"text-spacing-trim","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-text-spacing-trim"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-text-4/#propdef-text-spacing-trim"},
 "e5a7e26c": {"dfnID":"e5a7e26c","dfnText":"phrasing content","external":true,"refSections":[{"refs":[{"id":"ref-for-phrasing-content-2"},{"id":"ref-for-phrasing-content-2\u2460"}],"title":"2. The geolocation Element"}],"url":"https://html.spec.whatwg.org/multipage/dom.html#phrasing-content-2"},
 "e697420b": {"dfnID":"e697420b","dfnText":"border-bottom","external":true,"refSections":[{"refs":[{"id":"ref-for-propdef-border-bottom"}],"title":"3.4.3. Additional User-Agent Defined Style Bounds"}],"url":"https://drafts.csswg.org/css-borders-4/#propdef-border-bottom"},
@@ -3970,7 +3970,6 @@ let refsData = {
 "https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverinit-rootmargin": {"displayText":"rootMargin","export":true,"for_":["IntersectionObserverInit"],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"rootMargin","type":"dict-member","url":"https://w3c.github.io/IntersectionObserver/#dom-intersectionobserverinit-rootmargin"},
 "https://w3c.github.io/IntersectionObserver/#intersectionobserver": {"displayText":"IntersectionObserver","export":true,"for_":[],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"IntersectionObserver","type":"interface","url":"https://w3c.github.io/IntersectionObserver/#intersectionobserver"},
 "https://w3c.github.io/IntersectionObserver/#intersectionobserverentry": {"displayText":"IntersectionObserverEntry","export":true,"for_":[],"level":"1","normative":true,"shortname":"intersection-observer","spec":"intersection-observer","status":"current","text":"IntersectionObserverEntry","type":"interface","url":"https://w3c.github.io/IntersectionObserver/#intersectionobserverentry"},
-"https://w3c.github.io/aria/#dfn-role": {"displayText":"role","export":true,"for_":[],"level":"1","normative":false,"shortname":"wai-aria","spec":"wai-aria-1.2","status":"current","text":"role","type":"dfn","url":"https://w3c.github.io/aria/#dfn-role"},
 "https://w3c.github.io/geolocation/#dfn-geolocation": {"displayText":"\"geolocation\"","export":true,"for_":[],"level":"1","normative":false,"shortname":"geolocation","spec":"geolocation","status":"current","text":"\"geolocation\"","type":"permission","url":"https://w3c.github.io/geolocation/#dfn-geolocation"},
 "https://w3c.github.io/geolocation/#dfn-request-a-position": {"displayText":"request a position","export":false,"for_":[],"level":"1","normative":true,"shortname":"geolocation","spec":"geolocation","status":"current","text":"request a position","type":"dfn","url":"https://w3c.github.io/geolocation/#dfn-request-a-position"},
 "https://w3c.github.io/geolocation/#dom-geolocation": {"displayText":"Geolocation","export":true,"for_":[],"level":"1","normative":true,"shortname":"geolocation","spec":"geolocation","status":"current","text":"Geolocation","type":"interface","url":"https://w3c.github.io/geolocation/#dom-geolocation"},
@@ -4006,6 +4005,7 @@ let refsData = {
 "https://www.w3.org/TR/CSS2/cascade.html#computed-value": {"displayText":"computed value","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"computed value","type":"dfn","url":"https://www.w3.org/TR/CSS2/cascade.html#computed-value"},
 "https://www.w3.org/TR/CSS2/cascade.html#specified-value": {"displayText":"specified value","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"specified value","type":"dfn","url":"https://www.w3.org/TR/CSS2/cascade.html#specified-value"},
 "https://www.w3.org/TR/CSS2/cascade.html#value-def-inherit": {"displayText":"inherit","export":true,"for_":[],"level":"2","normative":true,"shortname":"css","spec":"css2","status":"snapshot","text":"inherit","type":"dfn","url":"https://www.w3.org/TR/CSS2/cascade.html#value-def-inherit"},
+"https://www.w3.org/TR/wai-aria-1.3/#dfn-role": {"displayText":"role","export":true,"for_":[],"level":"1","normative":false,"shortname":"wai-aria","spec":"wai-aria-1.3","status":"snapshot","text":"role","type":"dfn","url":"https://www.w3.org/TR/wai-aria-1.3/#dfn-role"},
 };
 
 function mkRefHint(link, ref) {
