@@ -86,8 +86,8 @@
       [[[mediacapture-extensions#media-capture-html-elements]]]</h1>
 
     <p>
-      The <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element is shipped in Chrome in
-      three phases:
+      The <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element support in Chrome is developed
+      in several phases:
     </p>
     <dl>
       <dt>Standardized API &mdash; soon</dt>
@@ -95,14 +95,14 @@
         The API is described in
         [[[mediacapture-extensions#the-usermedia-html-element]]].
       </dd>
-      <dt>MVP &mdash; M151 &amp; later, until superseded by the standardized API</dt>
+      <dt>&lt;usermedia&gt; element MVP &mdash; M151 &amp; later, until superseded by the standardized API</dt>
       <dd>
         The first publicly available version. It is based on the
         [[mediacapture-extensions]], but only implements a subset of the
         specification.
         This API is described in [[[#mvp]]].
       </dd>
-      <dt>Origin Trial &mdash; M144 - M150</dt>
+      <dt>&lt;usermedia&gt; element [[[origin-trials|origin trial]]] &mdash; M144 - M150</dt>
       <dd>
         The original implementation, based on the original
         [[[pepc#page-embedded-permission-control-pepc]]] design, described
@@ -111,6 +111,11 @@
         For a limited time, it will continue to be available behind the
         origin trial, concurrently with the MVP, as a
         [[[origin-trials#deprecation_trials|reverse origin trial]]].
+      </dd>
+      <dt>&lt;permission&gt; element [[[origin-trials|origin trial]]] &mdash; pre M144</dt>
+      <dd>
+        [[[pepc]]]'s &lt;permission&gt; element is the ancestor of
+        &lt;usermedia&gt;. It is no longer supported.
       </dd>
     </dl>
   </section>
