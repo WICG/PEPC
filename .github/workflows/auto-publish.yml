@@ -23,7 +23,7 @@ jobs:
         env:
           key: main
           branches: gh-pages
-          files: usermedia-element-delta.html usermedia-chrome-mvp.html
+          files: usermedia-element-delta.html usermedia-chrome-mvp.html usermedia-element-intentful-activation.html
   copy_demo:
     name: Copy demo page to gh-pages
     runs-on: ubuntu-latest
