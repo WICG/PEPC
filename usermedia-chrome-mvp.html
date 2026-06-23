@@ -87,22 +87,29 @@
 
     <p>
       The <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element support in Chrome is developed
-      in several phases:
+      in several phases.
+    </p>
+    <p>
+      With the initial public release we will support the MVP API ([[[#mvp]]]).
+      The older API shape ([[[#original-pepc]]]) will be supported behind an
+      origin trial, to allow origin trial participants to transition on their
+      own timeline.
     </p>
     <dl>
-      <dt>Standardized API &mdash; soon</dt>
+      <dt>soon &mdash; Standardized API</dt>
       <dd>
-        The API is described in
-        [[[mediacapture-extensions#the-usermedia-html-element]]].
+        The API as described in
+        [[[mediacapture-extensions#the-usermedia-html-element]]], including
+        &lt;usermedia&gt;, &lt;camera&gt;, and &lt;microphone&gt;.
       </dd>
-      <dt>&lt;usermedia&gt; element MVP &mdash; M151 &amp; later, until superseded by the standardized API</dt>
+      <dt>M151 &amp; later &mdash; &lt;usermedia&gt; element MVP</dt>
       <dd>
         The first publicly available version. It is based on the
         [[mediacapture-extensions]], but only implements a subset of the
         specification.
         This API is described in [[[#mvp]]].
       </dd>
-      <dt>&lt;usermedia&gt; element [[[origin-trials|origin trial]]] &mdash; M144 - M150</dt>
+      <dt>M144 - M150 &mdash; &lt;usermedia&gt; element [[[origin-trials|origin trial]]]</dt>
       <dd>
         The original implementation, based on the original
         [[[pepc#page-embedded-permission-control-pepc]]] design, described
@@ -112,7 +119,7 @@
         origin trial, concurrently with the MVP, as a
         [[[origin-trials#deprecation_trials|reverse origin trial]]].
       </dd>
-      <dt>&lt;permission&gt; element [[[origin-trials|origin trial]]] &mdash; pre M144</dt>
+      <dt>pre M144 &mdash; &lt;permission&gt; element [[[origin-trials|origin trial]]]</dt>
       <dd>
         [[[pepc]]]'s &lt;permission&gt; element is the ancestor of
         &lt;usermedia&gt;. It is no longer supported.

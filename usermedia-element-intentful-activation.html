@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Note on &lt;usermedia&gt; &mdash; Intent-ful Activation</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
+    <script class="remove">
+      "use strict";
+      // See https://github.com/w3c/respec/wiki/ for how to configure ReSpec
+      var respecConfig = {
+        xref: [
+          "mediacapture-extensions", "mediacapture-streams",
+          "infra", "html", "dom",
+
+          // A sack full of CSS, for all of the properties.
+          "css-cascade", "css-backgrounds-4", "css-color-4", "css-fonts-4",
+          "css-sizing", "css-color-adjust", "css-flexbox", "css-borders",
+          "css-counter-styles", "css-scroll", "css-scroll-snap",
+          "css-align", "css-anchor-position", "css-display", "css-contain",
+          "css-lists", "css-compositing", "css-position", "css-break",
+          "css-ui", "css-scroll-anchoring", "css-overscroll", "css-page",
+          "css-text", "css-ruby", "css-will-change", "css-values", "svg2",
+          "css-text-decor", "css-inline",
+
+          // IntersectionObserver + related
+          "intersection-observer",
+          // DOMRectReadOnly
+          "geometry",
+          // powerful features
+          "permissions",
+          // current high resolution time
+          "hr-time",
+          // fenced navigable
+          "fenced-frame"
+        ],
+        editors: [{name: "Daniel Vogelheim", company: "Google LLC"}],
+        specStatus: "unofficial",
+        noRecTrack: true,
+        latestVersion: null,
+        shortName: "usermedia-element-intentful-activation",
+        localBiblio: {
+          "mediacapture-extensions": {
+            title: "Media Capture and Streams Extensions",
+            href: "https://w3c.github.io/mediacapture-extensions/",
+          },
+          "permission-element": {
+            title: "The HTML <permission> Element",
+            href: "https://wicg.github.io/PEPC/permission-element.html",
+          },
+          "pepc": {
+            title: "Page Embedded Permission Control",
+            href: "https://github.com/WICG/PEPC",
+          },
+        },
+      };
+    </script>
+    <style>
+      ol.algorithm { border: 2pt dashed var(--algo-border); }
+    </style>
+  </head>
+  <body>
+    <section id="abstract">
+      <p>
+        Activation of [[mediacapture-extensions]]'s
+        [[[mediacapture-extensions#media-capture-html-elements|&lt;usermedia&gt;]]]
+        element should only be allowed
+        by an intentional click (or other gesture) by the user. Programmatic
+        activation or tricking a user in activating the element
+        ("clickjacking") should not activate the element.
+        This note proposes specific mechanisms to accomplish this, based on the
+        original [[pepc]] design.
+        The intent of this note is to provide a basis of discussion for
+        standardization of these measures.
+      </p>
+    </section>
+    <section id="sotd">
+      <p>This is a purely informational note.</p>
+    </section>
+    <section>
+      <h1>Introduction</h1>
+      <p>
+        [[mediacapture-extensions]]' definition of the
+        <a data-link-type="dfn" href="https://w3c.github.io/mediacapture-extensions/#dfn-trusted">trusted</a>
+        algorithm contains two notes, reproduced here:
+      </p>
+      <ul>
+        <li>
+          <p>
+            At the top of the
+            <a data-link-type="dfn" href="https://w3c.github.io/mediacapture-extensions/#dfn-trusted">trusted</a>
+            algorithm:
+          </p>
+          <div class="note">
+            HTMLUserMediaElement stream creation is supposed to happen by genuine
+            user action. User agents should suppress activation for
+            "click-jacking", as well as for programmatic activation.
+            Since exact critera for these are difficult to specify, we presently
+            leave this as implementation defined. User agents must at minimum
+            reject untrusted events.
+          </div>
+        </li>
+        <li>
+          <p>
+            In <a data-link-type="dfn" href="https://w3c.github.io/mediacapture-extensions/#dfn-trusted">trusted</a>,
+            step 2, following a recommendation to
+            <q>run additional, implementation-defined steps</q>:
+          </p>
+          <div class="note">
+            Additional implementation guidelines will be provided.
+          </div>
+        </li>
+      </ul>
+      <p>This document proposes those guidelines.</p>
+    </section>
+
+    <section>
+      <h1>Integration with &lt;usermedia&gt; element.</h1>
+      <div>
+        The <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+        element's initialization steps should also:
+        <ol class="algorithm">
+          <li>Initialize the internal {{ActivationBlocker/[[BlockerList]]}} to &laquo;&raquo;.</li>
+          <li>Initialize the internal {{ActivationBlocker/[[IntersectionRect]]}} to undefined.</li>
+          <li>Initialize the internal {{ActivationBlocker/[[IntersectionObserver]]}} to undefined.</li>
+        </ol>
+      </div>
+
+      <div>
+        The <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+        element's [=insertion steps=] should also:
+
+        <ol class="algorithm">
+          <li>Initialize the internal {{ActivationBlocker/[[BlockerList]]}} to &laquo;&raquo;.</li>
+          <li>[=set/Append=] [=this=] to [=node navigable=]'s {{navigable/[[ActivationBlockableElements]]}}.</li>
+          <li>Initialize the internal {{ActivationBlocker/[[IntersectionRect]]}} with undefined.</li>
+          <li>Initialize the internal {{ActivationBlocker/[[IntersectionObserver]]}} with the result of
+            constructing a new {{IntersectionObserver}} with
+            [=ActivationBlocker/IntersectionObserver callback=] and
+            &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.</li>
+          <li>Call {{ActivationBlocker/[[IntersectionObserver]]}}.observe([=this=]).</li>
+          <li>[=ActivationBlocker/Add an expiring blocker=] with reason
+            {{ActivationBlockerBlockerReason/recently_attached}}.</li>
+          <li>If the [=navigable/traversable navigable=] of the [=node navigable=] of [=this=]
+            is a [=fenced navigable container/fenced navigable=], then [=ActivationBlocker/add a permanent blocker=]
+            with {{ActivationBlockerBlockerReason/illegal_subframe}}.</li>
+        </ol>
+      </div>
+
+      <div>
+        The <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+        element's [=removing steps=] should also:
+
+        <ol class="algorithm">
+          <li>[=list/Remove=] [=this=] from [=node navigable=]'s {{navigable/[[ActivationBlockableElements]]}}.</li>
+        </ol>
+      </div>
+
+      <div>
+        The <a href="https://w3c.github.io/mediacapture-extensions/#dfn-trusted">trusted</a>
+        algorithm, step 2, currently reads:
+        <q>User agents should run additional, implementation-defined
+        steps to determine trusted-ness of |event|.</q> Replace this step
+        with the following step:
+
+        <ol class="algorithm">
+          <li>If [=this=]'s [=ActivationBlocker/blocker=] is not nothing, return.</li>
+        </ol>
+      </div>
+
+      <div>
+        <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+        does not provide a hook to observe changes to its styling properties.
+        While the <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+        element is inserted into a document, i.e. between its [=insertion steps=]
+        and [=removing steps=], it should
+        [=ActivationBlocker/check the style=] of the element whenever its styling
+        properties change, including the inherited ones.
+      </div>
+    </section>
+
+    <section>
+      <h1>Activation Blockers</h1>
+      <p>
+        To guarantee meaningful user intent, we will assume that an activation
+        is &mdash; generally &mdash; what the user means to do. We also define
+        circumstances that where the <a data-cite="infra">user agent</a> assumes non-intentional
+        activation, and call these activation blockers. A
+        <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+        element then maintains a set of current activation blockers, and
+        will disregard an activation if the set of current blockers is non-empty.
+      </p>
+      <aside class="example" title="An expiring activation blocker">
+        A common "click-jacking" technique is to provide the user with something
+        interesting to click on, and then, when a click is likely to occur, to
+        programmatically move the page so that a different element is now in
+        the position that the user is likely to click on. To prevent this, the
+        <a data-cite="infra">user agent</a> will add an activation blocker that expires after 500 ms
+        whenever the
+        <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+        element is moved.
+      </aside>
+
+      <section>
+        <h2>Internal Slots</h2>
+        <p>
+          Supporting activation blockers requires the following internal
+          slots at the element:
+        </p>
+        <dl>
+          <dt>[[<dfn data-dfn-type="attribute" data-dfn-for="ActivationBlocker" data-lt="[[BlockerList]]">BlockerList</dfn>]]</dt>
+          <dd>
+            A list of records, containing a
+            <dfn data-dfn-for="ActivationBlocker">blocker timestamp</dfn> and a
+            <dfn data-dfn-for="ActivationBlocker">blocker reason</dfn>.
+            The [=ActivationBlocker/blocker reason=] is a {{ActivationBlockerBlockerReason}}.
+          </dd>
+          <dt>[[<dfn data-dfn-type="attribute" data-dfn-for="ActivationBlocker" data-lt="[[IntersectionObserver]]">IntersectionObserver</dfn>]]</dt>
+          <dd>A reference to an IntersectionObserver.</dd>
+          <dt>[[<dfn data-dfn-type="attribute" data-dfn-for="ActivationBlocker" data-lt="[[IntersectionRect]]">IntersectionRect</dfn>]]</dt>
+          <dd>
+            A {{DOMRectReadOnly}} that stores the most recently seen intersection,
+            i.e. the position of the element relative to the viewport.
+          </dd>
+        </dl>
+
+        <p>
+          To prevent a page from "spamming" the user with a large number of
+          elements, we'd like to keep track of the number of active elements.
+          To accomplish this, the [=/navigable=] maintains
+          an [=ordered set=] of elements, [[<dfn attribute data-dfn-for="navigable" data-lt="[[ActivationBlockableElements]]">ActivationBlockableElements</dfn>]].
+          This [=ordered set=] is used to evaluate the [=blockers=] of type
+          {{ActivationBlockerBlockerReason/unsuccessful_registration}}.
+        </p>
+      </section>
+
+      <section>
+        <h2>Activation Blockers, Blocker Reasons, and Blocker Lifetimes</h2>
+        <p>
+          The key goal of the elements in this specification is to reflect a
+          user's conscious choice, and we need to make sure the user cannot
+          easily be tricked into activating it. To do so, we maintain a list
+          of blocker reasons, which may - permanently or temporarily - prevent
+          the element from being activated.
+        </p>
+        <pre class="idl">
+          enum ActivationBlockerBlockerReason {
+            "illegal_subframe", "unsuccessful_registration",
+            "recently_attached", "intersection_changed",
+            "intersection_out_of_viewport_or_clipped",
+            "intersection_occluded_or_distorted", "style_invalid"
+          };
+        </pre>
+        <p>These blockers come with three lifetimes: Permanent, temporary, and expiring.</p>
+        <dl>
+          <dt><dfn>Permanent blocker</dfn></dt>
+          <dd>
+            Once an element has a permanent blocker, it will be disabled
+            permanently. There are used for issues that the website owner is
+            expected to fix.
+            An example is an element inside a [^fencedframe^].
+          </dd>
+          <dt><dfn>Temporary blocker</dfn></dt>
+          <dd>
+            This is a blocker that will only be valid until the blocking
+            condition no no longer occurs. An example is an element that is
+            not currently in view. All [=temporary blockers=] turn into
+            [=expiring blockers=] once the condition no longer applies.
+          </dd>
+          <dt><dfn>Expiring blocker</dfn></dt>
+          <dd>
+            This is a blocker that is only valid for a fixed period of time.
+            This is used to block abuse scenarios like "click jacking".
+            An example is an element that has recently been moved.
+          </dd>
+        </dl>
+        <div class="note">TODO: DO we still need the order hint ??</div>
+        <div>
+          <dfn data-dfn-type="dfn" data-lt="blocker reason table"></dfn>
+          <table class="def">
+            <thead>
+              <tr>
+                <th>Blocker name</th>
+                <th>Blocker type</th>
+                <th>Example condition</th>
+                <th>Order hint</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>{{ActivationBlockerBlockerReason/illegal_subframe}}</th>
+                <td>[=permanent blocker|permanent=]</td>
+                <td>When the element is used inside a <{fencedframe}>.</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <th>{{ActivationBlockerBlockerReason/unsuccessful_registration}}</th>
+                <td>[=temporary blocker|temporary=]</td>
+                <td>When too many other elements for the same [=powerful feature=] have been inserted into the same document.</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <th>{{ActivationBlockerBlockerReason/recently_attached}}</th>
+                <td>[=expiring blocker|expiring=]</td>
+                <td>When the element has just been attached to the DOM.</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <th>{{ActivationBlockerBlockerReason/intersection_changed}}</th>
+                <td>[=expiring blocker|expiring=]</td>
+                <td>When the element is being moved.</td>
+                <td>6</td>
+              </tr>
+              <tr>
+                <th>{{ActivationBlockerBlockerReason/intersection_out_of_viewport_or_clipped}}</th>
+                <td>[=temporary blocker|temporary=]</td>
+                <td>When the element is not or not fully in the viewport.</td>
+                <td>7</td>
+              </tr>
+              <tr>
+                <th>{{ActivationBlockerBlockerReason/intersection_occluded_or_distorted}}</th>
+                <td>[=temporary blocker|temporary=]</td>
+                <td>When the element is fully in the viewport, but still not fully visible (e.g. because it's partly behind other content).</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <th>{{ActivationBlockerBlockerReason/style_invalid}}</th>
+                <td>[=temporary blocker|temporary=]</td>
+                <td></td>
+                <td>9</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section>
+      <h1>Styling, and Styling Restrictions</h1>
+
+      <p>
+        <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+        elements constrain the styling that can be applied to them. These are
+        expressed as conditions on their styling, and come in two flavours:
+      </p>
+
+      <ul>
+        <li>If the condition isn't met, the element is blocked.</li>
+        <li>A [=user-agent style sheet=], which enforces certain styling.
+          <br>
+          Some style conditions cannot easily defined in a standard CSS
+          stylesheet, for example because we want to express styling conditions
+          based on the computed style, rather than the declared style.
+        </li>
+      </ul>
+
+      <div>
+        To <dfn data-dfn-for="ActivationBlocker">check the style</dfn> of a
+        <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a> element:
+
+        <ol class="algorithm">
+          <li>Check the conditions in [[[#style-blockers]]].
+            Let |block| be a boolean, which is true when those conditions are met,
+            and false otherwise.</li>
+          <li>If |block|, then [=ActivationBlocker/add a temporary blocker=]
+            with reason {{ActivationBlockerBlockerReason/"style_invalid"}}.</li>
+          <li>Otherwise, [=ActivationBlocker/remove blockers=] with reason
+            {{ActivationBlockerBlockerReason/"style_invalid"}}.</li>
+        </ol>
+      </div>
+
+      <section id="style-blockers">
+        <h2>Blocking conditions</h2>
+
+        <p>
+          If the following conditions aren't met, a
+          {{ActivationBlockerBlockerReason/"style_invalid"}} [=temporary blocker=]
+          is added:
+        </p>
+
+        <dl>
+          <dt><a data-xref-type="css-property">color</a></dt>
+          <dt><a data-xref-type="css-property">background-color</a></dt>
+          <dd>
+            Set by default to the user agent's default `button` colors.
+            The contrast ratio between the 2 colors needs to be at least 3.
+            Alpha has to be 1.
+          </dd>
+          <dt><a data-xref-type="css-property">font-size</a></dt>
+          <dd>
+            If [=specified value=] is expressed as <a data-xref-type="css-type" data-lt="<absolute-size>">absolute-size</a>:
+            <ul>
+              <li>Then <a data-xref-type="css-property">font-size</a> must be
+                between <a data-xref-type="css-type" data-lt="<absolute-size>">small</a> and
+                  <a data-xref-type="css-type" data-lt="<absolute-size>">xx-large</a>.</li>
+              <li>Otherwise, the [=computed value=] must be larger than or equal
+                to the [=computed value=] for <a data-xref-type="css-type" data-lt="<absolute-size>">small</a> and less
+                than or equal to the [=computed value=] of
+                <a data-xref-type="css-type" data-lt="<absolute-size>">xx-large</a>.</li>
+            </ul>
+          </dd>
+        </dl>
+
+        <div class="issue">Define "alpha" and "contrast ratio".</div>
+      </section>
+
+      <section id="style-stylesheet">
+        <h2>User-agent defined stylesheet</h2>
+
+        <p>
+          A <a data-link-type="element" href="https://w3c.github.io/mediacapture-extensions/#dfn-usermedia">usermedia</a>
+          element is expected to render with the following
+          [=user-agent style sheet=]:
+        </p>
+
+        <pre class="css">
+          @namespace "http://www.w3.org/1999/xhtml";
+          usermedia {
+            opacity: 1.0;
+            line-height: normal !important;
+            white-space: nowrap !important;
+            user-select: none !important;
+            appearance: auto !important;
+            box-sizing: content-box !important;
+            vertical-align: middle !important;
+            text-emphasis: initial !important;
+            text-shadow: initial !important;
+          }
+        </pre>
+      </section>
+
+      <section id="style-stylesheet-like">
+        <h2>Additional, stylesheet-like conditions</h2>
+
+        <p>
+          In addition to the [=user-agent style sheet=] in subsection
+          [[[#style-stylesheet]]], we would like to express some style bounds
+          based on the computed style of the element. These should be treated
+          as a [=user-agent style sheet=], too.
+        </p>
+        <p>
+          For notational convenience, we imagine that the [=computed value=] of
+          an element could be accessed in CSS rules with <code>computed</code>,
+          just like the inherited value of an element can via the
+          <code>[=CSS/inherit=]</code> keyword. Then the following sheet expresses
+          the style bounds:
+        </p>
+
+        <pre class="css">
+          @namespace "http://www.w3.org/1999/xhtml";
+          usermedia {
+            outline-offset: clamp(0, computed, none); /* No negative outline-offsets. */
+            font-weight: clamp(200, computed, none);  /* No font-weights below 200. */
+            word-spacing: clamp(0, computed, 0.5em);  /* Word-spacing between 0..0.5em */
+            letter-spacing: clamp(-0.05em, computed, 0.2em);  /* Letter spacing between -0.05..0.2em */
+
+            min-height: clamp(1em, computed, none);
+            max-height: clamp(none, computed, 3em);
+            min-width: clamp(none, computed, calc(fit-content));
+
+            border-width: clamp(none, computed, 1em);
+
+            font-style: if(computed = "normal" or computed = "italic", computed, "normal");
+            display: if (computed = "inline-block" or computed = "none", computed, "inline-block");
+            cursor: if (computed = "pointer" or computed = "not-allowed", computed, "pointer")
+          }
+        </pre>
+
+        <p>Additionally, some rules apply based on conditions not easily expressible as CSS.</p>
+
+        <p>If <a data-xref-type="css-property">height</a> is `auto`, then apply:</p>
+        <pre class="css">
+          @namespace "http://www.w3.org/1999/xhtml";
+          usermedia {
+            padding-top: clamp(1em, computed, none);
+            padding-bottom: calc(padding-top);
+          }
+        </pre>
+        <p>If <a data-xref-type="css-property">width</a> is `auto`, then apply:</p>
+        <pre class="css">
+          @namespace "http://www.w3.org/1999/xhtml";
+          usermedia {
+            padding-left: clamp(none, computed, 5em);
+            padding-right: calc(padding-left);
+          }
+        </pre>
+        <p>
+          Apply the following sheet, if the element does not have all of the
+          following:
+        </p>
+        <ul>
+          <li>A border width of at least `1px`,</li>
+          <li>a color to background-color contrast ratio of at least 3,</li>
+          <li>and alpha of 1.</li>
+        </ul>
+        <pre class="css">
+          @namespace "http://www.w3.org/1999/xhtml";
+          usermedia {
+            max-width: clamp(none, computed, calc(3 * fit-content));
+          }
+        </pre>
+      </section>
+
+      <section>
+        <h2>Unaffected properties</h2>
+        <p>The following CSS properties can be used normally:</p>
+        <ul>
+          <li><a data-xref-type="css-property">font-kerning</a></li>
+          <li><a data-xref-type="css-property">font-optical-sizing</a></li>
+          <li><a data-xref-type="css-property">font-stretch</a></li>
+          <li><a data-xref-type="css-property">font-synthesis-weight</a></li>
+          <li><a data-xref-type="css-property">font-synthesis-style</a></li>
+          <li><a data-xref-type="css-property">font-synthesis-small-caps</a></li>
+          <li><a data-xref-type="css-property">font-feature-settings</a></li>
+          <li><a data-xref-type="css-property">forced-color-adjust</a></li>
+          <li><a data-xref-type="css-property">text-rendering</a></li>
+          <li><a data-xref-type="css-property" data-cite="css-align">align-self</a></li>
+          <li><a data-xref-type="css-property">anchor-name</a></li>
+          <li><a data-xref-type="css-property">aspect-ratio</a></li>
+          <li><a data-xref-type="css-property">border</a> and all border [=shorthand properties=],
+            <a data-xref-type="css-property">border-top</a>, <a data-xref-type="css-property">border-right</a>, <a data-xref-type="css-property">border-bottom</a>, <a data-xref-type="css-property">border-left</a></li>
+          <li><a data-xref-type="css-property" data-cite="css2">clear</a></li>
+          <li><a data-xref-type="css-property">color-scheme</a></li>
+          <li><a data-xref-type="css-property">contain-intrinsic-width</a></li>
+          <li><a data-xref-type="css-property">contain-intrinsic-height</a></li>
+          <li><a data-xref-type="css-property">container-name</a></li>
+          <li><a data-xref-type="css-property">container-type</a></li>
+          <li><a data-xref-type="css-property">counter-reset</a>, <a data-xref-type="css-property">counter-increment</a>, <a data-xref-type="css-property">counter-set</a></li>
+          <li><a data-xref-type="css-property">flex</a> and its [=longhand properties=], <a data-xref-type="css-property">flex-grow</a>, <a data-xref-type="css-property">flex-shrink</a>, <a data-xref-type="css-property">flex-basis</a></li>
+          <li><a data-xref-type="css-property" data-cite="css2">float</a></li>
+          <li><a data-xref-type="css-property">height</a></li>
+          <li><a data-xref-type="css-property" data-cite="compositing">isolation</a></li>
+          <li><a data-xref-type="css-property" data-cite="css-align">justify-self</a></li>
+          <li><a data-xref-type="css-property">left</a></li>
+          <li><a data-xref-type="css-property">order</a></li>
+          <li><a data-xref-type="css-property">orphans</a></li>
+          <li><a data-xref-type="css-property">outline</a> and most of its [=longhand properties=],
+            <a data-xref-type="css-property">outline-color</a> and <a data-xref-type="css-property">outline-style</a>.
+            <br>Note that <a data-xref-type="css-property">outline-offset</a> is clamped by the rules above.</li>
+          <li><a data-xref-type="css-property">overflow-anchor</a></li>
+          <li><a data-xref-type="css-property">overscroll-behavior</a> and its [=longhand properties=],
+            <a data-xref-type="css-property">overscroll-behavior-inline</a>, <a data-xref-type="css-property">overscroll-behavior-block</a>,
+            <a data-xref-type="css-property">overscroll-behavior-x</a>, <a data-xref-type="css-property">overscroll-behavior-y</a></li>
+          <li><a data-xref-type="css-property">page</a></li>
+          <li><a data-xref-type="css-property">position</a></li>
+          <li><a data-xref-type="css-property">position-anchor</a></li>
+          <li><a data-xref-type="css-property">right</a></li>
+          <li><a data-xref-type="css-property">scroll-margin</a> and its [=longhand properties=],
+            <a data-xref-type="css-property">scroll-margin-top</a>, <a data-xref-type="css-property">scroll-margin-right</a>, <a data-xref-type="css-property">scroll-margin-bottom</a>,
+            <a data-xref-type="css-property">scroll-margin-left</a></li>
+          <li><a data-xref-type="css-property">scroll-padding</a> and its [=longhand properties=],
+            <a data-xref-type="css-property">scroll-padding-top</a>, <a data-xref-type="css-property">scroll-padding-right</a>, <a data-xref-type="css-property">scroll-padding-bottom</a>,
+            <a data-xref-type="css-property">scroll-padding-left</a>, <a data-xref-type="css-property">scroll-padding-inline-start</a>,
+            <a data-xref-type="css-property">scroll-padding-block-start</a>,
+            <a data-xref-type="css-property">scroll-padding-inline-end</a>, <a data-xref-type="css-property">scroll-padding-block-end</a></li>
+          <li><a data-xref-type="css-property">text-spacing-trim</a></li>
+          <li><a data-xref-type="css-property">text-transform</a></li>
+          <li><a data-xref-type="css-property">top</a></li>
+          <li><a data-xref-type="css-property">visibility</a></li>
+          <li><a data-xref-type="css-property">x</a></li>
+          <li><a data-xref-type="css-property">y</a></li>
+          <li><a data-xref-type="css-property">ruby-position</a></li>
+          <li><a data-xref-type="css-property">user-select</a></li>
+          <li><a data-xref-type="css-property">width</a></li>
+          <li><a data-xref-type="css-property">will-change</a></li>
+          <li><a data-xref-type="css-property" data-cite="css2">z-index</a></li>
+        </ul>
+        <p>
+          Properties that are not listed above, or in the rules in this section,
+          and aren't logically equivalent to one of the properties mentioned here,
+          will be ignored.
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h1>Algorithms</h1>
+
+      <div>
+        To <dfn data-dfn-for="ActivationBlocker">add a blocker</dfn> with a
+        {{ActivationBlockerBlockerReason}} |reason| and an optional flag |expires|:
+
+        <ol class="algorithm">
+          <li>Let |timestamp| be None.</li>
+          <li>If |expires|, then let |timestamp| be [=current high resolution time=] plus the [=ActivationBlocker/blocker delay=].</li>
+          <li>[=list/Append=] an entry to the internal {{ActivationBlocker/[[BlockerList]]}} with |reason| and |timestamp|.</li>
+        </ol>
+      </div>
+
+      <div>
+        The <dfn data-dfn-for="ActivationBlocker">blocker delay</dfn> is 500ms.
+      </div>
+
+      <div>
+        To <dfn data-dfn-for="ActivationBlocker">add an expiring blocker</dfn> with a
+        {{ActivationBlockerBlockerReason}} |reason|:
+
+        <ol class="algorithm">
+          <li>[=Assert=]: |reason| is listed as "expiring" in the [=ActivationBlocker/blocker reason table=].</li>
+          <li>[=ActivationBlocker/Add a blocker=] with |reason| and true.</li>
+        </ol>
+      </div>
+
+      <div>
+        To <dfn data-dfn-for="ActivationBlocker">add a temporary blocker</dfn> with a
+        {{ActivationBlockerBlockerReason}} |reason|:
+
+        <ol class="algorithm">
+          <li>[=Assert=]: |reason| is listed as "temporary" in the [=ActivationBlocker/blocker reason table=].</li>
+          <li>[=ActivationBlocker/Add a blocker=] with |reason| and false.</li>
+        </ol>
+      </div>
+
+      <div>
+        To <dfn data-dfn-for="ActivationBlocker">add a permanent blocker</dfn> with a
+        {{ActivationBlockerBlockerReason}} |reason|:
+        <ol class="algorithm">
+          <li>[=Assert=]: |reason| is listed as "permanent" in the [=ActivationBlocker/blocker reason table=].</li>
+          <li>[=ActivationBlocker/Add a blocker=] with |reason| and false.</li>
+        </ol>
+      </div>
+
+      <div>
+        To <dfn data-dfn-for="ActivationBlocker">remove blockers</dfn> with
+        {{ActivationBlockerBlockerReason}} |reason| from an |element|:
+
+        <ol class="algorithm">
+          <li>[=Assert=]: |reason| is listed as "temporary" in the [=ActivationBlocker/blocker reason table=].</li>
+          <li>[=list/iterate|For each=] |entry| in |element|'s {{ActivationBlocker/[[BlockerList]]}}:
+            <ol>
+              <li>If |entry|'s reason [=string/is|equals=] |reason|, then [=list/remove=] |entry| from |element|'s {{ActivationBlocker/[[BlockerList]]}}.</li>
+            </ol>
+          </li>
+          <li>[=ActivationBlocker/Add a blocker=] with |reason| and true.</li>
+        </ol>
+      </div>
+
+      <div>
+        To determine an |element|'s <dfn for="ActivationBlocker">blocker</dfn>:
+
+        <ol class="algorithm">
+          <li>Let |blockers| be the result of [=list/sorting=] |element|'s {{ActivationBlocker/[[BlockerList]]}} with the [=blocker ordering=] algorithm.</li>
+          <li>If |blockers| is not [=list/empty=] and |blockers|[0] is [=ActivationBlocker/blocking=], then return |blockers|[0].</li>
+          <li>Return nothing.</li>
+        </ol>
+      </div>
+
+      <div>
+        To determine <dfn for="ActivationBlocker">blocker ordering</dfn> for two blockers |a| and |b|:
+
+        <ol class="algorithm">
+          <li>Let |really large number| be 99.</li>
+          <li>[=Assert=]: No order hint in the [=ActivationBlocker/blocker reason table=] is equal to or greater than |really large number|.</li>
+          <li>If |a| is [=ActivationBlocker/blocking=], then let |a hint| be the
+            order hint of |a|'s [=ActivationBlocker/blocker reason|reason=] in the
+            [=ActivationBlocker/blocker reason table=], otherwise let |a hint| be |really large number|.</li>
+          <li>If |b| is [=ActivationBlocker/blocking=], then let |b hint| be the
+            order hint of |b|'s [=ActivationBlocker/blocker reason|reason=] in the
+            [=ActivationBlocker/blocker reason table=], otherwise let |b hint| be |really large number|.</li>
+          <li>Return whether |a hint| is less than or equal to |b hint|.</li>
+        </ol>
+      </div>
+
+      <div>
+        An element's [=blocker=] list's |entry| is <dfn for="ActivationBlocker">blocking</dfn> if:
+
+        <ol class="algorithm">
+          <li>|entry| has no [=ActivationBlocker/blocker timestamp=],</li>
+          <li>or |entry| has a [=ActivationBlocker/blocker timestamp=],
+            and the [=ActivationBlocker/blocker timestamp=] is
+            greater or equal to the [=current high resolution time=].</li>
+        </ol>
+      </div>
+
+      <div class="note" title="Implementation hint">
+        This spec maintains blockers as a list
+        {{ActivationBlocker/[[BlockerList]]}}, which may potentially grow
+        indefinitely (since some blocker types simply expire,
+        but are not removed).
+        This structure is chosen for the simplicity of explanation, rather than for
+        efficiency. The details of this blocker structure are not observable
+        except for a handful of algorithms defined here, which should open
+        plenty of opportunities for implementations to handle this more
+        efficiently.
+      </div>
+
+      <div>
+        The <dfn data-dfn-for="ActivationBlocker">IntersectionObserver callback</dfn> implements {{IntersectionObserverCallback}} and runs the following steps:
+
+        <ol class="algorithm">
+          <li>[=Assert=]: The {{IntersectionObserver}}'s {{IntersectionObserver/root}} is the [=/document=].</li>
+          <li>Let |entries| be the value of the first callback parameter, the [=/list=] of {{IntersectionObserverEntry}}.</li>
+          <li>[=Assert=]: |entries| is not [=list/is empty|empty=].</li>
+          <li>Let |entry| be |entries|'s last [=list/item=].</li>
+          <li>If |entry|.{{IntersectionObserverEntry/isVisible}}, then:
+            <ol>
+              <li>[=ActivationBlocker/Remove blockers=] with {{ActivationBlockerBlockerReason/intersection_occluded_or_distorted}}.</li>
+              <li>[=ActivationBlocker/Remove blockers=] with {{ActivationBlockerBlockerReason/intersection_out_of_viewport_or_clipped}}.</li>
+            </ol>
+          </li>
+          <li>Otherwise:
+            <ol>
+              <li>If |entry|.{{IntersectionObserverEntry/intersectionRatio}} &gt;= 1, then:
+                <ol>
+                  <li>Let |reason| be {{ActivationBlockerBlockerReason/intersection_occluded_or_distorted}}.</li>
+                </ol>
+              </li>
+              <li>Otherwise:
+                <ol>
+                  <li>Let |reason| be {{ActivationBlockerBlockerReason/intersection_out_of_viewport_or_clipped}}.</li>
+                </ol>
+              </li>
+              <li>[=ActivationBlocker/Add a temporary blocker=] with |reason|.</li>
+            </ol>
+          </li>
+          <li>If {{ActivationBlocker/[[IntersectionRect]]}} does not equal |entry|.{{IntersectionObserverEntry/intersectionRect}} then [=ActivationBlocker/add an expiring blocker=] with {{ActivationBlockerBlockerReason/intersection_changed}}.</li>
+          <li>Set {{ActivationBlocker/[[IntersectionRect]]}} to |entry|.{{IntersectionObserverEntry/intersectionRect}}.</li>
+        </ol>
+      </div>
+    </section>
+  </body>
+</html>
