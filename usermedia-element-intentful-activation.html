@@ -29,9 +29,7 @@
           // powerful features
           "permissions",
           // current high resolution time
-          "hr-time",
-          // fenced navigable
-          "fenced-frame"
+          "hr-time"
         ],
         editors: [{name: "Daniel Vogelheim", company: "Google LLC"}],
         specStatus: "unofficial",
@@ -138,11 +136,8 @@
             [=ActivationBlocker/IntersectionObserver callback=] and
             &laquo;[ "{{IntersectionObserverInit/rootMargin}}" &rarr; `"-4px"` ]&raquo;.</li>
           <li>Call {{ActivationBlocker/[[IntersectionObserver]]}}.observe([=this=]).</li>
-          <li>[=ActivationBlocker/Add an expiring blocker=] with reason
+          <li>[=ActivationBlocker/Add a temporary blocker=] with reason
             {{ActivationBlockerBlockerReason/recently_attached}}.</li>
-          <li>If the [=navigable/traversable navigable=] of the [=node navigable=] of [=this=]
-            is a [=fenced navigable container/fenced navigable=], then [=ActivationBlocker/add a permanent blocker=]
-            with {{ActivationBlockerBlockerReason/illegal_subframe}}.</li>
         </ol>
       </div>
 
@@ -163,7 +158,7 @@
         with the following step:
 
         <ol class="algorithm">
-          <li>If [=this=]'s [=ActivationBlocker/blocker=] is not nothing, return.</li>
+          <li>If [=this=] is [=ActivationBlocker/blocked=], then return.</li>
         </ol>
       </div>
 
@@ -189,7 +184,7 @@
         element then maintains a set of current activation blockers, and
         will disregard an activation if the set of current blockers is non-empty.
       </p>
-      <aside class="example" title="An expiring activation blocker">
+      <aside class="example" title="A temporary activation blocker">
         A common "click-jacking" technique is to provide the user with something
         interesting to click on, and then, when a click is likely to occur, to
         programmatically move the page so that a different element is now in
@@ -228,7 +223,7 @@
           elements, we'd like to keep track of the number of active elements.
           To accomplish this, the [=/navigable=] maintains
           an [=ordered set=] of elements, [[<dfn attribute data-dfn-for="navigable" data-lt="[[ActivationBlockableElements]]">ActivationBlockableElements</dfn>]].
-          This [=ordered set=] is used to evaluate the [=blockers=] of type
+          This [=ordered set=] is used to evaluate the blockers of type
           {{ActivationBlockerBlockerReason/unsuccessful_registration}}.
         </p>
       </section>
@@ -244,36 +239,30 @@
         </p>
         <pre class="idl">
           enum ActivationBlockerBlockerReason {
-            "illegal_subframe", "unsuccessful_registration",
+            "unsuccessful_registration",
             "recently_attached", "intersection_changed",
             "intersection_out_of_viewport_or_clipped",
             "intersection_occluded_or_distorted", "style_invalid"
           };
         </pre>
-        <p>These blockers come with three lifetimes: Permanent, temporary, and expiring.</p>
+        <p>These blockers come with two lifetimes: temporary, or until revoked.</p>
         <dl>
-          <dt><dfn>Permanent blocker</dfn></dt>
-          <dd>
-            Once an element has a permanent blocker, it will be disabled
-            permanently. There are used for issues that the website owner is
-            expected to fix.
-            An example is an element inside a [^fencedframe^].
-          </dd>
           <dt><dfn>Temporary blocker</dfn></dt>
           <dd>
-            This is a blocker that will only be valid until the blocking
-            condition no no longer occurs. An example is an element that is
-            not currently in view. All [=temporary blockers=] turn into
-            [=expiring blockers=] once the condition no longer applies.
-          </dd>
-          <dt><dfn>Expiring blocker</dfn></dt>
-          <dd>
-            This is a blocker that is only valid for a fixed period of time.
-            This is used to block abuse scenarios like "click jacking".
+            This is a blocker that is valid for a fixed period of time.
+            <br>
             An example is an element that has recently been moved.
           </dd>
+          <dt><dfn>Revocable blocker</dfn></dt>
+          <dd>
+            This is a blocker that can be revoked again, e.g. when the condition
+            for which is was set no longer applies. Oftentime, the revocation
+            will incur an additional, fixed period of time before it becomes
+            valid.
+            <br>
+            An example is an element that is occluded by other content.
+          </dd>
         </dl>
-        <div class="note">TODO: DO we still need the order hint ??</div>
         <div>
           <dfn data-dfn-type="dfn" data-lt="blocker reason table"></dfn>
           <table class="def">
@@ -282,51 +271,38 @@
                 <th>Blocker name</th>
                 <th>Blocker type</th>
                 <th>Example condition</th>
-                <th>Order hint</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th>{{ActivationBlockerBlockerReason/illegal_subframe}}</th>
-                <td>[=permanent blocker|permanent=]</td>
-                <td>When the element is used inside a <{fencedframe}>.</td>
-                <td>2</td>
-              </tr>
-              <tr>
                 <th>{{ActivationBlockerBlockerReason/unsuccessful_registration}}</th>
-                <td>[=temporary blocker|temporary=]</td>
+                <td>[=revocable blocker|revocable=]</td>
                 <td>When too many other elements for the same [=powerful feature=] have been inserted into the same document.</td>
-                <td>3</td>
               </tr>
               <tr>
                 <th>{{ActivationBlockerBlockerReason/recently_attached}}</th>
-                <td>[=expiring blocker|expiring=]</td>
+                <td>[=temporary blocker|temporary=]</td>
                 <td>When the element has just been attached to the DOM.</td>
-                <td>4</td>
               </tr>
               <tr>
                 <th>{{ActivationBlockerBlockerReason/intersection_changed}}</th>
-                <td>[=expiring blocker|expiring=]</td>
+                <td>[=temporary blocker|temporary=]</td>
                 <td>When the element is being moved.</td>
-                <td>6</td>
               </tr>
               <tr>
                 <th>{{ActivationBlockerBlockerReason/intersection_out_of_viewport_or_clipped}}</th>
-                <td>[=temporary blocker|temporary=]</td>
+                <td>[=revocable blocker|revocable=]</td>
                 <td>When the element is not or not fully in the viewport.</td>
-                <td>7</td>
               </tr>
               <tr>
                 <th>{{ActivationBlockerBlockerReason/intersection_occluded_or_distorted}}</th>
-                <td>[=temporary blocker|temporary=]</td>
+                <td>[=revocable blocker|revocable=]</td>
                 <td>When the element is fully in the viewport, but still not fully visible (e.g. because it's partly behind other content).</td>
-                <td>8</td>
               </tr>
               <tr>
                 <th>{{ActivationBlockerBlockerReason/style_invalid}}</th>
-                <td>[=temporary blocker|temporary=]</td>
+                <td>[=revocable blocker|revocable=]</td>
                 <td></td>
-                <td>9</td>
               </tr>
             </tbody>
           </table>
@@ -361,7 +337,7 @@
           <li>Check the conditions in [[[#style-blockers]]].
             Let |block| be a boolean, which is true when those conditions are met,
             and false otherwise.</li>
-          <li>If |block|, then [=ActivationBlocker/add a temporary blocker=]
+          <li>If |block|, then [=ActivationBlocker/add a revocable blocker=]
             with reason {{ActivationBlockerBlockerReason/"style_invalid"}}.</li>
           <li>Otherwise, [=ActivationBlocker/remove blockers=] with reason
             {{ActivationBlockerBlockerReason/"style_invalid"}}.</li>
@@ -373,7 +349,7 @@
 
         <p>
           If the following conditions aren't met, a
-          {{ActivationBlockerBlockerReason/"style_invalid"}} [=temporary blocker=]
+          {{ActivationBlockerBlockerReason/"style_invalid"}} [=revocable blocker=]
           is added:
         </p>
 
@@ -577,11 +553,11 @@
 
       <div>
         To <dfn data-dfn-for="ActivationBlocker">add a blocker</dfn> with a
-        {{ActivationBlockerBlockerReason}} |reason| and an optional flag |expires|:
+        {{ActivationBlockerBlockerReason}} |reason| and an optional flag |temporary|:
 
         <ol class="algorithm">
           <li>Let |timestamp| be None.</li>
-          <li>If |expires|, then let |timestamp| be [=current high resolution time=] plus the [=ActivationBlocker/blocker delay=].</li>
+          <li>If |temporary|, then set |timestamp| to [=current high resolution time=] plus the [=ActivationBlocker/blocker delay=].</li>
           <li>[=list/Append=] an entry to the internal {{ActivationBlocker/[[BlockerList]]}} with |reason| and |timestamp|.</li>
         </ol>
       </div>
@@ -591,30 +567,23 @@
       </div>
 
       <div>
-        To <dfn data-dfn-for="ActivationBlocker">add an expiring blocker</dfn> with a
+        To <dfn data-dfn-for="ActivationBlocker">add a temporary blocker</dfn> with a
         {{ActivationBlockerBlockerReason}} |reason|:
 
         <ol class="algorithm">
-          <li>[=Assert=]: |reason| is listed as "expiring" in the [=ActivationBlocker/blocker reason table=].</li>
+          <li>[=Assert=]: |reason| is listed as "[=temporary blocker|temporary=]"
+            in the [=ActivationBlocker/blocker reason table=].</li>
           <li>[=ActivationBlocker/Add a blocker=] with |reason| and true.</li>
         </ol>
       </div>
 
       <div>
-        To <dfn data-dfn-for="ActivationBlocker">add a temporary blocker</dfn> with a
+        To <dfn data-dfn-for="ActivationBlocker">add a revocable blocker</dfn> with a
         {{ActivationBlockerBlockerReason}} |reason|:
 
         <ol class="algorithm">
-          <li>[=Assert=]: |reason| is listed as "temporary" in the [=ActivationBlocker/blocker reason table=].</li>
-          <li>[=ActivationBlocker/Add a blocker=] with |reason| and false.</li>
-        </ol>
-      </div>
-
-      <div>
-        To <dfn data-dfn-for="ActivationBlocker">add a permanent blocker</dfn> with a
-        {{ActivationBlockerBlockerReason}} |reason|:
-        <ol class="algorithm">
-          <li>[=Assert=]: |reason| is listed as "permanent" in the [=ActivationBlocker/blocker reason table=].</li>
+          <li>[=Assert=]: |reason| is listed as "[=revocable blocker|revocable=]"
+            in the [=ActivationBlocker/blocker reason table=].</li>
           <li>[=ActivationBlocker/Add a blocker=] with |reason| and false.</li>
         </ol>
       </div>
@@ -624,7 +593,8 @@
         {{ActivationBlockerBlockerReason}} |reason| from an |element|:
 
         <ol class="algorithm">
-          <li>[=Assert=]: |reason| is listed as "temporary" in the [=ActivationBlocker/blocker reason table=].</li>
+          <li>[=Assert=]: |reason| is listed as "[=revocable blocker|revocable=]"
+            in the [=ActivationBlocker/blocker reason table=].</li>
           <li>[=list/iterate|For each=] |entry| in |element|'s {{ActivationBlocker/[[BlockerList]]}}:
             <ol>
               <li>If |entry|'s reason [=string/is|equals=] |reason|, then [=list/remove=] |entry| from |element|'s {{ActivationBlocker/[[BlockerList]]}}.</li>
@@ -635,33 +605,17 @@
       </div>
 
       <div>
-        To determine an |element|'s <dfn for="ActivationBlocker">blocker</dfn>:
+        To determine if an |element| is <dfn for="ActivationBlocker">blocked</dfn>:
 
         <ol class="algorithm">
-          <li>Let |blockers| be the result of [=list/sorting=] |element|'s {{ActivationBlocker/[[BlockerList]]}} with the [=blocker ordering=] algorithm.</li>
-          <li>If |blockers| is not [=list/empty=] and |blockers|[0] is [=ActivationBlocker/blocking=], then return |blockers|[0].</li>
-          <li>Return nothing.</li>
-        </ol>
+          <li>If {{ActivationBlocker/[[BlockerList]]}} [=list/contains=] at least
+            one blocker that is [=ActivationBlocker/blocking=], then return true.
+          <li>Return false.
+      </ol>
       </div>
 
       <div>
-        To determine <dfn for="ActivationBlocker">blocker ordering</dfn> for two blockers |a| and |b|:
-
-        <ol class="algorithm">
-          <li>Let |really large number| be 99.</li>
-          <li>[=Assert=]: No order hint in the [=ActivationBlocker/blocker reason table=] is equal to or greater than |really large number|.</li>
-          <li>If |a| is [=ActivationBlocker/blocking=], then let |a hint| be the
-            order hint of |a|'s [=ActivationBlocker/blocker reason|reason=] in the
-            [=ActivationBlocker/blocker reason table=], otherwise let |a hint| be |really large number|.</li>
-          <li>If |b| is [=ActivationBlocker/blocking=], then let |b hint| be the
-            order hint of |b|'s [=ActivationBlocker/blocker reason|reason=] in the
-            [=ActivationBlocker/blocker reason table=], otherwise let |b hint| be |really large number|.</li>
-          <li>Return whether |a hint| is less than or equal to |b hint|.</li>
-        </ol>
-      </div>
-
-      <div>
-        An element's [=blocker=] list's |entry| is <dfn for="ActivationBlocker">blocking</dfn> if:
+        An element's blocker list's |entry| is <dfn for="ActivationBlocker">blocking</dfn> if:
 
         <ol class="algorithm">
           <li>|entry| has no [=ActivationBlocker/blocker timestamp=],</li>
@@ -709,10 +663,10 @@
                   <li>Let |reason| be {{ActivationBlockerBlockerReason/intersection_out_of_viewport_or_clipped}}.</li>
                 </ol>
               </li>
-              <li>[=ActivationBlocker/Add a temporary blocker=] with |reason|.</li>
+              <li>[=ActivationBlocker/Add a revocable blocker=] with |reason|.</li>
             </ol>
           </li>
-          <li>If {{ActivationBlocker/[[IntersectionRect]]}} does not equal |entry|.{{IntersectionObserverEntry/intersectionRect}} then [=ActivationBlocker/add an expiring blocker=] with {{ActivationBlockerBlockerReason/intersection_changed}}.</li>
+          <li>If {{ActivationBlocker/[[IntersectionRect]]}} does not equal |entry|.{{IntersectionObserverEntry/intersectionRect}} then [=ActivationBlocker/add a temporary blocker=] with {{ActivationBlockerBlockerReason/intersection_changed}}.</li>
           <li>Set {{ActivationBlocker/[[IntersectionRect]]}} to |entry|.{{IntersectionObserverEntry/intersectionRect}}.</li>
         </ol>
       </div>
