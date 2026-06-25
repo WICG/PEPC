@@ -400,6 +400,7 @@
             vertical-align: middle !important;
             text-emphasis: initial !important;
             text-shadow: initial !important;
+            text-decoration: initial !important;
           }
         </pre>
       </section>
@@ -437,7 +438,8 @@
 
             font-style: if(computed = "normal" or computed = "italic", computed, "normal");
             display: if (computed = "inline-block" or computed = "none", computed, "inline-block");
-            cursor: if (computed = "pointer" or computed = "not-allowed", computed, "pointer")
+            cursor: if (computed = "pointer" or computed = "not-allowed", computed, "pointer");
+            box-shadow: if (computed = "inset", "none", computed);
           }
         </pre>
 
