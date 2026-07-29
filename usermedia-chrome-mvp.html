@@ -141,10 +141,22 @@
     interface HTMLUserMediaElement : HTMLElement {
       [HTMLConstructor] constructor();
 
+      readonly attribute DOMException? error;
       attribute EventHandler onstream;
+      attribute EventHandler oncancel;
       attribute EventHandler onerror;
     };
     </pre>
+
+    <p>
+      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-stream>stream</a>,
+      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-error>error</a>,
+      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-onstream>onstream</a>,
+      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-oncancel>oncancel</a>, and
+      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-onerror>onerror</a>
+      attributes work as in [[mediacapture-extensions]]'s
+      <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element.
+    </p>
 
     <p>
       The [=EventTarget/activation behavior=] is as follows:
@@ -207,9 +219,11 @@
     </pre>
 
     <p>
-      <dfn data-dfn-for=HTMLUserMediaElement data-dfn-type=attribute>stream</dfn>,
-      <dfn data-dfn-for=HTMLUserMediaElement data-dfn-type=attribute>error</dfn>, and
-      <dfn data-dfn-for=HTMLUserMediaElement data-dfn-type=method>setConstraints()</dfn> work as in [[mediacapture-extensions]]'s <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element.
+      The
+      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-stream>stream</a> attribute,
+      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-error>error</a> attribute, and
+      <a data-link-type=method href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-setconstraints>setConstraints()</a> method
+      work as in [[mediacapture-extensions]]'s <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element.
     </p>
 
     <p>
