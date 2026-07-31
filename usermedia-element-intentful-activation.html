@@ -22,8 +22,8 @@
           "css-align", "css-anchor-position", "css-display", "css-contain",
           "css-lists", "css-compositing", "css-position", "css-break",
           "css-ui", "css-scroll-anchoring", "css-overscroll", "css-page",
-          "css-text", "css-ruby", "css-will-change", "css-values", "svg2",
-          "css-text-decor", "css-inline",
+          "css-text", "css-will-change", "css-values", "svg2",
+          "css-text-decor", "css-inline", "css-masking", "selectors-4",
 
           // IntersectionObserver + related
           "intersection-observer",
@@ -32,7 +32,9 @@
           // powerful features
           "permissions",
           // current high resolution time
-          "hr-time"
+          "hr-time",
+          // frame-ancestors + directives
+          "csp3"
         ],
         editors: [{name: "Daniel Vogelheim", company: "Google LLC"}],
         specStatus: "unofficial",
@@ -264,49 +266,88 @@
           <table class="def">
             <thead>
               <tr>
-                <th>Blocker name</th>
+                <th style="width:30%">Blocker name</th>
                 <th>Blocker type</th>
                 <th>Example condition</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th><dfn data-dfn-for=ActivationBlocker>unsuccessful_registration</dfn></th>
-                <td>[=revocable blocker|revocable=]</td>
-                <td>When too many other elements for the same [=powerful feature=] have been inserted into the same document.</td>
-              </tr>
-              <tr>
+                <!-- Chromium: kRecentlyAttachedToLayoutTree -->
                 <th><dfn data-dfn-for=ActivationBlocker>recently_attached</dfn></th>
                 <td>[=temporary blocker|temporary=]</td>
                 <td>When the element has just been attached to the DOM.</td>
               </tr>
               <tr>
+                <!-- Chromium: kIntersectionWithViewportChanged -->
                 <th><dfn data-dfn-for=ActivationBlocker>intersection_changed</dfn></th>
                 <td>[=temporary blocker|temporary=]</td>
                 <td>When the element is being moved.</td>
               </tr>
               <tr>
+                <!-- Chromium: kIntersectionVisibilityOutOfViewPortOrClipped -->
                 <th><dfn data-dfn-for=ActivationBlocker>intersection_out_of_viewport_or_clipped</dfn></th>
                 <td>[=revocable blocker|revocable=]</td>
                 <td>When the element is not or not fully in the viewport.</td>
               </tr>
               <tr>
+                <!-- Chromium: kIntersectionVisibilityOccludedOrDistorted -->
                 <th><dfn data-dfn-for=ActivationBlocker>intersection_occluded_or_distorted</dfn></th>
                 <td>[=revocable blocker|revocable=]</td>
-                <td>When the element is fully in the viewport, but still not fully visible (e.g. because it's partly behind other content).</td>
+                <td>When the element is fully in the viewport, but still not
+                  fully visible (e.g. because it's partly behind other content)
+                  or distortet (e.g. because it's behind a layer that applies
+                  a graphical transformation).</td>
               </tr>
               <tr>
+                <!-- Chromium: kInvalidStyle -->
                 <th><dfn data-dfn-for=ActivationBlocker>style_invalid</dfn></th>
                 <td>[=revocable blocker|revocable=]</td>
-                <td></td>
+                <td>If the style is not acceptable (e.g. if the font size is
+                  very small, or the margin is very large, so that a user is
+                  unlikely to recognize the button's label). See also
+                  [[[#styling]]].</td>
               </tr>
+              <tr>
+                <!-- Implemented by Chromium, but not as "blocker". -->
+                <th><dfn data-dfn-for=ActivationBlocker>permissions_policy</dfn></th>
+                <td>[=revocable blocker|revocable=]</td>
+                <td>If access to the camera and/or microphone (as appropriate
+                  for the current element) is blocked by lack of a suitable
+                  [=Document/permissions policy=].
+                  <br>
+                  This blocker is [=revocable blocker|revocable=], but there is
+                  no condition under which it would be revoked.
+                </td>
+              </tr>
+              <tr>
+                <!-- Implemented by Chromium, but not as "blocker". -->
+                <th><dfn data-dfn-for=ActivationBlocker>unsuccessful_registration</dfn></th>
+                <td>[=revocable blocker|revocable=]</td>
+                <td>The [=user agent=] keeps track of usermedia elements on any
+                  given page, and might block additional elements if a page
+                  already contains too many.</td>
+              </tr>
+              <tr>
+                <!-- Implemented by Chromium, but not as "blocker". -->
+                <th><dfn data-dfn-for=ActivationBlocker>frame_ancestors</dfn></th>
+                <td>[=revocable blocker|revocable=]</td>
+                <td>If the current frame or any of its parent is not
+                  [=same origin=] with their respective parent, then block
+                  usermedia elements if no [=frame-ancestors=]
+                  [=directive=] is present.</td>
+              </tr>
+              <!-- Chromium blocker reasons without an equivalent in this spec:
+                kUnknown -- "null" value, represents uninitialized blocker vars.
+                kAttributeChanged -- <geolocation> only, if the "precise
+                location" attribute is changed after insertion. -->
             </tbody>
           </table>
         </div>
       </section>
     </section>
 
-    <section>
+    <section id=styling>
       <h1>Styling, and Styling Restrictions</h1>
 
       <p>
@@ -355,7 +396,8 @@
           <dd>
             Set by default to the user agent's default `button` colors.
             The contrast ratio between the 2 colors needs to be at least 3.
-            Alpha has to be 1.
+            [=computed value|Computed=] [[[css-color-5#relative-alpha|alpha]]]
+            is 1.0.
           </dd>
           <dt><a data-xref-type="css-property">font-size</a></dt>
           <dd>
@@ -370,9 +412,24 @@
                 <a data-xref-type="css-type" data-lt="<absolute-size>">xx-large</a>.</li>
             </ul>
           </dd>
+          <dt><a data-xref-type="css-property">mask</a></dt>
+          <dd>
+            Neither the current element, nor any content layered above it,
+            has an active mask, as defined by [[css-masking]].
+          </dd>
+          <dt><a data-xref-type="css-property">display</a></dt>
+          <dd>
+            The [=computed value=] of
+            <a data-xref-type="css-property">display</a> is not
+            <a data-xref-type="css-value" data-xref-for=display>contents</a>,
+            <a data-xref-type="css-value" data-xref-for=display>inline</a>,
+            <a data-xref-type="css-value" data-xref-for=display>list-item</a>,
+            <a data-xref-type="css-value" data-xref-for=display>ruby</a>, or
+            <a data-xref-type="css-value" data-xref-for=display>ruby-text</a>.
+          </dd>
         </dl>
 
-        <div class="issue">Define "alpha" and "contrast ratio".</div>
+        <div class="issue">Define "contrast ratio".</div>
       </section>
 
       <section id="style-stylesheet">
@@ -433,11 +490,14 @@
             border-width: clamp(none, computed, 1em);
 
             font-style: if(computed = "normal" or computed = "italic", computed, "normal");
-            display: if (computed = "inline-block" or computed = "none", computed, "inline-block");
             cursor: if (computed = "pointer" or computed = "not-allowed", computed, "pointer");
             box-shadow: if (computed = "inset", "none", computed);
           }
         </pre>
+
+      </section>
+      <section>
+        <h2>Additional, algorithmic conditions</h2>
 
         <p>Additionally, some rules apply based on conditions not easily expressible as CSS.</p>
 
@@ -472,76 +532,11 @@
             max-width: clamp(none, computed, calc(3 * fit-content));
           }
         </pre>
-      </section>
 
-      <section>
-        <h2>Unaffected properties</h2>
-        <p>The following CSS properties can be used normally:</p>
-        <ul>
-          <li><a data-xref-type="css-property">font-kerning</a></li>
-          <li><a data-xref-type="css-property">font-optical-sizing</a></li>
-          <li><a data-xref-type="css-property">font-stretch</a></li>
-          <li><a data-xref-type="css-property">font-synthesis-weight</a></li>
-          <li><a data-xref-type="css-property">font-synthesis-style</a></li>
-          <li><a data-xref-type="css-property">font-synthesis-small-caps</a></li>
-          <li><a data-xref-type="css-property">font-feature-settings</a></li>
-          <li><a data-xref-type="css-property">forced-color-adjust</a></li>
-          <li><a data-xref-type="css-property">text-rendering</a></li>
-          <li><a data-xref-type="css-property" data-cite="css-align">align-self</a></li>
-          <li><a data-xref-type="css-property">anchor-name</a></li>
-          <li><a data-xref-type="css-property">aspect-ratio</a></li>
-          <li><a data-xref-type="css-property">border</a> and all border [=shorthand properties=],
-            <a data-xref-type="css-property">border-top</a>, <a data-xref-type="css-property">border-right</a>, <a data-xref-type="css-property">border-bottom</a>, <a data-xref-type="css-property">border-left</a></li>
-          <li><a data-xref-type="css-property" data-cite="css2">clear</a></li>
-          <li><a data-xref-type="css-property">color-scheme</a></li>
-          <li><a data-xref-type="css-property">contain-intrinsic-width</a></li>
-          <li><a data-xref-type="css-property">contain-intrinsic-height</a></li>
-          <li><a data-xref-type="css-property">container-name</a></li>
-          <li><a data-xref-type="css-property">container-type</a></li>
-          <li><a data-xref-type="css-property">counter-reset</a>, <a data-xref-type="css-property">counter-increment</a>, <a data-xref-type="css-property">counter-set</a></li>
-          <li><a data-xref-type="css-property">flex</a> and its [=longhand properties=], <a data-xref-type="css-property">flex-grow</a>, <a data-xref-type="css-property">flex-shrink</a>, <a data-xref-type="css-property">flex-basis</a></li>
-          <li><a data-xref-type="css-property" data-cite="css2">float</a></li>
-          <li><a data-xref-type="css-property">height</a></li>
-          <li><a data-xref-type="css-property" data-cite="compositing">isolation</a></li>
-          <li><a data-xref-type="css-property" data-cite="css-align">justify-self</a></li>
-          <li><a data-xref-type="css-property">left</a></li>
-          <li><a data-xref-type="css-property">order</a></li>
-          <li><a data-xref-type="css-property">orphans</a></li>
-          <li><a data-xref-type="css-property">outline</a> and most of its [=longhand properties=],
-            <a data-xref-type="css-property">outline-color</a> and <a data-xref-type="css-property">outline-style</a>.
-            <br>Note that <a data-xref-type="css-property">outline-offset</a> is clamped by the rules above.</li>
-          <li><a data-xref-type="css-property">overflow-anchor</a></li>
-          <li><a data-xref-type="css-property">overscroll-behavior</a> and its [=longhand properties=],
-            <a data-xref-type="css-property">overscroll-behavior-inline</a>, <a data-xref-type="css-property">overscroll-behavior-block</a>,
-            <a data-xref-type="css-property">overscroll-behavior-x</a>, <a data-xref-type="css-property">overscroll-behavior-y</a></li>
-          <li><a data-xref-type="css-property">page</a></li>
-          <li><a data-xref-type="css-property">position</a></li>
-          <li><a data-xref-type="css-property">position-anchor</a></li>
-          <li><a data-xref-type="css-property">right</a></li>
-          <li><a data-xref-type="css-property">scroll-margin</a> and its [=longhand properties=],
-            <a data-xref-type="css-property">scroll-margin-top</a>, <a data-xref-type="css-property">scroll-margin-right</a>, <a data-xref-type="css-property">scroll-margin-bottom</a>,
-            <a data-xref-type="css-property">scroll-margin-left</a></li>
-          <li><a data-xref-type="css-property">scroll-padding</a> and its [=longhand properties=],
-            <a data-xref-type="css-property">scroll-padding-top</a>, <a data-xref-type="css-property">scroll-padding-right</a>, <a data-xref-type="css-property">scroll-padding-bottom</a>,
-            <a data-xref-type="css-property">scroll-padding-left</a>, <a data-xref-type="css-property">scroll-padding-inline-start</a>,
-            <a data-xref-type="css-property">scroll-padding-block-start</a>,
-            <a data-xref-type="css-property">scroll-padding-inline-end</a>, <a data-xref-type="css-property">scroll-padding-block-end</a></li>
-          <li><a data-xref-type="css-property">text-spacing-trim</a></li>
-          <li><a data-xref-type="css-property">text-transform</a></li>
-          <li><a data-xref-type="css-property">top</a></li>
-          <li><a data-xref-type="css-property">visibility</a></li>
-          <li><a data-xref-type="css-property">x</a></li>
-          <li><a data-xref-type="css-property">y</a></li>
-          <li><a data-xref-type="css-property">ruby-position</a></li>
-          <li><a data-xref-type="css-property">user-select</a></li>
-          <li><a data-xref-type="css-property">width</a></li>
-          <li><a data-xref-type="css-property">will-change</a></li>
-          <li><a data-xref-type="css-property" data-cite="css2">z-index</a></li>
-        </ul>
         <p>
-          Properties that are not listed above, or in the rules in this section,
-          and aren't logically equivalent to one of the properties mentioned here,
-          will be ignored.
+          No content inside the element matches the
+          <a data-xref-type=css-selector>:visited</a> CSS
+          pseudo-class, as described in [[[selectors-4#link]]].
         </p>
       </section>
     </section>
