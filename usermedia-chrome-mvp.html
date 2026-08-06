@@ -44,6 +44,10 @@
         title: "Page Embedded Permission Control",
         href: "https://github.com/WICG/PEPC",
       },
+      "usermedia-legacy-origin-trial": {
+        title: "Trial for UserMediaElement",
+        href: "https://developer.chrome.com/origintrials/#/view_trial/3736298840857247745",
+      },
     },
   };
   </script>
@@ -90,50 +94,63 @@
       in several phases.
     </p>
     <p>
-      With the initial public release we will support the MVP API ([[[#mvp]]]).
+      The initial public release ("MVP") will support the API specified in
+      [[[mediacapture-extensions#media-capture-html-elements]]].
       The older API shape ([[[#original-pepc]]]) will be supported behind an
-      origin trial, to allow origin trial participants to transition on their
-      own timeline.
+      origin trial ([[[usermedia-legacy-origin-trial]]]),
+      to allow origin trial participants to transition on their
+      own timeline. The current plan is to end the
+      [[[usermedia-legacy-origin-trial]]] on November 3rd, 2026.
     </p>
     <dl>
-      <dt>soon &mdash; Standardized API</dt>
+      <dt>soon &mdash; Post-MVP</dt>
       <dd>
-        The API as described in
-        [[[mediacapture-extensions#the-usermedia-html-element]]], including
-        &lt;usermedia&gt;, &lt;camera&gt;, and &lt;microphone&gt;.
+        We expect future developments of the API to be first specified
+        in [[mediacapture-extensions]].
       </dd>
-      <dt>M151 &amp; later &mdash; &lt;usermedia&gt; element MVP</dt>
+      <dt>M153 &amp; later &mdash; &lt;usermedia&gt;, &lt;camera&gt;, and
+        &lt;microphone&gt; elements.
       <dd>
-        The first publicly available version. It is based on the
-        [[mediacapture-extensions]], but only implements a subset of the
-        specification.
-        This API is described in [[[#mvp]]].
+        The first publicly available version implements
+        [[[mediacapture-extensions#the-usermedia-html-element]]].
+        Behaviours not covered by the current version of the spec, like
+        what happens when the element is activated while a stream is playing
+        ("second click"), are postponed to any post-MVP versions.
       </dd>
-      <dt>M144 - M150 &mdash; &lt;usermedia&gt; element [[[origin-trials|origin trial]]]</dt>
+      <dt>M144 - M152 &mdash; &lt;usermedia&gt; element
+        [[[origin-trials|origin trial]]]</dt>
       <dd>
         The original implementation, based on the original
         [[[pepc#page-embedded-permission-control-pepc]]] design, described
         in [[[#original-pepc]]].
         This API was available originally behind an origin trial.
-        For a limited time, it will continue to be available behind the
-        origin trial, concurrently with the MVP, as a
+        For a limited time it will continue to be available behind the
+        [[[usermedia-legacy-origin-trial]]] origin trial, concurrently with
+        the MVP, as an
         [[[origin-trials#deprecation_trials|reverse origin trial]]].
       </dd>
-      <dt>pre M144 &mdash; &lt;permission&gt; element [[[origin-trials|origin trial]]]</dt>
+      <dt>pre M144 &mdash; &lt;permission&gt; element
+        [[[origin-trials|origin trial]]]</dt>
       <dd>
-        [[[pepc]]]'s &lt;permission&gt; element is the ancestor of
-        &lt;usermedia&gt;. It is no longer supported.
+        [[[pepc]]]'s <a data-link-type=element" href=https://wicg.github.io/PEPC/permission-element.html#the-permission-element>permission</a>
+        element is the ancestor of
+        <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>.
+        It is no longer supported.
       </dd>
     </dl>
   </section>
   <section id="mvp">
-    <h1>MVP API</h1>
+    <h1>First public version / MVP, M153</h1>
 
     <p>
       The [[usermedia-mvp|MVP]]'s
       <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element uses the following
-      [=element interface=]. Note that it is a strict subset of the interface
-      speciefied in [[[mediacapture-extensions#the-usermedia-html-element]]].
+      [=element interface=].
+      <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-camera>camera</a>
+      and <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-microphone>microphone</a>
+      element are analogous. These elements and their interfaces are fully
+      specified in
+      [[[mediacapture-extensions#the-usermedia-html-element]]].
     </p>
 
     <pre>
@@ -141,7 +158,10 @@
     interface HTMLUserMediaElement : HTMLElement {
       [HTMLConstructor] constructor();
 
+      readonly attribute MediaStream? stream;
       readonly attribute DOMException? error;
+      undefined setConstraints(optional HTMLMediaStreamConstraints constraints = {});
+
       attribute EventHandler onstream;
       attribute EventHandler oncancel;
       attribute EventHandler onerror;
@@ -149,41 +169,16 @@
     </pre>
 
     <p>
-      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-stream>stream</a>,
-      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-error>error</a>,
-      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-onstream>onstream</a>,
-      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-oncancel>oncancel</a>, and
-      <a data-link-type=attribute href=https://w3c.github.io/mediacapture-extensions/#dom-htmlusermediaelement-onerror>onerror</a>
-      attributes work as in [[mediacapture-extensions]]'s
-      <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a> element.
+      The main differences to the legacy API are:
     </p>
-
-    <p>
-      The [=EventTarget/activation behavior=] is as follows:
-    </p>
-
     <ul>
-      <li>
-        Activation of <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>
-        will call directly into the [[permissions|Permissions API]], rather than
-        letting {{MediaDevices/getUserMedia()}} handle it. This should be
-        functionally identical, but may show a different prompt text.
-      </li>
-      <li>
-        "Second" activation &mdash; activation while a stream is active &mdash;
-        of <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-usermedia>usermedia</a>
-        will have no special effect, other than firing the [[DOM]]
-        <a data-dfn-type=event>click</a>
-        event. [[mediacapture-extensions]] presently leaves this aspect
-        unspecified.
-      </li>
+      <li>Eliminate the <code>type</code> and <code>isTypeSupported</code>
+        attributes, and instead have three different element types.</li>
+      <li>The <code>stream</code> is now directly accessible as an
+        attribute.</li>
+      <li>The "blocker" logic still exists, but is not exposed to the
+        developer.</li>
     </ul>
-
-    <p>
-      The <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-camera>camera</a> and
-      <a data-link-type=element href=https://w3c.github.io/mediacapture-extensions/#dfn-microphone>microphone</a>
-      elements are expected to follow shortly.
-    </p>
   </section>
   <section id="original-pepc">
     <h1>Legacy PEPC API</h1>
@@ -207,7 +202,6 @@
       interface HTMLUserMediaElement : HTMLElement {
         [HTMLConstructor] constructor();
 
-        readonly attribute MediaStream? stream;
         undefined setConstraints(MediaStreamConstraints constraints);
         readonly attribute DOMException? error;
 
